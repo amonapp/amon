@@ -2,24 +2,29 @@ import os
 import re
 import subprocess
 
-class AmonChecker(object):
+class AmonCheckSystem(object):
 
 	def __init__(self):
 		pass
 
 
-	def get__memory_info(self):
+	def get_memory_info(self):
 		
 		regex = re.compile(r'([0-9]+)')
 
 		mem_dict = {}
 		
 		with open('/proc/meminfo', 'r') as lines:
+			
+			_save_to_dict = ['MemFree', 'MemTotal', 'SwapFree', 'SwapTotal']
+			
 			for line in lines:
 				values = line.split(':')	
 				
 				match = re.search(regex, values[1])
-				mem_dict[values[0]] = int(match.group(0)) / 1024
+				if values[0] in _save_to_dict:
+					mem_dict[values[0].lower()] = int(match.group(0)) / 1024
+			
 			return mem_dict
 
 
@@ -88,21 +93,31 @@ class AmonChecker(object):
 	def get_load_average(self):
 		lines = open('/proc/loadavg','r').readlines()
 
-		load = lines[0].split()
+		load_data = lines[0].split()
 
-		return load
+		_loadavg_columns = ['1minute','5minutes','15minutes','scheduled_processes']
+		load_dict = dict(zip(_loadavg_columns, load_data[:4]))	
 		
+		return load_dict 
+		
+
 	def get_cpu_utilization(self):
 		vmstat = subprocess.Popen(['vmstat'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]	
 		
 		lines = vmstat.splitlines()
 		raw_data = lines[2].split()
-		cpu_dict = raw_data[-4:]
+
+		_cpu_columns  = ['user', 'system','idle', 'wait']
+		cpu_dict = dict(zip(_cpu_columns, raw_data[-4:]))
 
 		return cpu_dict
 		
 
 
+class AmonCheckProcess(object):
+
+	def __init__(self):
+		pass
 
 	# WORK IN PROGRESS
 	def _pid_list(self):
