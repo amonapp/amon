@@ -1,0 +1,6 @@
+include LICENSE
+include MANIFEST.in
+recursive-include tests *
+recursive-include amon/web/media *
+recursive-include amon/web/templates *
+

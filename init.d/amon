@@ -1,39 +1,53 @@
+#!/usr/bin/python
 import sys, time
-from daemon import Daemon
-from logger import AmonRedisLog
-from runner import AmonRunner
+from amon.daemon import Daemon
+from amon.logger import AmonRedisLog
+from amon.runner import AmonRunner
+
+PIDFILE = '/tmp/amon.pid'
 
 class AmonDaemon(Daemon):
 	
 	def run(self):
 		
-		runner = AmonRunner()
-		logger = AmonRedisLog()
-
+		try:
+			runner = AmonRunner()
+		except:
+			pass
+		
+		try:
+			logger = AmonRedisLog()
+		except:
+			pass
+		
 		while True:
 			system_info = runner.run()
-			logger.save_dict(system_info)
-			time.sleep(5)
+			try:			
+				logger.save_dict(system_info)
+			except:			
+				pass
+
+			time.sleep(10)
 
 if __name__ == "__main__":
 
-	pidfile = '/tmp/amon-daemon.pid'
-
-
-	daemon = AmonDaemon(pidfile)
+	daemon = AmonDaemon(PIDFILE)
 	
 	if len(sys.argv) == 2:
 		if 'start' == sys.argv[1]:
-			daemon.start()
+			try:
+				daemon.start()
+			except:
+				pass
 		elif 'stop' == sys.argv[1]:
-			print "Stopping Amon .."
+			print "Stopping Amon ..."
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
 			print "Restaring Amon ..."
 			daemon.restart()
 		elif 'status' == sys.argv[1]:
 			try:
-				pf = file(pidfile,'r')
+				pf = file(PIDFILE,'r')
 				pid = int(pf.read().strip())
 				pf.close()
 			except IOError:
@@ -53,3 +67,4 @@ if __name__ == "__main__":
 	else:
 		print "usage: %s start|stop|restart|status" % sys.argv[0]
 		sys.exit(2)
+

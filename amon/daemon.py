@@ -2,12 +2,15 @@
 import sys, os, time, atexit
 from signal import SIGTERM 
 
-class Daemon:
+class Daemon(object):
 	"""
 		A generic daemon class.
 
 		Usage: subclass the Daemon class and override the run() method
-		"""
+	"""
+
+	startmsg = "started with pid %s"
+	
 	def __init__(self, pidfile, stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
 			self.stdin = stdin
 			self.stdout = stdout
@@ -30,7 +33,7 @@ class Daemon:
 				sys.exit(1)
 
 		# decouple from parent environment
-		os.chdir("/") 
+		os.chdir(".") 
 		os.setsid() 
 		os.umask(0) 
 
@@ -43,21 +46,27 @@ class Daemon:
 		except OSError, e: 
 			sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
 			sys.exit(1) 
-
+		
 		# redirect standard file descriptors
-		sys.stdout.flush()
-		sys.stderr.flush()
 		si = file(self.stdin, 'r')
 		so = file(self.stdout, 'a+')
 		se = file(self.stderr, 'a+', 0)
+		
+		pid = str(os.getpid())
+		
+		sys.stderr.write("\n%s\n" % self.startmsg % pid)
+		sys.stderr.flush()
+
+		if self.pidfile:
+			file(self.pidfile,'w+').write("%s\n" % pid)
+		
+		atexit.register(self.delpid)
 		os.dup2(si.fileno(), sys.stdin.fileno())
 		os.dup2(so.fileno(), sys.stdout.fileno())
 		os.dup2(se.fileno(), sys.stderr.fileno())
-
-		# write pidfile
-		atexit.register(self.delpid)
-		pid = str(os.getpid())
-		file(self.pidfile,'w+').write("%s\n" % pid)
+			
+		
+		
 
 	def delpid(self):
 		os.remove(self.pidfile)
