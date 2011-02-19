@@ -57,4 +57,4 @@ case "$1" in
 	;;
 esac
 
-exit 0sss
+exit 0
