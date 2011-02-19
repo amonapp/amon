@@ -5,6 +5,9 @@ Dashboard
 {% endblock %}
 {% block content %}
 <h2>Creativespace - 192.168.0.1</h2>
+
+{% if connection %}
+
 <table>
 		<tr class="thead">
 			<td class="status">
@@ -28,7 +31,7 @@ Dashboard
 				cpu
 			</td>
 			<td class="check">
-				10m
+				{{ check.time }}
 			</td>
 			<td class="details">
 				idle:{{ check.cpu.idle }}%
@@ -37,13 +40,28 @@ Dashboard
 			</td>
 		
 		</tr>
+		<tr class="tbody">
+			<td class="status">
+				<span class="ok">OK</span>
+			</td>
+			<td class="overview">
+				memory
+			</td>
+			<td class="check">
+				{{ check.time }}
+			</td>
+			<td class="details">
+				total:{{ check.memory.memtotal }}mb
+				free: {{ check.cpu.user }}% 
+				system: {{ check.cpu.system }}%
+			</td>
+		
+		</tr>
 
-		{% if connection != 'error' %}
-
-		{% else %}
-		boo
-		{% endif %}
-
-
+{% else %}
+<div class="message">
+Couldn't connect to Redis.
+</div>
+{% endif %}
 </table>
 {% endblock %}

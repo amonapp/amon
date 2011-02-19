@@ -8,22 +8,23 @@ class Dashboard:
 	@cherrypy.expose
 	def index(self):
 	
-		# test redis
+		# get redis server info
 		try:
 			connection = _conn.info()
 		except:
 			connection = False
 
-		
-		if connection:
+		# get the information from the last check
+		try:
 			latest_check = _conn.zrange('log', -1, -1)
 			latest_check_dict = string_to_dict(latest_check[0])
-
-			print latest_check_dict
+		except:
+			latest_check_dict = False
 
 		return render(name="dashboard.html",
 					  current_page='dashboard',
 					  check=latest_check_dict,
+					  connection=connection,
 				)
 
 
