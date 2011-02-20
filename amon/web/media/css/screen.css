@@ -116,50 +116,70 @@ body .right h2 {
 /* line 81, ../src/screen.sass */
 body .right table {
   float: left;
-  width: 650px;
+  width: 800px;
   clear: left;
   margin-left: 20px;
 }
-/* line 95, ../src/screen.sass */
+/* line 93, ../src/screen.sass */
+body .right table .thead {
+  background: url(../images/table_heading.png) repeat-x;
+}
+/* line 97, ../src/screen.sass */
 body .right table .thead td {
-  font-size: 1.2em;
+  font-size: 1.4em;
   color: #b4b4b4;
   padding-top: 10px;
   padding-bottom: 15px;
 }
-/* line 107, ../src/screen.sass */
+/* line 109, ../src/screen.sass */
+body .right table .thead td.status {
+  padding-left: 10px;
+}
+/* line 113, ../src/screen.sass */
 body .right table .tbody {
   margin-top: 20px;
 }
-/* line 111, ../src/screen.sass */
+/* line 117, ../src/screen.sass */
+body .right table .tbody.odd {
+  background: #f1f1f0;
+}
+/* line 121, ../src/screen.sass */
 body .right table .tbody td {
   margin: 10px;
   padding: 8px;
   padding-left: 0px;
   font-size: 1.4em;
-  border-bottom: 1px solid #e6e6e6;
+  color: #656565;
 }
-/* line 123, ../src/screen.sass */
+/* line 133, ../src/screen.sass */
 body .right .status {
   width: 100px;
 }
-/* line 127, ../src/screen.sass */
-body .right .status .ok {
-  background: #e1f5c4;
+/* line 137, ../src/screen.sass */
+body .right .status span {
+  width: 18px;
+  height: 18px;
   float: left;
-  padding: 8px;
-  text-align: center;
+  margin-left: 20px;
+  background: url(../images/status_icons.png) no-repeat;
+}
+/* line 149, ../src/screen.sass */
+body .right .status .ok {
+  background-position: 0px -36px;
+}
+/* line 153, ../src/screen.sass */
+body .right .status .warning {
+  background-position: 0px -18px;
+}
+/* line 157, ../src/screen.sass */
+body .right .overview {
   width: 80px;
 }
-/* line 139, ../src/screen.sass */
-body .right .overview {
-  width: 100px;
-}
-/* line 143, ../src/screen.sass */
+/* line 161, ../src/screen.sass */
 body .right .check {
-  width: 100px;
+  width: 150px;
 }
-/* line 147, ../src/screen.sass */
+/* line 165, ../src/screen.sass */
 body .left {
   float: left;
   width: 160px;
@@ -167,7 +187,7 @@ body .left {
   background: url(../images/left.png) repeat-y;
   height: 100%;
 }
-/* line 159, ../src/screen.sass */
+/* line 177, ../src/screen.sass */
 body .left .logo {
   float: left;
   width: 92px;
@@ -176,17 +196,17 @@ body .left .logo {
   margin-left: 30px;
   background: url(../images/logo.png) no-repeat;
 }
-/* line 175, ../src/screen.sass */
+/* line 193, ../src/screen.sass */
 body .left ul {
   float: left;
   margin-top: 35px;
 }
-/* line 181, ../src/screen.sass */
+/* line 199, ../src/screen.sass */
 body .left ul li {
   float: left;
   clear: left;
 }
-/* line 187, ../src/screen.sass */
+/* line 205, ../src/screen.sass */
 body .left ul li a {
   width: 120px;
   padding: 10px;
@@ -198,7 +218,7 @@ body .left ul li a {
   font-size: 2em;
   text-decoration: none;
 }
-/* line 207, ../src/screen.sass */
+/* line 225, ../src/screen.sass */
 body .left ul li a:hover, body .left ul li a.active {
   background: #ffcc33;
 }

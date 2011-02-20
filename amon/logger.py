@@ -12,6 +12,6 @@ class AmonRedisLog(object):
 		
 		"""
 		session_time = dict['time']
-		self.r.zadd('log', dict, session_time)
+		self.r.zadd('amon_log', dict, session_time)
 
 

@@ -85,7 +85,7 @@ class AmonCheckSystem(object):
 			if line.find(":") < 0: continue
 			face, data = line.split(":")
 			faceData = dict(zip(cols, data.split()))
-			faces[face] = faceData
+			faces[face.strip()] = faceData
 
 		return faces
 
@@ -95,7 +95,7 @@ class AmonCheckSystem(object):
 
 		load_data = lines[0].split()
 
-		_loadavg_columns = ['1minute','5minutes','15minutes','scheduled_processes']
+		_loadavg_columns = ['minute','five_minutes','fifteen_minutes','scheduled_processes']
 		load_dict = dict(zip(_loadavg_columns, load_data[:4]))	
 		
 		return load_dict 

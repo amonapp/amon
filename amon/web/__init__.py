@@ -26,4 +26,8 @@ config = {
 		}
 
 sys.path.append(PROJECT_ROOT) # add the current directory to the PYTHONPATH
-cherrypy.quickstart(root, "/" ,  config=config)
+
+cherrypy.tree.mount(root, "/", config)
+
+cherrypy.engine.start()
+cherrypy.engine.block()

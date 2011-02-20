@@ -16,6 +16,7 @@ class AmonRunner(object):
 		
 		log_dict['time'] = now
 
+
 		memory = _syscheck.get_memory_info()
 
 		if memory != False:
@@ -28,6 +29,21 @@ class AmonRunner(object):
 			log_dict['cpu'] = cpu
 		
 
+		loadavg = _syscheck.get_load_average()
+
+		if loadavg != False:
+			log_dict['loadavg'] = loadavg
+
+
+		disk = _syscheck.get_disk_usage()
+
+		if disk != False:
+			log_dict['disk'] = disk
+
+		network = _syscheck.get_network_traffic()
+
+		if network != False:
+			log_dict['network'] = network
 
 		return log_dict
 			

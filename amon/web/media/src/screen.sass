@@ -40,37 +40,46 @@ body
       color: #2b3239 
     table
       float: left
-      width: 650px
+      width: 800px
       clear: left
       margin-left: 20px
       td
       .thead
+        background: url(../images/table_heading.png) repeat-x 
         td
-          font-size: 1.2em
+          font-size: 1.4em
           color:  #b4b4b4
           padding:
             top: 10px
             bottom: 15px
+          &.status
+            padding-left: 10px
       .tbody
         margin-top: 20px
+        &.odd
+          background: #F1F1F0 
         td
           margin: 10px
           padding: 8px
             left: 0px
           font-size: 1.4em
-          border-bottom: 1px solid  #e6e6e6
+          color: #656565 
     .status
       width: 100px
-      .ok
-        background: #e1f5c4 
+      span
+        width: 18px
+        height: 18px
         float: left
-        padding: 8px
-        text-align: center
-        width: 80px
+        margin-left: 20px
+        background: url(../images/status_icons.png) no-repeat
+      .ok
+        background-position: 0px -36px
+      .warning
+        background-position: 0px -18px
     .overview
-      width: 100px
+      width: 80px
     .check
-      width: 100px
+      width: 150px
   .left
     float: left
     width: 160px

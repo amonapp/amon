@@ -25,38 +25,92 @@ Dashboard
 		</tr>
 		<tr class="tbody">
 			<td class="status">
-				<span class="ok">OK</span>
+				<span class="ok"></span>
 			</td>
 			<td class="overview">
 				cpu
 			</td>
 			<td class="check">
-				{{ check.time }}
+				{{ check.time|date }}
+
 			</td>
 			<td class="details">
-				idle:{{ check.cpu.idle }}%
+				idle: {{ check.cpu.idle }}%
+				&nbsp;
 				user: {{ check.cpu.user }}% 
+				&nbsp;
 				system: {{ check.cpu.system }}%
 			</td>
 		
 		</tr>
+		<tr class="tbody odd">
+			<td class="status">
+				<span class="ok"></span>
+			</td>
+			<td class="overview">
+				loadavg
+			</td>
+			<td class="check">
+				{{ check.time|date }}
+
+			</td>
+			<td class="details">
+				1 minute: {{ check.loadavg.minute }}
+				&nbsp;
+				5 minutes: {{ check.loadavg.five_minutes }} 
+				&nbsp;
+				15 minutes: {{ check.loadavg.fifteen_minutes }}
+			</td>
+		
+		</tr>
+
 		<tr class="tbody">
 			<td class="status">
-				<span class="ok">OK</span>
+				<span class="warning"></span>
 			</td>
 			<td class="overview">
 				memory
 			</td>
 			<td class="check">
-				{{ check.time }}
+				{{ check.time|date }}
+
 			</td>
 			<td class="details">
-				total:{{ check.memory.memtotal }}mb
-				free: {{ check.cpu.user }}% 
+				total: {{ check.memory.memtotal }}MB
+				&nbsp;
+				free: {{ check.memory.memfree }}MB 
+				&nbsp;
+				swap: {{ check.memory.swaptotal }}MB
+				&nbsp;
+				swap free: {{ check.memory.swapfree }}MB
+			</td>
+		
+		</tr>
+		<tr class="tbody odd">
+			<td class="status">
+				<span class="ok"></span>
+			</td>
+			<td class="overview">
+				disk
+			</td>
+			<td class="check">
+				{{ check.time|date }}
+
+			</td>
+			<td class="details">
+				{{ check.disk }}
+				idle: {{ check.cpu.idle }}%
+				&nbsp;
+				user: {{ check.cpu.user }}% 
+				&nbsp;
 				system: {{ check.cpu.system }}%
 			</td>
 		
 		</tr>
+	
+
+
+
 
 {% else %}
 <div class="message">
