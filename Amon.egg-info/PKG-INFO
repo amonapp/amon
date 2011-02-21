@@ -1,0 +1,17 @@
+Metadata-Version: 1.0
+Name: Amon
+Version: 0.1
+Summary: Lightweight architecture monitoring tool
+Home-page: http://amon.martinrusev.net
+Author: Martin Rusev
+Author-email: martinrusev@live.com
+License: GPL
+Description: Lightweight architecture monitoring tool
+Keywords: Amon,monitoring
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
