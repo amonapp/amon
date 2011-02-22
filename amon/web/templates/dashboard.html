@@ -98,12 +98,17 @@ Dashboard
 
 			</td>
 			<td class="details">
-				{{ check.disk }}
-				idle: {{ check.cpu.idle }}%
-				&nbsp;
-				user: {{ check.cpu.user }}% 
-				&nbsp;
-				system: {{ check.cpu.system }}%
+				{% for volume  in check.disk %}
+					volume: {{ volume.volume }}
+					&nbsp;
+					total: {{ volume.total }}
+					&nbsp;
+					used: {{ volume.used }}
+					&nbsp;
+					free: {{ volume.free }}
+
+				<br /><br />
+				{% endfor %}
 			</td>
 		
 		</tr>

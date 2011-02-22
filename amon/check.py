@@ -35,13 +35,15 @@ class AmonCheckSystem(object):
 		volumes.pop(0)	# remove the header
 		volumes.pop()
 
-		data = {}
+		data = []
 
-
+		_columns = ('volume', 'total', 'used', 'free', 'percent', 'path')	
+		
 		for volume in volumes:
 			line = volume.split()
 			if line[0].startswith('/'):
-				data[line[0]] = line[1:]	
+				_volume = dict(zip(_columns, line))
+				data.append(_volume)	
 
 		return data
 				
