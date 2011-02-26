@@ -1,10 +1,11 @@
 import sys
 import cherrypy
-from views import Dashboard 
+from views import Dashboard, Node 
 from settings import PROJECT_ROOT
 
 #apps
 root = Dashboard()
+root.node = Node()
 
 
 cherrypy.config.update({
@@ -21,7 +22,8 @@ config = {
 			'/media': 
 			{
 				'tools.staticdir.on' : True,
-				'tools.staticdir.dir' : 'media'
+				'tools.staticdir.dir' : 'media',
+				'tools.gzip.on' : True,
 			}
 		}
 

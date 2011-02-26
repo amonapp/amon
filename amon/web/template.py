@@ -9,11 +9,13 @@ def dateformat(value, format='%d-%m-%Y / %H:%M'):
 	_ = datetime.fromtimestamp(value)
 	return _.strftime(format)
 
-
+def timeformat(value, format='%H:%M'):
+	_ = datetime.fromtimestamp(value)
+	return _.strftime(format)
 
 def render(*args, **kwargs):
 		
-
+	env.filters['time'] = timeformat
 	env.filters['date'] = dateformat
 
 	if 'name' in kwargs:

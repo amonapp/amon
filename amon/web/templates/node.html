@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}
+Node details >
+Creativespace - 192.168.0.1
+
+{% endblock %}
+{% block content %}
+<h2>Memory</h2>
+<div class="chart" id="memory"></div>
+
+<h2>Loadavg</h2>
+<div class="chart" id="loadavg"></div>
+
+<h2>CPU</h2>
+<div class="chart" id="cpu"></div>
+
+<script type="text/javascript">
+window.onload = function()
+{
+		var labels = [{% for  m in log %} '{{ m.time|time }}',  {% endfor %}];
+
+		var memory = new Grafico.AreaGraph($('memory'),		
+		{
+
+		  total:  	[{% for  m in log %} {{ m.memory.memtotal }},  {% endfor %}],
+		  free:  	[{% for  m in log %} {{ m.memory.memfree }},  {% endfor %}],
+		  
+		},
+		{
+		  colors :            { total: '#D2E4F0', free: '#F7D4D4' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			free:    "free",
+			total:  "total",
+		  },
+		  labels:  labels,
+		});
+		
+		
+		var loadavg = new Grafico.AreaGraph($('loadavg'),		
+		{
+
+		  minute:  	[{% for  m in log %} {{ m.loadavg.minute }},  {% endfor %}],
+		  five_minutes:  	[{% for  m in log %} {{ m.loadavg.five_minutes }},  {% endfor %}],
+		  fifteen_minutes:  	[{% for  m in log %} {{ m.loadavg.fifteen_minutes }},  {% endfor %}],
+		},
+		{
+		  colors :            { minute: '#D2E4F0', five_minutes: '#F7D4D4', fifteen_minutes: 'green' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			minute:    "one minute",
+			five_minutes:  "five minutes",
+			fifteen_minutes:  "five minutes",
+		  },
+		  labels:  labels,
+		});
+
+		var cpu = new Grafico.AreaGraph($('cpu'),		
+		{
+
+		  idle:  	[{% for  m in log %} {{ m.cpu.idle }},  {% endfor %}],
+		  user:  	[{% for  m in log %} {{ m.cpu.user }},  {% endfor %}],
+		  system:  	[{% for  m in log %} {{ m.cpu.system }},  {% endfor %}],
+		},
+		{
+		  colors :            { idle: '#D2E4F0', user: '#F7D4D4', system: 'green' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			idle: "idle",
+			user:  "user",
+			system:  "system",
+		  },
+		  labels:  labels,
+		});
+
+
+}
+</script>
+
+
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src='/media/js/prototype.js'></script>
+<script type="text/javascript" src='/media/js/raphael.js'></script>
+<script type="text/javascript" src='/media/js/grafico.min.js'></script>
+{% endblock %}

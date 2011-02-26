@@ -1,9 +1,10 @@
 import cherrypy
-from views import Dashboard 
+from views import Dashboard, Node 
 from settings import PROJECT_ROOT
 
 #apps
 root = Dashboard()
+root.node = Node()
 
 
 cherrypy.config.update({
