@@ -88,15 +88,16 @@ body .right {
   margin-left: 171px;
   background-color: white;
   height: 100%;
+  min-height: 100%;
 }
-/* line 43, ../src/screen.sass */
+/* line 45, ../src/screen.sass */
 body .right .breadcrumb {
   float: left;
   width: 100%;
   height: 45px;
   background: url(../images/breadcrumb.png) repeat-x;
 }
-/* line 53, ../src/screen.sass */
+/* line 55, ../src/screen.sass */
 body .right .breadcrumb h1 {
   float: left;
   font-size: 2em;
@@ -104,7 +105,7 @@ body .right .breadcrumb h1 {
   padding-top: 10px;
   padding-left: 20px;
 }
-/* line 67, ../src/screen.sass */
+/* line 69, ../src/screen.sass */
 body .right h2 {
   float: left;
   font-size: 2em;
@@ -114,37 +115,37 @@ body .right h2 {
   margin-bottom: 10px;
   color: #2b3239;
 }
-/* line 83, ../src/screen.sass */
+/* line 85, ../src/screen.sass */
 body .right table {
   float: left;
   width: 800px;
   clear: left;
   margin-left: 20px;
 }
-/* line 95, ../src/screen.sass */
+/* line 97, ../src/screen.sass */
 body .right table .thead {
   background: url(../images/table_heading.png) repeat-x;
 }
-/* line 99, ../src/screen.sass */
+/* line 101, ../src/screen.sass */
 body .right table .thead td {
   font-size: 1.4em;
   color: #b4b4b4;
   padding-top: 10px;
   padding-bottom: 15px;
 }
-/* line 111, ../src/screen.sass */
+/* line 113, ../src/screen.sass */
 body .right table .thead td.status {
   padding-left: 10px;
 }
-/* line 115, ../src/screen.sass */
+/* line 117, ../src/screen.sass */
 body .right table .tbody {
   margin-top: 20px;
 }
-/* line 119, ../src/screen.sass */
+/* line 121, ../src/screen.sass */
 body .right table .tbody.odd {
   background: #f1f1f0;
 }
-/* line 123, ../src/screen.sass */
+/* line 125, ../src/screen.sass */
 body .right table .tbody td {
   margin: 10px;
   padding: 8px;
@@ -152,11 +153,11 @@ body .right table .tbody td {
   font-size: 1.4em;
   color: #656565;
 }
-/* line 135, ../src/screen.sass */
+/* line 137, ../src/screen.sass */
 body .right .status {
   width: 100px;
 }
-/* line 139, ../src/screen.sass */
+/* line 141, ../src/screen.sass */
 body .right .status span {
   width: 18px;
   height: 18px;
@@ -164,31 +165,32 @@ body .right .status span {
   margin-left: 20px;
   background: url(../images/status_icons.png) no-repeat;
 }
-/* line 151, ../src/screen.sass */
+/* line 153, ../src/screen.sass */
 body .right .status .ok {
   background-position: 0px -36px;
 }
-/* line 155, ../src/screen.sass */
+/* line 157, ../src/screen.sass */
 body .right .status .warning {
   background-position: 0px -18px;
 }
-/* line 159, ../src/screen.sass */
+/* line 161, ../src/screen.sass */
 body .right .overview {
   width: 80px;
 }
-/* line 163, ../src/screen.sass */
+/* line 165, ../src/screen.sass */
 body .right .check {
   width: 150px;
 }
-/* line 167, ../src/screen.sass */
+/* line 169, ../src/screen.sass */
 body .left {
   float: left;
   width: 160px;
   margin-left: -100%;
   background: url(../images/left.png) repeat-y;
   height: 100%;
+  min-height: 100%;
 }
-/* line 179, ../src/screen.sass */
+/* line 183, ../src/screen.sass */
 body .left .logo {
   float: left;
   width: 92px;
@@ -197,17 +199,17 @@ body .left .logo {
   margin-left: 30px;
   background: url(../images/logo.png) no-repeat;
 }
-/* line 195, ../src/screen.sass */
+/* line 199, ../src/screen.sass */
 body .left ul {
   float: left;
   margin-top: 35px;
 }
-/* line 201, ../src/screen.sass */
+/* line 205, ../src/screen.sass */
 body .left ul li {
   float: left;
   clear: left;
 }
-/* line 207, ../src/screen.sass */
+/* line 211, ../src/screen.sass */
 body .left ul li a {
   width: 120px;
   padding: 10px;
@@ -219,12 +221,12 @@ body .left ul li a {
   font-size: 2em;
   text-decoration: none;
 }
-/* line 227, ../src/screen.sass */
+/* line 231, ../src/screen.sass */
 body .left ul li a:hover, body .left ul li a.active {
   background: #ffcc33;
 }
 
-/* line 233, ../src/screen.sass */
+/* line 237, ../src/screen.sass */
 .chart {
   float: left;
   width: 800px;

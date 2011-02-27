@@ -15,16 +15,26 @@ Creativespace - 192.168.0.1
 <h2>CPU</h2>
 <div class="chart" id="cpu"></div>
 
+<h2>Network</h2>
+{% for interface in network_interfaces %}
+<div class="chart" id="network_{{ interface }}"></div>
+{% endfor %}
+
+
+<h2>Disk</h2>
+
+
+
 <script type="text/javascript">
 window.onload = function()
 {
-		var labels = [{% for  m in log %} '{{ m.time|time }}',  {% endfor %}];
+		var labels = [{% for label in labels %} '{{ label|time }}',  {% endfor %}];
 
 		var memory = new Grafico.AreaGraph($('memory'),		
 		{
 
-		  total:  	[{% for  m in log %} {{ m.memory.memtotal }},  {% endfor %}],
-		  free:  	[{% for  m in log %} {{ m.memory.memfree }},  {% endfor %}],
+		  total:  	[{% for  m in memory %} {{ m.memtotal }},  {% endfor %}],
+		  free:  	[{% for  m in memory %} {{ m.memfree }},  {% endfor %}],
 		  
 		},
 		{
@@ -46,9 +56,9 @@ window.onload = function()
 		var loadavg = new Grafico.AreaGraph($('loadavg'),		
 		{
 
-		  minute:  	[{% for  m in log %} {{ m.loadavg.minute }},  {% endfor %}],
-		  five_minutes:  	[{% for  m in log %} {{ m.loadavg.five_minutes }},  {% endfor %}],
-		  fifteen_minutes:  	[{% for  m in log %} {{ m.loadavg.fifteen_minutes }},  {% endfor %}],
+		  minute:  	[{% for l in loadavg %} {{ l.minute }},  {% endfor %}],
+		  five_minutes:  	[{% for  l in loadavg %} {{ l.five_minutes }},  {% endfor %}],
+		  fifteen_minutes:  	[{% for  l in loadavg %} {{ l.fifteen_minutes }},  {% endfor %}],
 		},
 		{
 		  colors :            { minute: '#D2E4F0', five_minutes: '#F7D4D4', fifteen_minutes: 'green' },
@@ -69,9 +79,9 @@ window.onload = function()
 		var cpu = new Grafico.AreaGraph($('cpu'),		
 		{
 
-		  idle:  	[{% for  m in log %} {{ m.cpu.idle }},  {% endfor %}],
-		  user:  	[{% for  m in log %} {{ m.cpu.user }},  {% endfor %}],
-		  system:  	[{% for  m in log %} {{ m.cpu.system }},  {% endfor %}],
+		  idle:  	[{% for  c in cpu %} {{ c.idle }},  {% endfor %}],
+		  user:  	[{% for  c in cpu %} {{ c.user }},  {% endfor %}],
+		  system:  	[{% for  c in cpu %} {{ c.system }},  {% endfor %}],
 		},
 		{
 		  colors :            { idle: '#D2E4F0', user: '#F7D4D4', system: 'green' },
@@ -88,7 +98,34 @@ window.onload = function()
 		  },
 		  labels:  labels,
 		});
+		
+		{% for interface  in network_interfaces  %}
+		
+		var network_{{ interface }} = new Grafico.AreaGraph($('network_{{ interface }}'),		
+		{
 
+		  idle:  	[{% for  c in cpu %} {{ c.idle }},  {% endfor %}],
+		  user:  	[{% for  c in cpu %} {{ c.user }},  {% endfor %}],
+		  system:  	[{% for  c in cpu %} {{ c.system }},  {% endfor %}],
+		},
+		{
+		  colors :            { idle: '#D2E4F0', user: '#F7D4D4', system: 'green' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			idle: "idle",
+			user:  "user",
+			system:  "system",
+		  },
+		  labels:  labels,
+		});
+	
+		{% endfor %}
+	
 
 }
 </script>
