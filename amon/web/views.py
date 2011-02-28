@@ -46,12 +46,18 @@ class Node:
 			
 
 			memory = []
+			
 			cpu = []
+			loadavg = []
+			
 			network = []
 			network_interfaces = []
-			loadavg = []
+			
 			disk = []
+			volumes = []
+			
 			labels = []
+
 
 			
 			for _dict in log:
@@ -67,6 +73,12 @@ class Node:
 					if interface not in network_interfaces:
 						network_interfaces.append(interface)
 			
+				for volume in _dict['disk']:
+					for _volume in volume.keys():
+						if _volume not in volumes:
+							volumes.append(_volume)
+						
+			print volumes
 			return render(name='node.html',
 						  memory=memory,
 						  cpu=cpu,

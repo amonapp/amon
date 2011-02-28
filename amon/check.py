@@ -43,7 +43,10 @@ class AmonCheckSystem(object):
 			line = volume.split()
 			if line[0].startswith('/'):
 				_volume = dict(zip(_columns, line))
-				data.append(_volume)	
+
+				# strip /dev/
+				_name = _volume['volume'].replace('/dev/', '')
+				data.append({_name : _volume})	
 
 		return data
 				

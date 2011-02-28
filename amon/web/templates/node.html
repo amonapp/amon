@@ -17,12 +17,15 @@ Creativespace - 192.168.0.1
 
 <h2>Network</h2>
 {% for interface in network_interfaces %}
+{% if interface != 'lo' %}
 <div class="chart" id="network_{{ interface }}"></div>
+{% endif %}
 {% endfor %}
 
-
 <h2>Disk</h2>
-
+{% for volume in disk  %}
+<div class="chart" id="disk_{{ volume.path }}"></div>
+{% endfor %}
 
 
 <script type="text/javascript">
@@ -71,7 +74,7 @@ window.onload = function()
 		  datalabels: {
 			minute:    "one minute",
 			five_minutes:  "five minutes",
-			fifteen_minutes:  "five minutes",
+			fifteen_minutes:  "fifteen minutes",
 		  },
 		  labels:  labels,
 		});
@@ -101,15 +104,16 @@ window.onload = function()
 		
 		{% for interface  in network_interfaces  %}
 		
+		{% if interface != 'lo' %}
+		
 		var network_{{ interface }} = new Grafico.AreaGraph($('network_{{ interface }}'),		
 		{
 
-		  idle:  	[{% for  c in cpu %} {{ c.idle }},  {% endfor %}],
-		  user:  	[{% for  c in cpu %} {{ c.user }},  {% endfor %}],
-		  system:  	[{% for  c in cpu %} {{ c.system }},  {% endfor %}],
+		  recieved:  	[{% for n in network %} {{ n[interface].recv_bytes }},  {% endfor %}],
+		  transfered:  	[{% for n in network %} {{ n[interface].trans_bytes }},  {% endfor %}],
 		},
 		{
-		  colors :            { idle: '#D2E4F0', user: '#F7D4D4', system: 'green' },
+		  colors :            { recieved: '#D2E4F0', transfered: '#F7D4D4' },
 		  markers :           "value",
 		  draw_axis :         true,
 		  stroke_width :       3,
@@ -117,13 +121,13 @@ window.onload = function()
 		  hover_text_color :  "#fff",
 		  background_color :  "#fff",
 		  datalabels: {
-			idle: "idle",
-			user:  "user",
-			system:  "system",
+			recieved: "recieved bytes",
+			transfered:  "transfered bytes",
 		  },
 		  labels:  labels,
 		});
 	
+		{% endif %}
 		{% endfor %}
 	
 
