@@ -35,7 +35,7 @@ class AmonCheckSystem(object):
 		volumes.pop(0)	# remove the header
 		volumes.pop()
 
-		data = []
+		data = {}
 
 		_columns = ('volume', 'total', 'used', 'free', 'percent', 'path')	
 		
@@ -46,7 +46,7 @@ class AmonCheckSystem(object):
 
 				# strip /dev/
 				_name = _volume['volume'].replace('/dev/', '')
-				data.append({_name : _volume})	
+				data[_name] = _volume
 
 		return data
 				

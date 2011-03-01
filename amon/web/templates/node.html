@@ -23,10 +23,9 @@ Creativespace - 192.168.0.1
 {% endfor %}
 
 <h2>Disk</h2>
-{% for volume in disk  %}
-<div class="chart" id="disk_{{ volume.path }}"></div>
+{% for volume in volumes  %}
+<div class="chart" id="disk_{{ volume }}"></div>
 {% endfor %}
-
 
 <script type="text/javascript">
 window.onload = function()
@@ -64,7 +63,7 @@ window.onload = function()
 		  fifteen_minutes:  	[{% for  l in loadavg %} {{ l.fifteen_minutes }},  {% endfor %}],
 		},
 		{
-		  colors :            { minute: '#D2E4F0', five_minutes: '#F7D4D4', fifteen_minutes: 'green' },
+		  colors :            { minute: '#D2E4F0', five_minutes: '#F7D4D4', fifteen_minutes: '#D6F7DD' },
 		  markers :           "value",
 		  draw_axis :         true,
 		  stroke_width :       3,
@@ -87,7 +86,7 @@ window.onload = function()
 		  system:  	[{% for  c in cpu %} {{ c.system }},  {% endfor %}],
 		},
 		{
-		  colors :            { idle: '#D2E4F0', user: '#F7D4D4', system: 'green' },
+		  colors :            { idle: '#D2E4F0', user: '#F7D4D4', system: '#D6F7DD' },
 		  markers :           "value",
 		  draw_axis :         true,
 		  stroke_width :       3,
@@ -129,6 +128,36 @@ window.onload = function()
 	
 		{% endif %}
 		{% endfor %}
+
+
+	
+		{% for volume  in volumes  %}
+		
+		var disk_{{ volume }} = new Grafico.AreaGraph($('disk_{{ volume }}'),		
+		{
+		
+		
+		  total:  	[{% for  d in disk %} {{ d[volume].total|to_int }},  {% endfor %}],
+		  free:  	[{% for  d in disk %} {{ d[volume].free|to_int }},  {% endfor %}],
+			
+		},
+		{
+		  colors :            { total: '#D2E4F0', free: '#F7D4D4' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			total: "total",
+			free:  "free",
+		  },
+		  labels:  labels,
+		});
+	
+		{% endfor %}
+
 	
 
 }

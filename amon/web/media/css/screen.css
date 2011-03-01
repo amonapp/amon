@@ -69,49 +69,49 @@ body {
   font-size: 62.5%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
+  background: url(../images/background.png) repeat-y;
 }
-/* line 17, ../src/screen.sass */
+/* line 19, ../src/screen.sass */
 body .wrapper {
   width: 100%;
   height: 100%;
   margin: 0 auto;
 }
-/* line 25, ../src/screen.sass */
+/* line 27, ../src/screen.sass */
 body .wrapright {
   float: left;
   height: 100%;
   width: 100%;
   background-color: #ffcc33;
 }
-/* line 35, ../src/screen.sass */
+/* line 37, ../src/screen.sass */
 body .right {
   margin-left: 171px;
   background-color: white;
   height: 100%;
   min-height: 100%;
 }
-/* line 45, ../src/screen.sass */
+/* line 47, ../src/screen.sass */
 body .right .breadcrumb {
   float: left;
   width: 100%;
   height: 45px;
   background: url(../images/breadcrumb.png) repeat-x;
 }
-/* line 55, ../src/screen.sass */
+/* line 57, ../src/screen.sass */
 body .right .breadcrumb h1 {
   float: left;
   font-size: 2em;
   color: #2b3239;
-  padding-top: 10px;
+  padding-top: 14px;
   padding-left: 20px;
 }
-/* line 69, ../src/screen.sass */
+/* line 71, ../src/screen.sass */
 body .right h2 {
   float: left;
-  font-size: 2em;
+  font-size: 2.2em;
   clear: left;
-  margin: 15px;
-  margin-top: 20px;
+  margin: 25px;
   margin-bottom: 10px;
   color: #2b3239;
 }
@@ -231,6 +231,6 @@ body .left ul li a:hover, body .left ul li a.active {
   float: left;
   width: 800px;
   height: 250px;
-  margin-left: 20px;
+  margin-left: 25px;
   clear: left;
 }

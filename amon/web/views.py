@@ -36,7 +36,7 @@ class Node:
 	def index(self):
 
 		try:
-			_log = _conn.zrange('amon_log', -5, -1)
+			_log = _conn.zrange('amon_log', -30, -1)
 			log = json_list_to_dict(_log)
 		except:
 			log = False
@@ -73,12 +73,12 @@ class Node:
 					if interface not in network_interfaces:
 						network_interfaces.append(interface)
 			
-				for volume in _dict['disk']:
-					for _volume in volume.keys():
-						if _volume not in volumes:
-							volumes.append(_volume)
-						
-			print volumes
+				_volumes = _dict['disk'].keys()
+				for volume in _volumes:
+					if volume not in volumes:
+						volumes.append(volume)
+			
+
 			return render(name='node.html',
 						  memory=memory,
 						  cpu=cpu,
@@ -86,6 +86,7 @@ class Node:
 						  network_interfaces=network_interfaces,
 						  loadavg=loadavg,
 						  labels=labels,
+						  volumes=volumes,
 						  disk=disk)
 		
 
