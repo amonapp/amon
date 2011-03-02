@@ -119,12 +119,19 @@ class AmonCheckSystem(object):
 		
 
 
+# WORK IN PROGRESS
 class AmonCheckProcess(object):
 
 	def __init__(self):
 		pass
 
-	# WORK IN PROGRESS
+	def check_process_by_name(self, name=None):
+
+		ps = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, close_fds=True)
+		grep = subprocess.Popen(['grep', 'redis'],stdin=ps.stdout,  stdout=subprocess.PIPE, close_fds=True).communicate()[0]
+	
+	
+	
 	def _pid_list(self):
 		return [int(x) for x in os.listdir('/proc') if x.isdigit()] 
 

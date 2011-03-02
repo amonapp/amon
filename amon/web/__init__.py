@@ -1,10 +1,10 @@
 import cherrypy
-from views import Dashboard, Node 
+from views import Dashboard, System
 from settings import PROJECT_ROOT
 
 #apps
 root = Dashboard()
-root.node = Node()
+root.system = System()
 
 
 cherrypy.config.update({

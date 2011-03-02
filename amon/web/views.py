@@ -30,7 +30,7 @@ class Dashboard:
 	
 
 
-class Node:
+class System:
 
 	@cherrypy.expose
 	def index(self):
@@ -79,7 +79,8 @@ class Node:
 						volumes.append(volume)
 			
 
-			return render(name='node.html',
+			return render(name='system.html',
+						  current_page='system',
 						  memory=memory,
 						  cpu=cpu,
 						  network=network,
