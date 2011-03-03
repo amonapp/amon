@@ -1,2 +1,3 @@
 *.pyc
+/_build
 .sass-cache

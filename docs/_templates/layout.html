@@ -1,0 +1,60 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="/media/css/screen.css" />
+{% endblock %}
+
+
+{# Empty some default blocks out #}
+{% block relbar1 %}{% endblock %}
+{% block relbar2 %}{% endblock %}
+{% block sidebar2 %}{% endblock %}
+
+
+{# Site specific #}
+{% block sidebar1 %}
+<div id="wrapper">
+		<div class="header">
+			<ul>
+				<li>
+					<a {% if current_page=='home'  %}class="active"{% endif %} href="/">Home</a>
+				</li>
+				<li>
+					<a {% if current_page=='docs'  %}class="active"{% endif %} href="/docs">Docs</a>
+				</li>
+				<li>
+					<a href="">Download</a>
+				</li>
+			</ul>
+			<div class="logo"></div>
+			<ul class="right">
+				<li>
+					<a href="">Community</a>
+				</li>
+				<li>
+					<a href="https://github.com/martinrusev/amon">Code</a>
+				</li>		
+			</ul>
+		</div>
+	<div class="content">
+		<div class="heading">
+				<h1>Amon documentation</h1>
+		</div>
+		<div class="text ">
+			{{ sidebar() }}
+{% endblock %}
+
+{% block document %}
+	{{ super() }}
+</div> <!-- text end -->
+</div> <!-- content end -->
+{% endblock %}
+
+{% block footer %}
+	<div class="footer">
+		<p>
+		Amon is released under the <a href="http://www.gnu.org/licenses/lgpl.html">LGPLv3 License</a> - &#169; 2011 <a href="http://martinrusev.net">Martin Rusev</a></p>
+	</div>
+</div> <!-- wrapper end -->
+
+{% endblock %}

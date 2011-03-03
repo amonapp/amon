@@ -1,0 +1,165 @@
+@import url('basic.css')
+// reset.sass
+html, body, div, span, applet, object, iframe,  blockquote,  a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td
+  :margin 0
+  :padding 0
+  :border 0
+  :outline 0
+  :font-weight inherit
+  :font-style inherit
+  :font-family inherit
+  :vertical-align baseline
+
+*:focus
+  :outline 0
+
+body
+  :line-height 1
+
+ol, ul
+  :list-style none
+
+table
+  :border-collapse separate
+  :border-spacing 0
+
+caption, th, td
+  :text-align left
+  :font-weight normal
+
+blockquote:before, blockquote:after, q:before, q:after
+  :content ""
+
+blockquote, q
+  :quotes "" ""
+
+
+// amon.sass
+$body_width: 960px
+$sidebar: 170px
+$content: $body_width - $sidebar - 22px
+$default_link_color : #2B3239 
+$text_color:  #3A444D 
+body
+  font-family: Arial
+  font-size: 62.5%
+  div.related, div.footer
+    width: $body_width
+  div.document
+    float: left
+  div.documentwrapper
+    float: left
+    border-left: 1px solid #EAEAEA 
+    padding: 10px
+      top: 0px
+      right: 0px
+      left: 20px
+    width: $content
+    a 
+      color: $default_link_color
+      font-size: 1.6em
+    p
+      color: $text_color 
+      float: left
+      clear: left
+      font-size: 1.6em
+      line-height: 1.6em
+      a
+        font-size: 1em
+    h1, h2, h3, h4
+      float: left
+      clear: left
+      color: $text_color
+      margin: 20px 0px 20px 0px
+      a
+        font-size: 1em
+    h1
+      font-size: 2.8em
+      margin-top: 0px
+    h2
+      font-size: 2.4em
+    h3
+      font-size: 2.2em
+  div.sphinxsidebarwrapper
+    padding: 0px
+  div.sphinxsidebar
+    float: left
+    clear: left
+    width: $sidebar
+    margin-left: 0px
+    a
+      color: $default_link_color
+      text-decoration: none
+      font-size: 1.6em
+      &:hover
+        color: black
+        text-decoration: underline
+    input[type=text]
+      border: 1px solid #ccc
+      width: 150px
+    ul
+      float: left
+      clear: left
+      li
+        float: left
+        clear: left
+        margin: 10px 0px 10px 
+      ul
+        list-style-type: none
+    h4, h3
+      float: left
+      clear: left
+      font-size: 2em
+      margin: 20px 0px 10px 0px
+      a
+        font-size: 1em
+    p.topless
+      float: left
+      clear: left
+      margin-top: 0px
+  div.related
+    float: left
+    margin: 10px 0px 20px 0px
+  div.compound
+    ul
+      float: left
+      margin: 10px 0px 10px 0px
+      clear: left
+      li
+        float: left
+        a
+          float: left
+        ul
+          margin-left: 20px
+  div#contents
+    float: left
+    width: $content - 10px
+    padding: 5px
+    border: 1px solid #EAEAEA  
+    ul
+      float: left
+      li
+        float: left
+        clear: left
+        margin: 8px 0px 8px 0px
+blockquote
+  float: left
+  clear: left
+// pygments - trac overwrites 
+div.highlight
+  background: #f1f1f1
+  width: $content - 10px
+  float: left
+  clear: left
+  padding: 5px
+  font-size: 1.6em
+  line-height: 1.4em
+  margin: 
+    top: 5px
+    bottom: 5px
+  // comment
+  .c
+    color: #858585
+  .sd
+    color: #858585
+
