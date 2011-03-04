@@ -1,9 +1,9 @@
 import redis
 
-class AmonRedisLog(object):
+class AmonRedisBackend(object):
 	
 	def __init__(self):
-		self.r = redis.Redis(host='localhost', port=6379, db=0)	
+		self.r = redis.Redis(host='localhost', port=6379, db=0) #TODO get this values from a config file	
 
 
 	def save_dict(self, dict):
@@ -13,5 +13,3 @@ class AmonRedisLog(object):
 		"""
 		session_time = dict['time']
 		self.r.zadd('amon_log', dict, session_time)
-
-

@@ -16,7 +16,8 @@ Amon documentation
 
 .. toctree::
     :maxdepth: 1
-
+    
+    configuration
     api_reference
 
 

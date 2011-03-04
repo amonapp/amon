@@ -36,7 +36,7 @@ class System:
 	def index(self):
 
 		try:
-			_log = _conn.zrange('amon_log', -30, -1)
+			_log = _conn.zrange('amon_log', -400, -1)
 			log = json_list_to_dict(_log)
 		except:
 			log = False
@@ -61,7 +61,11 @@ class System:
 
 			
 			for _dict in log:
+
+				_dict['memory']['time'] = _dict['time']
 				memory.append(_dict['memory'])
+				
+				
 				loadavg.append(_dict['loadavg'])
 				cpu.append(_dict['cpu'])
 				network.append(_dict['network'])	
@@ -79,7 +83,8 @@ class System:
 						volumes.append(volume)
 			
 
-			return render(name='system.html',
+			print memory
+			return render(name='test.html',
 						  current_page='system',
 						  memory=memory,
 						  cpu=cpu,

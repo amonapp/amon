@@ -4,7 +4,7 @@
 Dashboard
 {% endblock %}
 {% block content %}
-<h2>Creativespace - 192.168.0.1</h2>
+<h2>127.0.0.1 ( localhost )</h2>
 
 {% if connection %}
 
@@ -99,13 +99,13 @@ Dashboard
 			</td>
 			<td class="details">
 				{% for volume  in check.disk %}
-					volume: {{ volume.volume }}
+					volume: {{ volume }}
 					&nbsp;
-					total: {{ volume.total }}
+					total: {{ check.disk[volume].total }}
 					&nbsp;
-					used: {{ volume.used }}
+					used: {{ check.disk[volume].used }}
 					&nbsp;
-					free: {{ volume.free }}
+					free: {{ check.disk[volume].free }}
 
 				<br /><br />
 				{% endfor %}

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys, time
 from amon.daemon import Daemon
-from amon.logger import AmonRedisLog
+from amon.backends.pyredis import AmonRedisBackend
 from amon.runner import AmonRunner
 
 PIDFILE = '/tmp/amon.pid'
@@ -16,14 +16,14 @@ class AmonDaemon(Daemon):
 			pass
 		
 		try:
-			logger = AmonRedisLog()
+			backend = AmonRedisBackend()
 		except:
 			pass
 		
 		while True:
 			system_info = runner.run()
 			try:			
-				logger.save_dict(system_info)
+				backend.save_dict(system_info)
 			except:			
 				pass
 
