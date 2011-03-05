@@ -15,8 +15,13 @@ def timeformat(value, format='%H:%M'):
 
 def to_int(value):
 	number = re.compile('(\d+)')
+	
+	try:
+		_int = number.search(value).group(1)
+	except:
+		_int = 0
 
-	return number.search(value).group(1)
+	return _int
 
 def render(*args, **kwargs):
 		

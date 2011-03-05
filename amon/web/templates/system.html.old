@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}
+System details > 127.0.0.1 ( localhost )
+
+{% endblock %}
+{% block content %}
+<h2>Memory</h2>
+<div class="chart" id="memory"></div>
+
+<h2>Loadavg</h2>
+<div class="chart" id="loadavg"></div>
+
+<h2>CPU</h2>
+<div class="chart" id="cpu"></div>
+
+<h2>Network</h2>
+{% for interface in network_interfaces %}
+{% if interface != 'lo' %}
+<div class="chart" id="network_{{ interface }}"></div>
+{% endif %}
+{% endfor %}
+
+<h2>Disk</h2>
+{% for volume in volumes  %}
+<div class="chart" id="disk_{{ volume }}"></div>
+{% endfor %}
+
+<script type="text/javascript">
+window.onload = function()
+{
+		var labels = [{% for label in labels %} '{{ label|time }}',  {% endfor %}];
+
+		var memory = new Grafico.AreaGraph($('memory'),		
+		{
+
+		  total:  	[{% for  m in memory %} {{ m.memtotal }},  {% endfor %}],
+		  free:  	[{% for  m in memory %} {{ m.memfree }},  {% endfor %}],
+		  
+		},
+		{
+		  colors :            { total: '#D2E4F0', free: '#F7D4D4' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			free:    "free",
+			total:  "total",
+		  },
+		  labels:  labels,
+		});
+		
+		
+		var loadavg = new Grafico.AreaGraph($('loadavg'),		
+		{
+
+		  minute:  	[{% for l in loadavg %} {{ l.minute }},  {% endfor %}],
+		  five_minutes:  	[{% for  l in loadavg %} {{ l.five_minutes }},  {% endfor %}],
+		  fifteen_minutes:  	[{% for  l in loadavg %} {{ l.fifteen_minutes }},  {% endfor %}],
+		},
+		{
+		  colors :            { minute: '#D2E4F0', five_minutes: '#F7D4D4', fifteen_minutes: '#D6F7DD' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			minute:    "one minute",
+			five_minutes:  "five minutes",
+			fifteen_minutes:  "fifteen minutes",
+		  },
+		  labels:  labels,
+		});
+
+		var cpu = new Grafico.AreaGraph($('cpu'),		
+		{
+
+		  idle:  	[{% for  c in cpu %} {{ c.idle }},  {% endfor %}],
+		  user:  	[{% for  c in cpu %} {{ c.user }},  {% endfor %}],
+		  system:  	[{% for  c in cpu %} {{ c.system }},  {% endfor %}],
+		},
+		{
+		  colors :            { idle: '#D2E4F0', user: '#F7D4D4', system: '#D6F7DD' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			idle: "idle",
+			user:  "user",
+			system:  "system",
+		  },
+		  labels:  labels,
+		});
+		
+		{% for interface  in network_interfaces  %}
+		
+		{% if interface != 'lo' %}
+		
+		var network_{{ interface }} = new Grafico.AreaGraph($('network_{{ interface }}'),		
+		{
+
+		  recieved:  	[{% for n in network %} {{ n[interface].recv_bytes }},  {% endfor %}],
+		  transfered:  	[{% for n in network %} {{ n[interface].trans_bytes }},  {% endfor %}],
+		},
+		{
+		  colors :            { recieved: '#D2E4F0', transfered: '#F7D4D4' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			recieved: "recieved bytes",
+			transfered:  "transfered bytes",
+		  },
+		  labels:  labels,
+		});
+	
+		{% endif %}
+		{% endfor %}
+
+
+	
+		{% for volume  in volumes  %}
+		
+		var disk_{{ volume }} = new Grafico.AreaGraph($('disk_{{ volume }}'),		
+		{
+		
+		
+		  total:  	[{% for  d in disk %} {{ d[volume].total|to_int }},  {% endfor %}],
+		  free:  	[{% for  d in disk %} {{ d[volume].free|to_int }},  {% endfor %}],
+			
+		},
+		{
+		  colors :            { total: '#D2E4F0', free: '#F7D4D4' },
+		  markers :           "value",
+		  draw_axis :         true,
+		  stroke_width :       3,
+		  plot_padding :      0,
+		  hover_text_color :  "#fff",
+		  background_color :  "#fff",
+		  datalabels: {
+			total: "total",
+			free:  "free",
+		  },
+		  labels:  labels,
+		});
+	
+		{% endfor %}
+
+	
+
+}
+</script>
+
+
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src='/media/js/prototype.js'></script>
+<script type="text/javascript" src='/media/js/raphael.js'></script>
+<script type="text/javascript" src='/media/js/grafico.min.js'></script>
+{% endblock %}

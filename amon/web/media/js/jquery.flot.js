@@ -38,9 +38,9 @@
         var series = [],
             options = {
                 // the color theme used for graphs
-                colors: ["#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed"],
+                colors: ["#00ADFC", "#25CA20", "#8000A9", "#002E78", "#9440ed"],
                 legend: {
-                    show: true,
+                    show: false,
                     noColumns: 1, // number of colums in legend table
                     labelFormatter: null, // fn: string -> string
                     labelBoxBorderColor: "#ccc", // border color for the little label boxes
@@ -91,7 +91,7 @@
                         // we don't put in show: false so we can see
                         // whether lines were actively disabled 
                         lineWidth: 2, // in pixels
-                        fill: false,
+                        fill: true,
                         fillColor: null,
                         steps: false
                     },
