@@ -9,11 +9,12 @@ class Dashboard:
 	def index(self):
 	
 		# get redis server info
-		try:
-			connection = _conn.info()
-		except:
-			connection = False
+		#try:
+		#	connection = _conn.info()
+		#except:
+		#	connection = False
 
+		
 		# get the information from the last check
 		try:
 			latest_check = _conn.zrange('amon_log', -1, -1)
@@ -21,10 +22,10 @@ class Dashboard:
 		except:
 			latest_check_dict = False
 
+		print latest_check_dict
 		return render(name="dashboard.html",
 					  current_page='dashboard',
 					  check=latest_check_dict,
-					  connection=connection,
 				)
 	
 class System:
