@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* line 14, ../../../../../../../var/lib/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+h1, h2, body .right h3, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, font, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -107,7 +107,7 @@ body .right .breadcrumb h1 {
   padding-left: 20px;
 }
 /* line 71, ../src/screen.sass */
-body .right h2 {
+body .right h2, body .right h3 {
   float: left;
   font-size: 2.2em;
   clear: left;
@@ -116,36 +116,41 @@ body .right h2 {
   color: #2b3239;
 }
 /* line 85, ../src/screen.sass */
+body .right h3 {
+  font-size: 2em;
+  color: #858585;
+}
+/* line 93, ../src/screen.sass */
 body .right table.info {
   float: left;
   width: 800px;
   clear: left;
   margin-left: 20px;
 }
-/* line 97, ../src/screen.sass */
+/* line 105, ../src/screen.sass */
 body .right table.info .thead {
   background: url(../images/table_heading.png) repeat-x;
 }
-/* line 101, ../src/screen.sass */
+/* line 109, ../src/screen.sass */
 body .right table.info .thead td {
   font-size: 1.4em;
   color: #b4b4b4;
   padding-top: 10px;
   padding-bottom: 15px;
 }
-/* line 113, ../src/screen.sass */
+/* line 121, ../src/screen.sass */
 body .right table.info .thead td.status {
   padding-left: 10px;
 }
-/* line 117, ../src/screen.sass */
+/* line 125, ../src/screen.sass */
 body .right table.info .tbody {
   margin-top: 20px;
 }
-/* line 121, ../src/screen.sass */
+/* line 129, ../src/screen.sass */
 body .right table.info .tbody.odd {
   background: #f1f1f0;
 }
-/* line 125, ../src/screen.sass */
+/* line 133, ../src/screen.sass */
 body .right table.info .tbody td {
   margin: 10px;
   padding: 8px;
@@ -153,11 +158,11 @@ body .right table.info .tbody td {
   font-size: 1.4em;
   color: #656565;
 }
-/* line 137, ../src/screen.sass */
+/* line 145, ../src/screen.sass */
 body .right .status {
   width: 100px;
 }
-/* line 141, ../src/screen.sass */
+/* line 149, ../src/screen.sass */
 body .right .status span {
   width: 18px;
   height: 18px;
@@ -165,23 +170,23 @@ body .right .status span {
   margin-left: 20px;
   background: url(../images/status_icons.png) no-repeat;
 }
-/* line 153, ../src/screen.sass */
+/* line 161, ../src/screen.sass */
 body .right .status .ok {
   background-position: 0px -36px;
 }
-/* line 157, ../src/screen.sass */
+/* line 165, ../src/screen.sass */
 body .right .status .warning {
   background-position: 0px -18px;
 }
-/* line 161, ../src/screen.sass */
+/* line 169, ../src/screen.sass */
 body .right .overview {
   width: 80px;
 }
-/* line 165, ../src/screen.sass */
+/* line 173, ../src/screen.sass */
 body .right .check {
   width: 150px;
 }
-/* line 169, ../src/screen.sass */
+/* line 177, ../src/screen.sass */
 body .left {
   float: left;
   width: 160px;
@@ -190,7 +195,7 @@ body .left {
   height: 100%;
   min-height: 100%;
 }
-/* line 183, ../src/screen.sass */
+/* line 191, ../src/screen.sass */
 body .left .logo {
   float: left;
   width: 92px;
@@ -199,17 +204,17 @@ body .left .logo {
   margin-left: 30px;
   background: url(../images/logo.png) no-repeat;
 }
-/* line 199, ../src/screen.sass */
+/* line 207, ../src/screen.sass */
 body .left ul {
   float: left;
   margin-top: 35px;
 }
-/* line 205, ../src/screen.sass */
+/* line 213, ../src/screen.sass */
 body .left ul li {
   float: left;
   clear: left;
 }
-/* line 211, ../src/screen.sass */
+/* line 219, ../src/screen.sass */
 body .left ul li a {
   width: 120px;
   padding: 10px;
@@ -221,12 +226,12 @@ body .left ul li a {
   font-size: 2em;
   text-decoration: none;
 }
-/* line 231, ../src/screen.sass */
+/* line 239, ../src/screen.sass */
 body .left ul li a:hover, body .left ul li a.active {
   background: #ffcc33;
 }
 
-/* line 237, ../src/screen.sass */
+/* line 245, ../src/screen.sass */
 .chart {
   float: left;
   width: 800px;
@@ -235,7 +240,7 @@ body .left ul li a:hover, body .left ul li a.active {
   clear: left;
 }
 
-/* line 249, ../src/screen.sass */
+/* line 257, ../src/screen.sass */
 #tooltip {
   position: absolute;
   display: none;
@@ -246,24 +251,47 @@ body .left ul li a:hover, body .left ul li a.active {
   font-size: 1.4em;
 }
 
-/* line 265, ../src/screen.sass */
+/* line 273, ../src/screen.sass */
 .legend {
   float: left;
   clear: left;
   margin-top: 10px;
   width: 800px;
 }
-/* line 275, ../src/screen.sass */
-.legend table {
-  width: auto;
-  margin: 0 auto;
-  font-size: 1.4em;
-}
 /* line 283, ../src/screen.sass */
-.legend table td {
-  padding: 5px;
+.legend ul {
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
 }
-/* line 287, ../src/screen.sass */
-.legend table td.legendLabel {
-  font-size: 1.4em;
+/* line 291, ../src/screen.sass */
+.legend ul li {
+  margin-top: 13px;
+}
+/* line 295, ../src/screen.sass */
+.legend ul li span.color {
+  width: 12px;
+  height: 12px;
+  margin-bottom: -1px;
+  margin-right: 6px;
+}
+/* line 305, ../src/screen.sass */
+.legend ul li span.color.one {
+  background: #00adfc;
+}
+/* line 309, ../src/screen.sass */
+.legend ul li span.color.two {
+  background: #25ca20;
+}
+/* line 313, ../src/screen.sass */
+.legend ul li span.color.three {
+  background: #8000a9;
+}
+/* line 317, ../src/screen.sass */
+.legend ul li span {
+  text-align: left;
+  font-size: 1.3em;
+  width: 100px;
+  display: inline-block;
+  color: #858585;
 }

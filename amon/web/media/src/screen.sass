@@ -40,6 +40,10 @@ body
       margin: 25px
         bottom: 10px
       color: #2b3239 
+    h3
+      @extend h2
+      font-size: 2em
+      color: #858585
     table.info
       float: left
       width: 800px
@@ -135,12 +139,27 @@ body
   clear: left
   margin-top: 10px
   width: 800px
-  table
-    width: auto
+  ul
+    text-align: center
+    position: relative
     margin: 0 auto
-    font-size: 1.4em
-    td
-      padding: 5px
-      &.legendLabel
-        font-size: 1.4em
- 
+    li
+      margin-top: 13px
+      span.color
+        width: 12px
+        height: 12px
+        margin-bottom: -1px
+        margin-right: 6px
+        &.one
+          background: #00ADFC
+        &.two
+          background: #25CA20
+        &.three
+          background: #8000A9
+      span
+        text-align: left
+        font-size: 1.3em
+        width: 100px
+        display: inline-block
+        color: #858585
+

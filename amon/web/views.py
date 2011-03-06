@@ -93,8 +93,23 @@ class System:
 		
 
 
+class Processes(object):
+
+	@cherrypy.expose
+	def index(self):
+
+		return render(name='processes.html',
+					  current_page='processes',
+					  )
 
 
+class Application(object):
+
+	@cherrypy.expose
+	def index(self):
+
+		return render(name='application.html',
+					 current_page='application')
 
 
 

@@ -7,27 +7,101 @@ System details > 127.0.0.1 ( localhost )
 {% block content %}
 <h2>Memory</h2>
 <div class="chart" id="memory"></div>
-<div class='legend' id="memory_legend"></div>
+<div class='legend'>
+
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>Total memory</span>
+			</li>
+			<li>
+			<span class="color two"><!-- --></span>
+				<span>Free memory</span>
+			</li>
+		</ul>
+</div>
 
 <h2>Loadavg</h2>
 <div class="chart" id="loadavg"></div>
-<div class='legend' id="loadavg_legend"></div>
+<div class='legend'>
+
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>1 minute</span>
+			</li>
+			<li>
+			<span class="color two"><!-- --></span>
+				<span>5 minutes</span>
+			</li>
+			<li>
+				<span class="color three"><!-- --></span>
+				<span>15 minutes</span>
+			</li>
+		</ul>
+</div>
+
 
 <h2>CPU</h2>
 <div class="chart" id="cpu"></div>
-<div class='legend' id="cpu_legend"></div>
+
+<div class='legend'>
+
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>Idle</span>
+			</li>
+			<li>
+			<span class="color two"><!-- --></span>
+				<span>System</span>
+			</li>
+			<li>
+				<span class="color three"><!-- --></span>
+				<span>User</span>
+			</li>
+		</ul>
+</div>
 
 
 <h2>Network</h2>
 {% for interface in network_interfaces %}
 {% if interface != 'lo' %}
+	<h3>{{ interface }}</h3>
 	<div class="chart" id="network_{{ interface }}"></div>
+	<div class='legend'>
+
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>Recieved</span>
+			</li>
+			<li>
+			<span class="color two"><!-- --></span>
+				<span>Transfered</span>
+			</li>
+		</ul>
+	</div>
 {% endif %}
 {% endfor %}
 
 <h2>Disk</h2>
 {% for volume in volumes  %}
+	<h3>{{ volume }}</h3>
 	<div class="chart" id="disk_{{ volume }}"></div>
+	<div class='legend'>
+
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>Total</span>
+			</li>
+			<li>
+			<span class="color two"><!-- --></span>
+				<span>Free</span>
+			</li>
+		</ul>
+	</div>
 {% endfor %}
 
 <script language="javascript" type="text/javascript">
@@ -82,7 +156,6 @@ $(function ()
            { 
 				xaxis: { mode: 'time' },
 				yaxis: { min: 0 },
-				legend: {show: true, container: memory_legend}, 
 			});
 
 
@@ -100,7 +173,6 @@ $(function ()
            { 
 				xaxis: { mode: 'time' },
 				yaxis: { min: 0 },
-				legend: {show: true, container: loadavg_legend}, 
 			});
 
 
@@ -117,7 +189,6 @@ $(function ()
            { 
 				xaxis: { mode: 'time' },
 				yaxis: { min: 0 },
-				legend: {show: true, container: cpu_legend}, 
 	
 			});
 
@@ -126,13 +197,19 @@ $(function ()
 		
 		{% if interface != 'lo' %}
 		
-		var network_recieved_{{ interface }} =   [{% for n in network %} [  {{ n.time * 1000 }}, {{ n[interface].recv_bytes }} ] ,  {% endfor %}];
-		var network_transfered_{{ interface }} = [{% for n in network %} [ {{ n.time * 1000 }},  {{ n[interface].trans_bytes }} ] ,  {% endfor %}];
+		var network_recieved_{{ interface }} =   [
+						{% for n in network %}
+							[ {{ n.time * 1000 }}, {%if n[interface] %} {{ n[interface].recv_bytes }} {% endif %} ] , 
+						{% endfor %}];
+		var network_transfered_{{ interface }} = [
+						{% for n in network %} 
+							[ {{ n.time * 1000 }}, {% if n[interface] %}  {{ n[interface].trans_bytes }} {% endif %} ] ,
+						{% endfor %}];
 	
 		$.plot($("#network_{{ interface }}"),
 			[	
-				{ data: network_transfered_{{ interface }}, label: "Transfered" },
-				{ data: network_recieved_{{ interface }}, label: "Recieved"  },
+				{ data: network_recieved_{{ interface }}, label: "Recieved" },
+				{ data: network_transfered_{{ interface }}, label: "Transfered"  },
 		   ],
            { 
 				xaxis: { mode: 'time' },
@@ -145,8 +222,14 @@ $(function ()
 
 	{% for volume in volumes  %}
 	
-		  var disk_total_{{ volume }} =	[{% for  d in disk %} [ {{ d.time * 1000 }},  {{ d[volume].total|to_int }} ],  {% endfor %}];
-		  var disk_free_{{ volume }} = [{% for  d in disk %}[ {{ d.time * 1000 }}, {{ d[volume].free|to_int }} ],  {% endfor %}];
+	var disk_total_{{ volume }} =	[
+					{% for  d in disk %} [ 
+						{{ d.time * 1000 }}, {% if d[volume] %}  {{ d[volume].total|to_int }}  {% endif %}    ],  
+					{% endfor %}];
+	var disk_free_{{ volume }} = [
+				{% for  d in disk %}
+					[ {{ d.time * 1000 }}, {% if d[volume] %} {{ d[volume].free|to_int }} {% endif %} ],
+				{% endfor %}];
 
 
 	$.plot($("#disk_{{ volume }}"),

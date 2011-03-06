@@ -1,11 +1,13 @@
 import sys
 import cherrypy
-from views import Dashboard, System 
+from views import Dashboard, System, Processes, Application 
 from settings import PROJECT_ROOT
 
 #apps
 root = Dashboard()
 root.system = System()
+root.processes = Processes()
+root.application = Application()
 
 
 cherrypy.config.update({
