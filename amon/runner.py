@@ -1,7 +1,7 @@
-from check import AmonCheckSystem
+from check import System
 from time import time
 
-class AmonRunner(object):
+class Runner(object):
 	
 	def __init__(self):
 		pass
@@ -9,7 +9,7 @@ class AmonRunner(object):
 	def run(self):
 		
 
-		_syscheck = AmonCheckSystem()
+		_syscheck = System()
 		log_dict = {}
 		
 		now = int(time())

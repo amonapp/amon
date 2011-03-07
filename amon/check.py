@@ -2,12 +2,11 @@ import os
 import re
 import subprocess
 
-class AmonCheckSystem(object):
+class System(object):
 
 	def __init__(self):
 		pass
-
-
+	
 	def get_memory_info(self):
 		
 		regex = re.compile(r'([0-9]+)')
@@ -101,7 +100,9 @@ class AmonCheckSystem(object):
 		load_data = lines[0].split()
 
 		_loadavg_columns = ['minute','five_minutes','fifteen_minutes','scheduled_processes']
-		load_dict = dict(zip(_loadavg_columns, load_data[:4]))	
+		_loadavg_values = load_data[:4]
+		
+		load_dict = dict(zip(_loadavg_columns, _loadavg_values))	
 		
 		return load_dict 
 		
@@ -113,14 +114,16 @@ class AmonCheckSystem(object):
 		raw_data = lines[2].split()
 
 		_cpu_columns  = ['user', 'system','idle', 'wait']
-		cpu_dict = dict(zip(_cpu_columns, raw_data[-4:]))
+		_cpu_values = map(int, raw_data[-4:]) 
+
+		cpu_dict = dict(zip(_cpu_columns, _cpu_values))
 
 		return cpu_dict
 		
 
 
 # WORK IN PROGRESS
-class AmonCheckProcess(object):
+class Process(object):
 
 	def __init__(self):
 		pass

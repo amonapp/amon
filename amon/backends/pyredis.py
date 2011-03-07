@@ -1,6 +1,6 @@
 import redis
 
-class AmonRedisBackend(object):
+class RedisBackend(object):
 	
 	def __init__(self):
 		self.r = redis.Redis(host='localhost', port=6379, db=0) #TODO get this values from a config file	
