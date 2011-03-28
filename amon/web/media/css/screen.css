@@ -86,7 +86,7 @@ body .wrapright {
 }
 /* line 37, ../src/screen.sass */
 body .right {
-  margin-left: 171px;
+  margin-left: 169px;
   background-color: white;
   height: 100%;
   min-height: 100%;
@@ -104,7 +104,7 @@ body .right .breadcrumb h1 {
   font-size: 2em;
   color: #2b3239;
   padding-top: 14px;
-  padding-left: 20px;
+  padding-left: 30px;
 }
 /* line 71, ../src/screen.sass */
 body .right h2, body .right h3 {
@@ -125,7 +125,7 @@ body .right table.info {
   float: left;
   width: 800px;
   clear: left;
-  margin-left: 20px;
+  margin-left: 30px;
 }
 /* line 105, ../src/screen.sass */
 body .right table.info .thead {
@@ -189,7 +189,7 @@ body .right .check {
 /* line 177, ../src/screen.sass */
 body .left {
   float: left;
-  width: 160px;
+  width: 169px;
   margin-left: -100%;
   background: url(../images/left.png) repeat-y;
   height: 100%;
@@ -213,25 +213,31 @@ body .left ul {
 body .left ul li {
   float: left;
   clear: left;
+  margin-bottom: 8px;
 }
-/* line 219, ../src/screen.sass */
+/* line 221, ../src/screen.sass */
 body .left ul li a {
-  width: 120px;
+  width: 117px;
   padding: 10px;
-  padding-top: 12px;
+  padding-top: 8px;
   padding-bottom: 12px;
-  padding-left: 30px;
+  padding-left: 10px;
+  padding-right: 50px;
   float: Left;
-  color: #2b3239;
-  font-size: 2em;
+  text-align: right;
+  color: #a5aabf;
+  font-size: 1.6em;
   text-decoration: none;
+  background: url(../images/inactive_page.png) no-repeat;
 }
-/* line 239, ../src/screen.sass */
+/* line 247, ../src/screen.sass */
 body .left ul li a:hover, body .left ul li a.active {
-  background: #ffcc33;
+  background: url(../images/active_page.png) no-repeat;
+  color: #2c2c34;
+  padding-top: 16px;
 }
 
-/* line 245, ../src/screen.sass */
+/* line 259, ../src/screen.sass */
 .chart {
   float: left;
   width: 800px;
@@ -240,7 +246,7 @@ body .left ul li a:hover, body .left ul li a.active {
   clear: left;
 }
 
-/* line 257, ../src/screen.sass */
+/* line 271, ../src/screen.sass */
 #tooltip {
   position: absolute;
   display: none;
@@ -251,43 +257,43 @@ body .left ul li a:hover, body .left ul li a.active {
   font-size: 1.4em;
 }
 
-/* line 273, ../src/screen.sass */
+/* line 287, ../src/screen.sass */
 .legend {
   float: left;
   clear: left;
   margin-top: 10px;
   width: 800px;
 }
-/* line 283, ../src/screen.sass */
+/* line 297, ../src/screen.sass */
 .legend ul {
   text-align: center;
   position: relative;
   margin: 0 auto;
 }
-/* line 291, ../src/screen.sass */
+/* line 305, ../src/screen.sass */
 .legend ul li {
   margin-top: 13px;
 }
-/* line 295, ../src/screen.sass */
+/* line 309, ../src/screen.sass */
 .legend ul li span.color {
   width: 12px;
   height: 12px;
   margin-bottom: -1px;
   margin-right: 6px;
 }
-/* line 305, ../src/screen.sass */
+/* line 319, ../src/screen.sass */
 .legend ul li span.color.one {
   background: #00adfc;
 }
-/* line 309, ../src/screen.sass */
+/* line 323, ../src/screen.sass */
 .legend ul li span.color.two {
   background: #25ca20;
 }
-/* line 313, ../src/screen.sass */
+/* line 327, ../src/screen.sass */
 .legend ul li span.color.three {
   background: #8000a9;
 }
-/* line 317, ../src/screen.sass */
+/* line 331, ../src/screen.sass */
 .legend ul li span {
   text-align: left;
   font-size: 1.3em;
