@@ -1,4 +1,4 @@
-from check import System
+from amon.system.check import System
 from time import time
 
 class Runner(object):

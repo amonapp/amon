@@ -1,4 +1,10 @@
-import redis 
+try:
+	import pymongo
+except ImportError:
+	pymongo = None
 
-_conn = redis.Redis(host='localhost', port=6379, db=0)	
+from amon.backends.mongodb import MongoBackend
+
+storage = MongoBackend()
+
 

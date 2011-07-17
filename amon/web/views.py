@@ -1,48 +1,30 @@
 from template import render
 import cherrypy
-from db import _conn
-from utils import json_string_to_dict, json_list_to_dict
+from db import storage
 
 class Dashboard:
 
 	@cherrypy.expose
 	def index(self):
 	
-		# get redis server info
-		#try:
-		#	connection = _conn.info()
-		#except:
-		#	connection = False
 
-		
-		# get the information from the last check
-		try:
-			latest_check = _conn.zrange('amon_log', -1, -1)
-			latest_check_dict = json_string_to_dict(latest_check[0])
-		except:
-			latest_check_dict = False
-
-		print latest_check_dict
 		return render(name="dashboard.html",
-					  current_page='dashboard',
-					  check=latest_check_dict,
-				)
+					current_page='dashboard',
+			)
 	
 class System:
+
+
+	def __init__(self):
+		self.system_collection = storage._get_system_collection()
 
 	@cherrypy.expose
 	def index(self):
 
-		try:
-			_log = _conn.zrange('amon_log', -1000, -1)
-			log = json_list_to_dict(_log)
-		except:
-			log = False
 
-		# Extract individual dictionaries
+		
+		log = self.system_collection.find().limit(1).sort('time':1)
 		if log != False:
-			
-
 			memory = []
 			
 			cpu = []
@@ -91,16 +73,6 @@ class System:
 						  volumes=volumes,
 						  disk=disk)
 		
-
-
-class Processes(object):
-
-	@cherrypy.expose
-	def index(self):
-
-		return render(name='processes.html',
-					  current_page='processes',
-					  )
 
 
 class Application(object):

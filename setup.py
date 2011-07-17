@@ -49,8 +49,8 @@ sdict = {
 	'data_files' : data_files,
 	'install_requires': 
 	[
-        'redis',
-		'cherrypy>=3.1',
+        'pymongo',
+		'cherrypy==3.2',
         'Jinja2>=2.4'
     ],
     'classifiers' : [
