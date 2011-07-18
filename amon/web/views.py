@@ -23,7 +23,7 @@ class System:
 
 
 		
-		log = self.system_collection.find().limit(1).sort('time':1)
+		log = self.system_collection.find().limit(1).sort({'time':1})
 		if log != False:
 			memory = []
 			
