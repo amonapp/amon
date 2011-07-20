@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
-{% block breadcrumb %}
-Dashboard
-{% endblock %}
+{% block title %}Dashboard{% endblock %}
+{% block breadcrumb %}Dashboard {% endblock %}
 {% block content %}
-<h2>127.0.0.1 ( localhost )</h2>
-
-{% if check %}
+<h2>Last check - {{ last_check.time|date }} </h2>
+{% if last_check %}
 
 <table class='info'>
 		<tr class="thead">
@@ -15,9 +13,6 @@ Dashboard
 			</td>
 			<td  class="overview">
 				overview
-			</td>
-			<td class="check"> 
-				last check
 			</td>
 			<td class="details">
 				details
@@ -30,16 +25,12 @@ Dashboard
 			<td class="overview">
 				cpu
 			</td>
-			<td class="check">
-				{{ check.time|date }}
-
-			</td>
 			<td class="details">
-				idle: {{ check.cpu.idle }}%
+				idle: {{ last_check.cpu.idle }}%
 				&nbsp;
-				user: {{ check.cpu.user }}% 
+				user: {{ last_check.cpu.user }}% 
 				&nbsp;
-				system: {{ check.cpu.system }}%
+				system: {{ last_check.cpu.system }}%
 			</td>
 		
 		</tr>
@@ -50,18 +41,13 @@ Dashboard
 			<td class="overview">
 				loadavg
 			</td>
-			<td class="check">
-				{{ check.time|date }}
-
-			</td>
 			<td class="details">
-				1 minute: {{ check.loadavg.minute }}
+				1 minute: {{ last_check.loadavg.minute }}
 				&nbsp;
-				5 minutes: {{ check.loadavg.five_minutes }} 
+				5 minutes: {{ last_check.loadavg.five_minutes }} 
 				&nbsp;
-				15 minutes: {{ check.loadavg.fifteen_minutes }}
+				15 minutes: {{ last_check.loadavg.fifteen_minutes }}
 			</td>
-		
 		</tr>
 
 		<tr class="tbody">
@@ -71,18 +57,14 @@ Dashboard
 			<td class="overview">
 				memory
 			</td>
-			<td class="check">
-				{{ check.time|date }}
-
-			</td>
 			<td class="details">
-				total: {{ check.memory.memtotal }}MB
+				total: {{ last_check.memory.memtotal }}MB
 				&nbsp;
-				free: {{ check.memory.memfree }}MB 
+				free: {{ last_check.memory.memfree }}MB 
 				&nbsp;
-				swap: {{ check.memory.swaptotal }}MB
+				swap: {{ last_check.memory.swaptotal }}MB
 				&nbsp;
-				swap free: {{ check.memory.swapfree }}MB
+				swap free: {{ last_check.memory.swapfree }}MB
 			</td>
 		
 		</tr>
@@ -93,33 +75,21 @@ Dashboard
 			<td class="overview">
 				disk
 			</td>
-			<td class="check">
-				{{ check.time|date }}
-
-			</td>
 			<td class="details">
-				{% for volume  in check.disk %}
+				{% for volume  in last_check.disk %}
 					volume: {{ volume }}
 					&nbsp;
-					total: {{ check.disk[volume].total }}
+					total: {{ last_check.disk[volume].total }}
 					&nbsp;
-					used: {{ check.disk[volume].used }}
+					used: {{ last_check.disk[volume].used }}
 					&nbsp;
-					free: {{ check.disk[volume].free }}
-
-				<br /><br />
+					free: {{ last_check.disk[volume].free }}
 				{% endfor %}
 			</td>
 		
 		</tr>
-	
-
-
-
-
 {% else %}
 <div class="message">
-Couldn't connect to Redis.
 </div>
 {% endif %}
 </table>

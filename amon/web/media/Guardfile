@@ -1,0 +1,5 @@
+guard 'coffeescript', :input => 'coffee', :output => 'js'
+
+guard 'compass', :configuration_file => 'config.rb' do
+  watch(%r{^sass/(.*)\.s[ac]ss})
+end

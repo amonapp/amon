@@ -1,29 +1,51 @@
 from template import render
 import cherrypy
-from db import storage
+from amon.backends.mongodb import MongoBackend
+from pymongo import DESCENDING, ASCENDING 
+from datetime import datetime, timedelta
+from time import mktime
 
-class Dashboard:
+class Base(object):
+
+	def __init__(self):
+		self.mongo = MongoBackend()
+		self.system_collection = self.mongo._get_system_collection()
+
+class Dashboard(Base):
 
 	@cherrypy.expose
 	def index(self):
-	
+		
+		try:
+			last_check = self.system_collection.find(limit=1).sort('time', DESCENDING)[0]
+		except Exception, e:
+			last_check = False
+			raise e
 
 		return render(name="dashboard.html",
 					current_page='dashboard',
-			)
-	
-class System:
+					last_check=last_check
+					)
 
+class System(Base):
 
 	def __init__(self):
-		self.system_collection = storage._get_system_collection()
+		super(System, self).__init__()
+		self.now = datetime.now()
+		day = timedelta(hours=-24)
+		day_delta = self.now - day
+		self.day = int(mktime(day_delta.timetuple()))
 
 	@cherrypy.expose
 	def index(self):
 
+		try:
+			log = self.system_collection.find({"time": {"$gte": self.day}}).sort('time', ASCENDING)[0]
+		except Exception, e:
+			log = False
+			raise e
 
-		
-		log = self.system_collection.find().limit(1).sort({'time':1})
+
 		if log != False:
 			memory = []
 			
@@ -73,9 +95,7 @@ class System:
 						  volumes=volumes,
 						  disk=disk)
 		
-
-
-class Application(object):
+class Application(Base):
 
 	@cherrypy.expose
 	def index(self):
