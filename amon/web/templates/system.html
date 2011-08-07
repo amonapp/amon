@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 
 {% block breadcrumb %}
-System details > 127.0.0.1 ( localhost )
-
+System check 
 {% endblock %}
 {% block content %}
+<ul class='tabs'>
+	<li>
+		<a {% if active_tab == 'day' %} class='active' {% endif %} href="/system">24 hours</a>
+	</li>
+	<li>
+		<a href="/system/?date_from={{ week_ago|date }}">1 week</a>
+	</li>
+	<li>
+		<a href="/system/?date_from={{ month_ago|date }}">1 month</a>
+	</li>
+</ul>
 <h2>Memory</h2>
 <div class="chart" id="memory"></div>
 <div class='legend'>
-
 		<ul>
 			<li>
 				<span class="color one"></span>

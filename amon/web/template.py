@@ -5,11 +5,13 @@ from datetime import datetime
 import re
 
 # Custom filters
-def dateformat(value, format='%d-%m-%Y / %H:%M'):
+def dateformat(value, format='%d-%m-%Y-%H:%M'):
+	# Converts unix time to a readable date format
 	_ = datetime.fromtimestamp(value)
 	return _.strftime(format)
 
 def timeformat(value, format='%H:%M'):
+	# Converts unix time to a readable 24 hour-minute format
 	_ = datetime.fromtimestamp(value)
 	return _.strftime(format)
 

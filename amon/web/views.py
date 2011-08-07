@@ -3,7 +3,7 @@ import cherrypy
 from amon.backends.mongodb import MongoBackend
 from pymongo import DESCENDING, ASCENDING 
 from datetime import datetime, timedelta
-from time import mktime
+from utils import datestring_to_unixtime, datetime_to_unixtime  
 
 class Base(object):
 
@@ -32,19 +32,57 @@ class System(Base):
 	def __init__(self):
 		super(System, self).__init__()
 		self.now = datetime.now()
-		day = timedelta(hours=-24)
-		day_delta = self.now - day
-		self.day = int(mktime(day_delta.timetuple()))
+
+		day = timedelta(hours=24)
+		week = timedelta(days=7)
+		month = timedelta(days=30)
+
+		_yesterday = self.now - day
+		_week_ago = self.now - week
+		_month_ago = self.now - month
+
+		self.yesterday = datetime_to_unixtime(_yesterday)
+		self.week_ago = datetime_to_unixtime(_week_ago) 
+		self.month_ago = datetime_to_unixtime(_month_ago) 
+
+	def _get_active_tab(self, date_from):
+		tabs = {'day': self.yesterday,
+				'week' : self.week_ago,
+				'month': self.month_ago
+				}
+
+		active_tab = False
+
+		for key,value in tabs.iteritems():
+			if date_from == value:
+				active_tab = key
+
+		if active_tab is False:
+			active_tab = 'custom'
+
+		return active_tab
+
+	
+	
 
 	@cherrypy.expose
-	def index(self):
+	def index(self, *args, **kwargs):
+
+		date_from = kwargs.get('date_from', False)
+
+		if date_from:
+			date_from = datestring_to_unixtime(date_from)
+		# Default - 24 hours period
+		else:
+			date_from = self.yesterday
+
+		active_tab = self._get_active_tab(date_from)
 
 		try:
-			log = self.system_collection.find({"time": {"$gte": self.day}}).sort('time', ASCENDING)[0]
+			log = self.system_collection.find({"time": {"$gte": date_from}}).sort('time', ASCENDING)
 		except Exception, e:
 			log = False
 			raise e
-
 
 		if log != False:
 			memory = []
@@ -66,7 +104,6 @@ class System(Base):
 				_dict['cpu']['time'] = _dict['time']
 				_dict['network']['time'] = _dict['time']
 				_dict['disk']['time'] = _dict['time']
-				
 
 				memory.append(_dict['memory'])
 				loadavg.append(_dict['loadavg'])
@@ -93,7 +130,11 @@ class System(Base):
 						  network_interfaces=network_interfaces,
 						  loadavg=loadavg,
 						  volumes=volumes,
-						  disk=disk)
+						  disk=disk,
+						  week_ago=self.week_ago,
+						  month_ago=self.month_ago,
+						  active_tab=active_tab
+						  )
 		
 class Application(Base):
 

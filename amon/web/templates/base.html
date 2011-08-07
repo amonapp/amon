@@ -32,21 +32,19 @@
 
 			<ul>
 				<li>
-					<a {% if current_page=='dashboard' %} class="active"
-					
-					{% endif %} href="/">Dashboard</a>
+					<a class='top {% if current_page=='dashboard' %}active{% endif %}' href="/">Dashboard</a>
 				</li>
 							
-				<li>
-					<a {% if current_page=='application' %} class="active"
-					
-					{% endif %} href="/application">Application</a>
-				</li>
+				<!--<li>-->
+					<!--<a class='top {% if current_page=='application' %}active{% endif %}' href="/application">Applications</a>-->
+				<!--</li>-->
 
 				<li>
-					<a {% if current_page=='system' %} class="active"
-					
-					{% endif %} href="/system">System</a>
+					<a class='top {% if current_page=='system' %}active{% endif %}' href="/system">System</a>
+				</li>
+				
+				<li>
+					<a class='top {% if current_page=='settings' %}active{% endif %}' href="/settings">Settings</a>
 				</li>
 
 			
