@@ -8,7 +8,7 @@ Introduction
 Amon tries to solve two very common problems for web application developers:
 
 
-__1. System monitoring__
+**1. System monitoring**
 
 
 When we deploy our web applications it's important to know how much 
@@ -18,6 +18,6 @@ like overkill, if your app is not that big and probably lives on a single server
 
 
 
-__2. Language agnostic logging__
+**2. Language agnostic logging**
 
 
