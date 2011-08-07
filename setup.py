@@ -19,6 +19,9 @@ def fullsplit(path, result=None):
         return result
     return fullsplit(head, [tail] + result)
 
+def read(filename):
+    return open(os.path.join(os.path.dirname(__file__), filename)).read()
+
 packages, data_files = [], []
 root_dir = os.path.dirname(__file__)
 if root_dir != '':
@@ -38,12 +41,12 @@ for dirpath, dirnames, filenames in os.walk(amon_dir):
 sdict = {
     'name' : 'Amon',
     'version' : __version__,
-    'description' : 'Lightweight architecture monitoring tool',
-    'long_description' : 'Lightweight architecture monitoring tool',
-    'url': 'http://amon.martinrusev.net',
+    'description' : 'Developer friendly system monitoring and logging tool',
+    'long_description' : read('README.rst'),
+    'url': 'https://github.com/martinrusev/amon',
     'author' : 'Martin Rusev',
     'author_email' : 'martinrusev@live.com',
-    'keywords' : ['Amon', 'monitoring'],
+    'keywords' : ['Amon', 'monitoring', 'logging'],
     'license' : 'GPL',
     'packages' : packages,
 	'data_files' : data_files,
