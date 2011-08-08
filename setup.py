@@ -52,7 +52,7 @@ sdict = {
 	'data_files' : data_files,
 	'install_requires': 
 	[
-        'pymongo',
+        'pymongo==2.0',
 		'cherrypy==3.2',
         'Jinja2>=2.4'
     ],
