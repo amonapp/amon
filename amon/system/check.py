@@ -2,7 +2,7 @@ import os
 import re
 import subprocess
 
-class System(object):
+class SystemInfoCollector(object):
 
 	def __init__(self):
 		pass
@@ -120,10 +120,11 @@ class System(object):
 
 		return cpu_dict
 		
-
+	
+system_info_collector = SystemInfoCollector()
 
 # WORK IN PROGRESS
-class Process(object):
+class ProcessInfoCollector(object):
 
 	def __init__(self):
 		pass

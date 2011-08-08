@@ -1,4 +1,4 @@
-from amon.system.check import System
+from amon.system.check import system_info_collector
 from time import time
 
 class Runner(object):
@@ -8,43 +8,46 @@ class Runner(object):
 
 	def run(self):
 		
-
-		_syscheck = System()
-		log_dict = {}
+		system_info_dict = {}
 		
-		now = int(time())
+		now = int(time()) # unix time
 		
-		log_dict['time'] = now
-
-
-		memory = _syscheck.get_memory_info()
+		memory = system_info_collector.get_memory_info()
 
 		if memory != False:
-			log_dict['memory'] = memory
+			memory['time'] = now
+			system_info_dict['memory'] = memory
 
 		
-		cpu = _syscheck.get_cpu_utilization()
+		cpu = system_info_collector.get_cpu_utilization()
 
 		if cpu != False:
-			log_dict['cpu'] = cpu
+			cpu['time'] = now
+			system_info_dict['cpu'] = cpu
 		
 
-		loadavg = _syscheck.get_load_average()
+		loadavg = system_info_collector.get_load_average()
 
 		if loadavg != False:
-			log_dict['loadavg'] = loadavg
+			loadavg['time'] = now
+			system_info_dict['loadavg'] = loadavg
 
 
-		disk = _syscheck.get_disk_usage()
+		disk = system_info_collector.get_disk_usage()
 
 		if disk != False:
-			log_dict['disk'] = disk
+			disk['time'] = now
+			system_info_dict['disk'] = disk
 
-		network = _syscheck.get_network_traffic()
+		network = system_info_collector.get_network_traffic()
 
 		if network != False:
-			log_dict['network'] = network
+			network['time'] = now
+			system_info_dict['network'] = network
 
-		return log_dict
+		return system_info_dict
+
+
+runner = Runner()
 			
 

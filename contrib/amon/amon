@@ -1,35 +1,24 @@
 import sys, time
 from amon.system.daemon import Daemon
-from amon.backends.mongodb import MongoBackend
-from amon.system.runner import Runner
-from amon.core.exceptions import BackendError
+from amon.core.settings import settings
+from amon.system.runner import runner
+from amon.backends.mongodb import backend
 
 PIDFILE = '/var/run/amon.pid'
 
 class AmonDaemon(Daemon):
 	
 	def run(self):
-		# TODO - Implement proper exeptions 
-		try:
-			runner = Runner()
-		except:
-			pass
-		
-		try:
-			backend = MongoBackend()
-		except BackendError:
-			pass
 		
 		while True:
 			system_info = runner.run()
 			try:			
-				backend._store_system_entry(system_info)
+				backend.store_entries(system_info)
 			except:			
 				pass
 
 			# Checks the system every 60 seconds
-			# TODO - Move the value to config file
-			time.sleep(60)
+			time.sleep(settings.SYSTEM_CHECK_PERIOD)
 
 if __name__ == "__main__":
 
