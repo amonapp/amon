@@ -30,7 +30,7 @@ Installation
 
 1. Download the tarball and install the package with **python setup.py install**
 
-2. Copy the system info collect daemon from **contrib/amon/amon** to **/etc/init.d/amon**
+2. Copy the system info collect daemon **contrib/amon/amon** to **/etc/init.d/amon**
 
 3. Make it executable with **sudo chmod +x /etc/init.d/amon** and then start the daemon with **sudo invoke-rc.d/amon start**
 
@@ -53,7 +53,7 @@ how to install and run a mongo instance. You can find much more details at http:
 
 2. Download Mongo from http://www.mongodb.org/downloads and copy the **mongod** file to **/usr/local/mongodb/bin**
 
-3. Copy the Mongo init script from **contrib/mongodb** to **/etc/init/mongodb.conf**
+3. Copy the Mongo init script **contrib/mongodb/mongodb.conf** to **/etc/init/mongodb.conf**
 
 4. Start the database with **sudo start mongodb** 
 
