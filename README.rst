@@ -30,9 +30,9 @@ Installation
 
 1. Download the tarball and install the package with **python setup.py install**
 
-2. Copy the system info collect daemon from ``contrib/amon/amon`` to ``/etc/init.d/amon``
+2. Copy the system info collect daemon from **contrib/amon/amon** to **/etc/init.d/amon**
 
-3. Make it executable with ``sudo chmod +x /etc/init.d/amon`` and then start the daemon with ``sudo invoke-rc.d/amon start``
+3. Make it executable with **sudo chmod +x /etc/init.d/amon** and then start the daemon with **sudo invoke-rc.d/amon start**
 
 
 Installing Mongodb
@@ -51,19 +51,19 @@ how to install and run a mongo instance. You can find much more details at http:
         touch /var/log/mongodb.log - the mongodb log file
 
 
-2. Download Mongo from http://www.mongodb.org/downloads and copy the ``mongod`` file to ``/usr/local/mongodb/bin``
+2. Download Mongo from http://www.mongodb.org/downloads and copy the **mongod** file to **/usr/local/mongodb/bin**
 
-3. Copy the Mongo init script from ``contrib/mongodb`` to ``/etc/init/mongodb.conf``
+3. Copy the Mongo init script from **contrib/mongodb** to **/etc/init/mongodb.conf**
 
-4. Start the database with ``sudo start mongodb`` 
+4. Start the database with **sudo start mongodb** 
 
 
 Usage
 ======
 
-At it's core Amon is a web application. You can start it with ``python cherryd -i amon.web``
+At it's core Amon is a web application. You can start it with **python cherryd -i amon.web**
 
-And then open ``http://127.0.0.1:2464`` ( or your server ip address ) in your browser
+And then open **http://127.0.0.1:2464** ( or your server ip address ) in your browser
 
 
 Requirements
