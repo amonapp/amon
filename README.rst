@@ -28,7 +28,7 @@ interface and you can have it up and running in less than 10 minutes.
 Installation
 ================
 
-1. Download the tarball and install the package with ``python setup.py install``
+1. Download the tarball and install the package with **python setup.py install**
 
 2. Copy the system info collect daemon from ``contrib/amon/amon`` to ``/etc/init.d/amon``
 
