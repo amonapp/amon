@@ -4,20 +4,26 @@ from amon.backends.mongodb import MongoBackend
 from pymongo import DESCENDING, ASCENDING 
 from datetime import datetime, timedelta
 from utils import datestring_to_unixtime, datetime_to_unixtime  
+from amon.core import settings
 
 class Base(object):
 
 	def __init__(self):
 		self.mongo = MongoBackend()
-		self.system_collection = self.mongo._get_system_collection()
+
 
 class Dashboard(Base):
 
 	@cherrypy.expose
 	def index(self):
 		
+		last_check = {}
+		active_checks = settings.ACTIVE_CHECKS
+
 		try:
-			last_check = self.system_collection.find(limit=1).sort('time', DESCENDING)[0]
+			for check in active_checks:
+				row = self.mongo.get_collection(check)
+				last_check[check] = row.find(limit=1).sort('time', DESCENDING)[0]
 		except Exception, e:
 			last_check = False
 			raise e
@@ -77,60 +83,65 @@ class System(Base):
 			date_from = self.yesterday
 
 		active_tab = self._get_active_tab(date_from)
-
+		
+		checks = {}
+		active_checks = settings.ACTIVE_CHECKS
 		try:
-			log = self.system_collection.find({"time": {"$gte": date_from}}).sort('time', ASCENDING)
+			for check in active_checks:
+				row = self.mongo.get_collection(check)
+				checks[check] = row.find({"time": {"$gte": date_from}}).sort('time', ASCENDING)
 		except Exception, e:
-			log = False
+			checks = False
 			raise e
 
-		if log != False:
-			memory = []
+		if checks != False:
+			#memory = []
 			
-			cpu = []
-			loadavg = []
+			#cpu = []
+			#loadavg = []
 			
-			network = []
-			network_interfaces = []
+			#network = []
+			#network_interfaces = []
 			
-			disk = []
-			volumes = []
+			#disk = []
+			#volumes = []
 			
 			
-			for _dict in log:
+			#for _dict in log:
 
-				_dict['memory']['time'] = _dict['time']
-				_dict['loadavg']['time'] = _dict['time']
-				_dict['cpu']['time'] = _dict['time']
-				_dict['network']['time'] = _dict['time']
-				_dict['disk']['time'] = _dict['time']
+				#_dict['memory']['time'] = _dict['time']
+				#_dict['loadavg']['time'] = _dict['time']
+				#_dict['cpu']['time'] = _dict['time']
+				#_dict['network']['time'] = _dict['time']
+				#_dict['disk']['time'] = _dict['time']
 
-				memory.append(_dict['memory'])
-				loadavg.append(_dict['loadavg'])
-				cpu.append(_dict['cpu'])
-				network.append(_dict['network'])	
-				disk.append(_dict['disk'])
+				#memory.append(_dict['memory'])
+				#loadavg.append(_dict['loadavg'])
+				#cpu.append(_dict['cpu'])
+				#network.append(_dict['network'])	
+				#disk.append(_dict['disk'])
 
-				_interfaces = _dict['network'].keys()
-				for interface in _interfaces:
-					if interface not in network_interfaces and interface != 'time':
-						network_interfaces.append(interface)
+				#_interfaces = _dict['network'].keys()
+				#for interface in _interfaces:
+					#if interface not in network_interfaces and interface != 'time':
+						#network_interfaces.append(interface)
 			
-				_volumes = _dict['disk'].keys()
-				for volume in _volumes:
-					if volume not in volumes and volume != 'time':
-						volumes.append(volume)
+				#_volumes = _dict['disk'].keys()
+				#for volume in _volumes:
+					#if volume not in volumes and volume != 'time':
+						#volumes.append(volume)
 			
 
 			return render(name='system.html',
 						  current_page='system',
-						  memory=memory,
-						  cpu=cpu,
-						  network=network,
-						  network_interfaces=network_interfaces,
-						  loadavg=loadavg,
-						  volumes=volumes,
-						  disk=disk,
+						  checks=checks,
+						  #memory=memory,
+						  #cpu=cpu,
+						  #network=network,
+						  #network_interfaces=network_interfaces,
+						  #loadavg=loadavg,
+						  #volumes=volumes,
+						  #disk=disk,
 						  week_ago=self.week_ago,
 						  month_ago=self.month_ago,
 						  active_tab=active_tab

@@ -3,7 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 {% block breadcrumb %}Dashboard {% endblock %}
 {% block content %}
-<h2>Last check - {{ last_check.time|date }} </h2>
+<h2>Last check -  {{ last_check.cpu.time }} </h2>
 {% if last_check %}
 
 <table class='info'>
@@ -77,6 +77,7 @@
 			</td>
 			<td class="details">
 				{% for volume  in last_check.disk %}
+					{% if volume != '_id' and volume != 'time' %}
 					volume: {{ volume }}
 					&nbsp;
 					total: {{ last_check.disk[volume].total }}
@@ -84,6 +85,7 @@
 					used: {{ last_check.disk[volume].used }}
 					&nbsp;
 					free: {{ last_check.disk[volume].free }}
+					{% endif %}
 				{% endfor %}
 			</td>
 		

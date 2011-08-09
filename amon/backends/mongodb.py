@@ -54,6 +54,7 @@ class MongoBackend():
 
 		return collection
 
+	
 
 	def store_entry(self, entry, collection):
 		""" Stores a system entry  """
