@@ -3,7 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 {% block breadcrumb %}Dashboard {% endblock %}
 {% block content %}
-<h2>Last check -  {{ last_check.cpu.time }} </h2>
+<h2>Last check -  {{ last_check.memory.time|date }} </h2>
 {% if last_check %}
 
 <table class='info'>

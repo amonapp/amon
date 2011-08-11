@@ -6,13 +6,13 @@ System check
 {% block content %}
 <ul class='tabs'>
 	<li>
-		<a {% if active_tab == 'day' %} class='active' {% endif %} href="/system">24 hours</a>
+		<a {% if active_tab == 'day' %}class='active'{% endif %} href="/system">24 hours</a>
 	</li>
 	<li>
-		<a href="/system/?date_from={{ week_ago|date }}">1 week</a>
+		<a {% if active_tab == 'week' %}class='active'{% endif %}  href="/system/?date_from={{ week_ago|date }}&tab=week">1 week</a>
 	</li>
 	<li>
-		<a href="/system/?date_from={{ month_ago|date }}">1 month</a>
+		<a {% if active_tab == 'month' %}class='active'{% endif %} href="/system/?date_from={{ month_ago|date }}&tab=month">1 month</a>
 	</li>
 </ul>
 <h2>Memory</h2>
@@ -117,45 +117,13 @@ System check
 $(function () 
 {
 
-	function showTooltip(x, y, contents) {
-        $('<div id="tooltip">' + contents + '</div>').css( {
-            top: y + 5,
-            left: x + 5,
-        }).appendTo("body").fadeIn(200);
-    }
 
-
-	var previousPoint = null;
-    $(".chart").bind("plothover", function (event, pos, item) {
-        $("#x").text(pos.x.toFixed(2));
-        $("#y").text(pos.y.toFixed(2));
-
-		if (item) 
-		{
-			if (previousPoint != item.datapoint) 
-			{
-                    previousPoint = item.datapoint;
-                    
-                    $("#tooltip").remove();
-                    var x = item.datapoint[0].toFixed(2),
-                        y = item.datapoint[1].toFixed(2);
-					
-					_date = new Date(parseInt(x));
-                    showTooltip(item.pageX, item.pageY,
-                                item.series.label + " on " + _date.format('dd/mm/yy H:ss')  + " -  " + y);
-                }
-        }
-		else 
-		{
-            $("#tooltip").remove();
-            previousPoint = null;            
-        }
-    
-    });
-
-
-	var memory_total = [{% for m in memory %} [ {{ m.time * 1000 }}, {{ m.memtotal }}], {% endfor %}];
-	var memory_free = [{% for m in memory %} [ {{ m.time * 1000 }}, {{ m.memfree }}], {% endfor %}];
+	var memory_free = []
+	var memory_total = []
+	{% for m in checks.memory %}
+		memory_free.push([{{ m.time * 1000 }}, {{ m.memfree }}])
+		memory_total.push([{{ m.time * 1000 }}, {{ m.memtotal }}])
+	{% endfor %}
 	var memory_legend = $('#memory_legend');
 
     $.plot($("#memory"),
@@ -168,9 +136,16 @@ $(function ()
 			});
 
 
-	var loadavg_minute =		[{% for l in loadavg %} [ {{ l.time * 1000 }}, {{ l.minute }} ],  {% endfor %}];
-	var loadavg_five_minutes =		[{% for  l in loadavg %} [ {{ l.time * 1000 }}, {{ l.five_minutes }} ],  {% endfor %}];
-	var loadavg_fifteen_minutes =  [{% for  l in loadavg %} [ {{ l.time * 1000 }},  {{ l.fifteen_minutes }} ],  {% endfor %}];
+	var loadavg_minute = []
+	var loadavg_five_minutes = []
+	var loadavg_fifteen_minutes = []
+	{% for l in checks.loadavg  %}
+		loadavg_minute.push([{{ l.time * 1000 }}, {{ l.minute }}])
+		loadavg_five_minutes.push([{{ l.time * 1000 }}, {{ l.five_minutes }}])
+		loadavg_fifteen_minutes.push([{{ l.time * 1000 }}, {{ l.fifteen_minutes }}])
+	{% endfor %}
+	
+	
 	var loadavg_legend = $('#loadavg_legend');
 
     $.plot($("#loadavg"),
@@ -185,9 +160,14 @@ $(function ()
 			});
 
 
-	var cpu_idle =	[{% for  c in cpu %} [ {{ c.time * 1000 }}, {{ c.idle }} ] ,  {% endfor %}];
-	var cpu_user =	[{% for  c in cpu %} [ {{ c.time * 1000 }} ,  {{ c.user }} ] ,  {% endfor %}];
-	var cpu_system =  [{% for  c in cpu %} [ {{ c.time * 1000 }} ,  {{ c.system }} ] ,  {% endfor %}];
+	var cpu_idle = []
+	var cpu_user = []
+	var cpu_system = []
+	{% for c in checks.cpu  %}
+		cpu_idle.push([{{ c.time * 1000 }}, {{ c.idle }}])
+		cpu_user.push([{{ c.time * 1000 }}, {{ c.user }}])
+		cpu_system.push([{{ c.time * 1000 }}, {{ c.system }}])
+	{% endfor %}
 	var cpu_legend = $('#cpu_legend');
 
     $.plot($("#cpu"),
@@ -201,10 +181,7 @@ $(function ()
 	
 			});
 
-
 	{% for interface  in network_interfaces  %}
-		
-		{% if interface != 'lo' %}
 		
 		var network_recieved_{{ interface }} =   [
 						{% for n in network %}
@@ -225,7 +202,6 @@ $(function ()
 				yaxis: { min: 0 },
 	
 			});
-		{% endif %}
 	{% endfor %}
 
 

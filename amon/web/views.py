@@ -51,30 +51,12 @@ class System(Base):
 		self.week_ago = datetime_to_unixtime(_week_ago) 
 		self.month_ago = datetime_to_unixtime(_month_ago) 
 
-	def _get_active_tab(self, date_from):
-		tabs = {'day': self.yesterday,
-				'week' : self.week_ago,
-				'month': self.month_ago
-				}
-
-		active_tab = False
-
-		for key,value in tabs.iteritems():
-			if date_from == value:
-				active_tab = key
-
-		if active_tab is False:
-			active_tab = 'custom'
-
-		return active_tab
-
-	
-	
 
 	@cherrypy.expose
 	def index(self, *args, **kwargs):
 
 		date_from = kwargs.get('date_from', False)
+		active_tab = kwargs.get('tab', 'day')
 
 		if date_from:
 			date_from = datestring_to_unixtime(date_from)
@@ -82,7 +64,6 @@ class System(Base):
 		else:
 			date_from = self.yesterday
 
-		active_tab = self._get_active_tab(date_from)
 		
 		checks = {}
 		active_checks = settings.ACTIVE_CHECKS
@@ -95,53 +76,41 @@ class System(Base):
 			raise e
 
 		if checks != False:
-			#memory = []
+			network = []
+			network_interfaces = []
 			
-			#cpu = []
-			#loadavg = []
+			disk = []
+			volumes = []
 			
-			#network = []
-			#network_interfaces = []
-			
-			#disk = []
-			#volumes = []
-			
-			
-			#for _dict in log:
+			if 'network' in active_checks:
+				for check in checks['network']:
+					network.append(check)	
 
-				#_dict['memory']['time'] = _dict['time']
-				#_dict['loadavg']['time'] = _dict['time']
-				#_dict['cpu']['time'] = _dict['time']
-				#_dict['network']['time'] = _dict['time']
-				#_dict['disk']['time'] = _dict['time']
+				_interfaces = network[0].keys()
+				invalid_interfaces = ('_id', 'time', 'lo')
+				for interface in _interfaces:
+					if interface not in network_interfaces:
+						if interface not in invalid_interfaces:
+							network_interfaces.append(interface)
 
-				#memory.append(_dict['memory'])
-				#loadavg.append(_dict['loadavg'])
-				#cpu.append(_dict['cpu'])
-				#network.append(_dict['network'])	
-				#disk.append(_dict['disk'])
-
-				#_interfaces = _dict['network'].keys()
-				#for interface in _interfaces:
-					#if interface not in network_interfaces and interface != 'time':
-						#network_interfaces.append(interface)
+			if 'disk' in active_checks:
+				for check in checks['disk']:
+					disk.append(check)
 			
-				#_volumes = _dict['disk'].keys()
-				#for volume in _volumes:
-					#if volume not in volumes and volume != 'time':
-						#volumes.append(volume)
-			
+				_volumes = disk[0].keys()
+				invalid_volumes =  ('time', '_id')
+				for volume in _volumes:
+					if volume not in volumes:
+						if volume not in invalid_volumes:
+							volumes.append(volume)
 
 			return render(name='system.html',
 						  current_page='system',
 						  checks=checks,
-						  #memory=memory,
-						  #cpu=cpu,
-						  #network=network,
-						  #network_interfaces=network_interfaces,
-						  #loadavg=loadavg,
-						  #volumes=volumes,
-						  #disk=disk,
+						  network=network,
+						  network_interfaces=network_interfaces,
+						  volumes=volumes,
+						  disk=disk,
 						  week_ago=self.week_ago,
 						  month_ago=self.month_ago,
 						  active_tab=active_tab

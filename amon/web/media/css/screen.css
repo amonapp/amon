@@ -62,7 +62,7 @@ body {
   font-size: 62.5%;
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
-  background: url(../images/background.png) repeat-y;
+  background: url(../images/sidebar.png) repeat-y;
 }
 body .wrapper {
   width: 100%;
@@ -76,7 +76,7 @@ body .wrapright {
   background-color: #ffcc33;
 }
 body .right {
-  margin-left: 169px;
+  margin-left: 168px;
   background-color: white;
   height: 100%;
   min-height: 100%;
@@ -161,9 +161,10 @@ body .right .check {
 }
 body .left {
   float: left;
-  width: 169px;
+  width: 168px;
   margin-left: -100%;
-  background: url(../images/left.png) repeat-y;
+  background: url(../images/sidebar.png) repeat-y;
+  z-index: 9999;
   height: 100%;
   min-height: 100%;
 }

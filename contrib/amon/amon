@@ -17,6 +17,14 @@ from amon.backends.mongodb import backend
 PIDFILE = '/var/run/amon.pid'
 
 class AmonDaemon(Daemon):
+
+	# Add an empty dictionary on start to avoid chart bugs
+	def __del__(self):
+		system_info_last = runner.last()
+		try:
+			backend.store_entries(system_info_last)
+		except:
+			pass
 	
 	def run(self):
 		
