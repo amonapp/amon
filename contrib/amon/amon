@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 import sys, time
 
 try:
@@ -18,13 +17,20 @@ PIDFILE = '/var/run/amon.pid'
 
 class AmonDaemon(Daemon):
 
-	# Add an empty dictionary on start to avoid chart bugs
-	def __del__(self):
-		system_info_last = runner.last()
+	
+	# Add an empty dictionary on start/end to avoid chart bugs
+	def empty(self):
+		system_info_empty = runner.empty()
 		try:
-			backend.store_entries(system_info_last)
+			backend.store_entries(system_info_empty)
 		except:
 			pass
+
+	def __del__(self):
+		self.empty()
+		
+	def __init__(self):
+		self.empty()
 	
 	def run(self):
 		

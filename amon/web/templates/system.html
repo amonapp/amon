@@ -121,8 +121,13 @@ $(function ()
 	var memory_free = []
 	var memory_total = []
 	{% for m in checks.memory %}
+		{% if m.last %}
+		memory_free.push([{{ m.time * 1000 }}, 0])
+		memory_total.push([{{ m.time * 1000 }}, 0])
+		{% else %}
 		memory_free.push([{{ m.time * 1000 }}, {{ m.memfree }}])
 		memory_total.push([{{ m.time * 1000 }}, {{ m.memtotal }}])
+		{% endif %}
 	{% endfor %}
 	var memory_legend = $('#memory_legend');
 

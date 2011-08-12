@@ -54,7 +54,7 @@ class Runner(object):
 		return system_info_dict
 
 	# empty dictionary, used when stopping the daemon to avoid chart bugs
-	def last(self):
+	def empty(self):
 		empty_dict = {}
 		now = int(time())
 		for check in self.active_checks:
