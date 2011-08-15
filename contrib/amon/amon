@@ -29,7 +29,8 @@ class AmonDaemon(Daemon):
 	def __del__(self):
 		self.empty()
 		
-	def __init__(self):
+	def __init__(self, pidfile):
+		super(AmonDaemon, self).__init__(pidfile)
 		self.empty()
 	
 	def run(self):

@@ -1,14 +1,14 @@
-from amon.check import AmonCheckSystem
+from amon.system.check import system_info_collector
 from nose.tools import *
 
 
 class TestSystemCheck(object):
 
 	def __init__(self):
-		self.amon = AmonCheckSystem() 
+		pass
 
 	def test_memory(self):
-		memory_dict = self.amon.get_memory_info()
+		memory_dict = system_info_collector.get_memory_info()
 		
 		assert 'memfree' in memory_dict
 		assert 'memtotal' in memory_dict
@@ -20,7 +20,7 @@ class TestSystemCheck(object):
 
 
 	def test_disk(self):
-		disk = self.amon.get_disk_usage()
+		disk = system_info_collector.get_disk_usage()
 
 		for k in disk:
 			_dict = disk[k]
@@ -33,7 +33,7 @@ class TestSystemCheck(object):
 
 
 	def test_cpu(self):
-		cpu = self.amon.get_cpu_utilization()
+		cpu = system_info_collector.get_cpu_utilization()
 
 		assert 'idle' in cpu
 		assert 'user' in cpu
@@ -46,8 +46,7 @@ class TestSystemCheck(object):
 
 
 	def test_loadavg(self):
-		loadavg = self.amon.get_load_average()
-
+		loadavg = system_info_collector.get_load_average()
 
 		assert 'minute' in loadavg
 		assert 'five_minutes' in loadavg
@@ -55,4 +54,4 @@ class TestSystemCheck(object):
 		assert 'scheduled_processes' in loadavg
 
 		for v in loadavg.values():
-			assert isinstance(v, int)
+			assert isinstance(v, str)

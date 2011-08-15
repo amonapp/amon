@@ -5,6 +5,7 @@ from pymongo import DESCENDING, ASCENDING
 from datetime import datetime, timedelta
 from utils import datestring_to_unixtime, datetime_to_unixtime  
 from amon.core import settings
+from amon.system.utils import get_disk_volumes, get_network_interfaces
 
 class Base(object):
 
@@ -86,23 +87,19 @@ class System(Base):
 				for check in checks['network']:
 					network.append(check)	
 
-				_interfaces = network[0].keys()
-				invalid_interfaces = ('_id', 'time', 'lo')
+				_interfaces = get_network_interfaces()
 				for interface in _interfaces:
 					if interface not in network_interfaces:
-						if interface not in invalid_interfaces:
-							network_interfaces.append(interface)
+						network_interfaces.append(interface)
 
 			if 'disk' in active_checks:
 				for check in checks['disk']:
 					disk.append(check)
 			
-				_volumes = disk[0].keys()
-				invalid_volumes =  ('time', '_id')
+				_volumes = get_disk_volumes()
 				for volume in _volumes:
 					if volume not in volumes:
-						if volume not in invalid_volumes:
-							volumes.append(volume)
+						volumes.append(volume)
 
 			return render(name='system.html',
 						  current_page='system',
