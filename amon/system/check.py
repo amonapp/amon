@@ -126,18 +126,23 @@ system_info_collector = SystemInfoCollector()
 # WORK IN PROGRESS
 class ProcessInfoCollector(object):
 
-	def __init__(self):
-		pass
-
 	def check_process_by_name(self, name=None):
-
+		# ps aux columns 
+		# USER PID  %CPU %MEM  VSZ RSS TTY STAT START TIME COMMAND 
 		ps = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, close_fds=True)
-		grep = subprocess.Popen(['grep', 'redis'],stdin=ps.stdout,  stdout=subprocess.PIPE, close_fds=True).communicate()[0]
-	
+		grep = subprocess.Popen(['grep', name],stdin=ps.stdout,  stdout=subprocess.PIPE, close_fds=True).communicate()[0]
+		
+		stats = grep.split()
+		user, pid, cpu, memory = stats[0], stats[1], stats[2], stats[3]
+
+		process_info = {'user': user, 'pid': pid, 'cpu': cpu, 'memory': memory}
+		
+		return process_info
 	
 	
 	def _pid_list(self):
 		return [int(x) for x in os.listdir('/proc') if x.isdigit()] 
 
 
+process_info_collector = ProcessInfoCollector()
 

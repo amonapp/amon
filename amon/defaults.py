@@ -7,7 +7,7 @@ MONGO = {
 	'user': '',
 	'password': '',
 	'database' : 'amon',
-	'valid_system_collections': ('cpu', 'memory', 'disk', 'network', 'loadavg')
+	'valid_collections': ('cpu', 'memory', 'disk', 'network', 'loadavg', 'log')
 }
 
 # 1 minute default

@@ -113,14 +113,46 @@ class System(Base):
 						  active_tab=active_tab
 						  )
 		
-class Application(Base):
+class Processes(Base):
+
+	def __init__(self):
+		self.current_page = 'processes'
 
 	@cherrypy.expose
 	def index(self):
 
-		return render(name='application.html',
-					 current_page='application')
+		return render(name='processes.html',
+					  current_page=self.current_page
+					 )
 
+
+class Settings(Base):
+	
+	def __init__(self):
+		self.current_page = 'settings'
+
+	@cherrypy.expose
+	def index(self):
+
+		return render(name='settings.html',
+					  current_page=self.current_page
+					  )
+
+
+
+
+
+class Logs(Base):
+
+	def __init__(self):
+		self.current_page = 'logs'
+
+	@cherrypy.expose
+	def index(self):
+
+		return render(name='logs.html',
+					 current_page=self.current_page
+					 )
 
 
 

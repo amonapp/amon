@@ -1,12 +1,10 @@
 import sys
 import cherrypy
-from views import Dashboard, System, Application 
 from settings import PROJECT_ROOT
+from server import root, config
 
-#apps
-root = Dashboard()
-root.system = System()
-root.application = Application()
+
+sys.path.append(PROJECT_ROOT) # add the current directory to the PYTHONPATH
 
 
 cherrypy.config.update({
@@ -14,21 +12,6 @@ cherrypy.config.update({
 	'server.socket_port': 2464,
 	})
 
-
-config = {	
-			'/': 
-			{
-				'tools.staticdir.root': PROJECT_ROOT
-			},
-			'/media': 
-			{
-				'tools.staticdir.on' : True,
-				'tools.staticdir.dir' : 'media',
-				'tools.gzip.on' : True,
-			}
-		}
-
-sys.path.append(PROJECT_ROOT) # add the current directory to the PYTHONPATH
 
 cherrypy.tree.mount(root, "/", config)
 
