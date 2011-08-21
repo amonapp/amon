@@ -7,11 +7,11 @@ MONGO = {
 	'user': '',
 	'password': '',
 	'database' : 'amon',
-	'valid_collections': ('cpu', 'memory', 'disk', 'network', 'loadavg', 'log')
 }
 
 # 1 minute default
 SYSTEM_CHECK_PERIOD = 60
 
+SYSTEM_CHECKS = ('cpu', 'memory', 'disk', 'network', 'loadavg')
 
-ACTIVE_CHECKS = ('cpu', 'memory', 'disk', 'network', 'loadavg')
+PROCESS_CHECKS = ('mongo', )

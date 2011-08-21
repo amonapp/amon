@@ -126,7 +126,7 @@ system_info_collector = SystemInfoCollector()
 # WORK IN PROGRESS
 class ProcessInfoCollector(object):
 
-	def check_process_by_name(self, name=None):
+	def check_process(self, name=None):
 		# ps aux columns 
 		# USER PID  %CPU %MEM  VSZ RSS TTY STAT START TIME COMMAND 
 		ps = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, close_fds=True)

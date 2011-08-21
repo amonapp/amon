@@ -36,10 +36,17 @@ class AmonDaemon(Daemon):
 	def run(self):
 		
 		while True:
-			system_info = runner.run()
+			system_info = runner.system()
 			try:			
 				backend.store_entries(system_info)
 			except:			
+				pass
+			
+			process_info = runner.processes()
+
+			try:
+				backend.store_entries(process_info)
+			except:
 				pass
 
 			# Checks the system every 60 seconds

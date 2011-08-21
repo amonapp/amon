@@ -14,7 +14,7 @@ class MongoBackend():
 	user = settings.MONGO['user']
 	password = settings.MONGO['password']
 	database = settings.MONGO['database']
-	valid_collections = settings.MONGO['valid_collections']
+	valid_collections = settings.SYSTEM_CHECKS 
 
 	def __init__(self):
 		if not pymongo:

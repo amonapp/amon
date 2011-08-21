@@ -1,4 +1,4 @@
-from amon.system.check import system_info_collector
+from amon.system.check import system_info_collector, process_info_collector
 from nose.tools import *
 
 
@@ -55,3 +55,18 @@ class TestSystemCheck(object):
 
 		for v in loadavg.values():
 			assert isinstance(v, str)
+
+class TestProcessCheck(object):
+
+	def __init__(self):
+		self.process_checks = ('cron', ) # something that's available in most linux distributions
+
+
+	def test_process(self):
+		for process in self.process_checks:
+			process_dict = process_info_collector.check_process(process)
+			
+			assert 'memory' in process_dict
+			assert 'cpu' in process_dict
+			assert 'pid' in process_dict
+			assert 'user' in process_dict

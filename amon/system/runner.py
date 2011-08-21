@@ -1,13 +1,14 @@
-from amon.system.check import system_info_collector
+from amon.system.check import system_info_collector, process_info_collector
 from amon.core import settings
 from time import time
 
 class Runner(object):
 	
 	def __init__(self):
-		self.active_checks = settings.ACTIVE_CHECKS
+		self.active_checks = settings.SYSTEM_CHECKS
+		self.process_checks = settings.PROCESS_CHECKS
 
-	def run(self):
+	def system(self):
 		
 		system_info_dict = {}
 		
@@ -61,6 +62,14 @@ class Runner(object):
 			empty_dict[check] = {'time': now, 'last': 1}
 
 		return empty_dict
+
+	def processes(self):
+
+		process_info_dict = {}
+		for process in self.process_checks:
+			process_info_dict[process]  = process_info_collector.check_process(process)
+
+		return process_info_dict
 
 runner = Runner()
 			
