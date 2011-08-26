@@ -1,5 +1,19 @@
 {% extends "base.html" %}
+{% block breadcrumb %}
+Process check 
+{% endblock %}
 {% block content %}
+<ul class='tabs'>
+	<li>
+		<a {% if active_tab == 'day' %}class='active'{% endif %} href="/system">24 hours</a>
+	</li>
+	<li>
+		<input type="text" name='date_from' id="date_from" />
+	</li>
+	<li>
+		<input type="text" name='date_to' id="date_to" />
+	</li>
+</ul>
 
 {% for process in processes  %}
 <h2>{{ process }}</h2>
@@ -17,7 +31,6 @@
 
 <div class="chart" id="{{ process }}_memory"></div>
 <div class='legend'>
-
 		<ul>
 			<li>
 				<span class="color one"></span>
@@ -27,6 +40,13 @@
 </div>
 {% endfor %}
 
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/jquery-1.6.2.min.js'></script>
+<script type="text/javascript" src='/media/js/date.format.min.js'></script>
+<script type="text/javascript" src='/media/js/jquery.flot.js'></script>
+<script type="text/javascript" src='/media/js/jquery-ui.min.js'></script>
+<script type="text/javascript" src='/media/js/jquery-ui-timepicker-addon.js'></script>
 <script type="text/javascript">
 	
 	{% for process in process_data  %}
@@ -55,12 +75,19 @@
 			});
 
 	{% endfor %}
+	
+var datetime_options = {
+	separator: '-',
+	dateFormat: 'yy-mm-dd',  
+	timeFormat: 'hh:mm',
+	hourGrid: 4,
+	minuteGrid: 10
+
+};
+$('#date_from').datetimepicker(datetime_options);
+$('#date_to').datetimepicker(datetime_options);
 
 
 </script>
-{% endblock %}
-{% block header %}
-<script type="text/javascript" src='/media/js/jquery-1.5.1.min.js'></script>
-<script type="text/javascript" src='/media/js/date.format.min.js'></script>
-<script type="text/javascript" src='/media/js/jquery.flot.js'></script>
+
 {% endblock %}
