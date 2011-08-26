@@ -64,10 +64,12 @@ class Runner(object):
 		return empty_dict
 
 	def processes(self):
+		now = int(time()) # unix time
 
 		process_info_dict = {}
 		for process in self.process_checks:
 			process_info_dict[process]  = process_info_collector.check_process(process)
+			process_info_dict[process]['time'] = now
 
 		return process_info_dict
 

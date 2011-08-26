@@ -1,4 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% for process in processes  %}
+<h2>{{ process }}</h2>
+<div class="chart" id="{{ process }}_cpu"></div>
+<div class='legend'>
+
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>CPU</span>
+			</li>
+		</ul>
+</div>
+
+
+<div class="chart" id="{{ process }}_memory"></div>
+<div class='legend'>
+
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>Memory</span>
+			</li>
+		</ul>
+</div>
+{% endfor %}
+
+<script type="text/javascript">
+	
+	{% for process in process_data  %}
+	var {{ process }}_cpu = []
+	var {{ process }}_memory = []
+		{% for data in process_data[process]  %}
+		{{ process }}_cpu.push([{{ data.time * 1000 }}, {{ data.cpu }}])
+		{{ process }}_memory.push([{{ data.time * 1000 }}, {{ data.memory }}])
+
+		{% endfor %}
+
+
+    $.plot($("#{{ process }}_cpu"),
+           [{ data: {{ process }}_cpu, label: "CPU" }],
+           { 
+				xaxis: { mode: 'time' },
+				yaxis: { min: 0, },
+	
+			});
+	$.plot($("#{{ process }}_memory"),
+           [{ data: {{ process }}_memory, label: "Memory" }],
+           { 
+				xaxis: { mode: 'time' },
+				yaxis: { min: 0, },
+	
+			});
+
+	{% endfor %}
+
+
+</script>
+{% endblock %}
+{% block header %}
+<script type="text/javascript" src='/media/js/jquery-1.5.1.min.js'></script>
+<script type="text/javascript" src='/media/js/date.format.min.js'></script>
+<script type="text/javascript" src='/media/js/jquery.flot.js'></script>
 {% endblock %}

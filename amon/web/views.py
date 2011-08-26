@@ -11,6 +11,7 @@ class Base(object):
 
 	def __init__(self):
 		self.mongo = MongoBackend()
+		self.now = datetime.now()
 
 
 class Dashboard(Base):
@@ -19,7 +20,7 @@ class Dashboard(Base):
 	def index(self):
 		
 		last_check = {}
-		active_checks = settings.ACTIVE_CHECKS
+		active_checks = settings.SYSTEM_CHECKS
 
 		try:
 			for check in active_checks:
@@ -67,7 +68,7 @@ class System(Base):
 
 		
 		checks = {}
-		active_checks = settings.ACTIVE_CHECKS
+		active_checks = settings.SYSTEM_CHECKS
 		try:
 			for check in active_checks:
 				row = self.mongo.get_collection(check)
@@ -116,13 +117,26 @@ class System(Base):
 class Processes(Base):
 
 	def __init__(self):
+		super(Processes, self).__init__()
 		self.current_page = 'processes'
+		self.processes = settings.PROCESS_CHECKS
 
 	@cherrypy.expose
 	def index(self):
+		day = timedelta(hours=24)
+		_yesterday = self.now - day
+		self.yesterday = datetime_to_unixtime(_yesterday)
 
+		process_data = {}
+		for process in self.processes:
+			row = self.mongo.get_collection(process)
+			process_data[process] = row.find({"time": {"$gte": self.yesterday}}).sort('time', ASCENDING)
+		
+		
 		return render(name='processes.html',
-					  current_page=self.current_page
+					  current_page=self.current_page,
+					  processes=self.processes,
+					  process_data=process_data
 					 )
 
 
