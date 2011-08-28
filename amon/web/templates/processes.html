@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block breadcrumb %}
-Process check - {{ date_from|date }}/{{ date_to|date }}
+Process check ({{ date_from|date }} / {{ date_to|date }})
 {% endblock %}
 {% block content %}
 <form action=".">
@@ -58,8 +58,8 @@ Process check - {{ date_from|date }}/{{ date_to|date }}
 	var {{ process }}_cpu = []
 	var {{ process }}_memory = []
 		{% for data in process_data[process]  %}
-		{{ process }}_cpu.push([{{ data.time }}, {{ data.cpu }}])
-		{{ process }}_memory.push([{{ data.time }}, {{ data.memory }}])
+		{{ process }}_cpu.push([{{ data.time * 1000 }}, {{ data.cpu }}])
+		{{ process }}_memory.push([{{ data.time * 1000 }}, {{ data.memory }}])
 
 		{% endfor %}
 
@@ -67,14 +67,14 @@ Process check - {{ date_from|date }}/{{ date_to|date }}
     $.plot($("#{{ process }}_cpu"),
            [{ data: {{ process }}_cpu, label: "CPU" }],
            { 
-				xaxis: { mode: 'time' },
+				xaxis: { mode: 'time',  timeformat: "%d/%m %H:%M" },
 				yaxis: { min: 0, },
 	
 			});
 	$.plot($("#{{ process }}_memory"),
            [{ data: {{ process }}_memory, label: "Memory" }],
            { 
-				xaxis: { mode: 'time' },
+				xaxis: { mode: 'time',  timeformat: "%d/%m %H:%M" },
 				yaxis: { min: 0, },
 	
 			});

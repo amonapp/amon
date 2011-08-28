@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from time import mktime
+import calendar
 
 def json_string_to_dict(string):
 	
@@ -35,7 +35,7 @@ def datestring_to_datetime(datestring, format="%d-%m-%Y-%H:%M"):
 	
 # Converts datetime objects to unix integers
 def datetime_to_unixtime(datetime):
-	return int(mktime(datetime.timetuple()))
+	return int(calendar.timegm(datetime.timetuple()))
 
 # Converts date string to unix time
 def datestring_to_unixtime(datestring):

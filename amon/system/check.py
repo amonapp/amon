@@ -126,6 +126,10 @@ system_info_collector = SystemInfoCollector()
 # WORK IN PROGRESS
 class ProcessInfoCollector(object):
 
+	def __init__(self):
+		memory = system_info_collector.get_memory_info()
+		self.total_memory = memory['memtotal']
+
 	def check_process(self, name=None):
 		# ps aux columns 
 		# USER PID  %CPU %MEM  VSZ RSS TTY STAT START TIME COMMAND 
@@ -135,6 +139,8 @@ class ProcessInfoCollector(object):
 		stats = grep.split()
 		user, pid, cpu, memory = stats[0], stats[1], stats[2], stats[3]
 
+		process_memory_mb = float(self.total_memory/100) * float(memory) # Convert the % in MB
+		memory = "{0:.3}".format(process_memory_mb)
 		process_info = {'user': user, 'pid': pid, 'cpu': cpu, 'memory': memory}
 		
 		return process_info

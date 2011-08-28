@@ -1,9 +1,14 @@
 from template import render
 import cherrypy
-from amon.backends.mongodb import MongoBackend
 from pymongo import DESCENDING, ASCENDING 
 from datetime import datetime, timedelta
-from utils import datestring_to_unixtime, datetime_to_unixtime  
+from amon.backends.mongodb import MongoBackend
+from amon.web.utils import (
+		datestring_to_unixtime,
+		datetime_to_unixtime,
+		datestring_to_datetime  	
+		) 
+
 from amon.core import settings
 from amon.system.utils import get_disk_volumes, get_network_interfaces
 
@@ -131,7 +136,6 @@ class Processes(Base):
 
 		if date_from:
 			date_from = datestring_to_unixtime(date_from)
-		# Default - 24 hours period
 		else:
 			date_from = datetime_to_unixtime(_yesterday)
 		
@@ -140,7 +144,7 @@ class Processes(Base):
 		else:
 			date_to = datetime_to_unixtime(self.now)
 
-
+		
 		process_data = {}
 		for process in self.processes:
 			row = self.mongo.get_collection(process)
