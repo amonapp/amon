@@ -122,21 +122,38 @@ class Processes(Base):
 		self.processes = settings.PROCESS_CHECKS
 
 	@cherrypy.expose
-	def index(self):
+	def index(self, *args, **kwargs):
 		day = timedelta(hours=24)
 		_yesterday = self.now - day
-		self.yesterday = datetime_to_unixtime(_yesterday)
+
+		date_from = kwargs.get('date_from', False)
+		date_to = kwargs.get('date_to', False)
+
+		if date_from:
+			date_from = datestring_to_unixtime(date_from)
+		# Default - 24 hours period
+		else:
+			date_from = datetime_to_unixtime(_yesterday)
+		
+		if date_to:
+			date_to = datestring_to_unixtime(date_to)
+		else:
+			date_to = datetime_to_unixtime(self.now)
+
 
 		process_data = {}
 		for process in self.processes:
 			row = self.mongo.get_collection(process)
-			process_data[process] = row.find({"time": {"$gte": self.yesterday}}).sort('time', ASCENDING)
+			process_data[process] = row.find({"time": {"$gte": date_from, '$lte': date_to}})\
+					.sort('time', ASCENDING)
 		
 		
 		return render(name='processes.html',
 					  current_page=self.current_page,
 					  processes=self.processes,
-					  process_data=process_data
+					  process_data=process_data,
+					  date_from=date_from,
+					  date_to=date_to
 					 )
 
 

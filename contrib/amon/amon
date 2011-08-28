@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys, time
+import logging
 
 try:
 	import amon
@@ -14,6 +15,11 @@ from amon.system.runner import runner
 from amon.backends.mongodb import backend
 
 PIDFILE = '/var/run/amon.pid'
+LOGFILE = '/var/log/amon.log'
+
+
+# Configure logging
+logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
 
 class AmonDaemon(Daemon):
 
@@ -23,8 +29,8 @@ class AmonDaemon(Daemon):
 		system_info_empty = runner.empty()
 		try:
 			backend.store_entries(system_info_empty)
-		except:
-			pass
+		except Exception, e:
+			logging.exception('Saving empty system info failed')
 
 	def __del__(self):
 		self.empty()
@@ -39,15 +45,15 @@ class AmonDaemon(Daemon):
 			system_info = runner.system()
 			try:			
 				backend.store_entries(system_info)
-			except:			
-				pass
+			except Exception, e:			
+				logging.exception('Saving system info failed')
 			
 			process_info = runner.processes()
 
 			try:
 				backend.store_entries(process_info)
-			except:
-				pass
+			except Exception, e:			
+				logging.exception('Saving process info failed')
 
 			# Checks the system every 60 seconds
 			time.sleep(settings.SYSTEM_CHECK_PERIOD)

@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block breadcrumb %}
-Process check 
+Process check - {{ date_from|date }}/{{ date_to|date }}
 {% endblock %}
 {% block content %}
+<form action=".">
 <ul class='tabs'>
 	<li>
-		<a {% if active_tab == 'day' %}class='active'{% endif %} href="/system">24 hours</a>
+		<a {% if active_tab == 'day' %}class='active'{% endif %} href="/processes">24 hours</a>
 	</li>
 	<li>
 		<input type="text" name='date_from' id="date_from" />
@@ -13,7 +14,11 @@ Process check
 	<li>
 		<input type="text" name='date_to' id="date_to" />
 	</li>
+	<li>
+	<input type="submit" value="Get" />
+	</li>
 </ul>
+</form>
 
 {% for process in processes  %}
 <h2>{{ process }}</h2>
@@ -53,8 +58,8 @@ Process check
 	var {{ process }}_cpu = []
 	var {{ process }}_memory = []
 		{% for data in process_data[process]  %}
-		{{ process }}_cpu.push([{{ data.time * 1000 }}, {{ data.cpu }}])
-		{{ process }}_memory.push([{{ data.time * 1000 }}, {{ data.memory }}])
+		{{ process }}_cpu.push([{{ data.time }}, {{ data.cpu }}])
+		{{ process }}_memory.push([{{ data.time }}, {{ data.memory }}])
 
 		{% endfor %}
 
@@ -78,7 +83,7 @@ Process check
 	
 var datetime_options = {
 	separator: '-',
-	dateFormat: 'yy-mm-dd',  
+	dateFormat: 'dd-mm-yy',  
 	timeFormat: 'hh:mm',
 	hourGrid: 4,
 	minuteGrid: 10
@@ -86,8 +91,6 @@ var datetime_options = {
 };
 $('#date_from').datetimepicker(datetime_options);
 $('#date_to').datetimepicker(datetime_options);
-
-
 </script>
 
 {% endblock %}
