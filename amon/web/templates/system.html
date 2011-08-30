@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block breadcrumb %}
-System check 
+System check ({{ date_from|date }} / {{ date_to|date }})
 {% endblock %}
 {% block content %}
 <ul class='tabs'>
@@ -8,10 +8,13 @@ System check
 		<a {% if active_tab == 'day' %}class='active'{% endif %} href="/system">24 hours</a>
 	</li>
 	<li>
-		<a {% if active_tab == 'week' %}class='active'{% endif %}  href="/system/?date_from={{ week_ago|date }}&tab=week">1 week</a>
+		<input type="text" name='date_from' id="date_from" />
 	</li>
 	<li>
-		<a {% if active_tab == 'month' %}class='active'{% endif %} href="/system/?date_from={{ month_ago|date }}&tab=month">1 month</a>
+		<input type="text" name='date_to' id="date_to" />
+	</li>
+	<li>
+	<input type="submit" value="Get" />
 	</li>
 </ul>
 <h2>Memory</h2>
@@ -112,10 +115,16 @@ System check
 	</div>
 {% endfor %}
 
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/jquery.flot.js'></script>
+<script type="text/javascript" src='/media/js/jquery-ui.min.js'></script>
+<script type="text/javascript" src='/media/js/jquery-ui-timepicker-addon.js'></script>
 <script language="javascript" type="text/javascript">
 $(function () 
 {
 
+	var xaxis =  { mode: 'time',  timeformat: "%d/%m %H:%M" };
 
 	var memory_free = []
 	var memory_total = []
@@ -130,7 +139,7 @@ $(function ()
 				{ data: memory_free, label: "Free memory"  }
 		   ],
            { 
-				xaxis: { mode: 'time' },
+				xaxis: xaxis,
 				yaxis: { min: 0 },
 			});
 
@@ -154,7 +163,7 @@ $(function ()
 				{ data: loadavg_fifteen_minutes, label: "Fifteen minutes"  }
 		   ],
            { 
-				xaxis: { mode: 'time' },
+				xaxis: xaxis,
 				yaxis: { min: 0 },
 			});
 
@@ -175,7 +184,7 @@ $(function ()
 				{ data: cpu_system, label: "System"  }
 		   ],
            { 
-				xaxis: { mode: 'time' },
+				xaxis: xaxis,
 				yaxis: { min: 0 },
 	
 			});
@@ -197,7 +206,7 @@ $(function ()
 				{ data: network_transfered_{{ interface }}, label: "Transfered"  },
 		   ],
            { 
-				xaxis: { mode: 'time' },
+				xaxis: xaxis,
 				yaxis: { min: 0 },
 	
 			});
@@ -222,7 +231,7 @@ $(function ()
 				{ data: disk_free_{{ volume }}, label: "Free"  }
 		   ],
            { 
-				xaxis: { mode: 'time' },
+				xaxis: xaxis,
 				yaxis: { min: 0 },
 			});
 	{% endfor %}
@@ -230,13 +239,18 @@ $(function ()
 
 
 });
+var datetime_options = {
+	separator: '-',
+	dateFormat: 'dd-mm-yy',  
+	timeFormat: 'hh:mm',
+	hourGrid: 4,
+	minuteGrid: 10
+
+};
+$('#date_from').datetimepicker(datetime_options);
+$('#date_to').datetimepicker(datetime_options);
+
 </script>
 {% endblock %}
 
 
-
-{% block header %}
-<script type="text/javascript" src='/media/js/jquery-1.5.1.min.js'></script>
-<script type="text/javascript" src='/media/js/date.format.min.js'></script>
-<script type="text/javascript" src='/media/js/jquery.flot.js'></script>
-{% endblock %}

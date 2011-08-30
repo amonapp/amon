@@ -46,30 +46,27 @@ class System(Base):
 		super(System, self).__init__()
 		self.now = datetime.now()
 
-		day = timedelta(hours=24)
-		week = timedelta(days=7)
-		month = timedelta(days=30)
-
-		_yesterday = self.now - day
-		_week_ago = self.now - week
-		_month_ago = self.now - month
-
-		self.yesterday = datetime_to_unixtime(_yesterday)
-		self.week_ago = datetime_to_unixtime(_week_ago) 
-		self.month_ago = datetime_to_unixtime(_month_ago) 
-
 
 	@cherrypy.expose
 	def index(self, *args, **kwargs):
 
 		date_from = kwargs.get('date_from', False)
+		date_to = kwargs.get('date_to', False)
 		active_tab = kwargs.get('tab', 'day')
 
 		if date_from:
 			date_from = datestring_to_unixtime(date_from)
 		# Default - 24 hours period
 		else:
-			date_from = self.yesterday
+			day = timedelta(hours=24)
+			yesterday = self.now - day
+
+			date_from = datetime_to_unixtime(yesterday)
+		
+		if date_to:
+			date_to = datestring_to_unixtime(date_to)
+		else:
+			date_to = datetime_to_unixtime(self.now)
 
 		
 		checks = {}
@@ -114,9 +111,9 @@ class System(Base):
 						  network_interfaces=network_interfaces,
 						  volumes=volumes,
 						  disk=disk,
-						  week_ago=self.week_ago,
-						  month_ago=self.month_ago,
-						  active_tab=active_tab
+						  active_tab=active_tab,
+						  date_from=date_from,
+						  date_to=date_to
 						  )
 		
 class Processes(Base):

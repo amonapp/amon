@@ -1,7 +1,6 @@
 from nose.tools import *
 from amon.system.runner import runner
 
-
 class TestRunner(object):
 
 	def test_system_run(self):
@@ -25,5 +24,11 @@ class TestRunner(object):
 	def test_process_run(self):
 		processes = runner.processes()
 		assert isinstance(processes, dict)
+		for process in processes:
+			process_dict = processes[process]
+			
+			assert 'time' in process_dict
+			assert 'memory' in process_dict
+			assert 'cpu' in process_dict
 
 
