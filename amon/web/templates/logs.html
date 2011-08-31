@@ -3,5 +3,12 @@
 Logs 
 {% endblock %}
 {% block content %}
-
+<ul>
+	{% for log in logs  %}
+	<li>
+	{{ log.time|date }}
+	{{ log.message }}
+	</li>
+	{% endfor %}
+</ul>
 {% endblock %}

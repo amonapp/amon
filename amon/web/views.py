@@ -161,6 +161,7 @@ class Processes(Base):
 class Settings(Base):
 	
 	def __init__(self):
+		super(Settings, self).__init__()
 		self.current_page = 'settings'
 
 	@cherrypy.expose
@@ -171,19 +172,23 @@ class Settings(Base):
 					  )
 
 
-
-
-
 class Logs(Base):
 
 	def __init__(self):
+		super(Logs, self).__init__()
 		self.current_page = 'logs'
 
 	@cherrypy.expose
 	def index(self):
 
+
+		row = self.mongo.get_collection('logs') 
+		
+		logs = row.find().sort('time', DESCENDING)
+ 
 		return render(name='logs.html',
-					 current_page=self.current_page
+					 current_page=self.current_page,
+					 logs=logs
 					 )
 
 

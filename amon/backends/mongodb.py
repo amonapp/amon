@@ -9,12 +9,16 @@ from amon.core import settings
 
 class MongoBackend():
 
+	internal_collections = ['logs', 'exceptions']
+
 	host = settings.MONGO['host']
 	port = settings.MONGO['port']
 	user = settings.MONGO['user']
 	password = settings.MONGO['password']
 	database = settings.MONGO['database']
-	valid_collections = settings.SYSTEM_CHECKS + settings.PROCESS_CHECKS
+	valid_collections = settings.SYSTEM_CHECKS \
+			+ settings.PROCESS_CHECKS\
+			+ internal_collections
 
 	def __init__(self):
 		if not pymongo:
