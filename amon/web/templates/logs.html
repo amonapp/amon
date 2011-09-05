@@ -3,11 +3,14 @@
 Logs 
 {% endblock %}
 {% block content %}
-<ul>
+<ul class='log_list'>
 	{% for log in logs  %}
 	<li>
-	{{ log.time|date }}
-	{{ log.message }}
+	<span class='level {{ log.level }}'>{{ log.level }}</span>
+	<span class='date'>{{ log.time|date }}</span>
+	<p>
+		{{ log.message }}
+	</p>
 	</li>
 	{% endfor %}
 </ul>

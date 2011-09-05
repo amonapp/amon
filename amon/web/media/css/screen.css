@@ -91,8 +91,8 @@ body .right .breadcrumb h1 {
   float: left;
   font-size: 2em;
   color: #2b3239;
-  padding-top: 14px;
-  padding-left: 30px;
+  padding-top: 12px;
+  padding-left: 20px;
 }
 body .right h2, body .right h3 {
   float: left;
@@ -172,9 +172,9 @@ body .left .logo {
   float: left;
   width: 92px;
   height: 112px;
+  background: url(../images/logo.png) no-repeat;
   margin-top: 20px;
   margin-left: 30px;
-  background: url(../images/logo.png) no-repeat;
 }
 body .left ul {
   float: left;
@@ -289,4 +289,50 @@ ul.tabs li a {
 ul.tabs li a:hover, ul.tabs li a.active {
   background: #ffcc33;
   color: black;
+}
+
+.log_list {
+  float: left;
+  margin: 20px;
+  width: 800px;
+}
+.log_list li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  float: left;
+  clear: left;
+  width: 100%;
+  border-bottom: 1px solid #cccccc;
+}
+.log_list li span.date {
+  color: #858585;
+  font-size: 1.2em;
+  float: left;
+}
+.log_list li p {
+  font-size: 1.4em;
+  float: left;
+  clear: left;
+  padding-top: 10px;
+}
+.log_list li span.level {
+  float: left;
+  width: 50px;
+  height: 15px;
+  color: white;
+  font-size: 1.2em;
+  margin-right: 10px;
+  text-align: center;
+}
+.log_list li span.level.notset {
+  background: #eeeeee;
+}
+.log_list li span.level.warning {
+  background: red;
+}
+.log_list li span.level.info {
+  background: green;
+}
+.log_list li span.level.debug {
+  background: #ffcc33;
 }

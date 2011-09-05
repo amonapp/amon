@@ -5,13 +5,10 @@ System check ({{ date_from|date }} / {{ date_to|date }})
 {% block content %}
 <ul class='tabs'>
 	<li>
-		<a {% if active_tab == 'day' %}class='active'{% endif %} href="/system">24 hours</a>
+		<input type="text" name='date_from' id="date_from" value="{{ date_from|date }}" />
 	</li>
 	<li>
-		<input type="text" name='date_from' id="date_from" />
-	</li>
-	<li>
-		<input type="text" name='date_to' id="date_to" />
+		<input type="text" name='date_to' id="date_to" value='{{ date_to|date }}' />
 	</li>
 	<li>
 	<input type="submit" value="Get" />

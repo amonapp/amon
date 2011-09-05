@@ -32,8 +32,8 @@ body
         font-size: 2em
         color:  #2b3239
         padding:
-          top: 14px
-          left: 30px
+          top: 12px
+          left: 20px
     h2
       float: left
       font-size: 2.2em
@@ -99,10 +99,10 @@ body
       float: left
       width: 92px
       height: 112px
+      background: url(../images/logo.png) no-repeat
       margin:
         top: 20px
         left: 30px
-      background: url(../images/logo.png) no-repeat
     ul
       float: left
       margin-top: 35px
@@ -195,3 +195,40 @@ ul.tabs
       &:hover, &.active
         background: #FFCC33 
         color: black
+// Logs
+.log_list
+  float: left
+  margin: 20px
+  width: 800px
+  li
+    padding-top: 10px
+    padding-bottom: 10px
+    float: left
+    clear: left
+    width: 100%
+    border-bottom: 1px solid #ccc
+    span.date
+      color: #858585
+      font-size: 1.2em
+      float: left
+    p
+      font-size: 1.4em
+      float: left
+      clear: left
+      padding-top: 10px
+    span.level
+      float: left
+      width: 50px
+      height: 15px
+      color: white
+      font-size: 1.2em
+      margin-right: 10px
+      text-align: center
+      &.notset
+        background: #eee
+      &.warning
+        background: red
+      &.info
+        background: green
+      &.debug
+        background: #FFCC33
