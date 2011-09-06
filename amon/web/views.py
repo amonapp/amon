@@ -171,6 +171,24 @@ class Settings(Base):
 					  current_page=self.current_page
 					  )
 
+class Exceptions(Base):
+	
+	def __init__(self):
+		super(Exceptions, self).__init__()
+		self.current_page = 'exceptions'
+
+	@cherrypy.expose
+	def index(self):
+		
+		row = self.mongo.get_collection('exceptions') 
+		
+		exceptions = row.find().sort('time', DESCENDING)
+
+		return render(name='exceptions.html',
+					  exceptions=exceptions,
+					  current_page=self.current_page
+					  )
+
 
 class Logs(Base):
 

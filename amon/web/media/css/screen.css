@@ -138,7 +138,7 @@ body .right table.info .tbody td {
   color: #656565;
 }
 body .right .status {
-  width: 100px;
+  width: 10px;
 }
 body .right .status span {
   width: 18px;
@@ -291,12 +291,12 @@ ul.tabs li a:hover, ul.tabs li a.active {
   color: black;
 }
 
-.log_list {
+.log_list, .exceptions_list {
   float: left;
   margin: 20px;
   width: 800px;
 }
-.log_list li {
+.log_list li, .exceptions_list li {
   padding-top: 10px;
   padding-bottom: 10px;
   float: left;
@@ -304,18 +304,18 @@ ul.tabs li a:hover, ul.tabs li a.active {
   width: 100%;
   border-bottom: 1px solid #cccccc;
 }
-.log_list li span.date {
+.log_list li span.date, .exceptions_list li span.date {
   color: #858585;
   font-size: 1.2em;
   float: left;
 }
-.log_list li p {
+.log_list li p, .exceptions_list li p {
   font-size: 1.4em;
   float: left;
   clear: left;
   padding-top: 10px;
 }
-.log_list li span.level {
+.log_list li span.level, .exceptions_list li span.level {
   float: left;
   width: 50px;
   height: 15px;
@@ -324,15 +324,34 @@ ul.tabs li a:hover, ul.tabs li a.active {
   margin-right: 10px;
   text-align: center;
 }
-.log_list li span.level.notset {
+.log_list li span.level.notset, .exceptions_list li span.level.notset {
   background: #eeeeee;
 }
-.log_list li span.level.warning {
+.log_list li span.level.warning, .exceptions_list li span.level.warning {
   background: red;
 }
-.log_list li span.level.info {
+.log_list li span.level.info, .exceptions_list li span.level.info {
   background: green;
 }
-.log_list li span.level.debug {
+.log_list li span.level.debug, .exceptions_list li span.level.debug {
   background: #ffcc33;
+}
+
+.exceptions_list p.backtrace span {
+  float: left;
+  clear: left;
+  width: 100%;
+  padding-top: 2px;
+  color: #464646;
+}
+.exceptions_list ul.exception_data li {
+  border: 0px;
+}
+.exceptions_list ul.exception_data li span.label {
+  font-size: 1.4em;
+  width: 80px;
+}
+.exceptions_list ul.exception_data li span.data {
+  font-size: 1.4em;
+  margin-left: 6px;
 }

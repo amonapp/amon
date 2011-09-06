@@ -72,7 +72,7 @@ body
           font-size: 1.4em
           color: #656565 
     .status
-      width: 100px
+      width: 10px
       span
         width: 18px
         height: 18px
@@ -232,3 +232,22 @@ ul.tabs
         background: green
       &.debug
         background: #FFCC33
+// Exceptions 
+.exceptions_list
+  @extend .log_list
+  p.backtrace
+    span
+      float: left
+      clear: left
+      width: 100%
+      padding-top: 2px
+      color: #464646
+  ul.exception_data
+    li
+      border: 0px
+      span.label
+        font-size: 1.4em
+        width: 80px
+      span.data
+        font-size: 1.4em
+        margin-left: 6px

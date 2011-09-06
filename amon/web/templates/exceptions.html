@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+	Exceptions
+{% endblock %}
+{% block content %}
+<ul class="exceptions_list">
+	{% for exc in exceptions  %}
+	<li>
+		<span class="date">{{ exc.time|date }}</span>
+		<ul class='exception_data'>
+			{% if exc.url %}
+			<li>
+				<span class="label">URL</span>
+				<span class="data">{{ exc.url }}</span>
+			</li>
+			{% endif %}
+			{% if exc.exception_class  %}
+			<li>
+				<span class="label">Exception class</span>
+				<span class="data">{{ exc.exception_class }}</span>
+			</li>
+			{% endif %}
+			{% if exc.data %}
+			<li>
+			<span class="label">Additional data</span>
+			{%- for item in exc.data recursive %}
+				{{ item }}
+				{%- if item.children -%}
+					<ul class="submenu">{{ loop(item.children) }}</ul>
+				{%- endif %}</li>
+			{%- endfor %}
+			</li>
+			{% endif %}
+		</ul>
+		<p class='backtrace'>{% for line in exc.backtrace %}
+				<span >{{ line }}</span>
+			{% endfor %}
+		</p>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}
