@@ -5,23 +5,26 @@ Amon - developer friendly system monitoring and logging tool
 Introduction
 =============
 
-Amon tries to solve two very common problems for web application developers:
+Amon was designed with one goal in mind - to help you completely monitor
+your web applications. 
 
 
 **1. System monitoring**
 
-
 When we deploy our web applications it's important to know how much 
 server resources they use over time, so that we can improve and optimize them.
-On other hand installing a sophisticated server monitoring application looks
-like overkill, if your app is not that big and probably lives on a single server.
-This is where Amon comes in - it is a very small python application with simple web
-interface and you can have it up and running in less than 10 minutes. 
+With Amon you can monitor your CPU usage, RAM, average load, network interfaces 
+and disk drives.
+
+**2. Process monitoring**
+
+Monitoring the whole system gives you a nice overview, but sometimes you need to 
+monitor specific processes, like your database or server.
+
+**3. Language agnostic logging**
 
 
-**2. Language agnostic logging**
-
-
+**4. Language agnostic exception handling**
 
 
 
