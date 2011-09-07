@@ -209,7 +209,7 @@ ul.tabs
     border-bottom: 1px solid #ccc
     span.date
       color: #858585
-      font-size: 1.2em
+      font-size: 1.4em
       float: left
     p
       font-size: 1.4em
@@ -219,13 +219,13 @@ ul.tabs
     span.level
       float: left
       width: 50px
-      height: 15px
       color: white
-      font-size: 1.2em
+      font-size: 1.4em
       margin-right: 10px
+      padding: 3px
       text-align: center
       &.notset
-        background: #eee
+        background: #ccc
       &.warning
         background: red
       &.info
@@ -236,18 +236,43 @@ ul.tabs
 .exceptions_list
   @extend .log_list
   p.backtrace
+    background: #eee
+    padding: 7px
     span
       float: left
       clear: left
       width: 100%
-      padding-top: 2px
+      padding-top: 4px
       color: #464646
   ul.exception_data
     li
       border: 0px
       span.label
-        font-size: 1.4em
-        width: 80px
+        font-size: 1.6em
+        width: 120px
+        float: left
+        clear: left
+        font-weight: bold
       span.data
-        font-size: 1.4em
+        font-size: 1.6em
+        float: left
         margin-left: 6px
+  span.additional_key
+    float: left
+    clear: left
+    font-size: 1.6em
+    margin:
+      top: 5px
+      bottom: 5px
+  span.additional_key_inner
+    float: left
+    margin-left: 8px
+    padding-top: 3px
+    clear: left
+    font-size: 1.4em
+    font-weight: bold
+  span.additional_value_inner
+    float: left
+    margin-left: 6px
+    padding-top: 3px
+    font-size: 1.4em

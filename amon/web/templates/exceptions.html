@@ -8,35 +8,42 @@
 	<li>
 		<span class="date">{{ exc.time|date }}</span>
 		<ul class='exception_data'>
+			{% if exc.exception_class  %}
+			<li>
+				<span class="label">Exception:</span>
+				<span class="data">{{ exc.exception_class }}</span>
+			</li>
+			{% endif %}	
 			{% if exc.url %}
 			<li>
-				<span class="label">URL</span>
+				<span class="label">URL:</span>
 				<span class="data">{{ exc.url }}</span>
 			</li>
 			{% endif %}
-			{% if exc.exception_class  %}
+
+			{% if exc.backtrace %}
 			<li>
-				<span class="label">Exception class</span>
-				<span class="data">{{ exc.exception_class }}</span>
-			</li>
+				<p class='backtrace'>
+				{% for line in exc.backtrace %}
+					<span >{{ line }}</span>
+				{% endfor %}
+				</p>
+			</li>	
 			{% endif %}
 			{% if exc.data %}
 			<li>
-			<span class="label">Additional data</span>
-			{%- for item in exc.data recursive %}
-				{{ item }}
-				{%- if item.children -%}
-					<ul class="submenu">{{ loop(item.children) }}</ul>
-				{%- endif %}</li>
-			{%- endfor %}
+			<span class="label">Additional data:</span>
+			{% for key, value in exc.data.iteritems() %}
+			<span class='additional_key'>{{ key }}</span>
+			{% for k,v in value.iteritems() %}
+			<span class='additional_key_inner'>{{ k }}:</span>
+			<span class='additional_value_inner'>{{ v }}</span>
+			{% endfor %}
+			{% endfor %}
 			</li>
 			{% endif %}
 		</ul>
-		<p class='backtrace'>{% for line in exc.backtrace %}
-				<span >{{ line }}</span>
-			{% endfor %}
-		</p>
-	</li>
+		</li>
 	{% endfor %}
 </ul>
 {% endblock %}
