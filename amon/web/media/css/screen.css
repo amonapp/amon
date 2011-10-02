@@ -1,5 +1,5 @@
 html, body, div, span, applet, object, iframe,
-h1, h2, body .right h3, h3, h4, h5, h6, p, blockquote, pre,
+h1, h2, .right h3, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -64,154 +64,155 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background: url(../images/sidebar.png) repeat-y;
 }
-body .wrapper {
+
+.wrapper {
   width: 100%;
   height: 100%;
   margin: 0 auto;
 }
-body .wrapright {
+
+.wrapright {
   float: left;
   height: 100%;
   width: 100%;
-  background-color: #ffcc33;
 }
-body .right {
-  margin-left: 168px;
+
+.right {
+  margin-left: 154px;
   background-color: white;
   height: 100%;
   min-height: 100%;
+  width: 820px;
 }
-body .right .breadcrumb {
+.right .breadcrumb {
   float: left;
   width: 100%;
-  height: 45px;
-  background: url(../images/breadcrumb.png) repeat-x;
 }
-body .right .breadcrumb h1 {
+.right .breadcrumb h1 {
   float: left;
-  font-size: 2em;
-  color: #2b3239;
-  padding-top: 12px;
+  font-size: 3.6em;
+  font-weight: bold;
+  color: #d2d2d2;
+  padding-top: 20px;
   padding-left: 20px;
+  padding-bottom: 20px;
 }
-body .right h2, body .right h3 {
+.right h2, .right h3 {
   float: left;
-  font-size: 2.2em;
+  font-size: 3em;
   clear: left;
   margin: 25px;
-  margin-bottom: 10px;
-  color: #2b3239;
+  margin-bottom: 20px;
+  color: #727272;
 }
-body .right h3 {
+.right h3 {
   font-size: 2em;
   color: #858585;
 }
-body .right table.info {
+.right table.info {
   float: left;
   width: 800px;
   clear: left;
   margin-left: 30px;
 }
-body .right table.info .thead {
+.right table.info .thead {
   background: url(../images/table_heading.png) repeat-x;
 }
-body .right table.info .thead td {
+.right table.info .thead td {
   font-size: 1.4em;
   color: #b4b4b4;
   padding-top: 10px;
   padding-bottom: 15px;
 }
-body .right table.info .thead td.status {
+.right table.info .thead td.status {
   padding-left: 10px;
 }
-body .right table.info .tbody {
+.right table.info .tbody {
   margin-top: 20px;
 }
-body .right table.info .tbody.odd {
+.right table.info .tbody.odd {
   background: #f1f1f0;
 }
-body .right table.info .tbody td {
+.right table.info .tbody td {
   margin: 10px;
   padding: 8px;
   padding-left: 0px;
   font-size: 1.4em;
   color: #656565;
 }
-body .right .status {
+.right .status {
   width: 10px;
 }
-body .right .status span {
+.right .status span {
   width: 18px;
   height: 18px;
   float: left;
   margin-left: 20px;
   background: url(../images/status_icons.png) no-repeat;
 }
-body .right .status .ok {
+.right .status .ok {
   background-position: 0px -36px;
 }
-body .right .status .warning {
+.right .status .warning {
   background-position: 0px -18px;
 }
-body .right .overview {
+.right .overview {
   width: 80px;
+  font-weight: bold;
 }
-body .right .check {
+.right .check {
   width: 150px;
 }
-body .left {
+
+.left {
   float: left;
-  width: 168px;
+  width: 154px;
   margin-left: -100%;
   background: url(../images/sidebar.png) repeat-y;
   z-index: 9999;
   height: 100%;
   min-height: 100%;
 }
-body .left .logo {
+.left .logo {
   float: left;
-  width: 92px;
-  height: 112px;
+  width: 99px;
+  height: 104px;
   background: url(../images/logo.png) no-repeat;
   margin-top: 20px;
-  margin-left: 30px;
+  margin-left: 25px;
 }
-body .left ul {
+.left ul {
   float: left;
   margin-top: 35px;
 }
-body .left ul li {
+.left ul li {
   float: left;
   clear: left;
-  margin-bottom: 8px;
 }
-body .left ul li a.top {
-  width: 117px;
+.left ul li a.top {
+  outline: none;
+  width: 120px;
   padding: 10px;
   padding-top: 8px;
-  padding-bottom: 12px;
-  padding-left: 10px;
-  padding-right: 50px;
+  padding-bottom: 10px;
+  padding-right: 22px;
   float: Left;
   text-align: right;
   color: #a5aabf;
   font-size: 1.6em;
   text-decoration: none;
-  background: url(../images/inactive_page.png) no-repeat;
 }
-body .left ul li a.top:hover, body .left ul li a.top.active {
-  background: url(../images/active_page.png) no-repeat;
-  color: #2c2c34;
-  padding-top: 16px;
-  margin-top: -8px;
+.left ul li a.top:hover, .left ul li a.top.active {
+  background: url(../images/active_button.png) repeat-x;
+  color: white;
 }
-body .left ul ul {
+.left ul ul {
   float: left;
 }
-body .left ul ul li {
+.left ul ul li {
   float: left;
 }
-body .left ul ul li a {
+.left ul ul li a {
   color: red;
 }
 
@@ -220,6 +221,7 @@ body .left ul ul li a {
   width: 800px;
   height: 250px;
   margin-left: 25px;
+  margin-bottom: 30px;
   clear: left;
 }
 
@@ -234,21 +236,20 @@ body .left ul ul li a {
 }
 
 .legend {
-  float: left;
-  clear: left;
-  margin-top: 10px;
-  width: 800px;
-}
-.legend ul {
-  text-align: center;
-  position: relative;
-  margin: 0 auto;
+  float: right;
+  margin-top: 38px;
 }
 .legend ul li {
-  margin-top: 13px;
+  float: left;
 }
 .legend ul li span.color {
   width: 12px;
+  -moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -o-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -khtml-border-radius: 25px;
+  border-radius: 25px;
   height: 12px;
   margin-bottom: -1px;
   margin-right: 6px;
@@ -265,18 +266,26 @@ body .left ul ul li a {
 .legend ul li span {
   text-align: left;
   font-size: 1.3em;
-  width: 100px;
   display: inline-block;
+  margin-right: 30px;
   color: #858585;
+}
+.legend ul li span.last {
+  margin-right: 0px;
 }
 
 ul.tabs {
   margin: 20px;
-  margin-top: 30px;
   float: left;
 }
 ul.tabs li {
   float: left;
+  margin-right: 20px;
+}
+ul.tabs li label {
+  float: left;
+  font-size: 1.6em;
+  margin-bottom: 4px;
 }
 ul.tabs li a {
   background: #2c2d35;
@@ -289,6 +298,19 @@ ul.tabs li a {
 ul.tabs li a:hover, ul.tabs li a.active {
   background: #ffcc33;
   color: black;
+}
+ul.tabs li input[type=text] {
+  clear: both;
+  float: left;
+  width: 200px;
+  height: 25px;
+  padding: 4px;
+  font-size: 1.6em;
+  color: #727272;
+}
+ul.tabs li input[type=submit] {
+  margin-top: 25px;
+  float: left;
 }
 
 .log_list, .exceptions_list {

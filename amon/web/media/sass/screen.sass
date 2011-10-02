@@ -8,139 +8,137 @@ body
   height: 100%
   font-family: Arial, Helvetica, sans-serif
   background: url(../images/sidebar.png) repeat-y
-  .wrapper
-    width: 100%
-    height: 100%
-    margin: 0 auto
-  .wrapright
+.wrapper
+  width: 100%
+  height: 100%
+  margin: 0 auto
+.wrapright
+  float: left
+  height: 100%
+  width: 100%
+.right
+  margin-left: 154px
+  background-color: white
+  height: 100%
+  min-height: 100%
+  width: 820px
+  .breadcrumb
     float: left
-    height: 100%
     width: 100%
-    background-color: #ffcc33
-  .right
-    margin-left: 168px
-    background-color: white
-    height: 100%
-    min-height: 100%
-    .breadcrumb
+    h1
       float: left
-      width: 100%
-      height: 45px
-      background: url(../images/breadcrumb.png) repeat-x
-      h1
-        float: left
-        font-size: 2em
-        color:  #2b3239
-        padding:
-          top: 12px
-          left: 20px
-    h2
-      float: left
-      font-size: 2.2em
-      clear: left
-      margin: 25px
-        bottom: 10px
-      color: #2b3239 
-    h3
-      @extend h2
-      font-size: 2em
-      color: #858585
-    table.info
-      float: left
-      width: 800px
-      clear: left
-      margin-left: 30px
-      td
-      .thead
-        background: url(../images/table_heading.png) repeat-x 
-        td
-          font-size: 1.4em
-          color:  #b4b4b4
-          padding:
-            top: 10px
-            bottom: 15px
-          &.status
-            padding-left: 10px
-      .tbody
-        margin-top: 20px
-        &.odd
-          background: #F1F1F0 
-        td
-          margin: 10px
-          padding: 8px
-            left: 0px
-          font-size: 1.4em
-          color: #656565 
-    .status
-      width: 10px
-      span
-        width: 18px
-        height: 18px
-        float: left
-        margin-left: 20px
-        background: url(../images/status_icons.png) no-repeat
-      .ok
-        background-position: 0px -36px
-      .warning
-        background-position: 0px -18px
-    .overview
-      width: 80px
-    .check
-      width: 150px
-  .left
-    float: left
-    width: 168px
-    margin-left: -100%
-    background: url(../images/sidebar.png) repeat-y
-    z-index: 9999
-    height: 100%
-    min-height: 100%
-    .logo
-      float: left
-      width: 92px
-      height: 112px
-      background: url(../images/logo.png) no-repeat
-      margin:
+      font-size: 3.6em
+      font-weight: bold
+      color: #D2D2D2 
+      padding:
         top: 20px
-        left: 30px
+        left: 20px
+        bottom: 20px
+  // Used in charts
+  h2
+    float: left
+    font-size: 3em
+    clear: left
+    margin: 25px
+      bottom: 20px
+    color: #727272 
+  h3
+    @extend h2
+    font-size: 2em
+    color: #858585
+  table.info
+    float: left
+    width: 800px
+    clear: left
+    margin-left: 30px
+    td
+    .thead
+      background: url(../images/table_heading.png) repeat-x 
+      td
+        font-size: 1.4em
+        color:  #b4b4b4
+        padding:
+          top: 10px
+          bottom: 15px
+        &.status
+          padding-left: 10px
+    .tbody
+      margin-top: 20px
+      &.odd
+        background: #F1F1F0 
+      td
+        margin: 10px
+        padding: 8px
+          left: 0px
+        font-size: 1.4em
+        color: #656565 
+  .status
+    width: 10px
+    span
+      width: 18px
+      height: 18px
+      float: left
+      margin-left: 20px
+      background: url(../images/status_icons.png) no-repeat
+    .ok
+      background-position: 0px -36px
+    .warning
+      background-position: 0px -18px
+  .overview
+    width: 80px
+    font-weight: bold
+  .check
+    width: 150px
+.left
+  float: left
+  width: 154px
+  margin-left: -100%
+  background: url(../images/sidebar.png) repeat-y
+  z-index: 9999
+  height: 100%
+  min-height: 100%
+  .logo
+    float: left
+    width: 99px
+    height: 104px
+    background: url(../images/logo.png) no-repeat
+    margin:
+      top: 20px
+      left: 25px
+  ul
+    float: left
+    margin-top: 35px
+    li
+      float: left
+      clear: left
+      a.top
+        outline: none
+        width: 120px
+        padding: 10px
+          top: 8px
+          bottom: 10px
+          right: 22px
+        float: Left
+        text-align: right
+        color:  #A5AABF
+        font-size: 1.6em
+        text-decoration: none
+        &:hover, &.active
+          background: url(../images/active_button.png) repeat-x
+          color: white
     ul
       float: left
-      margin-top: 35px
       li
         float: left
-        clear: left
-        margin-bottom: 8px
-        a.top
-          width: 117px
-          padding: 10px
-            top: 8px
-            bottom: 12px
-            left: 10px
-            right: 50px
-          float: Left
-          text-align: right
-          color:  #A5AABF
-          font-size: 1.6em
-          text-decoration: none
-          background: url(../images/inactive_page.png) no-repeat
-          &:hover, &.active
-            background: url(../images/active_page.png) no-repeat
-            color: #2C2C34
-            padding-top: 16px
-            margin-top: -8px
-      ul
-        float: left
-        li
-          float: left
-          a
-            color: red
-
+        a
+          color: red
 // Charts
 .chart
   float: left
   width: 800px
   height: 250px
   margin-left: 25px
+  margin-bottom: 30px
   clear: left
 #tooltip
   position: absolute
@@ -151,18 +149,14 @@ body
   opacity: 0.80
   font-size: 1.4em
 .legend
-  float: left
-  clear: left
-  margin-top: 10px
-  width: 800px
+  float: right
+  margin-top: 38px
   ul
-    text-align: center
-    position: relative
-    margin: 0 auto
     li
-      margin-top: 13px
+      float: left
       span.color
         width: 12px
+        +border-radius(25px)
         height: 12px
         margin-bottom: -1px
         margin-right: 6px
@@ -175,16 +169,22 @@ body
       span
         text-align: left
         font-size: 1.3em
-        width: 100px
         display: inline-block
+        margin-right: 30px
         color: #858585
-// yellow-black tab bar
+        &.last
+          margin-right: 0px
+// date fields
 ul.tabs
   margin: 20px
-    top: 30px
   float: left
   li
     float: left
+    margin-right: 20px
+    label
+      float: left
+      font-size: 1.6em
+      margin-bottom: 4px
     a
       background:  #2C2D35
       margin-right: 1px
@@ -195,6 +195,17 @@ ul.tabs
       &:hover, &.active
         background: #FFCC33 
         color: black
+    input[type=text]
+      clear: both
+      float: left
+      width: 200px
+      height: 25px
+      padding: 4px
+      font-size: 1.6em
+      color: #727272 
+    input[type=submit]
+      margin-top: 25px
+      float: left
 // Logs
 .log_list
   float: left

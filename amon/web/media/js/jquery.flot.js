@@ -50,7 +50,7 @@
                     container: null, // container (as jQuery object) to put legend in, null means default on top of graph
                     position: "sw", // position of default legend container within plot
                     margin: 5, // distance from grid edge to default legend container within plot
-                    backgroundColor: null, // null means auto-detect
+                    backgroundColor: "#FBFBFB", // null means auto-detect
                     backgroundOpacity: 0 // set to 0 to avoid background
                 },
                 xaxis: {
@@ -112,16 +112,16 @@
                         align: "left", // or "center" 
                         horizontal: false
                     },
-                    shadowSize: 3
+                    shadowSize: 1
                 },
                 grid: {
                     show: true,
                     aboveData: false,
 					color: "#858585",// primary color used for outline and labels
-                    backgroundColor: null, // null for transparent, else color
-                    borderColor: null, // set if different from the grid color
-                    tickColor: null, // color for the ticks, e.g. "rgba(0,0,0,0.15)"
-                    labelMargin: 5, // in pixels
+                    backgroundColor: '#FBFBFB', // null for transparent, else color
+                    borderColor: '#F0F0F0', // set if different from the grid color
+                    tickColor: '#eee', // color for the ticks, e.g. "rgba(0,0,0,0.15)"
+                    labelMargin: 10, // in pixels
                     axisMargin: 8, // in pixels
                     borderWidth: 1, // in pixels
                     minBorderMargin: null, // in pixels, null means taken from points radius

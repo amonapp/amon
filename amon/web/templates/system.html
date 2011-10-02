@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block breadcrumb %}
-System check ({{ date_from|date }} / {{ date_to|date }})
+System check 
 {% endblock %}
 {% block content %}
 <ul class='tabs'>
 	<li>
+		<label for="">From:</label>
 		<input type="text" name='date_from' id="date_from" value="{{ date_from|date }}" />
 	</li>
 	<li>
+		<label for="">To:</label>
 		<input type="text" name='date_to' id="date_to" value='{{ date_to|date }}' />
 	</li>
 	<li>
@@ -15,46 +17,42 @@ System check ({{ date_from|date }} / {{ date_to|date }})
 	</li>
 </ul>
 <h2>Memory</h2>
-<div class="chart" id="memory"></div>
 <div class='legend'>
-		<ul>
-			<li>
-				<span class="color one"></span>
-				<span>Total memory</span>
-			</li>
-			<li>
-			<span class="color two"><!-- --></span>
-				<span>Free memory</span>
-			</li>
-		</ul>
+	<ul>
+		<li>
+			<span class="color one"></span>
+			<span>Total memory</span>
+		</li>
+		<li>
+		<span class="color two"><!-- --></span>
+			<span class='last'>Free memory</span>
+		</li>
+	</ul>
 </div>
+<div class="chart" id="memory"></div>
 
 <h2>Loadavg</h2>
-<div class="chart" id="loadavg"></div>
 <div class='legend'>
-
-		<ul>
-			<li>
-				<span class="color one"></span>
-				<span>1 minute</span>
-			</li>
-			<li>
-			<span class="color two"><!-- --></span>
-				<span>5 minutes</span>
-			</li>
-			<li>
-				<span class="color three"><!-- --></span>
-				<span>15 minutes</span>
-			</li>
-		</ul>
+	<ul>
+		<li>
+			<span class="color one"></span>
+			<span>1 minute</span>
+		</li>
+		<li>
+		<span class="color two"><!-- --></span>
+			<span>5 minutes</span>
+		</li>
+		<li>
+			<span class="color three"><!-- --></span>
+			<span class='last'>15 minutes</span>
+		</li>
+	</ul>
 </div>
+<div class="chart" id="loadavg"></div>
 
 
 <h2>CPU</h2>
-<div class="chart" id="cpu"></div>
-
 <div class='legend'>
-
 		<ul>
 			<li>
 				<span class="color one"></span>
@@ -66,19 +64,20 @@ System check ({{ date_from|date }} / {{ date_to|date }})
 			</li>
 			<li>
 				<span class="color three"><!-- --></span>
-				<span>User</span>
+				<span class='last'>User</span>
 			</li>
 		</ul>
 </div>
+
+<div class="chart" id="cpu"></div>
+
 
 
 <h2>Network</h2>
 {% for interface in network_interfaces %}
 {% if interface != 'lo' %}
 	<h3>{{ interface }}</h3>
-	<div class="chart" id="network_{{ interface }}"></div>
 	<div class='legend'>
-
 		<ul>
 			<li>
 				<span class="color one"></span>
@@ -86,19 +85,18 @@ System check ({{ date_from|date }} / {{ date_to|date }})
 			</li>
 			<li>
 			<span class="color two"><!-- --></span>
-				<span>Transfered</span>
+				<span class='last'>Transfered</span>
 			</li>
 		</ul>
 	</div>
+	<div class="chart" id="network_{{ interface }}"></div>
 {% endif %}
 {% endfor %}
 
 <h2>Disk</h2>
 {% for volume in volumes  %}
 	<h3>{{ volume }}</h3>
-	<div class="chart" id="disk_{{ volume }}"></div>
 	<div class='legend'>
-
 		<ul>
 			<li>
 				<span class="color one"></span>
@@ -106,11 +104,12 @@ System check ({{ date_from|date }} / {{ date_to|date }})
 			</li>
 			<li>
 			<span class="color two"><!-- --></span>
-				<span>Free</span>
+				<span class='last'>Free</span>
 			</li>
 		</ul>
 	</div>
-{% endfor %}
+	<div class="chart" id="disk_{{ volume }}"></div>
+	{% endfor %}
 
 {% endblock %}
 {% block js %}
