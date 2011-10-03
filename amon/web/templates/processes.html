@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% block title %}
+Processes check
+{% endblock %}
 {% block breadcrumb %}
-Process check 
+Processes check 
 {% endblock %}
 {% block content %}
 <form action=".">
@@ -14,31 +17,25 @@ Process check
 		<input type="text" name='date_to' id="date_to" value="{{ date_to|date }}" />
 	</li>
 	<li>
-	<input type="submit" value="Go" />
+	<input type="submit" value="Update" />
 	</li>
 </ul>
 </form>
-
 {% for process in processes  %}
 <h2>{{ process }}</h2>
 <div class='legend'>
 		<ul>
 			<li>
 				<span class="color one"></span>
-				<span class='last'>CPU</span>
+				<span >CPU</span>
 			</li>
-		</ul>
-</div>
-<div class="chart" id="{{ process }}_cpu"></div>
-
-<div class='legend'>
-		<ul>
 			<li>
 				<span class="color two"></span>
 				<span class='last'>Memory</span>
 			</li>
 		</ul>
 </div>
+<div class="chart" id="{{ process }}_cpu"></div>
 <div class="chart" id="{{ process }}_memory"></div>
 {% endfor %}
 
@@ -82,7 +79,8 @@ var datetime_options = {
 	dateFormat: 'dd-mm-yy',  
 	timeFormat: 'hh:mm',
 	hourGrid: 4,
-	minuteGrid: 10
+	minuteGrid: 10,
+	maxDate: new Date()
 
 };
 $('#date_from').datetimepicker(datetime_options);

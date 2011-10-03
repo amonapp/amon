@@ -1,8 +1,12 @@
 {% extends "base.html" %}
+{% block title %}
+System check
+{% endblock %}
 {% block breadcrumb %}
 System check 
 {% endblock %}
 {% block content %}
+<form action=".">
 <ul class='tabs'>
 	<li>
 		<label for="">From:</label>
@@ -13,9 +17,10 @@ System check
 		<input type="text" name='date_to' id="date_to" value='{{ date_to|date }}' />
 	</li>
 	<li>
-	<input type="submit" value="Get" />
+	<input type="submit" value="Update" />
 	</li>
 </ul>
+</form>
 <h2>Memory</h2>
 <div class='legend'>
 	<ul>
@@ -240,7 +245,8 @@ var datetime_options = {
 	dateFormat: 'dd-mm-yy',  
 	timeFormat: 'hh:mm',
 	hourGrid: 4,
-	minuteGrid: 10
+	minuteGrid: 10,
+	maxDate: new Date()
 
 };
 $('#date_from').datetimepicker(datetime_options);

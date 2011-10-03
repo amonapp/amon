@@ -276,16 +276,20 @@ body {
 
 ul.tabs {
   margin: 20px;
+  margin-right: 0px;
   float: left;
 }
 ul.tabs li {
   float: left;
   margin-right: 20px;
 }
+ul.tabs li:last-child {
+  margin-right: 0px;
+}
 ul.tabs li label {
   float: left;
   font-size: 1.6em;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 ul.tabs li a {
   background: #2c2d35;
@@ -302,15 +306,49 @@ ul.tabs li a:hover, ul.tabs li a.active {
 ul.tabs li input[type=text] {
   clear: both;
   float: left;
-  width: 200px;
+  width: 320px;
   height: 25px;
   padding: 4px;
   font-size: 1.6em;
+  border: 1px solid #d2d2d2;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
   color: #727272;
 }
+ul.tabs li input[type=text]:focus {
+  border: 1px solid #7ab317;
+  -moz-box-shadow: #deecc5 0px 0px 6px;
+  -webkit-box-shadow: #deecc5 0px 0px 6px;
+  -o-box-shadow: #deecc5 0px 0px 6px;
+  box-shadow: #deecc5 0px 0px 6px;
+}
 ul.tabs li input[type=submit] {
-  margin-top: 25px;
+  margin-top: 20px;
+  background: #deecc5;
+  border: 1px solid white;
+  font-weight: bold;
+  height: 37px;
+  padding-bottom: 5px;
+  padding-left: 18px;
+  padding-right: 18px;
+  cursor: pointer;
+  color: #7ab317;
   float: left;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+}
+ul.tabs li input[type=submit]:hover {
+  background: #7ab317;
+  color: white;
+  border: 1px solid #7ab317;
 }
 
 .log_list, .exceptions_list {
