@@ -444,3 +444,87 @@ ul.tabs li input[type=submit]:hover {
   padding-top: 3px;
   font-size: 1.4em;
 }
+
+ul.stats_bars {
+  float: left;
+  clear: left;
+  margin-left: 25px;
+  margin-bottom: 20px;
+}
+ul.stats_bars li {
+  float: left;
+  clear: left;
+  margin-bottom: 15px;
+}
+ul.stats_bars li.with_labels {
+  margin-top: 20px;
+}
+ul.stats_bars li.with_labels div.container .progress {
+  top: -14px;
+}
+ul.stats_bars li.with_labels div.container .data {
+  top: -35px;
+}
+ul.stats_bars li h3 {
+  float: left;
+  width: 100px;
+  margin: 0px;
+  margin-top: 6px;
+  margin-right: 20px;
+  text-align: right;
+}
+ul.stats_bars li div.container {
+  float: left;
+  width: 500px;
+  height: 30px;
+  background: #fbfbfb;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+}
+ul.stats_bars li div.container.medium {
+  width: 245px;
+  margin-right: 10px;
+}
+ul.stats_bars li div.container.medium.last {
+  margin-right: 0px;
+}
+ul.stats_bars li div.container.medium .data {
+  width: 245px;
+}
+ul.stats_bars li div.container .progress {
+  width: 100px;
+  display: block;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  height: 30px;
+  background: url(../images/green_bar.png);
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+}
+ul.stats_bars li div.container .data {
+  position: relative;
+  width: 500px;
+  text-align: center;
+  top: -22px;
+  display: block;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #181922;
+}
+ul.stats_bars li div.container .label {
+  position: relative;
+  top: -20px;
+  left: 0px;
+  font-size: 1.4em;
+  color: #797979;
+}

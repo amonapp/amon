@@ -3,8 +3,42 @@
 {% block title %}Dashboard{% endblock %}
 {% block breadcrumb %}Dashboard {% endblock %}
 {% block content %}
-<h2>Last check -  {{ last_check.memory.time|date }} </h2>
+<h2>System</h2>
+<ul class='stats_bars'>
+	<li>
+		<h3>CPU</h3>
+		{% set cpu = last_check.cpu.system + last_check.cpu.user %}
+		<div class="container">
+			<span class="progress" style='width:{{ cpu|progress_width(100) }};'></span>
+			<span class="data">{{ cpu }}%</span>
+		</div>
+	</li>
+	<li>
+		<h3>Loadavg</h3>
+		<div class="container">
+			<span class="progress"></span>
+			<span class="data">4%</span>
+		</div>
+	</li>
+	<li class='with_labels'>
+		<h3>Memory</h3>
+		<div class="container medium">
+			<span class='label'>RAM</span>
+			<span class="progress" style='width: {{ last_check.memory.memfree|progress_width(last_check.memory.memtotal, 'medium') }}'>
+			</span>
+			<span class="data">{{ last_check.memory.memfree }} of {{ last_check.memory.memtotal }}</span>
+		</div>
+		<div class="container medium last">
+			<span class='label'>Swap</span>
+			<span class="progress"></span>
+			<span class="data">4%</span>
+		</div>
+	</li>
+
+
+</ul>
 {% if last_check %}
+
 
 <table class='info'>
 		<tr class="thead">
@@ -25,7 +59,8 @@
 				cpu
 			</td>
 			<td class="details">
-				idle: {{ last_check.cpu.idle }}%
+				idle: {% set cpu = last_check.cpu.system + last_check.cpu.user %}
+				{{ cpu|progress_width(100, 'medium') }}
 				&nbsp;
 				user: {{ last_check.cpu.user }}% 
 				&nbsp;

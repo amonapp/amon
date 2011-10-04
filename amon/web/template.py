@@ -87,12 +87,25 @@ def to_int(value):
 
 	return _int
 
+def progress_width(value, total, container_type='full'):
+	
+	if container_type == 'full': 
+		container_width = 500
+	else:
+		container_width = 245
+	
+	percentage = float(value)/float(total) * 100
+	progress_width = container_width/100 * percentage
+
+	return '{0}px'.format(int(progress_width))
+
 def render(*args, **kwargs):
 		
 	env.filters['time'] = timeformat
 	env.filters['date'] = dateformat
 	env.filters['to_int'] =  to_int
 	env.filters['time_in_words'] = time_in_words 
+	env.filters['progress_width'] = progress_width
 
 	if 'name' in kwargs:
 		template = env.get_template(kwargs['name'])

@@ -1,6 +1,5 @@
 @import "compass/reset"
 @import "compass/css3"
-
 html
   height: 100%
 body
@@ -309,3 +308,67 @@ ul.tabs
     margin-left: 6px
     padding-top: 3px
     font-size: 1.4em
+// Dashboard
+$medium_bar: 245px
+$full_bar: 500px
+ul.stats_bars
+  float: left
+  clear: left
+  margin-left: 25px
+  margin-bottom: 20px
+  li
+    float: left
+    clear: left
+    margin-bottom: 15px
+    &.with_labels
+      margin-top: 20px
+      div.container
+        .progress
+          top: -14px
+        .data
+          top: -35px
+    h3
+      float: left
+      width: 100px
+      margin: 0px
+        top: 6px
+        right: 20px
+      text-align: right
+    div.container
+      float: left
+      width: $full_bar
+      height: 30px
+      background: #FBFBFB 
+      +border-radius(6px)
+      border: 1px solid #F0F0F0 
+      &.medium
+        width: $medium_bar
+        margin-right: 10px
+        &.last
+          margin-right: 0px
+        .data
+          width: $medium_bar
+      .progress
+        width: 100px
+        display: block
+        position: relative
+        top: 0px
+        left: 0px
+        height: 30px
+        background: url(../images/green_bar.png)
+        +border-radius(6px)
+      .data
+        position: relative
+        width: $full_bar
+        text-align: center
+        top: -22px
+        display: block
+        font-size: 1.4em
+        font-weight: bold
+        color: #181922  
+      .label
+        position: relative
+        top: -20px
+        left: 0px
+        font-size: 1.4em
+        color: #797979 
