@@ -258,7 +258,7 @@ body {
   background: #00adfc;
 }
 .legend ul li span.color.two {
-  background: #25ca20;
+  background: #7ab317;
 }
 .legend ul li span.color.three {
   background: #8000a9;
@@ -445,6 +445,13 @@ ul.tabs li input[type=submit]:hover {
   font-size: 1.4em;
 }
 
+.timestamp {
+  float: left;
+  font-size: 1.4em;
+  margin-top: 8px;
+  color: #727272;
+}
+
 ul.stats_bars {
   float: left;
   clear: left;
@@ -496,6 +503,16 @@ ul.stats_bars li div.container.medium.last {
 ul.stats_bars li div.container.medium .data {
   width: 245px;
 }
+ul.stats_bars li div.container.small {
+  width: 160px;
+  margin-right: 10px;
+}
+ul.stats_bars li div.container.small.last {
+  margin-right: 0px;
+}
+ul.stats_bars li div.container.small .data {
+  width: 160px;
+}
 ul.stats_bars li div.container .progress {
   width: 100px;
   display: block;
@@ -519,7 +536,7 @@ ul.stats_bars li div.container .data {
   display: block;
   font-size: 1.4em;
   font-weight: bold;
-  color: #181922;
+  color: #727272;
 }
 ul.stats_bars li div.container .label {
   position: relative;

@@ -25,19 +25,33 @@ class Dashboard(Base):
 	def index(self):
 		
 		last_check = {}
-		active_checks = settings.SYSTEM_CHECKS
+		process_check = {}
+		active_system_checks = settings.SYSTEM_CHECKS
+		active_process_checks = settings.PROCESS_CHECKS
+		
+		# Get the first element from the settings - used for the last check date in the template
+		system_check_first = active_system_checks[0]
+		process_check_first = active_process_checks[0]
 
 		try:
-			for check in active_checks:
+			for check in active_system_checks:
 				row = self.mongo.get_collection(check)
 				last_check[check] = row.find(limit=1).sort('time', DESCENDING)[0]
 		except Exception, e:
 			last_check = False
 			raise e
 
+		for check in active_process_checks:
+			row = self.mongo.get_collection(check)
+			process_check[check] = row.find(limit=1).sort('time', DESCENDING)[0]
+
+
 		return render(name="dashboard.html",
 					current_page='dashboard',
-					last_check=last_check
+					last_check=last_check,
+					process_check=process_check,
+					system_check_first=system_check_first,
+					process_check_first=process_check_first
 					)
 
 class System(Base):

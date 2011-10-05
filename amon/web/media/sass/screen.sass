@@ -162,7 +162,7 @@ body
         &.one
           background: #00ADFC
         &.two
-          background: #25CA20
+          background: #7AB317 
         &.three
           background: #8000A9
       span
@@ -309,8 +309,14 @@ ul.tabs
     padding-top: 3px
     font-size: 1.4em
 // Dashboard
+$small_bar: 160px
 $medium_bar: 245px
 $full_bar: 500px
+.timestamp
+  float: left
+  font-size: 1.4em
+  margin-top: 8px
+  color: #727272
 ul.stats_bars
   float: left
   clear: left
@@ -348,6 +354,13 @@ ul.stats_bars
           margin-right: 0px
         .data
           width: $medium_bar
+      &.small
+        width: $small_bar
+        margin-right: 10px
+        &.last
+          margin-right: 0px
+        .data
+          width: $small_bar
       .progress
         width: 100px
         display: block
@@ -365,7 +378,8 @@ ul.stats_bars
         display: block
         font-size: 1.4em
         font-weight: bold
-        color: #181922  
+        //color: #181922 
+        color: #727272
       .label
         position: relative
         top: -20px

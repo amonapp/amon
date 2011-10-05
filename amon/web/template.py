@@ -2,6 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 from settings import TEMPLATES_DIR
 from datetime import datetime, time
 import re
+import string
 
 
 env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
@@ -87,12 +88,31 @@ def to_int(value):
 
 	return _int
 
+# Removes the letters from a string
+def clean_string(var):
+	whitelist = string.digits + string.punctuation
+	new_string = ''
+	if not isinstance(var, int) and not isinstance(var, float):
+		for char in var:
+			if char in whitelist:
+				new_string += char
+	else:
+		return var
+
+	return new_string
+
+
 def progress_width(value, total, container_type='full'):
 	
 	if container_type == 'full': 
 		container_width = 500
-	else:
+	elif container_type == 'medium':
 		container_width = 245
+	else:
+		container_width = 145
+
+	value = clean_string(value)
+	total = clean_string(total)
 	
 	percentage = float(value)/float(total) * 100
 	progress_width = container_width/100 * percentage

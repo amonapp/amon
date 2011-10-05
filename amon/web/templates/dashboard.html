@@ -3,8 +3,13 @@
 {% block title %}Dashboard{% endblock %}
 {% block breadcrumb %}Dashboard {% endblock %}
 {% block content %}
+{% if last_check %}
 <h2>System</h2>
 <ul class='stats_bars'>
+	<li>
+		<h3>Last check</h3>
+		<span class="timestamp">{{ last_check[system_check_first].time }}</span>
+	</li>
 	<li>
 		<h3>CPU</h3>
 		{% set cpu = last_check.cpu.system + last_check.cpu.user %}
@@ -13,120 +18,83 @@
 			<span class="data">{{ cpu }}%</span>
 		</div>
 	</li>
-	<li>
+	<li class='with_labels'>
 		<h3>Loadavg</h3>
-		<div class="container">
-			<span class="progress"></span>
-			<span class="data">4%</span>
+		{% set loadavg_max = 1 * 1.15 %}
+		<div class="container small">
+			<span class="label">1 minute</span>
+			<span class="progress" style='width: {{ last_check.loadavg.minute|progress_width(loadavg_max, 'small') }}'></span>
+			<span class="data">{{ last_check.loadavg.minute }}</span>
+		</div>
+		<div class="container small">
+			<span class="label">5 minutes</span>
+			<span class="progress" style='width: {{ last_check.loadavg.five_minutes|progress_width(loadavg_max, 'small') }}'></span>
+			<span class="data">{{ last_check.loadavg.five_minutes }}</span>
+		</div>
+		<div class="container small">
+			<span class="label">15 minutes</span>
+			<span class="progress" style='width: {{ last_check.loadavg.fifteen_minutes|progress_width(loadavg_max, 'small') }}'></span>
+			<span class="data">{{ last_check.loadavg.fifteen_minutes }}</span>
 		</div>
 	</li>
 	<li class='with_labels'>
 		<h3>Memory</h3>
 		<div class="container medium">
+			{% set total_ram = last_check.memory.memtotal %}
 			<span class='label'>RAM</span>
 			<span class="progress" style='width: {{ last_check.memory.memfree|progress_width(last_check.memory.memtotal, 'medium') }}'>
 			</span>
-			<span class="data">{{ last_check.memory.memfree }} of {{ last_check.memory.memtotal }}</span>
+			<span class="data">{{ last_check.memory.memfree }} of {{ last_check.memory.memtotal }}MB</span>
 		</div>
 		<div class="container medium last">
+			{% set swap_free = last_check.memory.swaptotal - last_check.memory.swapfree %}
 			<span class='label'>Swap</span>
-			<span class="progress"></span>
-			<span class="data">4%</span>
+			<span class="progress" style='width: {{ swap_free|progress_width(last_check.memory.swaptotal, 'medium') }}'></span>
+			<span class="data">{{ swap_free }} of {{ last_check.memory.swaptotal }}MB</span>
 		</div>
 	</li>
-
-
+	<li class='with_labels'>
+		<h3>Disks</h3>
+		{% for volume  in last_check.disk %}
+		{% if volume != '_id' and volume != 'time' %}
+		<div class="container medium">
+			<span class='label'>{{ volume }}</span>
+			<span class="progress" style='width: {{ last_check.disk[volume].free|progress_width(last_check.disk[volume].total, 'medium') }}'>
+			</span>
+			<span class="data">{{ last_check.disk[volume].free }} of {{ last_check.disk[volume].total }}</span>
+		</div>
+		{% endif %}
+	{% endfor %}
+	</li>
 </ul>
-{% if last_check %}
-
-
-<table class='info'>
-		<tr class="thead">
-			<td class="status">
-			</td>
-			<td  class="overview">
-				overview
-			</td>
-			<td class="details">
-				details
-			</td>
-		</tr>
-		<tr class="tbody">
-			<td class="status">
-							<!--<span class="ok"></span>-->
-			</td>
-			<td class="overview">
-				cpu
-			</td>
-			<td class="details">
-				idle: {% set cpu = last_check.cpu.system + last_check.cpu.user %}
-				{{ cpu|progress_width(100, 'medium') }}
-				&nbsp;
-				user: {{ last_check.cpu.user }}% 
-				&nbsp;
-				system: {{ last_check.cpu.system }}%
-			</td>
-		
-		</tr>
-		<tr class="tbody odd">
-			<td class="status">
-				<!--<span class="ok"></span>-->
-			</td>
-			<td class="overview">
-				loadavg
-			</td>
-			<td class="details">
-				1 minute: {{ last_check.loadavg.minute }}
-				&nbsp;
-				5 minutes: {{ last_check.loadavg.five_minutes }} 
-				&nbsp;
-				15 minutes: {{ last_check.loadavg.fifteen_minutes }}
-			</td>
-		</tr>
-
-		<tr class="tbody">
-			<td class="status">
-				<!--<span class="warning"></span>-->
-			</td>
-			<td class="overview">
-				memory
-			</td>
-			<td class="details">
-				total: {{ last_check.memory.memtotal }}MB
-				&nbsp;
-				free: {{ last_check.memory.memfree }}MB 
-				&nbsp;
-				swap: {{ last_check.memory.swaptotal }}MB
-				&nbsp;
-				swap free: {{ last_check.memory.swapfree }}MB
-			</td>
-		
-		</tr>
-		<tr class="tbody odd">
-			<td class="status">
-				<!--<span class="ok"></span>-->
-			</td>
-			<td class="overview">
-				disk
-			</td>
-			<td class="details">
-				{% for volume  in last_check.disk %}
-					{% if volume != '_id' and volume != 'time' %}
-					volume: {{ volume }}
-					&nbsp;
-					total: {{ last_check.disk[volume].total }}
-					&nbsp;
-					used: {{ last_check.disk[volume].used }}
-					&nbsp;
-					free: {{ last_check.disk[volume].free }}
-					{% endif %}
-				{% endfor %}
-			</td>
-		
-		</tr>
-{% else %}
-<div class="message">
-</div>
 {% endif %}
-</table>
+<h2>Processes</h2>
+<ul class='stats_bars'>
+	<li>
+		<h3>Last check</h3>
+		<span class="timestamp">{{ process_check[process_check_first].time }}</span>
+	</li>
+{% for process in process_check %}
+	<li class='with_labels'>
+		<h3>{{ process }}</h3>
+		<div class="container medium">
+			<span class="label">CPU</span>
+			<span class="progress" style='width: {{ process_check[process].cpu|progress_width(100, 'medium') }}'></span>
+			<span class="data">{{ process_check[process].cpu }}</span>
+		</div>
+		<div class="container medium last">
+			<span class="label">Memory</span>
+			<span class="progress" style='width:{{ process_check[process].memory|progress_width(total_ram, 'medium') }}'></span>
+			<span class="data">{{ process_check[process].memory }} of {{ total_ram }} MB</span>
+		
+		</div>
+		</li>
+
+{% endfor %}
+</ul>
 {% endblock %}
+{% block js %}
+<script type="text/javascript">
+	$('.timestamp').relativeDate();
+</script>
+{% endblock js %}
