@@ -1,7 +1,8 @@
 import traceback
 import sys
 from django.core.urlresolvers import resolve
-from amon.api import exception
+import requests
+from django.conf import settings
 import json
 
 class AmonMiddleware(object):
@@ -12,9 +13,13 @@ class AmonMiddleware(object):
 
 		_exception.update(self.exception_info(exc, sys.exc_info()[2]))	
 		_exception['data'] = self.request_info(request) # Additional data 
-		
-		exception(json.dumps(_exception))
 
+		data = json.dumps(_exception)
+		url = settings.AMON + '/api/exception'
+		headers = {"Content-type": "application/json"}
+
+		r = requests.post(url, data, headers=headers)
+	
 
 	def exception_class(self, exception):
 		"""Return a name representing the class of an exception."""
