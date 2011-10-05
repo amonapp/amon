@@ -357,17 +357,30 @@ ul.tabs li input[type=submit]:hover {
   width: 800px;
 }
 .log_list li, .exceptions_list li {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 40px;
   float: left;
   clear: left;
-  width: 100%;
-  border-bottom: 1px solid #cccccc;
+  width: 800px;
+}
+.log_list li .heading, .exceptions_list li .heading {
+  float: left;
+  width: 800px;
+  height: 30px;
+  background: #fbfbfb;
+  border: 1px solid #f0f0f0;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
 }
 .log_list li span.date, .exceptions_list li span.date {
   color: #858585;
   font-size: 1.4em;
   float: left;
+  margin-top: 9px;
+  margin-left: 8px;
 }
 .log_list li p, .exceptions_list li p {
   font-size: 1.4em;
@@ -376,25 +389,40 @@ ul.tabs li input[type=submit]:hover {
   padding-top: 10px;
 }
 .log_list li span.level, .exceptions_list li span.level {
-  float: left;
-  width: 50px;
+  float: right;
+  height: 14px;
+  width: 60px;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -o-border-top-right-radius: 4px;
+  -ms-border-top-right-radius: 4px;
+  -khtml-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  -o-border-bottom-right-radius: 4px;
+  -ms-border-bottom-right-radius: 4px;
+  -khtml-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
   color: white;
+  font-weight: bold;
   font-size: 1.4em;
-  margin-right: 10px;
-  padding: 3px;
+  padding: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
   text-align: center;
 }
 .log_list li span.level.notset, .exceptions_list li span.level.notset {
-  background: #cccccc;
+  background: url(../images/grey_bar.png);
 }
 .log_list li span.level.warning, .exceptions_list li span.level.warning {
-  background: red;
+  background: url(../images/red_bar.png);
 }
 .log_list li span.level.info, .exceptions_list li span.level.info {
-  background: green;
+  background: url(../images/green_bar.png);
 }
 .log_list li span.level.debug, .exceptions_list li span.level.debug {
-  background: #ffcc33;
+  background: url(../images/yellow_bar.png);
 }
 
 .exceptions_list p.backtrace {

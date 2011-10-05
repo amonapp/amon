@@ -228,42 +228,55 @@ ul.tabs
         color: white
         border: 1px solid #7AB317 
 // Logs
+$log_width: 800px
 .log_list
   float: left
   margin: 20px
-  width: 800px
+  width: $log_width
   li
-    padding-top: 10px
-    padding-bottom: 10px
+    padding-bottom: 40px
     float: left
     clear: left
-    width: 100%
-    border-bottom: 1px solid #ccc
+    width: $log_width
+    .heading
+      float: left
+      width: $log_width
+      height: 30px
+      background: #FBFBFB
+      border: 1px solid #F0F0F0
+      +border-radius(6px)
     span.date
       color: #858585
       font-size: 1.4em
       float: left
+      margin:
+        top: 9px
+        left: 8px
     p
       font-size: 1.4em
       float: left
       clear: left
       padding-top: 10px
     span.level
-      float: left
-      width: 50px
+      float: right
+      height: 14px
+      width: 60px
+      +border-right-radius(4px)
       color: white
+      font-weight: bold
       font-size: 1.4em
-      margin-right: 10px
-      padding: 3px
+      padding: 8px
+        left: 10px
+        right: 10px
       text-align: center
       &.notset
-        background: #ccc
+        background: url(../images/grey_bar.png)
       &.warning
-        background: red
+        background: url(../images/red_bar.png)
       &.info
-        background: green
+        background: url(../images/green_bar.png)
       &.debug
-        background: #FFCC33
+        background: url(../images/yellow_bar.png)
 // Exceptions 
 .exceptions_list
   @extend .log_list

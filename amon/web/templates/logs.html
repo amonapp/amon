@@ -6,12 +6,19 @@ Logs
 <ul class='log_list'>
 	{% for log in logs  %}
 	<li>
-	<span class='level {{ log.level }}'>{{ log.level }}</span>
-	<span class='date'>{{ log.time|date }}</span>
+	<div class="heading">
+		<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
+		<span class='level {{ log.level }}'>{{ log.level }}</span>
+	</div>
 	<p>
 		{{ log.message }}
 	</p>
 	</li>
 	{% endfor %}
 </ul>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+	$('.timestamp').relativeDate();
+</script>
 {% endblock %}

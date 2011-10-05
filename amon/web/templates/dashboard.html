@@ -8,7 +8,9 @@
 <ul class='stats_bars'>
 	<li>
 		<h3>Last check</h3>
-		<span class="timestamp">{{ last_check[system_check_first].time }}</span>
+		<span class="timestamp" title="{{ last_check[system_check_first].time|date }}">
+			{{ last_check[system_check_first].time }}
+		</span>
 	</li>
 	<li>
 		<h3>CPU</h3>
@@ -72,7 +74,9 @@
 <ul class='stats_bars'>
 	<li>
 		<h3>Last check</h3>
-		<span class="timestamp">{{ process_check[process_check_first].time }}</span>
+		<span class="timestamp" title='{{ process_check[process_check_first].time|date }}'>
+			{{ process_check[process_check_first].time }}
+		</span>
 	</li>
 {% for process in process_check %}
 	<li class='with_labels'>
