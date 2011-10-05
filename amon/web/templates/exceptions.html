@@ -2,25 +2,26 @@
 {% block breadcrumb %}
 	Exceptions
 {% endblock %}
+{% block title %}
+Exceptions
+{% endblock %}
 {% block content %}
 <ul class="exceptions_list">
 	{% for exc in exceptions  %}
 	<li>
-		<span class="date">{{ exc.time|date }}</span>
-		<ul class='exception_data'>
+		<div class="heading">
+		<span class="date timestamp">{{ exc.time }}</span>
+		<span class="exception">
 			{% if exc.exception_class  %}
-			<li>
-				<span class="label">Exception:</span>
-				<span class="data">{{ exc.exception_class }}</span>
-			</li>
-			{% endif %}	
-			{% if exc.url %}
-			<li>
-				<span class="label">URL:</span>
-				<span class="data">{{ exc.url }}</span>
-			</li>
+				{{ exc.exception_class }} at
 			{% endif %}
-
+			{% if exc.url %}
+				{{ exc.url }}
+			{% endif %}
+		</span>
+		<a href="" class="collapse"></a>
+		</div>
+		<ul class='exception_data'>
 			{% if exc.backtrace %}
 			<li>
 				<p class='backtrace'>
@@ -46,4 +47,10 @@
 		</li>
 	{% endfor %}
 </ul>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+	$('.timestamp').relativeDate();
+</script>
+
 {% endblock %}

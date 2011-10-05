@@ -280,9 +280,28 @@ $log_width: 800px
 // Exceptions 
 .exceptions_list
   @extend .log_list
+  div.heading
+    height: 55px
+    span.exception
+      float: left
+      clear: left
+      font-size: 1.4em
+      padding:
+        left: 8px
+        top: 10px
+    a.collapse
+      width: 32px
+      height: 32px
+      background: url(../images/collapse.png) no-repeat
+      margin:
+        right: 10px
+        top: -8px
+      float: right
   p.backtrace
     background: #eee
     padding: 7px
+    margin-left: 5px
+    margin-top: 2px
     span
       float: left
       clear: left

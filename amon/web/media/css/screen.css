@@ -425,9 +425,29 @@ ul.tabs li input[type=submit]:hover {
   background: url(../images/yellow_bar.png);
 }
 
+.exceptions_list div.heading {
+  height: 55px;
+}
+.exceptions_list div.heading span.exception {
+  float: left;
+  clear: left;
+  font-size: 1.4em;
+  padding-left: 8px;
+  padding-top: 10px;
+}
+.exceptions_list div.heading a.collapse {
+  width: 32px;
+  height: 32px;
+  background: url(../images/collapse.png) no-repeat;
+  margin-right: 10px;
+  margin-top: -8px;
+  float: right;
+}
 .exceptions_list p.backtrace {
   background: #eeeeee;
   padding: 7px;
+  margin-left: 5px;
+  margin-top: 2px;
 }
 .exceptions_list p.backtrace span {
   float: left;
