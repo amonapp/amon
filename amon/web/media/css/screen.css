@@ -1,5 +1,5 @@
 html, body, div, span, applet, object, iframe,
-h1, h2, .right h3, h3, h4, h5, h6, p, blockquote, pre,
+h1, h2, .right h3, .right h4, h3, .right h4, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -97,7 +97,7 @@ body {
   padding-left: 20px;
   padding-bottom: 20px;
 }
-.right h2, .right h3 {
+.right h2, .right h3, .right h4 {
   float: left;
   font-size: 3em;
   clear: left;
@@ -105,9 +105,15 @@ body {
   margin-bottom: 20px;
   color: #727272;
 }
-.right h3 {
+.right h3, .right h4 {
   font-size: 2em;
   color: #858585;
+}
+.right h4 {
+  font-size: 1.8em;
+  margin-left: 0px;
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 .right table.info {
   float: left;
@@ -425,8 +431,38 @@ ul.tabs li input[type=submit]:hover {
   background: url(../images/yellow_bar.png);
 }
 
+.exceptions_list li {
+  padding-bottom: 10px;
+}
 .exceptions_list div.heading {
   height: 55px;
+  -moz-border-radius-bottomleft: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  -o-border-bottom-left-radius: 0px;
+  -ms-border-bottom-left-radius: 0px;
+  -khtml-border-bottom-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  -moz-border-radius-bottomright: 0px;
+  -webkit-border-bottom-right-radius: 0px;
+  -o-border-bottom-right-radius: 0px;
+  -ms-border-bottom-right-radius: 0px;
+  -khtml-border-bottom-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.exceptions_list div.heading span.occurrences {
+  float: left;
+  width: 45px;
+  height: 40px;
+  background: url(../images/exception_counter.png) no-repeat;
+  margin: 8px;
+  text-align: center;
+  line-height: 3em;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.exceptions_list div.heading div.exception_info {
+  float: left;
+  width: 735px;
 }
 .exceptions_list div.heading span.exception {
   float: left;
@@ -440,11 +476,10 @@ ul.tabs li input[type=submit]:hover {
   height: 32px;
   background: url(../images/collapse.png) no-repeat;
   margin-right: 10px;
-  margin-top: -8px;
+  margin-top: -4px;
   float: right;
 }
 .exceptions_list p.backtrace {
-  background: #eeeeee;
   padding: 7px;
   margin-left: 5px;
   margin-top: 2px;
@@ -455,6 +490,10 @@ ul.tabs li input[type=submit]:hover {
   width: 100%;
   padding-top: 4px;
   color: #464646;
+}
+.exceptions_list ul.exception_data {
+  margin-top: 1px;
+  float: left;
 }
 .exceptions_list ul.exception_data li {
   border: 0px;
@@ -520,7 +559,7 @@ ul.stats_bars li.with_labels div.container .progress {
 ul.stats_bars li.with_labels div.container .data {
   top: -35px;
 }
-ul.stats_bars li h3 {
+ul.stats_bars li h3, ul.stats_bars li .right h4, .right ul.stats_bars li h4 {
   float: left;
   width: 100px;
   margin: 0px;

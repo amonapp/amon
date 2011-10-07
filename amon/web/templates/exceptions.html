@@ -10,20 +10,27 @@ Exceptions
 	{% for exc in exceptions  %}
 	<li>
 		<div class="heading">
-		<span class="date timestamp">{{ exc.time }}</span>
-		<span class="exception">
-			{% if exc.exception_class  %}
-				{{ exc.exception_class }} at
-			{% endif %}
-			{% if exc.url %}
-				{{ exc.url }}
-			{% endif %}
-		</span>
-		<a href="" class="collapse"></a>
+			<span class="occurrences" title='Total occurrences'>
+				{{ exc.total_occurrences }}
+			</span>
+			<div class="exception_info">
+				<span class="date timestamp" title='{{ exc.last_occurrence|date }}'>{{ exc.last_occurrence }}</span>
+					<span class="exception">
+					{% if exc.exception_class  %}
+						{{ exc.exception_class }} at
+					{% endif %}
+					{% if exc.url %}
+						{{ exc.url }}
+					{% endif %}
+				</span>
+				<a href="" class="collapse" title='Expand'></a>
+			</div>
 		</div>
 		<ul class='exception_data'>
+			
 			{% if exc.backtrace %}
 			<li>
+				<h4>Backtrace:</h4>
 				<p class='backtrace'>
 				{% for line in exc.backtrace %}
 					<span >{{ line }}</span>
@@ -31,18 +38,21 @@ Exceptions
 				</p>
 			</li>	
 			{% endif %}
-			{% if exc.data %}
-			<li>
-			<span class="label">Additional data:</span>
-			{% for key, value in exc.data.iteritems() %}
-			<span class='additional_key'>{{ key }}</span>
-			{% for k,v in value.iteritems() %}
-			<span class='additional_key_inner'>{{ k }}:</span>
-			<span class='additional_value_inner'>{{ v }}</span>
-			{% endfor %}
-			{% endfor %}
-			</li>
+	
+			{% if exc.additional_data %}
+				<h4>Additional data:</h4>
+				{% for key, value in exc.additional_data.0.iteritems() %}
+					<li>
+						{% if value and key != 'occurrence' %}
+							<span class='additional_key'>{{ key }}</span>
+							{% for k in value.iteritems() recursive %}
+								<span class='additional_key_inner'>{{ k }}:</span>
+							{% endfor %}
+						{% endif %}
+					</li>
+				{% endfor %}
 			{% endif %}
+
 		</ul>
 		</li>
 	{% endfor %}

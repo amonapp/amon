@@ -45,6 +45,13 @@ body
     @extend h2
     font-size: 2em
     color: #858585
+  h4
+    @extend h3
+    font-size: 1.8em
+    margin:
+      left: 0px
+      top: 15px
+      bottom: 5px
   table.info
     float: left
     width: 800px
@@ -280,8 +287,24 @@ $log_width: 800px
 // Exceptions 
 .exceptions_list
   @extend .log_list
+  li
+    padding-bottom: 10px
   div.heading
     height: 55px
+    +border-bottom-radius(0px)
+    span.occurrences
+      float: left
+      width: 45px
+      height: 40px
+      background: url(../images/exception_counter.png) no-repeat
+      margin: 8px
+      text-align: center
+      line-height: 3em
+      font-size: 1.4em
+      font-weight: bold
+    div.exception_info
+      float: left
+      width: $log_width - 65px
     span.exception
       float: left
       clear: left
@@ -295,10 +318,9 @@ $log_width: 800px
       background: url(../images/collapse.png) no-repeat
       margin:
         right: 10px
-        top: -8px
+        top: -4px
       float: right
   p.backtrace
-    background: #eee
     padding: 7px
     margin-left: 5px
     margin-top: 2px
@@ -309,6 +331,8 @@ $log_width: 800px
       padding-top: 4px
       color: #464646
   ul.exception_data
+    margin-top: 1px
+    float: left
     li
       border: 0px
       span.label
