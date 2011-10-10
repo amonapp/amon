@@ -211,16 +211,27 @@ class Logs(Base):
 		self.current_page = 'logs'
 
 	@cherrypy.expose
-	def index(self):
+	def index(self, *args, **kwargs):
+
+		filter = kwargs.get('filter', {})
+		# If there is only one parameter - convert it to list
+		if isinstance(filter, unicode):
+			filter = [filter]
+		if filter:
+			filter_params = [{'level': x} for x in filter]
+			filter_query = {"$or" : filter_params}
+		else:
+			filter_query = {}
 
 
 		row = self.mongo.get_collection('logs') 
 		
-		logs = row.find().sort('time', DESCENDING)
+		logs = row.find(filter_query).sort('time', DESCENDING)
  
 		return render(name='logs.html',
 					 current_page=self.current_page,
-					 logs=logs
+					 logs=logs,
+					 filter=filter
 					 )
 
 

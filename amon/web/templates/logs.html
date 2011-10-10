@@ -7,24 +7,26 @@ Logs
 Logs 
 {% endblock %}
 {% block filter %}
+<form action="." method='get' id='logs_filter_form'>
 <ul class='logs_filter'>
 	<li>
-		<input type="checkbox" /> 
+		<input type="checkbox" name='filter' value='notset' {% if 'notset' in filter %} checked {% endif %}/> 
 		<span class='notset'>notset</span>
 	</li>
 	<li>
-		<input type="checkbox" /> 
+		<input type="checkbox" name='filter' value='info' {% if 'info' in filter %} checked {% endif %}/> 
 		<span class='info'>info</span>
 	</li>
 	<li>
-		<input type="checkbox" /> 
+		<input type="checkbox" name='filter' value='warning' {% if 'warning' in filter %} checked {% endif %}/> 
 		<span class='warning'>warning</span>
 	</li>
 	<li>
-		<input type="checkbox" />
+		<input type="checkbox" name='filter' value='debug' {% if 'debug' in filter %} checked {% endif %}/>
 		<span class='debug'>debug</span>
 	</li>
 </ul>
+</form>
 {% endblock filter %}
 {% block content %}
 <ul class='log_list'>
@@ -44,5 +46,10 @@ Logs
 {% block js %}
 <script type="text/javascript">
 	$('.timestamp').relativeDate();
+	$("input[name='filter']").click(function()
+	{
+		$('#logs_filter_form').submit();
+	
+	});
 </script>
 {% endblock js %}
