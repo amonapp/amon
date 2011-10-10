@@ -27,7 +27,6 @@ Exceptions
 			</div>
 		</div>
 		<ul class='exception_data'>
-			
 			{% if exc.backtrace %}
 			<li>
 				<h4>Backtrace:</h4>
@@ -38,22 +37,13 @@ Exceptions
 				</p>
 			</li>	
 			{% endif %}
-	
-			{% if exc.additional_data %}
-				<h4>Additional data:</h4>
-				{% for key, value in exc.additional_data.0.iteritems() %}
-					<li>
-						{% if value and key != 'occurrence' %}
-							<span class='additional_key'>{{ key }}</span>
-							{% for k in value.iteritems() recursive %}
-								<span class='additional_key_inner'>{{ k }}:</span>
-							{% endfor %}
-						{% endif %}
-					</li>
-				{% endfor %}
-			{% endif %}
-
 		</ul>
+		{% if exc.additional_data %}
+		<ul class='exception_data'>
+			<h4>Additional data:</h4>
+			{{ exc.additional_data.0|exceptions_dict }}
+		</ul>
+		{% endif %}
 		</li>
 	{% endfor %}
 </ul>

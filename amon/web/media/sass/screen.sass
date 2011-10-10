@@ -345,21 +345,26 @@ $log_width: 800px
         font-size: 1.6em
         float: left
         margin-left: 6px
-  span.additional_key
+    ul
+      float: left
+      padding-left: 10px
+      &.level-0
+        padding-left: 0px
+  span.key
     float: left
     clear: left
     font-size: 1.6em
     margin:
       top: 5px
       bottom: 5px
-  span.additional_key_inner
+  span.key_inner
     float: left
     margin-left: 8px
     padding-top: 3px
     clear: left
     font-size: 1.4em
     font-weight: bold
-  span.additional_value_inner
+  span.value_inner
     float: left
     margin-left: 6px
     padding-top: 3px
@@ -434,6 +439,7 @@ ul.stats_bars
         display: block
         font-size: 1.4em
         font-weight: bold
+        +text-shadow(rgba(white, .2) 1px 1px 0, rgba(white, .2) 1px 1px 0, rgba(white, .2) 1px 1px 0)
         //color: #181922 
         color: #727272
       .label

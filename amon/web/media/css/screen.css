@@ -510,14 +510,21 @@ ul.tabs li input[type=submit]:hover {
   float: left;
   margin-left: 6px;
 }
-.exceptions_list span.additional_key {
+.exceptions_list ul.exception_data ul {
+  float: left;
+  padding-left: 10px;
+}
+.exceptions_list ul.exception_data ul.level-0 {
+  padding-left: 0px;
+}
+.exceptions_list span.key {
   float: left;
   clear: left;
   font-size: 1.6em;
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.exceptions_list span.additional_key_inner {
+.exceptions_list span.key_inner {
   float: left;
   margin-left: 8px;
   padding-top: 3px;
@@ -525,7 +532,7 @@ ul.tabs li input[type=submit]:hover {
   font-size: 1.4em;
   font-weight: bold;
 }
-.exceptions_list span.additional_value_inner {
+.exceptions_list span.value_inner {
   float: left;
   margin-left: 6px;
   padding-top: 3px;
@@ -623,6 +630,7 @@ ul.stats_bars li div.container .data {
   display: block;
   font-size: 1.4em;
   font-weight: bold;
+  text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0, rgba(255, 255, 255, 0.2) 1px 1px 0, rgba(255, 255, 255, 0.2) 1px 1px 0;
   color: #727272;
 }
 ul.stats_bars li div.container .label {
