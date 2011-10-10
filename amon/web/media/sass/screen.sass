@@ -235,6 +235,26 @@ ul.tabs
         color: white
         border: 1px solid #7AB317 
 // Logs
+.logs_filter
+  margin-top: 25px
+  float: right
+  li
+    float: left
+    font-size: 1.4em
+    margin-left: 20px
+    line-height: 1.6em
+    input[type=checkbox]
+      margin-top: 5px
+      margin-right: 5px
+      float: left
+    span.notset
+      color: #D2D2D2 
+    span.info
+      color: #92C142 
+    span.debug
+      color: #F1B602
+    span.warning
+      color: #FF0000 
 $log_width: 800px
 .log_list
   float: left
@@ -440,8 +460,7 @@ ul.stats_bars
         font-size: 1.4em
         font-weight: bold
         +text-shadow(rgba(white, .2) 1px 1px 0, rgba(white, .2) 1px 1px 0, rgba(white, .2) 1px 1px 0)
-        //color: #181922 
-        color: #727272
+        color: #2B3239 
       .label
         position: relative
         top: -20px

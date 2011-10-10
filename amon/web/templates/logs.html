@@ -1,10 +1,31 @@
 {% extends "base.html" %}
+{% block title %}
+Logs 
+{% endblock %}
+
 {% block breadcrumb %}
 Logs 
 {% endblock %}
-{% block title %}
-Logs
-{% endblock %}
+{% block filter %}
+<ul class='logs_filter'>
+	<li>
+		<input type="checkbox" /> 
+		<span class='notset'>notset</span>
+	</li>
+	<li>
+		<input type="checkbox" /> 
+		<span class='info'>info</span>
+	</li>
+	<li>
+		<input type="checkbox" /> 
+		<span class='warning'>warning</span>
+	</li>
+	<li>
+		<input type="checkbox" />
+		<span class='debug'>debug</span>
+	</li>
+</ul>
+{% endblock filter %}
 {% block content %}
 <ul class='log_list'>
 	{% for log in logs  %}
@@ -19,9 +40,9 @@ Logs
 	</li>
 	{% endfor %}
 </ul>
-{% endblock %}
+{% endblock content %}
 {% block js %}
 <script type="text/javascript">
 	$('.timestamp').relativeDate();
 </script>
-{% endblock %}
+{% endblock js %}

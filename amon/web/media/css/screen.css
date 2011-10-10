@@ -357,6 +357,34 @@ ul.tabs li input[type=submit]:hover {
   border: 1px solid #7ab317;
 }
 
+.logs_filter {
+  margin-top: 25px;
+  float: right;
+}
+.logs_filter li {
+  float: left;
+  font-size: 1.4em;
+  margin-left: 20px;
+  line-height: 1.6em;
+}
+.logs_filter li input[type=checkbox] {
+  margin-top: 5px;
+  margin-right: 5px;
+  float: left;
+}
+.logs_filter li span.notset {
+  color: #d2d2d2;
+}
+.logs_filter li span.info {
+  color: #92c142;
+}
+.logs_filter li span.debug {
+  color: #f1b602;
+}
+.logs_filter li span.warning {
+  color: red;
+}
+
 .log_list, .exceptions_list {
   float: left;
   margin: 20px;
@@ -631,7 +659,7 @@ ul.stats_bars li div.container .data {
   font-size: 1.4em;
   font-weight: bold;
   text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0, rgba(255, 255, 255, 0.2) 1px 1px 0, rgba(255, 255, 255, 0.2) 1px 1px 0;
-  color: #727272;
+  color: #2b3239;
 }
 ul.stats_bars li div.container .label {
   position: relative;

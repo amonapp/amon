@@ -2,7 +2,6 @@ from time import time
 from amon.backends.mongodb import backend
 import json
 from hashlib import md5
-import amonpy
 
 """
  Exception structure:
@@ -36,7 +35,6 @@ class Exception(object):
 		
 		exception_string = "{0}{1}{2}".format(exception_class, url, backtrace)
 		exception_id = md5(exception_string).hexdigest()
-		amonpy.log(message=exception_id, level='info')
 		
 		
 		additional_data = {'message': message,
