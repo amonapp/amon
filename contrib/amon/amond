@@ -8,7 +8,6 @@ except:
 	print 'Amon is not installed'
 	sys.exit()
 
-
 from amon.system.daemon import Daemon
 from amon.core import settings
 from amon.system.runner import runner
@@ -17,12 +16,10 @@ from amon.backends.mongodb import backend
 PIDFILE = '/var/run/amon.pid'
 LOGFILE = '/var/log/amon.log'
 
-
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
 
 class AmonDaemon(Daemon):
-
 	
 	# Add an empty dictionary on start/end to avoid chart bugs
 	def empty(self):

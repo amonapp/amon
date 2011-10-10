@@ -70,7 +70,7 @@ class MongoBackend():
 
 	def store_entries(self, entries):
 		''' 
-			Dictionary with entries, loops through all of them and saves them to the database
+			List with dictionaries, loops through all of them and saves them to the database
 			Accepted format:
 			{'cpu': {'time': 1313096288, 'idle': 93, 'wait': 0, 'user': 2, 'system': 5}}
 		'''
