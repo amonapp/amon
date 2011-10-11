@@ -43,9 +43,9 @@ class Exception(object):
 						   'occurrence': now}
 
 		exceptions_collection = backend.get_collection(self.collection)
-		exception_in_db = exceptions_collection.find_one({'exception_id': exception_id})
+		exception_in_db = exceptions_collection.find_one({"exception_id" : exception_id})
 
-		if exception_in_db is True:
+		if exception_in_db is not None:
 			exception_in_db['last_occurrence'] = now
 			exception_in_db['additional_data'].insert(0, additional_data)
 
