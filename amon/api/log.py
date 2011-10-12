@@ -1,6 +1,5 @@
 from time import time
 from amon.backends.mongodb import backend
-import json
 
 class Log(object):
 
@@ -9,7 +8,7 @@ class Log(object):
 
 	def __call__(self, *args, **kwargs):
 
-		log_dict = json.loads(args[0])
+		log_dict = args[0]
 
 		try:
 			level = log_dict.get('level')

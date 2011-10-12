@@ -138,7 +138,7 @@ class RecursiveDict(object):
 					self.html += '</li>'
 					self.html += '</ul>'
 			else:
-				if v:
+				if v and k != 'occurrence':
 					self.html += '<li><span class="key_inner">{0}:</span><span class="value_inner">{1}</span></li>'.format(k,v)
 
 

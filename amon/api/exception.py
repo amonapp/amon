@@ -1,6 +1,5 @@
 from time import time
 from amon.backends.mongodb import backend
-import json
 from hashlib import md5
 
 """
@@ -23,7 +22,7 @@ class Exception(object):
 		
 		now = int(time())
 
-		exception_dict = json.loads(args[0])
+		exception_dict = args[0]
 		exception_class = exception_dict.get('exception_class', '')
 		url = exception_dict.get('url', '')
 		backtrace = exception_dict.get('backtrace', '')
@@ -47,7 +46,8 @@ class Exception(object):
 
 		if exception_in_db is not None:
 			exception_in_db['last_occurrence'] = now
-			exception_in_db['additional_data'].insert(0, additional_data)
+			if additional_data:
+				exception_in_db['additional_data'].insert(0, additional_data)
 
 			exceptions_collection.update({'_id' : exception_in_db['_id']}, exception_in_db)
 		else:
@@ -56,7 +56,9 @@ class Exception(object):
 					 'exception_class': exception_class,
 					 'url': url,
 					 'backtrace' : backtrace,
-					 'additional_data': [additional_data]
 					 }
 
+			if additional_data:
+				entry['additional_data'] = [additional_data]
+			
 			backend.store_entry(entry, self.collection)

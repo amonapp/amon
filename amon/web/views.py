@@ -6,7 +6,6 @@ from amon.backends.mongodb import MongoBackend
 from amon.web.utils import (
 		datestring_to_unixtime,
 		datetime_to_unixtime,
-		datestring_to_datetime  	
 		) 
 
 from amon.core import settings
@@ -196,7 +195,7 @@ class Exceptions(Base):
 		
 		row = self.mongo.get_collection('exceptions') 
 		
-		exceptions = row.find().sort('time', DESCENDING)
+		exceptions = row.find().sort('last_occurrence', DESCENDING)
 
 		return render(name='exceptions.html',
 					  exceptions=exceptions,
