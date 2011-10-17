@@ -12,14 +12,14 @@ class TestLoggingApi(unittest.TestCase):
 	def test_log(self):
 		db = backend.get_collection('logs')
 		db.remove()
-		log('{"bar":"baz"}')
+		log({"bar":"baz"})
 		eq_(1, db.count())
 
 
 	def test_log_contents(self):
 		db = backend.get_collection('logs')
 		db.remove()
-		log('{"message":"test"}')
+		log({"message":"test"})
 
 		entry = db.find_one()
 		eq_(entry['message'], 'test')
@@ -31,11 +31,11 @@ class TestLoggingApi(unittest.TestCase):
 		
 		levels = ('warning', 'error', 'info', 'critical', 'debug')
 		
-		log('{"message":"", "level": "warning"}')
-		log('{"message":"", "level": "info"}')
-		log('{"message":"", "level": "debug"}')
-		log('{"message":"", "level": "critical"}')
-		log('{"message":"", "level": "error"}')
+		log({"message":"", "level": "warning"})
+		log({"message":"", "level": "info"})
+		log({"message":"", "level": "debug"})
+		log({"message":"", "level": "critical"})
+		log({"message":"", "level": "error"})
 
 		eq_(5, db.count())
 
@@ -49,9 +49,9 @@ class TestLoggingApi(unittest.TestCase):
 		db.remove()
 
 		
-		log('{"message":"", "level": "dummy_level"}')
-		log('{"message":"", "level": "and_another_one"}')
-		log('{"message":"", "level": "and_even_more"}')
+		log({"message":"", "level": "dummy_level"})
+		log({"message":"", "level": "and_another_one"})
+		log({"message":"", "level": "and_even_more"})
 
 
 		entries = db.find()

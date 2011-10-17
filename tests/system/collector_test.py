@@ -1,4 +1,4 @@
-from amon.system.check import system_info_collector, process_info_collector
+from amon.system.collector import system_info_collector, process_info_collector
 from nose.tools import *
 
 

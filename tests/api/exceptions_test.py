@@ -13,19 +13,19 @@ class TestExceptionApi(unittest.TestCase):
 	def test_exception(self):
 		db = backend.get_collection('exceptions')
 		db.remove()
-		exception('{"bar":"baz"}')
+		exception({"bar":"baz"})
 		eq_(1, db.count())
 
 
 	def test_exception_contents(self):
 		db = backend.get_collection('exceptions')
 		db.remove()
-		exception('{"exception_class":"test",\
+		exception({"exception_class":"test",\
 					"url": "url_test",\
 					"backtrace": "backtrace_test",\
 					"message": "message_test",\
 					"enviroment": "enviroment",\
-					"data":"data"}')
+					"data":"data"})
 
 		entry = db.find_one()
 		eq_(entry['exception_class'], 'test')
@@ -42,9 +42,9 @@ class TestExceptionApi(unittest.TestCase):
 		db = backend.get_collection('exceptions')
 		db.remove()
 
-		exception('{"exception_class":"test",\
+		exception({"exception_class":"test",\
 					"url": "url_test",\
-					"backtrace": "backtrace_test"}')
+					"backtrace": "backtrace_test"})
 
 		exception_string = "{0}{1}{2}".format('test', 'url_test', 'backtrace_test')
 		exception_id = md5(exception_string).hexdigest()
@@ -57,14 +57,14 @@ class TestExceptionApi(unittest.TestCase):
 		db = backend.get_collection('exceptions')
 		db.remove()
 		
-		exception('{"exception_class":"test",\
+		exception({"exception_class":"test",\
 					"url": "url_test",\
 					"backtrace": "backtrace_test",\
-					"data":"data"}')
+					"data":"data"})
 		
-		exception('{"exception_class":"test",\
+		exception({"exception_class":"test",\
 					"url": "url_test",\
 					"backtrace": "backtrace_test",\
-					"data":"more data"}')
+					"data":"more data"})
 
 		eq_(1, db.count())

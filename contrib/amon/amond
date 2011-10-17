@@ -29,6 +29,7 @@ class AmonDaemon(Daemon):
 		except Exception, e:
 			logging.exception('Saving empty system info failed')
 
+	# Executed on stop and restart
 	def __del__(self):
 		self.empty()
 		

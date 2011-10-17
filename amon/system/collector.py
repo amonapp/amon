@@ -123,7 +123,6 @@ class SystemInfoCollector(object):
 	
 system_info_collector = SystemInfoCollector()
 
-# WORK IN PROGRESS
 class ProcessInfoCollector(object):
 
 	def __init__(self):
