@@ -1,0 +1,17 @@
+#!/usr/bin/python
+import cherrypy
+from amon.web.server import root, config
+from cherrypy.process.plugins import Daemonizer, PIDFile
+
+Daemonizer(cherrypy.engine).subscribe()  
+PIDFile(cherrypy.engine, '/tmp/amon.pid').subscribe()
+
+cherrypy.config.update({
+	'engine.autoreload_on': False,
+	'log.screen': False	
+	})
+
+cherrypy.server.socket_port = 2464
+cherrypy.server.socket_host = '127.0.0.1'
+test = cherrypy.quickstart(root, '/', config)
+

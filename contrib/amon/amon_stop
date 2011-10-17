@@ -1,0 +1,7 @@
+#!/usr/bin/python
+import urllib2
+try:
+	urllib2.urlopen('http://127.0.0.1:2464')
+except:
+	pass
+
