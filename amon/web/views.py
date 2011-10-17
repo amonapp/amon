@@ -53,6 +53,11 @@ class Dashboard(Base):
 					process_check_first=process_check_first
 					)
 
+	@cherrypy.expose
+	def exit(self):
+		import sys
+		sys.exit(1)
+
 class System(Base):
 
 	def __init__(self):

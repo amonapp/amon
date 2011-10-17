@@ -13,8 +13,8 @@ from amon.core import settings
 from amon.system.runner import runner
 from amon.backends.mongodb import backend
 
-PIDFILE = '/var/run/amon.pid'
-LOGFILE = '/var/log/amon.log'
+PIDFILE = '/var/run/amond.pid'
+LOGFILE = '/var/log/amond.log'
 
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
