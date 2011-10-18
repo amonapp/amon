@@ -181,9 +181,33 @@ body
         &.last
           margin-right: 0px
 // date fields
+// tabs settings
+ul.tabs_settings
+  margin-left: 20px
+  margin-top: 10px
+  float: left
+  li
+    float: left
+    &.separator
+      float: left
+      width: 20px
+      height: 27px
+      margin:
+        left: 10px
+        right: 10px
+      background: url(../images/tabs_separator.png)
+    a
+      margin-right: 1px
+      color: #D2D2D2 
+      text-decoration: none
+      font-size: 2.8em
+      &:hover, &.active
+        color: #747474 
+
+// tabs
 ul.tabs
-  margin: 20px
-    right: 0px
+  margin-left: 20px
+  margin-top: 10px
   float: left
   li
     float: left
@@ -194,16 +218,6 @@ ul.tabs
       float: left
       font-size: 1.6em
       margin-bottom: 8px
-    a
-      background:  #2C2D35
-      margin-right: 1px
-      color: white
-      text-decoration: none
-      font-size: 1.4em
-      padding: 8px 10px 8px 10px
-      &:hover, &.active
-        background: #FFCC33 
-        color: black
     input[type=text]
       clear: both
       float: left
@@ -218,7 +232,7 @@ ul.tabs
         border: 1px solid #7AB317 
         +box-shadow(#DEECC5 0px 0px 6px) 
     input[type=submit]
-      margin-top: 20px
+      margin-top: 22px
       background: #DEECC5 
       border: 1px solid white
       font-weight: bold
@@ -467,3 +481,33 @@ ul.stats_bars
         left: 0px
         font-size: 1.4em
         color: #797979 
+// Settings
+ul.options_list
+  float: left
+  clear: left
+  margin-left: 20px
+  margin-top: 30px
+  li
+    float: left
+    margin-bottom: 30px
+  span
+    font-size: 1.8em
+    float: left
+    width: 400px
+    margin-top: 10px
+  a
+    font-size: 1.4em
+    text-decoration: none
+    font-weight: bold
+    padding: 10px
+      left: 18px
+      right: 18px
+    float: left
+    +border-radius(6px)
+    &.delete
+      background: #EEBFBF 
+      color: #BC0000 
+      &:hover
+        color: #EEBFBF 
+        background: #BC0000 
+        

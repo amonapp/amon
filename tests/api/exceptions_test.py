@@ -68,3 +68,24 @@ class TestExceptionApi(unittest.TestCase):
 					"data":"more data"})
 
 		eq_(1, db.count())
+
+
+	def test_exception_additional_data(self):
+		db = backend.get_collection('exceptions')
+		db.remove()
+
+		exception({"exception_class":"test",\
+					"url": "url_test",\
+					"backtrace": "backtrace_test"})
+
+
+		exc = db.find_one()
+		additional_data = exc['additional_data'][0]
+		eq_(1, len(additional_data)) # Only occurrence should be here
+
+		valid_keys = ['occurrence']
+		keys = additional_data.keys()
+		
+		for key in keys:
+			assert key in valid_keys
+

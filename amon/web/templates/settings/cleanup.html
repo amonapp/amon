@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+Settings - Cleanup
+{% endblock %}
+{% block breadcrumb %}
+Settings
+{% endblock %}
+{% block content %}
+	{% include 'partials/settings_tabs.html' %}
+<ul class='options_list'>
+	<li>
+		<span>Delete all exceptions</span>
+		<a class='delete' href="/settings/delete_exceptions">Delete</a>
+	</li>
+	<li>
+		<span>Delete all logs</span>
+		<a class='delete' href="/settings/delete_logs">Delete</a>
+	</li>
+</ul>
+{% endblock %}

@@ -280,9 +280,35 @@ body {
   margin-right: 0px;
 }
 
+ul.tabs_settings {
+  margin-left: 20px;
+  margin-top: 10px;
+  float: left;
+}
+ul.tabs_settings li {
+  float: left;
+}
+ul.tabs_settings li.separator {
+  float: left;
+  width: 20px;
+  height: 27px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background: url(../images/tabs_separator.png);
+}
+ul.tabs_settings li a {
+  margin-right: 1px;
+  color: #d2d2d2;
+  text-decoration: none;
+  font-size: 2.8em;
+}
+ul.tabs_settings li a:hover, ul.tabs_settings li a.active {
+  color: #747474;
+}
+
 ul.tabs {
-  margin: 20px;
-  margin-right: 0px;
+  margin-left: 20px;
+  margin-top: 10px;
   float: left;
 }
 ul.tabs li {
@@ -296,18 +322,6 @@ ul.tabs li label {
   float: left;
   font-size: 1.6em;
   margin-bottom: 8px;
-}
-ul.tabs li a {
-  background: #2c2d35;
-  margin-right: 1px;
-  color: white;
-  text-decoration: none;
-  font-size: 1.4em;
-  padding: 8px 10px 8px 10px;
-}
-ul.tabs li a:hover, ul.tabs li a.active {
-  background: #ffcc33;
-  color: black;
 }
 ul.tabs li input[type=text] {
   clear: both;
@@ -333,7 +347,7 @@ ul.tabs li input[type=text]:focus {
   box-shadow: #deecc5 0px 0px 6px;
 }
 ul.tabs li input[type=submit] {
-  margin-top: 20px;
+  margin-top: 22px;
   background: #deecc5;
   border: 1px solid white;
   font-weight: bold;
@@ -667,4 +681,44 @@ ul.stats_bars li div.container .label {
   left: 0px;
   font-size: 1.4em;
   color: #797979;
+}
+
+ul.options_list {
+  float: left;
+  clear: left;
+  margin-left: 20px;
+  margin-top: 30px;
+}
+ul.options_list li {
+  float: left;
+  margin-bottom: 30px;
+}
+ul.options_list span {
+  font-size: 1.8em;
+  float: left;
+  width: 400px;
+  margin-top: 10px;
+}
+ul.options_list a {
+  font-size: 1.4em;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px;
+  padding-left: 18px;
+  padding-right: 18px;
+  float: left;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+}
+ul.options_list a.delete {
+  background: #eebfbf;
+  color: #bc0000;
+}
+ul.options_list a.delete:hover {
+  color: #eebfbf;
+  background: #bc0000;
 }

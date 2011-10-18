@@ -36,18 +36,18 @@ class Exception(object):
 		exception_id = md5(exception_string).hexdigest()
 		
 		
-		additional_data = {'message': message,
-						   'enviroment': enviroment,
-						   'data': data,
-						   'occurrence': now}
+		additional_data = {'occurrence': now}
+
+		if message: additional_data['message'] = message
+		if enviroment: additional_data['enviroment'] = enviroment
+		if data: additional_data['data'] = data
 
 		exceptions_collection = backend.get_collection(self.collection)
 		exception_in_db = exceptions_collection.find_one({"exception_id" : exception_id})
 
 		if exception_in_db is not None:
 			exception_in_db['last_occurrence'] = now
-			if additional_data:
-				exception_in_db['additional_data'].insert(0, additional_data)
+			exception_in_db['additional_data'].insert(0, additional_data)
 
 			exceptions_collection.update({'_id' : exception_in_db['_id']}, exception_in_db)
 		else:
@@ -58,7 +58,6 @@ class Exception(object):
 					 'backtrace' : backtrace,
 					 }
 
-			if additional_data:
-				entry['additional_data'] = [additional_data]
+			entry['additional_data'] = [additional_data]
 			
 			backend.store_entry(entry, self.collection)

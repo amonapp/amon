@@ -189,6 +189,27 @@ class Settings(Base):
 					  current_page=self.current_page
 					  )
 
+	@cherrypy.expose
+	def cleanup(self):
+		return render(name='settings/cleanup.html',
+					  current_page=self.current_page,
+					  current_tab='cleanup'
+					  )
+
+	@cherrypy.expose
+	def delete_exceptions(self):
+		row = self.mongo.get_collection('exceptions') 
+		row.remove()
+
+		raise cherrypy.HTTPRedirect("/settings")	
+
+	@cherrypy.expose
+	def delete_logs(self):
+		row = self.mongo.get_collection('logs')
+		row.remove()
+		
+		raise cherrypy.HTTPRedirect("/settings")	
+
 class Exceptions(Base):
 	
 	def __init__(self):
