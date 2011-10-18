@@ -13,5 +13,5 @@ cherrypy.config.update({
 
 cherrypy.server.socket_port = 2464
 cherrypy.server.socket_host = '127.0.0.1'
-test = cherrypy.quickstart(root, '/', config)
+cherrypy.quickstart(root, '/', config)
 

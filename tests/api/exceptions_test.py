@@ -69,6 +69,23 @@ class TestExceptionApi(unittest.TestCase):
 
 		eq_(1, db.count())
 
+	def test_exception_occurences_counter(self):
+		db = backend.get_collection('exceptions')
+		db.remove()
+		
+		exception({"exception_class":"test",\
+					"url": "url_test",\
+					"backtrace": "backtrace_test"})
+		
+		exc = db.find_one()
+		eq_(1, exc['total_occurrences'])
+
+		exception({"exception_class":"test",\
+					"url": "url_test",\
+					"backtrace": "backtrace_test"})
+		
+		exc = db.find_one()
+		eq_(2, exc['total_occurrences'])
 
 	def test_exception_additional_data(self):
 		db = backend.get_collection('exceptions')

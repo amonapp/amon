@@ -149,6 +149,13 @@ def exceptions_dict(dict):
 	return dict_recursion.html
 
 
+def test_additional_data(list_with_dicts):
+	valid_keys = ['occurrence']
+
+	for dict in list_with_dicts:
+		for key in dict.keys():
+			if key not in valid_keys:
+				return True
 
 def render(*args, **kwargs):
 
@@ -158,6 +165,7 @@ def render(*args, **kwargs):
 	env.filters['time_in_words'] = time_in_words 
 	env.filters['progress_width'] = progress_width
 	env.filters['exceptions_dict'] = exceptions_dict
+	env.filters['test_additional_data'] = test_additional_data
 
 	if 'name' in kwargs:
 		template = env.get_template(kwargs['name'])

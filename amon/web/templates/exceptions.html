@@ -38,7 +38,7 @@ Exceptions
 			</li>	
 			{% endif %}
 		</ul>
-		{% if exc.additional_data %}
+		{% if exc.additional_data|test_additional_data %}
 		<ul class='exception_data'>
 			<h4>Additional data:</h4>
 			{{ exc.additional_data.0|exceptions_dict }}

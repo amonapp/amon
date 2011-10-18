@@ -48,6 +48,7 @@ class Exception(object):
 		if exception_in_db is not None:
 			exception_in_db['last_occurrence'] = now
 			exception_in_db['additional_data'].insert(0, additional_data)
+			exception_in_db['total_occurrences']  = exception_in_db['total_occurrences']+1
 
 			exceptions_collection.update({'_id' : exception_in_db['_id']}, exception_in_db)
 		else:
@@ -59,5 +60,6 @@ class Exception(object):
 					 }
 
 			entry['additional_data'] = [additional_data]
+			entry['total_occurrences'] = 1
 			
 			backend.store_entry(entry, self.collection)
