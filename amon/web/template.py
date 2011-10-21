@@ -1,7 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 from settings import TEMPLATES_DIR
 from datetime import datetime, time
-from time import strftime
 import re
 import string
 

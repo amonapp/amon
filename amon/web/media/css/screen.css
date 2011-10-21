@@ -514,12 +514,20 @@ ul.tabs li input[type=submit]:hover {
   padding-top: 10px;
 }
 .exceptions_list div.heading a.collapse {
-  width: 32px;
-  height: 32px;
+  width: 27px;
+  height: 20px;
   background: url(../images/collapse.png) no-repeat;
   margin-right: 10px;
   margin-top: -4px;
   float: right;
+  outline: none;
+}
+.exceptions_list div.heading a.collapse:hover, .exceptions_list div.heading a.collapse.active {
+  background-position: 0px -20px;
+}
+.exceptions_list div.exception_additional_data {
+  float: left;
+  display: none;
 }
 .exceptions_list p.backtrace {
   padding: 7px;

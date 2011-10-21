@@ -347,13 +347,19 @@ $log_width: 800px
         left: 8px
         top: 10px
     a.collapse
-      width: 32px
-      height: 32px
+      width: 27px
+      height: 20px
       background: url(../images/collapse.png) no-repeat
       margin:
         right: 10px
         top: -4px
       float: right
+      outline: none
+      &:hover, &.active
+        background-position: 0px -20px
+  div.exception_additional_data
+    float: left
+    display: none
   p.backtrace
     padding: 7px
     margin-left: 5px

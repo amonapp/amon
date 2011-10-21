@@ -23,9 +23,12 @@ Exceptions
 						{{ exc.url }}
 					{% endif %}
 				</span>
-				<a href="" class="collapse" title='Expand'></a>
+				{% if exc.backtrace and exc.additional_data|test_additional_data==true %}
+					<a href="" class="collapse" rel='{{ loop.index }}' title='Expand'></a>
+				{% endif %}
 			</div>
 		</div>
+		<div class="exception_additional_data" id='exception_data-{{ loop.index }}'>
 		<ul class='exception_data'>
 			{% if exc.backtrace %}
 			<li>
@@ -44,6 +47,7 @@ Exceptions
 			{{ exc.additional_data.0|exceptions_dict }}
 		</ul>
 		{% endif %}
+		</div>
 		</li>
 	{% endfor %}
 </ul>
@@ -51,6 +55,16 @@ Exceptions
 {% block js %}
 <script type="text/javascript">
 	$('.timestamp').relativeDate();
+	$('.collapse').click(function(e)
+	{
+		var id = $(this).attr('rel');
+		$('#exception_data-'+id).toggle();
+		$(this).toggleClass('active');
+		
+		e.preventDefault(); 
+	
+	});
+
 </script>
 
 {% endblock %}
