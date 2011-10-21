@@ -1,6 +1,7 @@
 from jinja2 import Environment, FileSystemLoader
 from settings import TEMPLATES_DIR
 from datetime import datetime, time
+from time import strftime
 import re
 import string
 
@@ -70,12 +71,12 @@ def time_in_words(value):
 
 def dateformat(value, format='%d-%m-%Y-%H:%M'):
 	# Converts unix time to a readable date format
-	_ = datetime.fromtimestamp(value)
+	_ = datetime.utcfromtimestamp(value)
 	return _.strftime(format)
 
 def timeformat(value, format='%H:%M'):
 	# Converts unix time to a readable 24 hour-minute format
-	_ = datetime.fromtimestamp(value)
+	_ = datetime.utcfromtimestamp(value)
 	return _.strftime(format)
 
 def to_int(value):

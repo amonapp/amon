@@ -53,6 +53,8 @@ class Dashboard(Base):
 					process_check_first=process_check_first
 					)
 
+	# Terminate the server
+	# TODO - more secure way to do it or find a way to deal with the cherrypy daemon nonsense
 	@cherrypy.expose
 	def exit(self):
 		import sys
@@ -166,7 +168,7 @@ class Processes(Base):
 			process_data[process] = row.find({"time": {"$gte": date_from, '$lte': date_to}})\
 					.sort('time', ASCENDING)
 		
-		
+
 		return render(name='processes.html',
 					  current_page=self.current_page,
 					  processes=self.processes,

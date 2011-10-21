@@ -12,7 +12,6 @@ root.logs = Logs()
 root.exceptions = Exceptions()
 root.api = API()
 
-
 config = {	
 			'/': 
 			{
