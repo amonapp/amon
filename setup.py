@@ -56,6 +56,7 @@ sdict = {
 		'cherrypy==3.2',
         'Jinja2>=2.4'
     ],
+	'scripts': ['scripts/amon_start', 'scripts/amon_stop'],
     'classifiers' : [
     'Development Status :: 3 - Alpha',
         'Environment :: Console',
