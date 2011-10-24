@@ -10,12 +10,11 @@
 # Description:       starts mongodb 
 ### END INIT INFO
 
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/local/mongodb/bin/mongod
-DAEMON_OPTS="--config /etc/mongodb.conf"
+DAEMON_OPTS="--fork --quiet --config /etc/mongodb.conf"
 PIDFILE=/usr/local/mongodb/mongodb.pid
 NAME=mongodb
-DESC=mongodb
+DESC=MongoDB
 
 test -x $DAEMON || exit 0
 
@@ -24,19 +23,19 @@ test -x $DAEMON || exit 0
 case "$1" in
   start)
         echo -n "Starting $DESC: "
-        start-stop-daemon --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS --start -- run
+        start-stop-daemon --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS 
         echo "$NAME."
         ;;
   stop)
         echo -n "Stopping $DESC: "
-        start-stop-daemon --quiet --pidfile $PIFDILE --exec $DAEMON --stop
+        start-stop-daemon --stop --pidfile $PIFDILE --exec $DAEMON
         echo "$NAME."
         ;;
   restart|force-reload)
         echo -n "Restarting $DESC: "
-        start-stop-daemon --quiet --pidfile $PIDFILE --exec $DAEMON --stop
+        start-stop-daemon --stop --pidfile $PIDFILE --exec $DAEMON
         sleep 1
-        start-stop-daemon --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS --start -- run
+        start-stop-daemon --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS
         echo "$NAME."
         ;;
   reload)
