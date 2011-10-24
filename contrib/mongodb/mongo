@@ -1,63 +1,54 @@
-#!/bin/bash
+#! /bin/bash
+
 ### BEGIN INIT INFO
-# Provides:          mongo
+# Provides:          mongodb
+# Required-Start:    $all
+# Required-Stop:     $all
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Startup script for the mongodb server
-# Description:       MongoDB server
+# Short-Description: starts the mongodb server
+# Description:       starts mongodb 
 ### END INIT INFO
 
-prog="mongod"
-mongod="/usr/local/mongodb/bin/mongod"
-RETVAL=0
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/local/mongodb/bin/mongod
+DAEMON_OPTS="--config /etc/mongodb.conf"
+PIDFILE=/usr/local/mongodb/mongodb.pid
+NAME=mongodb
+DESC=mongodb
 
-start() {
-	echo -n "Starting $prog:"
-	daemon $mongod "--fork --logpath /var/log/mongodb.log --logappend 2>&1 >>/var/log/mongodb.log"
-	RETVAL=$?
-	echo
-	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
-	return $RETVAL
-}
+test -x $DAEMON || exit 0
 
-stop() {
-	echo -n "Stopping $prog: "
-	killproc $prog
-	RETVAL=$?
-	echo
-	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$prog
-	return $RETVAL
-}
-
-reload() {
-	echo -n "Reloading $prog: "
-	killproc $prog -HUP
-	RETVAL=$?
-	echo
-	return $RETVAL
-}
+#set -e
 
 case "$1" in
-	start)
-		start
-		;;
-	stop)
-		stop
-		;;
-	restart)
-		stop
-		start
-		;;
-	reload)
-		reload
-		;;
-	status)
-		status $mongod
-		RETVAL=$?
-		;;
-	*)
-		echo "Usage: $0 {start|stop|restart|reload|status}"
-		RETVAL=1
+  start)
+        echo -n "Starting $DESC: "
+        start-stop-daemon --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS --start -- run
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon --quiet --pidfile $PIFDILE --exec $DAEMON --stop
+        echo "$NAME."
+        ;;
+  restart|force-reload)
+        echo -n "Restarting $DESC: "
+        start-stop-daemon --quiet --pidfile $PIDFILE --exec $DAEMON --stop
+        sleep 1
+        start-stop-daemon --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS --start -- run
+        echo "$NAME."
+        ;;
+  reload)
+      echo -n "Reloading $DESC configuration: "
+      start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDFILE --exec $DAEMON
+      echo "$NAME."
+      ;;
+  *)
+        N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
 esac
 
-exit $RETVAL
+exit 0
