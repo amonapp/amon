@@ -3,6 +3,7 @@
 # Set variables for the installation
 set -e
 mongo_install_dir="/usr/local/mongodb"
+mongo_extract_dir="mongodb-linux-i686-2.0.0"
 version=0.4
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 
@@ -22,14 +23,15 @@ echo "***  Installing Amon $version ..."
 
 	# Ensure that we have the pymongo driver dependecies
 	echo ""
-	#sudo apt-get install gcc python-dev 
+	#sudo apt-get install gcc python-dev curl
 	#sudo python setup.py install
 	cd "$bash_script_dir"
-	sudo cp $bash_script_dir/amon-$version/contrib/amon/amond /etc/init.d/amond
+	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
+	sudo cp amon-$version/config/amon.conf /etc/amon.conf
 	
 	# make the daemon executable
 	sudo chmod +x /etc/init.d/amond
-	sudo update-rc.d amond defaults 
+	sudo update-rc.d amond defaults > /dev/null
 
 # Copy Amon configuration files
 
@@ -41,7 +43,7 @@ echo "***  Installing Amon $version ..."
 
 		#wget "http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.0.tgz"
 		echo "***  Extracting MongoDB ..."
-		tar -zxvf "$mongo_dir.tgz" > /dev/null
+		tar -zxvf "$mongo_extract_dir.tgz" > /dev/null
 
 	}
 
@@ -52,12 +54,16 @@ echo "***  Installing Amon $version ..."
 		echo "***  MongoDB will be installed in $mongo_install_dir." 
 		echo "If you are not running as root, the installer will ask for your root password"
 
-		sudo mkdir $mongo_install_dir $mongo_install_dir/data $mongo_install_dir/bin && sudo touch /var/log/mongodb.log
-		sudo cp $mongo_dir/bin/mongod $mongo_install_dir/mongod
-		sudo cp $mongo_dir/bin/mongo /usr/bin/mongo
+		sudo mkdir $mongo_install_dir $mongo_install_dir/data $mongo_install_dir/bin && sudo touch $mongo_install_dir/mongodb.log
+		sudo cp $mongo_extract_dir/bin/mongod $mongo_install_dir/bin/mongod
+		sudo cp $mongo_extract_dir/bin/mongo /usr/bin/mongo
 
-		wget http://get.amon.cx/mongodb.conf 
-		sudo cp mongodb.conf /etc/init/mongodb.conf
+
+		sudo cp amon-$version/contrib/mongodb/mongodb.conf /etc/mongodb.conf
+		sudo cp amon-$version/contrib/mongodb/mongodb /etc/init.d/mongodb
+
+		sudo chmod +x /etc/init.d/mongodb
+		sudo update-rc.d mongodb defaults > /dev/null
 
 	}
 
@@ -65,10 +71,11 @@ echo "***  Installing Amon $version ..."
 	start_mongodb()
 	{
 		rm -rf $mongo_extract_dir
-		rm -rf mongodb.conf
+		rm -rf mongo
 		echo "*** Starting MongoDB"
 		echo ""
-		sudo start mongodb
+		sudo invoke-rc.d mongodb start
+
 	}
 	
 	echo "***  Amon stores the data in a Mongo database. If you already have it on the system, please skip this step"
@@ -82,8 +89,6 @@ echo "***  Installing Amon $version ..."
 		start_mongodb
 	fi
 
-
-	echo "*** Installing local configuration files..."
 
 
 # Show a message about where to go for help.
