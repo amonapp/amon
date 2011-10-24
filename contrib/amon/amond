@@ -1,4 +1,12 @@
 #!/usr/bin/python
+### BEGIN INIT INFO
+# Provides:          amond
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the Amon system info collector
+# Description:       Amon daemon that collects system and process information.
+### END INIT INFO
+
 import sys, time
 import logging
 

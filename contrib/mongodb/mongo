@@ -1,0 +1,63 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          mongo
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Startup script for the mongodb server
+# Description:       MongoDB server
+### END INIT INFO
+
+prog="mongod"
+mongod="/usr/local/mongodb/bin/mongod"
+RETVAL=0
+
+start() {
+	echo -n "Starting $prog:"
+	daemon $mongod "--fork --logpath /var/log/mongodb.log --logappend 2>&1 >>/var/log/mongodb.log"
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
+	return $RETVAL
+}
+
+stop() {
+	echo -n "Stopping $prog: "
+	killproc $prog
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$prog
+	return $RETVAL
+}
+
+reload() {
+	echo -n "Reloading $prog: "
+	killproc $prog -HUP
+	RETVAL=$?
+	echo
+	return $RETVAL
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	reload)
+		reload
+		;;
+	status)
+		status $mongod
+		RETVAL=$?
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL
