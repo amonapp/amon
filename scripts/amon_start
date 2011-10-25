@@ -14,4 +14,5 @@ cherrypy.config.update({
 cherrypy.server.socket_port = 2464
 cherrypy.server.socket_host = '127.0.0.1'
 cherrypy.quickstart(root, '/', config)
+print "Amon started. You can check it out at http://127.0.0.1:2464"
 

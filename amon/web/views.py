@@ -53,13 +53,6 @@ class Dashboard(Base):
 					process_check_first=process_check_first
 					)
 
-	# Terminate the server
-	# TODO - more secure way to do it or find a way to deal with the cherrypy daemon nonsense
-	@cherrypy.expose
-	def exit(self):
-		import sys
-		sys.exit(1)
-
 class System(Base):
 
 	def __init__(self):
