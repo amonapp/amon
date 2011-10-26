@@ -1,26 +1,16 @@
-from views import Dashboard, System, Processes, Settings, Logs, Exceptions
-from api import API
+from views import Dashboard, System
 from settings import PROJECT_ROOT
+import os
+import tornado.web
+	
+app_settings = {
+	"static_path": os.path.join(PROJECT_ROOT, "media"),
+	"debug": True
+}
 
-#apps
-root = Dashboard()
-root.system = System()
-root.processes = Processes()
-root.settings = Settings()
-root.logs = Logs()
-root.exceptions = Exceptions()
-root.api = API()
-
-config = {	
-			'/': 
-			{
-				'tools.staticdir.root': PROJECT_ROOT
-			},
-			'/media': 
-			{
-				'tools.staticdir.on' : True,
-				'tools.staticdir.dir' : 'media',
-				'tools.gzip.on' : True
-			}
-		}
+application = tornado.web.Application([
+	(r"/", Dashboard),
+	(r"/system", System),
+	(r"/media/(.*)", tornado.web.StaticFileHandler, {"path": app_settings['static_path']}),
+])
 
