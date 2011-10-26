@@ -1,4 +1,3 @@
-from template import render
 import cherrypy
 from pymongo import DESCENDING, ASCENDING 
 from datetime import datetime, timedelta
@@ -7,9 +6,12 @@ from amon.web.utils import (
 		datestring_to_unixtime,
 		datetime_to_unixtime,
 		) 
-
+from amon.system.utils import (
+		get_disk_volumes, 
+		get_network_interfaces
+		)
 from amon.core import settings
-from amon.system.utils import get_disk_volumes, get_network_interfaces
+from amon.web.template import render
 
 class Base(object):
 
@@ -44,8 +46,7 @@ class Dashboard(Base):
 			row = self.mongo.get_collection(check)
 			process_check[check] = row.find(limit=1).sort('time', DESCENDING)[0]
 
-
-		return render(name="dashboard.html",
+		return render(template="dashboard.html",
 					current_page='dashboard',
 					last_check=last_check,
 					process_check=process_check,
@@ -117,7 +118,7 @@ class System(Base):
 					if volume not in volumes:
 						volumes.append(volume)
 
-			return render(name='system.html',
+			return render(template='system.html',
 						  current_page='system',
 						  checks=checks,
 						  network=network,
@@ -162,7 +163,7 @@ class Processes(Base):
 					.sort('time', ASCENDING)
 		
 
-		return render(name='processes.html',
+		return render(template='processes.html',
 					  current_page=self.current_page,
 					  processes=self.processes,
 					  process_data=process_data,
@@ -180,13 +181,13 @@ class Settings(Base):
 	@cherrypy.expose
 	def index(self):
 
-		return render(name='settings.html',
+		return render(template='settings.html',
 					  current_page=self.current_page
 					  )
 
 	@cherrypy.expose
 	def cleanup(self):
-		return render(name='settings/cleanup.html',
+		return render(template='settings/cleanup.html',
 					  current_page=self.current_page,
 					  current_tab='cleanup'
 					  )
@@ -218,7 +219,7 @@ class Exceptions(Base):
 		
 		exceptions = row.find().sort('last_occurrence', DESCENDING)
 
-		return render(name='exceptions.html',
+		return render(template='exceptions.html',
 					  exceptions=exceptions,
 					  current_page=self.current_page
 					  )
@@ -248,7 +249,7 @@ class Logs(Base):
 		
 		logs = row.find(filter_query).sort('time', DESCENDING)
  
-		return render(name='logs.html',
+		return render(template='logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
 					 filter=filter

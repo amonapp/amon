@@ -4,9 +4,6 @@ from datetime import datetime, time
 import re
 import string
 
-
-env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
-
 def age(from_date, since_date = None, target_tz=None, include_seconds=False):
 	'''
 	Returns the age as a string
@@ -157,8 +154,11 @@ def test_additional_data(list_with_dicts):
 			if key not in valid_keys:
 				return True
 
-def render(*args, **kwargs):
 
+def render(*args, **kwargs):
+	
+	env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+	
 	env.filters['time'] = timeformat
 	env.filters['date'] = dateformat
 	env.filters['to_int'] =  to_int
@@ -167,8 +167,8 @@ def render(*args, **kwargs):
 	env.filters['exceptions_dict'] = exceptions_dict
 	env.filters['test_additional_data'] = test_additional_data
 
-	if 'name' in kwargs:
-		template = env.get_template(kwargs['name'])
+	if 'template' in kwargs:
+		template = env.get_template(kwargs['template'])
 	else:
 		template = env.get_template('blank.html')
 

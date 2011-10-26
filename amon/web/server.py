@@ -2,7 +2,6 @@ from views import Dashboard, System, Processes, Settings, Logs, Exceptions
 from api import API
 from settings import PROJECT_ROOT
 
-
 #apps
 root = Dashboard()
 root.system = System()
@@ -24,3 +23,4 @@ config = {
 				'tools.gzip.on' : True
 			}
 		}
+
