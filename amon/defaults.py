@@ -9,13 +9,15 @@ except:
 #  Amon Defaults
 BACKEND = config.get('backend', 'mongodb')
 
-config_mongo = config.get('mongo', {})
+_backend = config.get('backend', {})
+_mongo = _backend.get('mongo', {})
+_web_app = config.get('web_app', {})
 
 MONGO = {
-	'port': config_mongo.get('port', 27017),
-	'host': config_mongo.get('host', 'localhost'),
-	'user': config_mongo.get('user', ''),
-	'password': config_mongo.get('password', ''),
+	'port': _mongo.get('port', 27017),
+	'host': _mongo.get('host', 'localhost'),
+	'user': _mongo.get('user', ''),
+	'password': _mongo.get('password', ''),
 	'database' : 'amon',
 }
 
@@ -25,3 +27,8 @@ SYSTEM_CHECK_PERIOD = config.get('system_check_period', 60)
 SYSTEM_CHECKS = config.get('system_checks', ['cpu', 'memory', 'disk', 'network', 'loadavg'])
 
 PROCESS_CHECKS = config.get('process_checks', [])
+
+WEB_APP = {
+	'host': _web_app.get('host', 'http://127.0.0.1'),
+	'port': _web_app.get('port', 2464)
+}

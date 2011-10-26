@@ -6,8 +6,7 @@ System check
 System check 
 {% endblock %}
 {% block content %}
-{{ foo }}
-<form action="/system">
+<form action="{{ base_url|url('system') }}">
 <ul class='tabs'>
 	<li>
 		<label for="">From:</label>

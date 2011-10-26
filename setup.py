@@ -41,7 +41,7 @@ for dirpath, dirnames, filenames in os.walk(amon_dir):
 sdict = {
     'name' : 'Amon',
     'version' : __version__,
-    'description' : 'Developer friendly system monitoring and logging tool',
+    'description' : 'Developer friendly application and system monitoring tool',
     'long_description' : read('README.rst'),
     'url': 'https://github.com/martinrusev/amon',
     'author' : 'Martin Rusev',
@@ -53,10 +53,9 @@ sdict = {
 	'install_requires': 
 	[
         'pymongo==2.0',
-		'cherrypy==3.2',
+		'tornado>=2.0',
         'Jinja2>=2.4'
     ],
-	'scripts': ['scripts/amon_start', 'scripts/amon_stop'],
     'classifiers' : [
     'Development Status :: 3 - Alpha',
         'Environment :: Console',

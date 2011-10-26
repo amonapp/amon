@@ -10,10 +10,7 @@ from amon.system.utils import (
 		get_network_interfaces
 		)
 from amon.core import settings
-#from amon.web.template import render
-from template import render
-
-import tornado.ioloop
+from amon.web.template import render
 import tornado.web
 
 
@@ -51,7 +48,7 @@ class Dashboard(Base):
 			row = self.mongo.get_collection(check)
 			process_check[check] = row.find(limit=1).sort('time', DESCENDING)[0]
 
-		rendered_template = render(template="dashboard.html",
+		_template = render(template="dashboard.html",
 				current_page='dashboard',
 				last_check=last_check,
 				process_check=process_check,
@@ -59,7 +56,7 @@ class Dashboard(Base):
 				process_check_first=process_check_first
 				)
 
-		self.write(rendered_template)
+		self.write(_template)
 
 
 class System(Base):
@@ -121,7 +118,7 @@ class System(Base):
 					if volume not in volumes:
 						volumes.append(volume)
 
-			rendered_template = render(template='system.html',
+			_template = render(template='system.html',
 						  current_page='system',
 						  checks=checks,
 						  network=network,
@@ -132,5 +129,99 @@ class System(Base):
 						  date_to=date_to
 						  )
 
-			self.write(rendered_template)
+			self.write(_template)
+
+class Processes(Base):
+
+	def initialize(self):
+		super(Processes, self).initialize()
+		self.current_page = 'processes'
+		self.processes = settings.PROCESS_CHECKS
+
+	def get(self):
+		day = timedelta(hours=24)
+		_yesterday = self.now - day
+
+		date_from = self.get_argument('date_from', False)
+		date_to = self.get_argument('date_to', False)
+
+		if date_from:
+			date_from = datestring_to_unixtime(date_from)
+		else:
+			date_from = datetime_to_unixtime(_yesterday)
+		
+		if date_to:
+			date_to = datestring_to_unixtime(date_to)
+		else:
+			date_to = datetime_to_unixtime(self.now)
+
+		
+		process_data = {}
+		for process in self.processes:
+			row = self.mongo.get_collection(process)
+			process_data[process] = row.find({"time": {"$gte": date_from, '$lte': date_to}})\
+					.sort('time', ASCENDING)
+		
+
+		_template = render(template='processes.html',
+					  current_page=self.current_page,
+					  processes=self.processes,
+					  process_data=process_data,
+					  date_from=date_from,
+					  date_to=date_to
+					 )
+
+		self.write(_template)
+
+
+class Exceptions(Base):
+	
+	def initialize(self):
+		super(Exceptions, self).initialize()
+		self.current_page = 'exceptions'
+
+	def get(self):
+		
+		row = self.mongo.get_collection('exceptions') 
+		
+		exceptions = row.find().sort('last_occurrence', DESCENDING)
+
+		_template = render(template='exceptions.html',
+					  exceptions=exceptions,
+					  current_page=self.current_page
+					  )
+
+		self.write(_template)
+
+
+class Logs(Base):
+
+	def initialize(self):
+		super(Logs, self).initialize()
+		self.current_page = 'logs'
+
+	def get(self):
+
+		filter = self.get_arguments('filter')
+		# If there is only one parameter - convert it to list
+		if isinstance(filter, unicode):
+			filter = [filter]
+		if filter:
+			filter_params = [{'level': x} for x in filter]
+			filter_query = {"$or" : filter_params}
+		else:
+			filter_query = {}
+
+
+		row = self.mongo.get_collection('logs') 
+		
+		logs = row.find(filter_query).sort('time', DESCENDING)
+ 
+		_template =  render(template='logs.html',
+					 current_page=self.current_page,
+					 logs=logs,
+					 filter=filter
+					 )
+
+		self.write(_template)
 

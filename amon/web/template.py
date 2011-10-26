@@ -1,5 +1,7 @@
 from jinja2 import Environment, FileSystemLoader
 from amon.web.settings import TEMPLATES_DIR
+#from settings import TEMPLATES_DIR
+from amon.core import settings
 from datetime import datetime, time
 import re
 import string
@@ -159,16 +161,17 @@ def test_additional_data(list_with_dicts):
 # Used in the base_url -> {{ base_url|url('system',) -> http://host/system
 def url(*args):
 	http_slash = '/'
-	string = ''
-	for arg in args:
-		string.join(http_slash, arg)
+	url = http_slash.join(args)
 
-	return string
+	return url
 
 
 def render(*args, **kwargs):
 	
 	env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+	
+	env.globals['base_url'] = "{0}:{1}".format(settings.WEB_APP['host'],
+									settings.WEB_APP['port'])
 
 	env.filters['time'] = timeformat
 	env.filters['date'] = dateformat
@@ -177,6 +180,7 @@ def render(*args, **kwargs):
 	env.filters['progress_width'] = progress_width
 	env.filters['exceptions_dict'] = exceptions_dict
 	env.filters['test_additional_data'] = test_additional_data
+	env.filters['url'] = url
 
 	if 'template' in kwargs:
 		template = env.get_template(kwargs['template'])

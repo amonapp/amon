@@ -1,5 +1,5 @@
-from views import Dashboard, System
-from settings import PROJECT_ROOT
+from amon.web.views import Dashboard, System, Processes, Exceptions, Logs
+from amon.web.settings import PROJECT_ROOT
 import os
 import tornado.web
 	
@@ -11,6 +11,9 @@ app_settings = {
 application = tornado.web.Application([
 	(r"/", Dashboard),
 	(r"/system", System),
+	(r"/processes", Processes),
+	(r"/exceptions", Exceptions),
+	(r"/logs", Logs),
 	(r"/media/(.*)", tornado.web.StaticFileHandler, {"path": app_settings['static_path']}),
 ])
 

@@ -17,6 +17,7 @@ except:
 
 from amon.system.daemon import Daemon
 from amon.web.server import application
+from amon.core import settings
 import tornado.ioloop
 
 PIDFILE = '/var/run/amon.pid'
@@ -28,7 +29,7 @@ logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
 class AmonWebDaemon(Daemon):
 	
 	def run(self):
-		application.listen(8888)
+		application.listen(int(settings.WEB_APP['port']))
 		tornado.ioloop.IOLoop.instance().start()
 		
 if __name__ == "__main__":
@@ -42,10 +43,10 @@ if __name__ == "__main__":
 			except:
 				pass
 		elif 'stop' == sys.argv[1]:
-			print "Stopping the Amon web interface ..."
+			print "Stopping the Amon web application ..."
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
-			print "Restaring the Amon web interface ..."
+			print "Restaring the Amon web application ..."
 			daemon.restart()
 		elif 'status' == sys.argv[1]:
 			try:
@@ -58,10 +59,11 @@ if __name__ == "__main__":
 				pid = None
 
 			if pid:
-				print 'Amon is running as pid %s' % pid
-				print 'Amon is running at http://127.0.0.1:2464' 
+				print 'The Amon web app is running as pid %s' % pid
+				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
+						settings.WEB_APP['port'])
 			else:
-				print 'The Amon web interface is not running.'
+				print 'The Amon web application is not running.'
 		
 		else:
 			print "Unknown command"
