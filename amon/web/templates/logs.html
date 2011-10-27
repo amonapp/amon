@@ -2,12 +2,11 @@
 {% block title %}
 Logs 
 {% endblock %}
-
 {% block breadcrumb %}
 Logs 
 {% endblock %}
 {% block filter %}
-<form action="." method='get' id='logs_filter_form'>
+<form action="{{ base_url|url('logs') }}" method='get' id='logs_filter_form'>
 <ul class='logs_filter'>
 	<li>
 		<input type="checkbox" name='filter' value='notset' {% if 'notset' in filter %} checked {% endif %}/> 
@@ -50,6 +49,15 @@ Logs
 	{
 		$('#logs_filter_form').submit();
 	
+	});
+	$('#word_filter').keyup(function(event) 
+	{
+		var value = $(this).val();
+		if(value.length > 3)
+		{
+			$('#logs_filter_form').submit();
+		}
+
 	});
 </script>
 {% endblock js %}

@@ -323,7 +323,8 @@ ul.tabs li label {
   font-size: 1.6em;
   margin-bottom: 8px;
 }
-ul.tabs li input[type=text] {
+
+input[type=text] {
   clear: both;
   float: left;
   width: 320px;
@@ -339,14 +340,15 @@ ul.tabs li input[type=text] {
   border-radius: 6px;
   color: #727272;
 }
-ul.tabs li input[type=text]:focus {
+input[type=text]:focus {
   border: 1px solid #7ab317;
   -moz-box-shadow: #deecc5 0px 0px 6px;
   -webkit-box-shadow: #deecc5 0px 0px 6px;
   -o-box-shadow: #deecc5 0px 0px 6px;
   box-shadow: #deecc5 0px 0px 6px;
 }
-ul.tabs li input[type=submit] {
+
+input[type=submit] {
   margin-top: 22px;
   background: #deecc5;
   border: 1px solid white;
@@ -365,7 +367,7 @@ ul.tabs li input[type=submit] {
   -khtml-border-radius: 6px;
   border-radius: 6px;
 }
-ul.tabs li input[type=submit]:hover {
+input[type=submit]:hover {
   background: #7ab317;
   color: white;
   border: 1px solid #7ab317;
@@ -382,8 +384,12 @@ ul.tabs li input[type=submit]:hover {
   line-height: 1.6em;
 }
 .logs_filter li input[type=checkbox] {
-  margin-top: 5px;
+  margin-top: 10px;
   margin-right: 5px;
+  float: left;
+}
+.logs_filter li span {
+  margin-top: 5px;
   float: left;
 }
 .logs_filter li span.notset {
@@ -397,6 +403,10 @@ ul.tabs li input[type=submit]:hover {
 }
 .logs_filter li span.warning {
   color: red;
+}
+.logs_filter li input[type=text] {
+  width: 150px;
+  font-size: 1em;
 }
 
 .log_list, .exceptions_list {

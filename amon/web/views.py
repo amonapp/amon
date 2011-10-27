@@ -1,16 +1,12 @@
 from pymongo import DESCENDING, ASCENDING 
 from datetime import datetime, timedelta
-from amon.backends.mongodb import MongoBackend
-from amon.web.utils import (
-		datestring_to_unixtime,
-		datetime_to_unixtime,
-		) 
-from amon.system.utils import (
-		get_disk_volumes, 
-		get_network_interfaces
-		)
 from amon.core import settings
-from amon.web.template import render
+
+#from amon.web.template import render
+from template import render
+from amon.backends.mongodb import MongoBackend
+from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
+from amon.system.utils import get_disk_volumes, get_network_interfaces
 import tornado.web
 
 
@@ -203,14 +199,19 @@ class Logs(Base):
 	def get(self):
 
 		filter = self.get_arguments('filter')
+		word_filter = self.get_argument('word_filter', None)
+
+		filter_query = {}
 		# If there is only one parameter - convert it to list
 		if isinstance(filter, unicode):
 			filter = [filter]
 		if filter:
 			filter_params = [{'level': x} for x in filter]
 			filter_query = {"$or" : filter_params}
-		else:
-			filter_query = {}
+
+		if word_filter:
+			filter_params = "/{0}/".format(str(word_filter))
+			filter_query['message'] = {'$regex': filter_params}
 
 
 		row = self.mongo.get_collection('logs') 
@@ -220,7 +221,8 @@ class Logs(Base):
 		_template =  render(template='logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
-					 filter=filter
+					 filter=filter,
+					 word_filter=word_filter
 					 )
 
 		self.write(_template)

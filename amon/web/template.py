@@ -1,7 +1,8 @@
 from jinja2 import Environment, FileSystemLoader
-from amon.web.settings import TEMPLATES_DIR
-#from settings import TEMPLATES_DIR
 from amon.core import settings
+#from amon.web.settings import TEMPLATES_DIR
+from settings import TEMPLATES_DIR
+
 from datetime import datetime, time
 import re
 import string
