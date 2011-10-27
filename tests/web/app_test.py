@@ -4,8 +4,5 @@ from amon.web.views import (
 )
 
 class TestWebAppFunctions(unittest.TestCase):
+	pass
 
-	def test_me(self):
-		index = Dashboard().index()
-		print index
-		assert False

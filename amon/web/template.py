@@ -86,9 +86,10 @@ def to_int(value):
 	except:
 		_int = 0
 
-	return _int
+	return int(_int)
 
 # Removes the letters from a string
+# From 24.5MB -> 24.5 -> used in the progress width
 def clean_string(var):
 	whitelist = string.digits + string.punctuation
 	new_string = ''
@@ -115,7 +116,7 @@ def progress_width(value, total, container_type='full'):
 	total = clean_string(total)
 
 	percentage = float(value)/float(total) * 100
-	progress_width = container_width/100 * percentage
+	progress_width = container_width/100.0 * percentage
 
 	return '{0}px'.format(int(progress_width))
 
@@ -149,7 +150,7 @@ def exceptions_dict(dict):
 	return dict_recursion.html
 
 
-def test_additional_data(list_with_dicts):
+def check_additional_data(list_with_dicts):
 	valid_keys = ['occurrence']
 
 	for dict in list_with_dicts:
@@ -180,7 +181,7 @@ def render(*args, **kwargs):
 	env.filters['time_in_words'] = time_in_words 
 	env.filters['progress_width'] = progress_width
 	env.filters['exceptions_dict'] = exceptions_dict
-	env.filters['test_additional_data'] = test_additional_data
+	env.filters['test_additional_data'] = check_additional_data
 	env.filters['url'] = url
 
 	if 'template' in kwargs:
