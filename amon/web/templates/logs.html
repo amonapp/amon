@@ -31,7 +31,7 @@ Logs
 </form>
 {% endblock filter %}
 {% block content %}
-<ul class='log_list'>
+<ul class='log_list' id="log_list">
 	{% for log in logs  %}
 	<li>
 	<div class="heading">
@@ -47,19 +47,34 @@ Logs
 {% endblock content %}
 {% block js %}
 <script type="text/javascript" src='/media/js/form2object.min.js'></script>
+<script type="text/javascript" src='/media/js/spin.min.js'></script>
 <script type="text/javascript">
 	$('.timestamp').relativeDate();
+
+	var opts = {
+	  lines: 8, // The number of lines to draw
+	  length: 7, // The length of each line
+	  width: 4, // The line thickness
+	  radius: 10, // The radius of the inner circle
+	  color: '#D2D2D2', // #rgb or #rrggbb
+	  speed: 1, // Rounds per second
+	  trail: 60, // Afterglow percentage
+	  shadow: false // Whether to render a shadow
+	};
+	var target = document.getElementById('log_list');
+	var spinner = new Spinner(opts);
 
 	function submit_filter_form()
 	{
 		form_data = form2object('logs_filter_form', '.', true);
-		console.log(form_data);
-
-		$('.log_list').empty();
+		$('#log_list').empty();
+		spinner.spin(target);
+		
 		var filter = $.post("/logs", form_data);
 		
 		filter.complete(function(data) { 
-			$('.log_list').append(data.responseText);
+			spinner.stop();
+			$('#log_list').append(data.responseText);
 			$('.timestamp').relativeDate();
 		});
 	}
