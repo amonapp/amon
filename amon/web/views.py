@@ -198,32 +198,52 @@ class Logs(Base):
 
 	def get(self):
 
-		filter = self.get_arguments('filter')
-		word_filter = self.get_argument('word_filter', None)
+		level = self.get_arguments('level')
+		filter = self.get_argument('filter', None)
 
-		filter_query = {}
+		_query = {}
 		# If there is only one parameter - convert it to list
-		if isinstance(filter, unicode):
-			filter = [filter]
-		if filter:
-			filter_params = [{'level': x} for x in filter]
-			filter_query = {"$or" : filter_params}
+		if isinstance(level, unicode):
+			level = [level]
+		if level:
+			level_params = [{'level': x} for x in level]
+			_query = {"$or" : level_params}
 
-		if word_filter:
-			filter_params = "/{0}/".format(str(word_filter))
-			filter_query['message'] = {'$regex': filter_params}
+		if filter:
+			_query['message'] = {'$regex': str(filter)}
 
 
 		row = self.mongo.get_collection('logs') 
 		
-		logs = row.find(filter_query).sort('time', DESCENDING)
+		logs = row.find(_query).sort('time', DESCENDING)
  
 		_template =  render(template='logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
+					 level=level,
 					 filter=filter,
-					 word_filter=word_filter
 					 )
 
 		self.write(_template)
 
+
+	def post(self):
+		level = self.get_arguments('level[]')
+		filter = self.get_argument('filter', None)
+
+		_query = {}
+		if level:
+			level_params = [{'level': x} for x in level]
+			_query = {"$or" : level_params}
+
+		if filter:
+			_query['message'] = {'$regex': str(filter)}
+
+		row = self.mongo.get_collection('logs') 
+		
+		logs = row.find(_query).sort('time', DESCENDING)
+
+		_template = render(template='partials/logs_filter.html', 
+				logs=logs)
+
+		self.write(_template)

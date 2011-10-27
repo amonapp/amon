@@ -9,7 +9,7 @@ from amon.core import settings
 
 class MongoBackend():
 
-	internal_collections = ['logs', 'exceptions']
+	internal_collections = ['logs', 'exceptions', 'unread']
 
 	host = settings.MONGO['host']
 	port = settings.MONGO['port']

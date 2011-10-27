@@ -1,0 +1,12 @@
+{% for log in logs  %}
+<li>
+<div class="heading">
+	<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
+	<span class='level {{ log.level }}'>{{ log.level }}</span>
+</div>
+<p>
+	{{ log.message }}
+</p>
+</li>
+{% endfor %}
+
