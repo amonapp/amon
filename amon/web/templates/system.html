@@ -246,7 +246,8 @@ var datetime_options = {
 	timeFormat: 'hh:mm',
 	hourGrid: 4,
 	minuteGrid: 10,
-	maxDate: new Date()
+	maxDate: new Date(),
+	minDate: new Date({{ start_date.time|date_to_js }}),
 
 };
 $('#date_from').datetimepicker(datetime_options);

@@ -68,6 +68,8 @@ def time_in_words(value):
 
 	return time_ago
 
+
+# TODO - Add one date filter with formats comming from the template
 def dateformat(value, format='%d-%m-%Y-%H:%M'):
 	# Converts unix time to a readable date format
 	_ = datetime.utcfromtimestamp(value)
@@ -77,6 +79,15 @@ def timeformat(value, format='%H:%M'):
 	# Converts unix time to a readable 24 hour-minute format
 	_ = datetime.utcfromtimestamp(value)
 	return _.strftime(format)
+
+def date_to_js(value, format='%Y, %m, %d, %H, %M'):
+	# Converts unixtime to a javascript Date list
+	_ = datetime.utcfromtimestamp(value)
+	js_time_list = _.strftime(format).split(',')
+	# Substract one month in js January is 0, February is 1, etc.
+	js_time_list[1] = str(int(js_time_list[1])-1) 
+	
+	return ",".join(js_time_list) 
 
 def to_int(value):
 	number = re.compile('(\d+)')
@@ -176,6 +187,7 @@ def render(*args, **kwargs):
 									settings.WEB_APP['port'])
 
 	env.filters['time'] = timeformat
+	env.filters['date_to_js'] = date_to_js
 	env.filters['date'] = dateformat
 	env.filters['to_int'] =  to_int
 	env.filters['time_in_words'] = time_in_words 

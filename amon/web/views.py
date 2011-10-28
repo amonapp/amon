@@ -89,6 +89,13 @@ class System(Base):
 			checks = False
 			raise e
 
+		try:
+			row = self.mongo.get_collection('cpu')
+			start_date = row.find_one()
+		except Exception, e:
+			start_date = False
+
+
 		if checks != False:
 			network = []
 			network_interfaces = []
@@ -114,6 +121,8 @@ class System(Base):
 					if volume not in volumes:
 						volumes.append(volume)
 
+			
+
 			_template = render(template='system.html',
 						  current_page='system',
 						  checks=checks,
@@ -122,7 +131,8 @@ class System(Base):
 						  volumes=volumes,
 						  disk=disk,
 						  date_from=date_from,
-						  date_to=date_to
+						  date_to=date_to,
+						  start_date=start_date
 						  )
 
 			self.write(_template)
