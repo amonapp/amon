@@ -106,33 +106,32 @@ class TestExceptionApi(unittest.TestCase):
 		for key in keys:
 			assert key in valid_keys
 
-	#def test_unread_counter(self):
-		#unread = backend.get_collection('unread')
-		#unread.remove()
+	def test_unread_counter(self):
+		unread = backend.get_collection('unread')
+		unread.remove()
 		
-		#exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
+		exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
 		
-		#print unread.find_one()
-		#eq_(unread.count(), 1)
+		eq_(unread.count(), 1)
 
-		#exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
-		#exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
+		exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
+		exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
 
-		#eq_(unread.count(), 1)
+		eq_(unread.count(), 1)
 
-	#def test_unread_counter_values(self):
-		#unread = backend.get_collection('unread')
-		#unread.remove()
+	def test_unread_counter_values(self):
+		unread = backend.get_collection('unread')
+		unread.remove()
 		
-		#exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
+		exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
 
-		#unread_dict = unread.find_one()
-		#eq_(unread_dict['exceptions'],1)
+		unread_dict = unread.find_one()
+		eq_(unread_dict['exceptions'],1)
 
-		#exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
-		#exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
-		#exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
-		#exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
+		exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
+		exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
+		exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
+		exception({"exception_class":"test","url": "url_test", "backtrace": "backtrace_test"})
 
-		#unread_dict = unread.find_one()
-		#eq_(unread_dict['exceptions'],5)
+		unread_dict = unread.find_one()
+		eq_(unread_dict['exceptions'],5)

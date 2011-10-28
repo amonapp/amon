@@ -119,22 +119,22 @@ body
       clear: left
       a.top
         outline: none
-        width: 127px
-        padding: 10px
+        width: 122px
+        padding: 20px
           top: 8px
           bottom: 10px
-          right: 15px
+          right: 10px
         float: Left
-        text-align: right
+        text-align: left
         color:  #A5AABF
         font-size: 1.6em
         text-decoration: none
         .unread
-          float: left
-          +border-radius(6px)
+          float: right
+          +border-radius(4px)
           color: white
           padding:
-            left: 6px
+            left: 5px
             right: 6px
             top: 2px
             bottom: 2px
@@ -289,7 +289,6 @@ input[type=submit]
       width: 150px
       font-size: 1em
     a.button
-      background: #DEECC5 
       border: 1px solid white
       padding-bottom: 5px
       padding-left: 10px
@@ -301,25 +300,25 @@ input[type=submit]
       input[type=checkbox]
         display: none
       &.notset
-        background: #F0F0F0  
+        border: 1px solid #F0F0F0  
         color: #7E8285
         &:hover, &.active
           background: #7E8285
           color: white
       &.info
-        background: #DEECC5
+        border: 1px solid #DEECC5
         color: #7AB317
         &:hover, &.active
           background: #7AB317
           color: white
       &.warning
-        background: #EEBFBF 
+        border: 1px solid #EEBFBF 
         color: #BC0000 
         &:hover, &.active
           background: #BC0000 
           color: white
       &.debug
-        background: #FEF2CC 
+        border: 1px solid #FDCB34
         color: #FDCB34 
         &:hover, &.active
           background: #FDCB34 

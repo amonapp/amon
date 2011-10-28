@@ -35,7 +35,6 @@ class Exception(object):
 		exception_string = "{0}{1}{2}".format(exception_class, url, backtrace)
 		exception_id = md5(exception_string).hexdigest()
 		
-		
 		additional_data = {'occurrence': now}
 
 		if message: additional_data['message'] = message
@@ -64,11 +63,12 @@ class Exception(object):
 			
 			backend.store_entry(entry, self.collection)
 			
-			unread = backend.get_collection('unread')
-			unread_counter = unread.find({"id": 1}).count()
+		
+		unread = backend.get_collection('unread')
+		unread_counter = unread.find({"id": 1}).count()
 
-			if unread_counter == 0:
-				_counter = {'id':1, 'exceptions': 1, 'logs': 0}
-				unread.save(_counter)
-			else:
-				unread.update({"id": 1}, {"$inc": {"exceptions": 1}})
+		if unread_counter == 0:
+			_counter = {'id':1, 'exceptions': 1, 'logs': 0}
+			unread.save(_counter)
+		else:
+			unread.update({"id": 1}, {"$inc": {"exceptions": 1}})

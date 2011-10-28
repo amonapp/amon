@@ -16,8 +16,8 @@ class Base(tornado.web.RequestHandler):
 		self.mongo = MongoBackend()
 		self.now = datetime.now()
 
-		unread = self.mongo.get_collection('unread')
-		self.unread_values = unread.find_one()
+		self.unread_col = self.mongo.get_collection('unread')
+		self.unread_values = self.unread_col.find_one()
 		
 		super(Base, self).initialize()
 
@@ -199,6 +199,9 @@ class Exceptions(Base):
 		
 		exceptions = row.find().sort('last_occurrence', DESCENDING)
 
+		# Update unread count
+		self.unread_col.update({"id": 1}, {"$set": {"exceptions": 0}})
+
 		_template = render(template='exceptions.html',
 					  exceptions=exceptions,
 					  current_page=self.current_page,
@@ -206,7 +209,6 @@ class Exceptions(Base):
 					  )
 
 		self.write(_template)
-
 
 class Logs(Base):
 
@@ -216,30 +218,15 @@ class Logs(Base):
 
 	def get(self):
 
-		level = self.get_arguments('level')
-		filter = self.get_argument('filter', None)
-
-		_query = {}
-		# If there is only one parameter - convert it to list
-		if isinstance(level, unicode):
-			level = [level]
-		if level:
-			level_params = [{'level': x} for x in level]
-			_query = {"$or" : level_params}
-
-		if filter:
-			_query['message'] = {'$regex': str(filter)}
-
-
-		row = self.mongo.get_collection('logs') 
+		# Update unread count
+		self.unread_col.update({"id": 1}, {"$set": {"logs": 0}})
 		
-		logs = row.find(_query).sort('time', DESCENDING)
+		row = self.mongo.get_collection('logs') 
+		logs = row.find().sort('time', DESCENDING)
  
 		_template =  render(template='logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
-					 level=level,
-					 filter=filter,
 					 unread_values=self.unread_values,
 					 )
 

@@ -197,27 +197,27 @@ body {
 }
 .left ul li a.top {
   outline: none;
-  width: 127px;
-  padding: 10px;
+  width: 122px;
+  padding: 20px;
   padding-top: 8px;
   padding-bottom: 10px;
-  padding-right: 15px;
+  padding-right: 10px;
   float: Left;
-  text-align: right;
+  text-align: left;
   color: #a5aabf;
   font-size: 1.6em;
   text-decoration: none;
 }
 .left ul li a.top .unread {
-  float: left;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -o-border-radius: 6px;
-  -ms-border-radius: 6px;
-  -khtml-border-radius: 6px;
-  border-radius: 6px;
+  float: right;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
   color: white;
-  padding-left: 6px;
+  padding-left: 5px;
   padding-right: 6px;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -426,7 +426,6 @@ input[type=submit]:hover {
   font-size: 1em;
 }
 .logs_filter li a.button {
-  background: #deecc5;
   border: 1px solid white;
   padding-bottom: 5px;
   padding-left: 10px;
@@ -445,7 +444,7 @@ input[type=submit]:hover {
   display: none;
 }
 .logs_filter li a.button.notset {
-  background: #f0f0f0;
+  border: 1px solid #f0f0f0;
   color: #7e8285;
 }
 .logs_filter li a.button.notset:hover, .logs_filter li a.button.notset.active {
@@ -453,7 +452,7 @@ input[type=submit]:hover {
   color: white;
 }
 .logs_filter li a.button.info {
-  background: #deecc5;
+  border: 1px solid #deecc5;
   color: #7ab317;
 }
 .logs_filter li a.button.info:hover, .logs_filter li a.button.info.active {
@@ -461,7 +460,7 @@ input[type=submit]:hover {
   color: white;
 }
 .logs_filter li a.button.warning {
-  background: #eebfbf;
+  border: 1px solid #eebfbf;
   color: #bc0000;
 }
 .logs_filter li a.button.warning:hover, .logs_filter li a.button.warning.active {
@@ -469,7 +468,7 @@ input[type=submit]:hover {
   color: white;
 }
 .logs_filter li a.button.debug {
-  background: #fef2cc;
+  border: 1px solid #fdcb34;
   color: #fdcb34;
 }
 .logs_filter li a.button.debug:hover, .logs_filter li a.button.debug.active {
