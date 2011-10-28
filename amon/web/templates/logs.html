@@ -9,20 +9,28 @@ Logs
 <form action="{{ base_url|url('logs') }}" method='get' id='logs_filter_form'>
 <ul class='logs_filter'>
 	<li>
-		<input type="checkbox" name='level[]' value='notset' {% if 'notset' in level %} checked {% endif %}/> 
-		<span class='notset'>notset</span>
+		<a href="" class="button notset">
+			<input type="checkbox" name='level[]' value='notset' /> 
+			<span>notset</span>
+		</a>
 	</li>
 	<li>
-		<input type="checkbox" name='level[]' value='info' {% if 'info' in level %} checked {% endif %}/> 
-		<span class='info'>info</span>
+		<a href="" class="button info">
+		<input type="checkbox" name='level[]' value='info' /> 
+		<span>info</span>
+		</a>
 	</li>
 	<li>
-		<input type="checkbox" name='level[]' value='warning' {% if 'warning' in level %} checked {% endif %}/> 
-		<span class='warning'>warning</span>
+		<a href="" class="button warning">
+		<input type="checkbox" name='level[]' value='warning' /> 
+		<span>warning</span>
+		</a>
 	</li>
 	<li>
-		<input type="checkbox" name='level[]' value='debug' {% if 'debug' in level %} checked {% endif %}/>
-		<span class='debug'>debug</span>
+		<a href="" class="button debug">
+		<input type="checkbox" name='level[]' value='debug'/>
+		<span>debug</span>
+		</a>
 	</li>
 	<li>
 		<input type="text" id="filter" name="filter" placeholder="Filter" value="{% if filter != None %}{{ filter }}{% endif %}" />
@@ -96,6 +104,16 @@ Logs
 			submit_filter_form();
 		}
 
+	});
+	$('.button').click(function(event){
+		event.preventDefault(); 	
+		
+		var checkbox = $(this).find('input[type=checkbox]');
+		(checkbox.is(":checked")) ? checkbox.removeAttr("checked") : checkbox.attr("checked","true");
+		$(this).toggleClass('active'); 
+    
+
+		submit_filter_form();
 	});
 </script>
 {% endblock js %}

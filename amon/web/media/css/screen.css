@@ -380,7 +380,7 @@ input[type=submit]:hover {
 .logs_filter li {
   float: left;
   font-size: 1.4em;
-  margin-left: 20px;
+  margin-left: 15px;
   line-height: 1.6em;
 }
 .logs_filter li input[type=checkbox] {
@@ -407,6 +407,57 @@ input[type=submit]:hover {
 .logs_filter li input[type=text] {
   width: 150px;
   font-size: 1em;
+}
+.logs_filter li a.button {
+  background: #deecc5;
+  border: 1px solid white;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #7ab317;
+  float: left;
+  outline: none;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+}
+.logs_filter li a.button input[type=checkbox] {
+  display: none;
+}
+.logs_filter li a.button.notset {
+  background: #f0f0f0;
+  color: #7e8285;
+}
+.logs_filter li a.button.notset:hover, .logs_filter li a.button.notset.active {
+  background: #7e8285;
+  color: white;
+}
+.logs_filter li a.button.info {
+  background: #deecc5;
+  color: #7ab317;
+}
+.logs_filter li a.button.info:hover, .logs_filter li a.button.info.active {
+  background: #7ab317;
+  color: white;
+}
+.logs_filter li a.button.warning {
+  background: #eebfbf;
+  color: #bc0000;
+}
+.logs_filter li a.button.warning:hover, .logs_filter li a.button.warning.active {
+  background: #bc0000;
+  color: white;
+}
+.logs_filter li a.button.debug {
+  background: #fef2cc;
+  color: #fdcb34;
+}
+.logs_filter li a.button.debug:hover, .logs_filter li a.button.debug.active {
+  background: #fdcb34;
+  color: white;
 }
 
 .log_list, .exceptions_list {

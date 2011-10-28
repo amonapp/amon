@@ -255,7 +255,7 @@ input[type=submit]
   li
     float: left
     font-size: 1.4em
-    margin-left: 20px
+    margin-left: 15px
     line-height: 1.6em
     input[type=checkbox]
       margin-top: 10px
@@ -275,6 +275,43 @@ input[type=submit]
     input[type=text]
       width: 150px
       font-size: 1em
+    a.button
+      background: #DEECC5 
+      border: 1px solid white
+      padding-bottom: 5px
+      padding-left: 10px
+      padding-right: 10px
+      color: #7AB317  
+      float: left
+      outline: none
+      +border-radius(6px)
+      input[type=checkbox]
+        display: none
+      &.notset
+        background: #F0F0F0  
+        color: #7E8285
+        &:hover, &.active
+          background: #7E8285
+          color: white
+      &.info
+        background: #DEECC5
+        color: #7AB317
+        &:hover, &.active
+          background: #7AB317
+          color: white
+      &.warning
+        background: #EEBFBF 
+        color: #BC0000 
+        &:hover, &.active
+          background: #BC0000 
+          color: white
+      &.debug
+        background: #FEF2CC 
+        color: #FDCB34 
+        &:hover, &.active
+          background: #FDCB34 
+          color: white
+
 $log_width: 800px
 .log_list
   float: left
