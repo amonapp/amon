@@ -13,6 +13,10 @@ class TestTemplateFilters(unittest.TestCase):
 		time = timeformat(1319737106)
 		eq_('17:38', time)
 
+	def test_date_to_js(self):
+		date = date_to_js(1319737106)
+		eq_('2011,9, 27, 17, 38', date)
+
 
 	def test_to_int(self):
 		_int = to_int('testme2')

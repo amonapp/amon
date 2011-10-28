@@ -57,3 +57,35 @@ class TestLoggingApi(unittest.TestCase):
 		entries = db.find()
 		for entry in entries:
 			eq_(entry['level'], 'notset')
+
+	def test_unread_counter(self):
+		unread = backend.get_collection('unread')
+		unread.remove()
+		
+		log({"message":"", "level": "dummy_level"})
+		
+		eq_(unread.count(), 1)
+
+		log({"message":"", "level": "dummy_level"})
+		log({"message":"", "level": "dummy_level"})
+
+		eq_(unread.count(), 1)
+
+	def test_unread_counter_values(self):
+		unread = backend.get_collection('unread')
+		unread.remove()
+		
+		log({"message":"", "level": "dummy_level"})
+
+		unread_dict = unread.find_one()
+		eq_(unread_dict['logs'],1)
+
+
+		log({"message":"", "level": "dummy_level"})
+		log({"message":"", "level": "dummy_level"})
+		log({"message":"", "level": "dummy_level"})
+		log({"message":"", "level": "dummy_level"})
+
+
+		unread_dict = unread.find_one()
+		eq_(unread_dict['logs'],5)

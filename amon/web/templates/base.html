@@ -44,7 +44,9 @@
 					<a class='top {% if current_page=='processes' %}active{% endif %}' href="/processes">Processes</a>
 				</li>
 				<li>
-					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/logs">Logs</a>
+					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/logs">
+						<span class="unread">{{ unread_values.logs }}</span>
+					Logs</a>
 				</li>
 				<li>
 					<a class='top {% if current_page=='exceptions' %}active{% endif %}' href="/exceptions">Exceptions</a>

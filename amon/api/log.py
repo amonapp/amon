@@ -23,4 +23,14 @@ class Log(object):
 		entry = {'time': now, 'message': message, 'level': level}
 		
 		backend.store_entry(entry, 'logs')
-		
+
+
+		# TODO - refactor it at some point, when expanding the API
+		unread = backend.get_collection('unread')
+		unread_counter = unread.find({"id": 1}).count()
+
+		if unread_counter == 0:
+			_counter = {'id':1, 'exceptions': 0, 'logs': 1}
+			unread.save(_counter)
+		else:
+			unread.update({"id": 1}, {"$inc": {"logs": 1}})

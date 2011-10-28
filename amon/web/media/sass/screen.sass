@@ -119,19 +119,32 @@ body
       clear: left
       a.top
         outline: none
-        width: 120px
+        width: 127px
         padding: 10px
           top: 8px
           bottom: 10px
-          right: 22px
+          right: 15px
         float: Left
         text-align: right
         color:  #A5AABF
         font-size: 1.6em
         text-decoration: none
+        .unread
+          float: left
+          +border-radius(6px)
+          color: white
+          padding:
+            left: 6px
+            right: 6px
+            top: 2px
+            bottom: 2px
+          background: #BC0000 
+          margin-left: 3px
+          margin-top: -1px
         &:hover, &.active
           background: url(../images/active_button.png) repeat-x
           color: white
+        
     ul
       float: left
       li

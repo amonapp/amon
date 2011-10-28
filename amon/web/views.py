@@ -15,6 +15,10 @@ class Base(tornado.web.RequestHandler):
 	def initialize(self):
 		self.mongo = MongoBackend()
 		self.now = datetime.now()
+
+		unread = self.mongo.get_collection('unread')
+		self.unread_values = unread.find_one()
+		
 		super(Base, self).initialize()
 
 class Dashboard(Base):
@@ -49,7 +53,8 @@ class Dashboard(Base):
 				last_check=last_check,
 				process_check=process_check,
 				system_check_first=system_check_first,
-				process_check_first=process_check_first
+				process_check_first=process_check_first,
+				unread_values=self.unread_values
 				)
 
 		self.write(_template)
@@ -132,7 +137,8 @@ class System(Base):
 						  disk=disk,
 						  date_from=date_from,
 						  date_to=date_to,
-						  start_date=start_date
+						  start_date=start_date,
+						  unread_values=self.unread_values
 						  )
 
 			self.write(_template)
@@ -174,7 +180,8 @@ class Processes(Base):
 					  processes=self.processes,
 					  process_data=process_data,
 					  date_from=date_from,
-					  date_to=date_to
+					  date_to=date_to,
+					  unread_values=self.unread_values
 					 )
 
 		self.write(_template)
@@ -194,7 +201,8 @@ class Exceptions(Base):
 
 		_template = render(template='exceptions.html',
 					  exceptions=exceptions,
-					  current_page=self.current_page
+					  current_page=self.current_page,
+					  unread_values=self.unread_values
 					  )
 
 		self.write(_template)
@@ -232,6 +240,7 @@ class Logs(Base):
 					 logs=logs,
 					 level=level,
 					 filter=filter,
+					 unread_values=self.unread_values,
 					 )
 
 		self.write(_template)

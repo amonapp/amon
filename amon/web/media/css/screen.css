@@ -197,16 +197,33 @@ body {
 }
 .left ul li a.top {
   outline: none;
-  width: 120px;
+  width: 127px;
   padding: 10px;
   padding-top: 8px;
   padding-bottom: 10px;
-  padding-right: 22px;
+  padding-right: 15px;
   float: Left;
   text-align: right;
   color: #a5aabf;
   font-size: 1.6em;
   text-decoration: none;
+}
+.left ul li a.top .unread {
+  float: left;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+  color: white;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background: #bc0000;
+  margin-left: 3px;
+  margin-top: -1px;
 }
 .left ul li a.top:hover, .left ul li a.top.active {
   background: url(../images/active_button.png) repeat-x;

@@ -63,3 +63,12 @@ class Exception(object):
 			entry['total_occurrences'] = 1
 			
 			backend.store_entry(entry, self.collection)
+			
+			unread = backend.get_collection('unread')
+			unread_counter = unread.find({"id": 1}).count()
+
+			if unread_counter == 0:
+				_counter = {'id':1, 'exceptions': 1, 'logs': 0}
+				unread.save(_counter)
+			else:
+				unread.update({"id": 1}, {"$inc": {"exceptions": 1}})
