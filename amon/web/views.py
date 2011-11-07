@@ -89,7 +89,7 @@ class System(Base):
 		try:
 			for check in active_checks:
 				row = self.mongo.get_collection(check)
-				checks[check] = row.find({"time": {"$gte": date_from}}).sort('time', ASCENDING)
+				checks[check] = row.find({"time": {"$gte": date_from,"$lt": date_to }}).sort('time', ASCENDING)
 		except Exception, e:
 			checks = False
 			raise e
@@ -171,7 +171,7 @@ class Processes(Base):
 		process_data = {}
 		for process in self.processes:
 			row = self.mongo.get_collection(process)
-			process_data[process] = row.find({"time": {"$gte": date_from, '$lte': date_to}})\
+			process_data[process] = row.find({"time": {"$gte": date_from, '$lt': date_to}})\
 					.sort('time', ASCENDING)
 		
 

@@ -23,7 +23,7 @@ echo "***  Installing Amon $version ..."
 
 	# Ensure that we have the pymongo driver dependecies
 	echo ""
-	#sudo apt-get install gcc python-dev curl
+	#sudo apt-get install gcc python-dev 
 	#sudo python setup.py install
 	cd "$bash_script_dir"
 	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
@@ -33,7 +33,9 @@ echo "***  Installing Amon $version ..."
 	sudo chmod +x /etc/init.d/amond
 	sudo update-rc.d amond defaults > /dev/null
 
-# Copy Amon configuration files
+	# Copy the web app daemon
+	sudo cp amon-$version/contrib/amon/amon /etc/init.d/amon
+	sudo chmod +x /etc/init.d/amon
 
 
 # Install MongoDB
