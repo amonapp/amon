@@ -28,7 +28,7 @@ body
       float: left
       font-size: 3.6em
       font-weight: bold
-      color: #D2D2D2 
+      color: #2B3239 
       padding:
         top: 20px
         left: 20px
@@ -121,9 +121,13 @@ body
       a.top
         outline: none
         width: 124px
+        border:
+          top: 4px solid transparent 
+          bottom: 4px solid transparent 
+          right: 4px solid transparent
         padding: 20px
-          top: 10px
-          bottom: 12px
+          top: 9px
+          bottom: 9px
           right: 10px
         float: Left
         text-align: left
@@ -135,16 +139,19 @@ body
           +border-radius(4px)
           color: white
           padding:
-            left: 5px
-            right: 6px
+            left: 6px
+            right: 7px
             top: 2px
             bottom: 2px
           background: #F1B604  
           margin-left: 3px
-          margin-top: -1px
+          margin-top: -2px
         &:hover, &.active
-          border-right: 4px solid #F1B605 
-          background: url(../images/active_button.png) repeat-x
+          border:
+            top: 4px solid #F1B605 
+            bottom: 4px solid #F1B605 
+            right: 4px solid #F1B605 
+          background: #FDCB34 
         
     ul
       float: left

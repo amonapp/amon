@@ -92,7 +92,7 @@ body {
   float: left;
   font-size: 3.6em;
   font-weight: bold;
-  color: #d2d2d2;
+  color: #2b3239;
   padding-top: 20px;
   padding-left: 20px;
   padding-bottom: 20px;
@@ -199,9 +199,12 @@ body {
 .left ul li a.top {
   outline: none;
   width: 124px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-right: 4px solid transparent;
   padding: 20px;
-  padding-top: 10px;
-  padding-bottom: 12px;
+  padding-top: 9px;
+  padding-bottom: 9px;
   padding-right: 10px;
   float: Left;
   text-align: left;
@@ -218,17 +221,19 @@ body {
   -khtml-border-radius: 4px;
   border-radius: 4px;
   color: white;
-  padding-left: 5px;
-  padding-right: 6px;
+  padding-left: 6px;
+  padding-right: 7px;
   padding-top: 2px;
   padding-bottom: 2px;
   background: #f1b604;
   margin-left: 3px;
-  margin-top: -1px;
+  margin-top: -2px;
 }
 .left ul li a.top:hover, .left ul li a.top.active {
+  border-top: 4px solid #f1b605;
+  border-bottom: 4px solid #f1b605;
   border-right: 4px solid #f1b605;
-  background: url(../images/active_button.png) repeat-x;
+  background: #fdcb34;
 }
 .left ul ul {
   float: left;
