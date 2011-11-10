@@ -78,7 +78,7 @@ body {
 }
 
 .right {
-  margin-left: 154px;
+  margin-left: 159px;
   background-color: white;
   height: 100%;
   min-height: 100%;
@@ -172,7 +172,7 @@ body {
 
 .left {
   float: left;
-  width: 154px;
+  width: 159px;
   margin-left: -100%;
   background: url(../images/sidebar.png) repeat-y;
   z-index: 9999;
@@ -181,30 +181,31 @@ body {
 }
 .left .logo {
   float: left;
-  width: 99px;
-  height: 104px;
+  width: 113px;
+  height: 116px;
   background: url(../images/logo.png) no-repeat;
-  margin-top: 20px;
-  margin-left: 25px;
+  margin-top: 18px;
+  margin-left: 18px;
 }
 .left ul {
   float: left;
-  margin-top: 35px;
+  margin-top: 25px;
 }
 .left ul li {
   float: left;
   clear: left;
+  margin-top: 2px;
 }
 .left ul li a.top {
   outline: none;
-  width: 122px;
+  width: 124px;
   padding: 20px;
-  padding-top: 8px;
-  padding-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 12px;
   padding-right: 10px;
   float: Left;
   text-align: left;
-  color: #a5aabf;
+  color: black;
   font-size: 1.6em;
   text-decoration: none;
 }
@@ -221,13 +222,13 @@ body {
   padding-right: 6px;
   padding-top: 2px;
   padding-bottom: 2px;
-  background: #bc0000;
+  background: #f1b604;
   margin-left: 3px;
   margin-top: -1px;
 }
 .left ul li a.top:hover, .left ul li a.top.active {
+  border-right: 4px solid #f1b605;
   background: url(../images/active_button.png) repeat-x;
-  color: white;
 }
 .left ul ul {
   float: left;
