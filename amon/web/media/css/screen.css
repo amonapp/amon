@@ -199,9 +199,6 @@ body {
 .left ul li a.top {
   outline: none;
   width: 124px;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-right: 4px solid transparent;
   padding: 20px;
   padding-top: 9px;
   padding-bottom: 9px;
@@ -230,10 +227,8 @@ body {
   margin-top: -2px;
 }
 .left ul li a.top:hover, .left ul li a.top.active {
-  border-top: 4px solid #f1b605;
-  border-bottom: 4px solid #f1b605;
-  border-right: 4px solid #f1b605;
-  background: #fdcb34;
+  font-weight: bold;
+  background: #f0f0f0;
 }
 .left ul ul {
   float: left;
