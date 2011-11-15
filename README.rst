@@ -11,62 +11,29 @@ your web applications.
 
 **1. System monitoring**
 
-When we deploy our web applications it's important to know how much 
-server resources they use over time, so that we can improve and optimize them.
-With Amon you can monitor your CPU usage, RAM, average load, network interfaces 
-and disk drives.
+Monitor the core metrics of your servers - ram, cpu, disk
 
 **2. Process monitoring**
 
-Monitoring the whole system gives you a nice overview, but sometimes you need to 
-monitor specific processes, like your database or server.
+Monitor your database or server
 
 **3. Language agnostic logging**
+
+Navigate quickly through your logs with a nice and clean web interface
 
 
 **4. Language agnostic exception handling**
 
+Catch exceptions in Rails, Django, Node.js out of the box. Easy extendable to any 
+language/framework that supports http and json
 
 
-Installation
+More info
 ================
 
-1. Download the tarball and install the package with **python setup.py install**
+Amon user guide -> http://amon.cx/guide
 
-2. Copy the system info collect daemon **contrib/amon/amon** to **/etc/init.d/amon**
-
-3. Make it executable with **sudo chmod +x /etc/init.d/amon** and then start the daemon with **sudo invoke-rc.d/amon start**
-
-
-Installing Mongodb
-==================
-
-Amon stores the system information in a Mongo database. In this section I will cover just the basics of
-how to install and run a mongo instance. You can find much more details at http://mongodb.org
-
-1. We need to create 3 directories for Mongo: - 
-    
-    ::
-
-        mkdir /usr/local/mongodb - the main directory
-        mkdir /usr/local/mongodb/data - for the database
-        mkdir /usr/local/mongodb/bin - for the mongo executables
-        touch /var/log/mongodb.log - the mongodb log file
-
-
-2. Download Mongo from http://www.mongodb.org/downloads and copy the **mongod** file to **/usr/local/mongodb/bin**
-
-3. Copy the Mongo init script **contrib/mongodb/mongodb.conf** to **/etc/init/mongodb.conf**
-
-4. Start the database with **sudo start mongodb** 
-
-
-Usage
-======
-
-At it's core Amon is a web application. You can start it with **python cherryd -i amon.web**
-
-And then open **http://127.0.0.1:2464** ( or your server ip address ) in your browser
+Amon blog -> http://amon.cx/blog
 
 
 Requirements
@@ -74,10 +41,10 @@ Requirements
 
 Python 2.5+
 
-pymongo >=1.1
-
-CherryPy >=3.2
+pymongo >=2.0
 
 Jinja2 >=2.5
+
+tornado >=2.1.1
 
 MongoDB

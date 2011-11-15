@@ -46,7 +46,7 @@ sdict = {
     'url': 'https://github.com/martinrusev/amon',
     'author' : 'Martin Rusev',
     'author_email' : 'martinrusev@live.com',
-    'keywords' : ['Amon', 'monitoring', 'logging'],
+	'keywords' : ['Amon', 'monitoring', 'logging', 'exception handling'],
     'license' : 'GPL',
     'packages' : packages,
 	'data_files' : data_files,
