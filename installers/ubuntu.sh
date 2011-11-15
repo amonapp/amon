@@ -4,7 +4,7 @@
 set -e
 mongo_install_dir="/usr/local/mongodb"
 mongo_extract_dir="mongodb-linux-i686-2.0.0"
-version=0.4
+version=0.5
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 
 echo "***  Installing Amon $version ..."
@@ -17,7 +17,7 @@ echo "***  Installing Amon $version ..."
 
 # Install Amon
 
-    wget "http://cloud.github.com/downloads/martinrusev/amon/amon-$version.tar.gz"
+    wget "https://s3-eu-west-1.amazonaws.com/amon/amon-$version.tar.gz"
 	tar -zxvf "amon-$version.tar.gz" > /dev/null
 	cd "amon-$version"
 
