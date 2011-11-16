@@ -1,4 +1,10 @@
 #!/bin/bash
+# The awesome one-liner for Amon - Debian based distros 
+# Author: Martin Rusev <martin@amon.cx>handy functions
+command_exists() {
+    type "$1" &> /dev/null ;
+}
+
 
 # Set variables for the installation
 set -e
@@ -10,32 +16,44 @@ bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 echo "***  Installing Amon $version ..."
 
 # Install easy_install if necessary
-
-	#wget "http://peak.telecommunity.com/dist/ez_setup.py" 
-	#sudo python ez_setup.py
-	#rm -rf ez_setup.py
+	if ! command_exists easy_install ; then
+		wget "http://peak.telecommunity.com/dist/ez_setup.py" 
+		sudo python ez_setup.py
+		rm -rf ez_setup.py
+	fi
 
 # Install Amon
 
-    wget "https://s3-eu-west-1.amazonaws.com/amon/amon-$version.tar.gz"
+    wget --no-check-certificate "https://s3-eu-west-1.amazonaws.com/amon/amon-$version.tar.gz" 
 	tar -zxvf "amon-$version.tar.gz" > /dev/null
 	cd "amon-$version"
 
 	# Ensure that we have the pymongo driver dependecies
-	echo ""
-	#sudo apt-get install gcc python-dev 
-	#sudo python setup.py install
+	# Skip installing python and gcc if they are already installed.
+	if dpkg-query -W python-dev gcc ; then
+		echo "*** Amon requirements already installed"
+	else
+		echo "** Installing Amon requirements"
+		sudo apt-get -y install gcc python-dev
+	fi
+
+	if dpkg-query -W python-dev gcc ; then 
+		echo "** success!"
+	fi
+
+
+	sudo python setup.py install
 	cd "$bash_script_dir"
 	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
 	sudo cp amon-$version/config/amon.conf /etc/amon.conf
 	
 	# make the daemon executable
 	sudo chmod +x /etc/init.d/amond
-	sudo update-rc.d amond defaults > /dev/null
-
-	# Copy the web app daemon
-	sudo cp amon-$version/contrib/amon/amon /etc/init.d/amon
-	sudo chmod +x /etc/init.d/amon
+	
+	# Ubuntu/Debian
+	if command_exists apt-get ; then
+		sudo update-rc.d amond defaults > /dev/null
+    fi
 
 
 # Install MongoDB
@@ -43,7 +61,7 @@ echo "***  Installing Amon $version ..."
 	install_mongodb()
 	{
 
-		#wget "http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.0.tgz"
+		wget "http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.0.tgz"
 		echo "***  Extracting MongoDB ..."
 		tar -zxvf "$mongo_extract_dir.tgz" > /dev/null
 
@@ -65,7 +83,10 @@ echo "***  Installing Amon $version ..."
 		sudo cp amon-$version/contrib/mongodb/mongodb /etc/init.d/mongodb
 
 		sudo chmod +x /etc/init.d/mongodb
-		sudo update-rc.d mongodb defaults > /dev/null
+
+		if command_exists apt-get ; then
+			sudo update-rc.d mongodb defaults > /dev/null
+	    fi
 
 	}
 
@@ -76,22 +97,20 @@ echo "***  Installing Amon $version ..."
 		rm -rf mongo
 		echo "*** Starting MongoDB"
 		echo ""
-		sudo invoke-rc.d mongodb start
 
+		sudo /etc/init.d/mongodb start
 	}
 	
-	echo "***  Amon stores the data in a Mongo database. If you already have it on the system, please skip this step"
+	echo ""
+	echo ""
+	echo "***  Amon stores its data in a Mongo database. If you already have it on the system, please skip this step"
+	read -p "Install MongoDB? (Y/n) " install
 	
-	read -n1 -s -p "Install MongoDB (y/n)?"
-	
-
-	if [ "$REPLY" == "y" ]; then
+	if [ "$install" == "y" ] || [ "$install" == "Y" ]; then
 		install_mongodb
 		configure_mongodb
 		start_mongodb
 	fi
-
-
 
 # Show a message about where to go for help.
 
@@ -100,11 +119,12 @@ echo "***  Installing Amon $version ..."
 		echo "For troubleshooting instructions, please see the Amon User Guide :"
 		echo "http://amon.cx/guide/"
 		echo
-		echo "To uninstall Amon, \`curl get.amon.cx/uninstall.sh | sh\`"
+		echo "To uninstall Amon, \`curl uninstall.amon.cx/debian | bash\`"
 	}
 
 
 # All done!
-
+  echo "*** Starting Amon "
+  sudo /etc/init.d/amond start
   echo "*** Installed"
   print_troubleshooting_instructions
