@@ -84,10 +84,7 @@ echo "***  Installing Amon $version ..."
 
 		sudo chmod +x /etc/init.d/mongodb
 
-	    if command_exists yum ; then
-			sudo chkconfig --add mongodb > /dev/null
-	    fi
-		
+		sudo chkconfig --add mongodb > /dev/null
 
 	}
 
@@ -121,7 +118,7 @@ echo "***  Installing Amon $version ..."
 		echo "For troubleshooting instructions, please see the Amon User Guide :"
 		echo "http://amon.cx/guide/"
 		echo
-		echo "To uninstall Amon, \`curl uninstall.amon.cx/rpm | bash\`"
+		echo "To uninstall Amon, \`curl uninstall.amon.cx | bash\`"
 	}
 
 

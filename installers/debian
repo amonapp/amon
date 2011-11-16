@@ -1,10 +1,9 @@
 #!/bin/bash
 # The awesome one-liner for Amon - Debian based distros 
-# Author: Martin Rusev <martin@amon.cx>handy functions
+# Author: Martin Rusev <martin@amon.cx>
 command_exists() {
     type "$1" &> /dev/null ;
 }
-
 
 # Set variables for the installation
 set -e
@@ -50,10 +49,7 @@ echo "***  Installing Amon $version ..."
 	# make the daemon executable
 	sudo chmod +x /etc/init.d/amond
 	
-	# Ubuntu/Debian
-	if command_exists apt-get ; then
-		sudo update-rc.d amond defaults > /dev/null
-    fi
+	sudo update-rc.d amond defaults > /dev/null
 
 
 # Install MongoDB
@@ -83,10 +79,7 @@ echo "***  Installing Amon $version ..."
 		sudo cp amon-$version/contrib/mongodb/mongodb /etc/init.d/mongodb
 
 		sudo chmod +x /etc/init.d/mongodb
-
-		if command_exists apt-get ; then
-			sudo update-rc.d mongodb defaults > /dev/null
-	    fi
+		sudo update-rc.d mongodb defaults > /dev/null
 
 	}
 
@@ -119,7 +112,7 @@ echo "***  Installing Amon $version ..."
 		echo "For troubleshooting instructions, please see the Amon User Guide :"
 		echo "http://amon.cx/guide/"
 		echo
-		echo "To uninstall Amon, \`curl uninstall.amon.cx/debian | bash\`"
+		echo "To uninstall Amon, \`curl uninstall.amon.cx | bash\`"
 	}
 
 
