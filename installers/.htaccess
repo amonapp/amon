@@ -1,3 +1,0 @@
-DirectoryIndex installer.sh
-AddType text/plain .sh 
-SetEnv no-gzip dont-vary

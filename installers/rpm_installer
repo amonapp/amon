@@ -60,9 +60,6 @@ echo "***  Installing Amon $version ..."
 	# make the collector daemon executable
 	sudo chmod +x /etc/init.d/amond
 
-	# Add the daemon to the startup list
-	sudo update-rc.d amond defaults > /dev/null
-
 	# Copy the web application daemon
 	sudo cp amon-$version/contrib/amon/amon /etc/init.d/amon
 	
