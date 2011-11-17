@@ -1,6 +1,7 @@
 #!/bin/bash
 # The awesome one-liner for Amon
 # Author: Martin Rusev <martin@amon.cx>
+
 command_exists() {
     type "$1" &> /dev/null ;
 }
@@ -12,19 +13,16 @@ if command_exists dpkg ; then
 	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/debian 
 	sudo bash debian
 	rm -rf debian
-fi
-
-
 # RPM based distros - Tested and supported on : Fedora, CentOS
-if command_exists rpm ; then
+elif command_exists rpm ; then
 	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/rpm_based
 	sudo bash rpm_based
 	rm -rf rpm_based
-fi
-
-#Mac OS 
-if [ "$(uname -s)" != "Darwin" ]; then
+# Mac OS
+elif [ "$(uname -s)" != "Darwin" ]; then
 	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/macos
 	sudo bash macos
 	rm -rf macos
+else 
+	echo "Your operating system is not supported at the moment"
 fi

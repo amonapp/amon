@@ -1,9 +1,15 @@
 #!/bin/bash
 # The awesome one-liner for Amon - Debian based distros 
 # Author: Martin Rusev <martin@amon.cx>
+
 command_exists() {
     type "$1" &> /dev/null ;
 }
+
+file_exists() {
+	[ -f "$1" ]
+}
+
 
 # Set variables for the installation
 set -e
@@ -44,9 +50,11 @@ echo "***  Installing Amon $version ..."
 	sudo python setup.py install
 	cd "$bash_script_dir"
 	
-	# Copy the configuration file
-	sudo cp amon-$version/config/amon.conf /etc/amon.conf
-	
+	# Copy the configuration file. Don't overwrite configurartion files
+	if ! file_exists "/etc/amon.conf" ; then
+		sudo cp amon-$version/config/amon.conf /etc/amon.conf
+	fi
+
 	# Copy the collector daemon
 	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
 	
@@ -90,10 +98,14 @@ echo "***  Installing Amon $version ..."
 
 
 		# Copy the mongo configuration file
-		sudo cp amon-$version/contrib/mongodb/mongodb.conf /etc/mongodb.conf
+		if ! file_exists "/etc/mongodb.conf"; then
+			sudo cp amon-$version/contrib/mongodb/mongodb.conf /etc/mongodb.conf
+		fi
 
 		# Copy the system daemon
-		sudo cp amon-$version/contrib/mongodb/mongodb /etc/init.d/mongodb
+		if ! file_exists "/etc/init.d/mongodb"; then
+			sudo cp amon-$version/contrib/mongodb/mongodb /etc/init.d/mongodb
+		fi
 
 		# Make the mongo daemon executable
 		sudo chmod +x /etc/init.d/mongodb
@@ -116,13 +128,15 @@ echo "***  Installing Amon $version ..."
 	echo ""
 	echo ""
 	echo "***  Amon stores its data in a Mongo database. If you already have it on the system, please skip this step"
-	read -p "Install MongoDB? (Y/n) " install
-	
-	if [ "$install" == "y" ] || [ "$install" == "Y" ]; then
+
+	read -s -n1 -p "Install MongoDB? (Y/n)" key
+	case $key in
+	"Y" | "y") 
 		install_mongodb
 		configure_mongodb
-		start_mongodb
-	fi
+		start_mongodb ;;
+	*) 
+	esac
 
 # Show a message about where to go for help.
 

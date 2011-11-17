@@ -1,0 +1,3 @@
+DirectoryIndex installer.sh
+RemoveOutputFilter .sh
+AddType application/octet-stream .sh 
