@@ -15,8 +15,10 @@ file_exists() {
 set -e
 mongo_install_dir="/usr/local/mongodb"
 mongo_extract_dir="mongodb-linux-i686-2.0.0"
+mongo_check=$(ps aux | grep -c mongo)
 version=0.5
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
+
 
 echo "***  Installing Amon $version ..."
 
@@ -126,17 +128,16 @@ echo "***  Installing Amon $version ..."
 	}
 	
 	echo ""
-	echo ""
-	echo "***  Amon stores its data in a Mongo database. If you already have it on the system, please skip this step"
-
-	read -s -n1 -p "Install MongoDB? (Y/n)" key
-	case $key in
-	"Y" | "y") 
-		install_mongodb
-		configure_mongodb
-		start_mongodb ;;
-	*) 
-	esac
+	
+	# Install MongoDB if it is not installed on the system
+	if ! command_exists mongo ; then
+		# Check one more time
+		if [ $mongo_check = '0' ]; then	 
+			install_mongodb
+			configure_mongodb
+			start_mongodb
+		fi
+	fi
 
 # Show a message about where to go for help.
 
