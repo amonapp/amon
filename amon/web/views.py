@@ -39,14 +39,15 @@ class Dashboard(Base):
 		try:
 			for check in active_system_checks:
 				row = self.mongo.get_collection(check)
-				last_check[check] = row.find(limit=1).sort('time', DESCENDING)[0]
+				# don't break the dashboard if the daemon is stopped
+				last_check[check] = row.find({"last":{"$exists" : False}},limit=1).sort('time', DESCENDING)[0]
 		except Exception, e:
 			last_check = False
 			raise e
 
 		for check in active_process_checks:
 			row = self.mongo.get_collection(check)
-			process_check[check] = row.find(limit=1).sort('time', DESCENDING)[0]
+			process_check[check] = row.find({"last":{"$exists" : False}}, limit=1).sort('time', DESCENDING)[0]
 
 		_template = render(template="dashboard.html",
 				current_page='dashboard',
