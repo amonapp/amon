@@ -103,7 +103,7 @@ echo "***  Installing Amon $version ..."
 
 		# Copy the system daemon
 		if ! file_exists "/etc/init.d/mongodb"; then
-			sudo cp amon-$version/contrib/mongodb/mongodb /etc/init.d/mongodb
+			sudo cp amon-$version/contrib/mongodb/rpm/mongodb /etc/init.d/mongodb
 		fi
 
 		# Make the mongo daemon executable
@@ -111,6 +111,7 @@ echo "***  Installing Amon $version ..."
 
 		# Add the mongo daemon to the startup list
 		sudo chkconfig --add mongodb > /dev/null
+		sudo chkconfig mongodb on
 
 	}
 

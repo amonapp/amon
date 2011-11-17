@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# mongodb     Startup script for the mongodb server
+#
+# chkconfig: - 64 36
+# description: MongoDB Database Server
+#
+# processname: mongodb
+#
+
+DAEMON=/usr/local/mongodb/bin/mongod
+DAEMON_OPTS="--fork --quiet --config /etc/mongodb.conf"
+prog="mongo"
+mongod="/usr/local/mongodb/bin/mongod"
+RETVAL=0
+
+start() {
+	echo -n $"Starting $prog: "
+	daemon $DAEMON -- $DAEMON_OPTS
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
+	return $RETVAL
+}
+
+stop() {
+	echo -n $"Stopping $prog: "
+	killproc $prog
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$prog
+	return $RETVAL
+}
+
+reload() {
+	echo -n $"Reloading $prog: "
+	killproc $prog -HUP
+	RETVAL=$?
+	echo
+	return $RETVAL
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	condrestart)
+		if [ -f /var/lock/subsys/$prog ]; then
+			stop
+			start
+		fi
+		;;
+	reload)
+		reload
+		;;
+	status)
+		status $mongod
+		RETVAL=$?
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart|condrestart|reload|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL
