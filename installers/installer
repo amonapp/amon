@@ -10,19 +10,19 @@ set -e
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if command_exists dpkg ; then
-	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/debian 
-	sudo bash debian
-	rm -rf debian
+	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/debian_installer
+	sudo bash debian_installer
+	rm -rf debian_installer*
 # RPM based distros - Tested and supported on : Fedora, CentOS
 elif command_exists rpm ; then
-	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/rpm_based
-	sudo bash rpm_based
-	rm -rf rpm_based
+	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/rpm_installer
+	sudo bash rpm_installer
+	rm -rf rpm_installer*
 # Mac OS
 elif [ "$(uname -s)" != "Darwin" ]; then
-	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/macos
-	sudo bash macos
-	rm -rf macos
+	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/macos_installer
+	sudo bash macos_installer
+	rm -rf macos_installer*
 else 
 	echo "Your operating system is not supported at the moment"
 fi
