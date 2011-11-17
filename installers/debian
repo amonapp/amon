@@ -43,14 +43,24 @@ echo "***  Installing Amon $version ..."
 
 	sudo python setup.py install
 	cd "$bash_script_dir"
-	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
+	
+	# Copy the configuration file
 	sudo cp amon-$version/config/amon.conf /etc/amon.conf
 	
-	# make the daemon executable
-	sudo chmod +x /etc/init.d/amond
+	# Copy the collector daemon
+	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
 	
+	# make the collector daemon executable
+	sudo chmod +x /etc/init.d/amond
+
+	# Add the daemon to the startup list
 	sudo update-rc.d amond defaults > /dev/null
 
+	# Copy the web application daemon
+	sudo cp amon-$version/contrib/amon/amon /etc/init.d/amon
+	
+	# make the web app daemon executable
+	sudo chmod +x /etc/init.d/amon
 
 # Install MongoDB
 
@@ -69,16 +79,25 @@ echo "***  Installing Amon $version ..."
 		echo ""
 		echo "***  MongoDB will be installed in $mongo_install_dir." 
 		echo "If you are not running as root, the installer will ask for your root password"
-
+		
+		
+		# Create mongo directories and log file
 		sudo mkdir $mongo_install_dir $mongo_install_dir/data $mongo_install_dir/bin && sudo touch $mongo_install_dir/mongodb.log
+
 		sudo cp $mongo_extract_dir/bin/mongod $mongo_install_dir/bin/mongod
+		
 		sudo cp $mongo_extract_dir/bin/mongo /usr/bin/mongo
 
 
+		# Copy the mongo configuration file
 		sudo cp amon-$version/contrib/mongodb/mongodb.conf /etc/mongodb.conf
+
+		# Copy the system daemon
 		sudo cp amon-$version/contrib/mongodb/mongodb /etc/init.d/mongodb
 
+		# Make the mongo daemon executable
 		sudo chmod +x /etc/init.d/mongodb
+
 		sudo update-rc.d mongodb defaults > /dev/null
 
 	}
