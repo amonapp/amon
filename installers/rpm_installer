@@ -131,7 +131,7 @@ echo "***  Installing Amon $version ..."
 	# Install MongoDB if it is not installed on the system
 	if ! command_exists mongo ; then
 		# Check one more time
-		if [ $mongo_check = '0' ]; then	 
+		if [ $mongo_check = '1' ]; then	 
 			install_mongodb
 			configure_mongodb
 			start_mongodb
