@@ -8,6 +8,8 @@
 # processname: mongodb
 #
 
+# Source function library
+# This where the OS could find the daemon command 
 . /etc/rc.d/init.d/functions
 
 if [ -f /etc/sysconfig/mongodb ]; then
