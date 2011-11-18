@@ -113,7 +113,7 @@ System check
 			</li>
 		</ul>
 	</div>
-	<div class="chart" id="disk_{{ volume|replace('/','_')  }}"></div>
+	<div class="chart" id="disk_{{ volume|clean_slashes  }}"></div>
 	{% endfor %}
 
 {% endblock %}
@@ -216,11 +216,11 @@ $(function ()
 
 	{% for volume in volumes  %}
 	
-	var disk_total_{{ volume|replace('/','_')  }} =	[
+	var disk_total_{{ volume|clean_slashes  }} =	[
 					{% for  d in disk %} [ 
 						{{ d.time * 1000 }}, {% if d[volume] %}  {{ d[volume].total|to_int }}  {% endif %}    ],  
 					{% endfor %}];
-	var disk_free_{{ volume|replace('/','_') }} = [
+	var disk_free_{{ volume|clean_slashes }} = [
 				{% for  d in disk %}
 					[ {{ d.time * 1000 }}, {% if d[volume] %} {{ d[volume].free|to_int }} {% endif %} ],
 				{% endfor %}];
@@ -228,8 +228,8 @@ $(function ()
 
 	$.plot($("#disk_{{ volume|replace('/','_') }}"),
 			[	
-				{ data: disk_total_{{ volume|replace('/','_') }}, label: "Total" },
-				{ data: disk_free_{{ volume|replace('/','_') }}, label: "Free"  }
+				{ data: disk_total_{{ volume|clean_slashes }}, label: "Total" },
+				{ data: disk_free_{{ volume|clean_slashes }}, label: "Free"  }
 		   ],
            { 
 				xaxis: xaxis,

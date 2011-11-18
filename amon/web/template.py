@@ -113,6 +113,10 @@ def clean_string(var):
 
 	return new_string
 
+# Used in the charts, where a disk drive could be with several slashes
+def clean_slashes(string):
+	return re.sub('[^\w\s-]', '', string).strip().lower()
+
 
 def progress_width(value, total, container_type='full'):
 
@@ -195,6 +199,7 @@ def render(*args, **kwargs):
 	env.filters['exceptions_dict'] = exceptions_dict
 	env.filters['test_additional_data'] = check_additional_data
 	env.filters['url'] = url
+	env.filters['clean_slashes'] = clean_slashes
 
 	if 'template' in kwargs:
 		template = env.get_template(kwargs['template'])
