@@ -61,7 +61,7 @@
 		{% if volume != '_id' and volume != 'time' %}
 		<div class="container medium">
 			<span class='label'>{{ volume }}</span>
-			<span class="progress" style='width: {{ last_check.disk[volume].free|progress_width(last_check.disk[volume].total, 'medium') }}'>
+			<span class="progress" style='width: {{ last_check.disk[volume].used|progress_width(last_check.disk[volume].total, 'medium') }}'>
 			</span>
 			<span class="data">{{ last_check.disk[volume].used }} of {{ last_check.disk[volume].total }}</span>
 		</div>
