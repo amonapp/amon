@@ -8,6 +8,14 @@
 # processname: mongodb
 #
 
+# Source function library
+# This where the OS could find the daemon command 
+. /etc/rc.d/init.d/functions
+
+if [ -f /etc/sysconfig/mongodb ]; then
+	. /etc/sysconfig/mongodb
+fi
+
 DAEMON=/usr/local/mongodb/bin/mongod
 DAEMON_OPTS="--fork --quiet --config /etc/mongodb.conf"
 prog="mongo"
