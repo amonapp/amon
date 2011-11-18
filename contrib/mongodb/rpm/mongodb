@@ -8,6 +8,12 @@
 # processname: mongodb
 #
 
+. /etc/rc.d/init.d/functions
+
+if [ -f /etc/sysconfig/mongodb ]; then
+	. /etc/sysconfig/mongodb
+fi
+
 DAEMON=/usr/local/mongodb/bin/mongod
 DAEMON_OPTS="--fork --quiet --config /etc/mongodb.conf"
 prog="mongo"
@@ -16,7 +22,7 @@ RETVAL=0
 
 start() {
 	echo -n $"Starting $prog: "
-	daemon $DAEMON -- $DAEMON_OPTS
+	daemon $DAEMON $DAEMON_OPTS
 	RETVAL=$?
 	echo
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
