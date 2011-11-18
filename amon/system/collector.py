@@ -37,9 +37,20 @@ class SystemInfoCollector(object):
 		data = {}
 
 		_columns = ('volume', 'total', 'used', 'free', 'percent', 'path')	
+
+		previous_line = None
 		
 		for volume in volumes:
-			line = volume.split()
+			line = volume.split(None, 6)
+
+			if len(line) == 1: # If the length is 1 then this just has the mount name
+				previous_line = line[0] # We store it, then continue the for
+				continue
+
+			if previous_line != None: 
+				line.insert(0, previous_line) # then we need to insert it into the volume
+				previous_line = None # reset the line
+
 			if line[0].startswith('/'):
 				_volume = dict(zip(_columns, line))
 
