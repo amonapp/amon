@@ -152,6 +152,12 @@ echo "***  Installing Amon $version ..."
 
 # All done!
   echo "*** Starting Amon "
-  sudo /etc/init.d/amond start
+  
+  if ! pgrep amond > /dev/null; then
+	  sudo /etc/init.d/amond restart
+  else
+	  sudo /etc/init.d/amond start
+  fi
+
   echo "*** Installed"
   print_troubleshooting_instructions
