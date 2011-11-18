@@ -31,6 +31,8 @@ echo "***  Installing Amon $version ..."
 
 # Install Amon
 
+	# Cleanup the directory from old amon installations
+	sudo rm -rf amon-*
     wget --no-check-certificate "https://s3-eu-west-1.amazonaws.com/amon/amon-$version.tar.gz" 
 	tar -zxvf "amon-$version.tar.gz" > /dev/null
 	cd "amon-$version"
