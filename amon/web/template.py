@@ -115,8 +115,7 @@ def clean_string(var):
 
 # Used in the charts, where a disk drive could be with several slashes
 def clean_slashes(string):
-	return re.sub('[^\w\s-]', '', string).strip().lower()
-
+	return re.sub('[^A-Za-z0-9]+', '', string).strip().lower()
 
 def progress_width(value, total, container_type='full'):
 

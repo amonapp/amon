@@ -62,3 +62,9 @@ class TestTemplateFilters(unittest.TestCase):
 		true_dicts = [{'occurrence': 12223323, 'test': 'me'}, {'occurrence': 1212121221}]
 		check_true_dicts = check_additional_data(true_dicts)
 		eq_(check_true_dicts, True)
+
+	def test_cleanup_string(self):
+		string = '//test---/'
+		clean = clean_slashes(string)
+		eq_(clean, 'test')
+	
