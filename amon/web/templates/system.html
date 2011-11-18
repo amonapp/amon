@@ -226,7 +226,7 @@ $(function ()
 				{% endfor %}];
 
 
-	$.plot($("#disk_{{ volume|replace('/','_') }}"),
+	$.plot($("#disk_{{ volume|clean_slashes }}"),
 			[	
 				{ data: disk_total_{{ volume|clean_slashes }}, label: "Total" },
 				{ data: disk_free_{{ volume|clean_slashes }}, label: "Free"  }
