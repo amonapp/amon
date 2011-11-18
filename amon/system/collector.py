@@ -119,15 +119,25 @@ class SystemInfoCollector(object):
 		
 
 	def get_cpu_utilization(self):
-		vmstat = subprocess.Popen(['vmstat'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]	
-		
-		lines = vmstat.splitlines()
-		raw_data = lines[2].split()
+		# Get only the cpu stats
+		mpstat = subprocess.Popen(['iostat', '-c'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]
+				
+		cpu_columns = []
+		cpu_values = []
+		header_regex = re.compile(r'.*?([%][a-zA-Z0-9]+)[\s+]?') # the header values are %idle, %wait
+		value_regex = re.compile(r'\d+\.\d+') # values are 0.00
+		stats = mpstat.split('\n')
 
-		_cpu_columns  = ['user', 'system','idle', 'wait']
-		_cpu_values = map(int, raw_data[-4:]) 
+		for value in stats:
+			values = re.findall(value_regex, value)
+			if len(values) > 4:
+				cpu_values = map(lambda x: int(float(x)), values) # Convert the values to float and then to int
 
-		cpu_dict = dict(zip(_cpu_columns, _cpu_values))
+			header = re.findall(header_regex, value)
+			if len(header) > 4:
+				cpu_columns = map(lambda x: x.replace('%', ''), header) 
+
+		cpu_dict = dict(zip(cpu_columns, cpu_values))
 
 		return cpu_dict
 		
