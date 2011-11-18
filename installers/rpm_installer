@@ -148,16 +148,29 @@ echo "***  Installing Amon $version ..."
 		echo "For troubleshooting instructions, please see the Amon User Guide :"
 		echo "http://amon.cx/guide/"
 		echo
-		echo "To uninstall Amon, \`curl uninstall.amon.cx | bash\`"
+		echo "To uninstall Amon, \`curl uninstall.amon.cx | sh\`"
 	}
 
 
 # All done!
   echo "*** Starting Amon "
-  if ! pgrep amond > /dev/null; then
+  
+  # If the collector daemon is running - restart it 
+  if  pgrep amond > /dev/null; then
 	  sudo /etc/init.d/amond restart
   else
 	  sudo /etc/init.d/amond start
   fi
+
+  # If the web application is running - restart it 
+  if  pgrep amon > /dev/null; then
+	  sudo /etc/init.d/amon restart
+  fi
+
+
+  echo "*** Installed"
+  # Cleanup the directory
+  sudo rm -rf amon-*
+  sudo rm -rf mongodb-*
   echo "*** Installed"
   print_troubleshooting_instructions
