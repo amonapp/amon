@@ -63,7 +63,7 @@
 			<span class='label'>{{ volume }}</span>
 			<span class="progress" style='width: {{ last_check.disk[volume].free|progress_width(last_check.disk[volume].total, 'medium') }}'>
 			</span>
-			<span class="data">{{ last_check.disk[volume].free }} of {{ last_check.disk[volume].total }}</span>
+			<span class="data">{{ last_check.disk[volume].used }} of {{ last_check.disk[volume].total }}</span>
 		</div>
 		{% endif %}
 	{% endfor %}
