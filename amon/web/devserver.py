@@ -1,4 +1,8 @@
-from server import application
+import sys
+sys.path.insert(0, '/home/martin/amon')
+
+
+from amon.web.server import application
 import tornado.ioloop
 from amon.core import settings
 

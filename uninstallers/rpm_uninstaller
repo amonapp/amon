@@ -1,0 +1,25 @@
+/bin/bash
+# The even more awesome one-line uninstaller for Amon - RPM based distros 
+# Author: Martin Rusev <martin@amon.cx>
+
+set -e
+mongo_install_dir="/usr/local/mongodb"
+
+# Pip is installed with the installer, so it should be arround
+pip uninstall pymongo amon tornado jinja2
+
+# Stop all daemons 
+sudo /etc.init.d/amond stop
+sudo /etc/init.d/amon stop
+sudo /etc/init.d/mongodb stop
+
+# Cleanup the directories
+sudo rm -rf /etc/amon.conf
+sudor rm -rf mongo_install_dir
+
+
+# Remove Amon and mongo from the startup scripts
+chkconfig --del mongodb
+chkconfig --del amond
+
+echo "*** Amon succesfully uninstalled"

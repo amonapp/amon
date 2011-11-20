@@ -1,8 +1,6 @@
-#from amon.web.views import Dashboard, System, Processes, Exceptions, Logs
-#from amon.web.settings import PROJECT_ROOT
-from views import Dashboard, System, Processes, Exceptions, Logs
-from api import ApiLogs, ApiException
-from settings import PROJECT_ROOT
+from amon.web.views import Dashboard, System, Processes, Exceptions, Logs
+from amon.web.settings import PROJECT_ROOT
+from amon.web.api import ApiLogs, ApiException
 import os
 import tornado.web
 	

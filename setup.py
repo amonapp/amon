@@ -39,7 +39,7 @@ for dirpath, dirnames, filenames in os.walk(amon_dir):
 
 
 sdict = {
-    'name' : 'Amon',
+    'name' : 'amon',
     'version' : __version__,
     'description' : 'Developer friendly application and system monitoring tool',
     'long_description' : read('README.rst'),
@@ -54,7 +54,8 @@ sdict = {
 	[
         'pymongo==2.0',
 		'tornado>=2.0',
-        'Jinja2>=2.4'
+        'Jinja2>=2.4',
+		'pip'
     ],
     'classifiers' : [
     'Development Status :: 3 - Alpha',

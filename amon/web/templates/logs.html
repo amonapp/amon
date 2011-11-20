@@ -47,7 +47,7 @@ Logs
 		<span class='level {{ log.level }}'>{{ log.level }}</span>
 	</div>
 	<p>
-		{{ log.message }}
+		{{ log.message|beautify_json }}
 	</p>
 	</li>
 	{% endfor %}

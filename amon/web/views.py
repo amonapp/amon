@@ -1,9 +1,7 @@
 from pymongo import DESCENDING, ASCENDING 
 from datetime import datetime, timedelta
 from amon.core import settings
-
-#from amon.web.template import render
-from template import render
+from amon.web.template import render
 from amon.backends.mongodb import MongoBackend
 from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
 from amon.system.utils import get_disk_volumes, get_network_interfaces
@@ -20,6 +18,24 @@ class Base(tornado.web.RequestHandler):
 		self.unread_values = self.unread_col.find_one()
 		
 		super(Base, self).initialize()
+
+
+	def write_error(self, status_code, **kwargs):
+		error_trace = None
+		
+		if "exc_info" in kwargs:
+		  import traceback
+		  error_trace= ""
+		  for line in traceback.format_exception(*kwargs["exc_info"]):
+			error_trace += line 
+		
+		_template = render(template="error.html", 
+				status_code=status_code,
+				error_trace=error_trace,
+				unread_values=None)
+
+		self.write(_template)
+	
 
 class Dashboard(Base):
 
@@ -59,7 +75,6 @@ class Dashboard(Base):
 				)
 
 		self.write(_template)
-
 
 class System(Base):
 
@@ -126,8 +141,6 @@ class System(Base):
 				for volume in _volumes:
 					if volume not in volumes:
 						volumes.append(volume)
-
-			
 
 			_template = render(template='system.html',
 						  current_page='system',
@@ -225,12 +238,13 @@ class Logs(Base):
 		row = self.mongo.get_collection('logs') 
 		logs = row.find().sort('time', DESCENDING)
  
+
 		_template =  render(template='logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
 					 unread_values=self.unread_values,
 					 )
-
+		
 		self.write(_template)
 
 

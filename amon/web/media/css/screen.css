@@ -514,6 +514,9 @@ input[type=submit]:hover {
   clear: left;
   padding-top: 10px;
 }
+.log_list li p strong, .exceptions_list li p strong {
+  font-weight: bold;
+}
 .log_list li span.level, .exceptions_list li span.level {
   float: right;
   height: 14px;

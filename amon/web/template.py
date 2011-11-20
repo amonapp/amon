@@ -182,6 +182,18 @@ def url(*args):
 	return url
 
 
+def beautify_json(value):
+	# bold the keys
+	if isinstance(value, dict):
+		value_with_bold_keys = ''
+		for k,v in value.iteritems():
+			value_with_bold_keys += "<strong>{0}</strong>: {1}  , ".format(k,v)
+		return value_with_bold_keys
+	else:
+		return value
+
+
+
 def render(*args, **kwargs):
 	
 	env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
@@ -199,6 +211,7 @@ def render(*args, **kwargs):
 	env.filters['test_additional_data'] = check_additional_data
 	env.filters['url'] = url
 	env.filters['clean_slashes'] = clean_slashes
+	env.filters['beautify_json'] = beautify_json
 
 	if 'template' in kwargs:
 		template = env.get_template(kwargs['template'])
