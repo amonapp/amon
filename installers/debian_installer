@@ -18,6 +18,7 @@ mongo_extract_dir="mongodb-linux-i686-2.0.0"
 mongo_check=$(ps aux | grep -c mongo)
 version=0.5
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
+amon_install_dir="/usr/local/amon"
 
 
 echo "***  Installing Amon $version ..."
@@ -73,6 +74,9 @@ echo "***  Installing Amon $version ..."
 	
 	# make the web app daemon executable
 	sudo chmod +x /etc/init.d/amon
+
+	# Create a directory for the log files
+	sudo mkdir -p "$amon_install_dir"
 
 # Install MongoDB
 

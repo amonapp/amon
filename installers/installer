@@ -19,7 +19,7 @@ elif command_exists rpm ; then
 	sudo bash rpm_installer
 	rm -rf rpm_installer*
 # Mac OS
-elif [ "$(uname -s)" != "Darwin" ]; then
+elif [ "$(uname -s)" == "Darwin" ]; then
 	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/macos_installer
 	sudo bash macos_installer
 	rm -rf macos_installer*

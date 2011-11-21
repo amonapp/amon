@@ -21,7 +21,8 @@ from amon.core import settings
 import tornado.ioloop
 
 PIDFILE = '/var/run/amon.pid'
-LOGFILE = '/var/log/amon.log'
+# Keep all log files in one place
+LOGFILE = '/usr/local/amon/amon.log'
 
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)

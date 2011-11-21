@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>org.amon.amond</string>
+  <key>ProgramArguments</key>
+  <array>
+  <string>/usr/local/amon/amond</string>
+    <string>run</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <false/>
+  <key>WorkingDirectory</key>
+  <string>/usr/local</string>
+ <key>StandardErrorPath</key>
+  <string>/usr/local/amon/output.log</string>
+  <key>StandardOutPath</key>
+  <string>/usr/local/amon/output.log</string>
+</dict>
+</plist>

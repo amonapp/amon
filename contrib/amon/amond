@@ -22,7 +22,8 @@ from amon.system.runner import runner
 from amon.backends.mongodb import backend
 
 PIDFILE = '/var/run/amond.pid'
-LOGFILE = '/var/log/amond.log'
+# Keep all log files in one place
+LOGFILE = '/usr/local/amon/amon.log'
 
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
