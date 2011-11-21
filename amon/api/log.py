@@ -20,8 +20,20 @@ class Log(object):
 		message = log_dict.get('message', '')
 
 		now = int(time())
+
 		entry = {'time': now, 'message': message, 'level': level}
 		
+		# Add the data to a separate field, for easy searching 
+		if isinstance(message, dict):
+			_searchable = ":".join(message.keys())
+		elif isinstance(message, list):
+			_searchable = ":".join(["%s" % el for el in message])
+		else:
+			_searchable = message
+		
+		entry['_searchable'] = _searchable
+		
+
 		backend.store_entry(entry, 'logs')
 
 

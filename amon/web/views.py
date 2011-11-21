@@ -252,17 +252,17 @@ class Logs(Base):
 		level = self.get_arguments('level[]')
 		filter = self.get_argument('filter', None)
 
-		_query = {}
+		query = {}
 		if level:
 			level_params = [{'level': x} for x in level]
-			_query = {"$or" : level_params}
+			query = {"$or" : level_params}
 
 		if filter:
-			_query['message'] = {'$regex': str(filter)}
+			query['_searchable'] = { "$regex": str(filter), "$options": 'i'}
 
 		row = self.mongo.get_collection('logs') 
 		
-		logs = row.find(_query).sort('time', DESCENDING)
+		logs = row.find(query).sort('time', DESCENDING)
 
 		_template = render(template='partials/logs_filter.html', 
 				logs=logs)

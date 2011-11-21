@@ -23,6 +23,48 @@ class TestLoggingApi(unittest.TestCase):
 
 		entry = db.find_one()
 		eq_(entry['message'], 'test')
+	
+	def test_log_dict(self):
+		db = backend.get_collection('logs')
+		db.remove()
+		log({"message": {"dict_key": "value", "dict_key2": "value_2"}})
+
+		entry = db.find_one()
+		eq_(entry['message'], {u'dict_key': u'value', u'dict_key2': u'value_2'})
+
+
+	def test_log_searchable_dict(self):
+		db = backend.get_collection('logs')
+		db.remove()
+		log({"message": {"dict_key": "value", "dict_key2": "value_2"}})
+		
+		entry = db.find_one()
+		eq_(entry['_searchable'], 'dict_key:dict_key2')
+
+
+	def test_log_searchable_string(self):
+		db = backend.get_collection('logs')
+		db.remove()
+		log({"message": "test_message"})
+		
+		entry = db.find_one()
+		eq_(entry['_searchable'], 'test_message')
+	
+	
+	def test_log_searchable_list(self):
+		db = backend.get_collection('logs')
+		db.remove()
+		log({"message": ['test', 'more']})
+		
+		entry = db.find_one()
+		eq_(entry['_searchable'], 'test:more')
+
+	def test_log_list_integers(self):
+		db = backend.get_collection('logs')
+		db.remove()
+		log({"message": [1,2,3,4]})
+		
+		eq_(1, db.count())
 
 
 	def test_log_levels(self):
