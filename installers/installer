@@ -7,21 +7,22 @@ command_exists() {
 }
 
 set -e 
+version=0.5
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if command_exists dpkg ; then
-	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/debian_installer
-	sudo bash debian_installer
+	curl https://raw.github.com/martinrusev/amon/master/installers/debian_installer -O
+	sudo bash debian_installer $version
 	rm -rf debian_installer*
 # RPM based distros - Tested and supported on : Fedora, CentOS
 elif command_exists rpm ; then
-	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/rpm_installer
-	sudo bash rpm_installer
+	curl https://raw.github.com/martinrusev/amon/master/installers/rpm_installer -O
+	sudo bash rpm_installer $version
 	rm -rf rpm_installer*
 # Mac OS
 elif [ "$(uname -s)" == "Darwin" ]; then
-	wget --no-check-certificate https://raw.github.com/martinrusev/amon/master/installers/macos_installer
-	sudo bash macos_installer
+	curl https://raw.github.com/martinrusev/amon/master/installers/macos_installer -O
+	sudo bash macos_installer $version
 	rm -rf macos_installer*
 else 
 	echo "Your operating system is not supported at the moment"

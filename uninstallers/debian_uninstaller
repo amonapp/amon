@@ -4,6 +4,7 @@
 
 # Set variables for the uninstall script
 set -e
+$delete_mongo=$1
 mongo_install_dir="/usr/local/mongodb"
 
 pip uninstall pymongo amon tornado jinja2
@@ -11,15 +12,19 @@ pip uninstall pymongo amon tornado jinja2
 # Stop all daemons 
 sudo /etc.init.d/amond stop
 sudo /etc/init.d/amon stop
-sudo /etc/init.d/mongodb stop
 
 # Cleanup the directories
 sudo rm -rf /etc/amon.conf
-sudor rm -rf mongo_install_dir
 
 
 # Remove Amon and mongo from the startup scripts
-sudo update-rc.d -f mongodb remove
 sudo update-rc.d -f amond remove
+
+# Delete Mongo
+if [ $delete_mongo == y ]; then
+	sudo /etc/init.d/mongodb stop
+	sudo rm -rf mongo_install_dir
+	sudo update-rc.d -f mongodb remove
+fi 
 
 echo "*** Amon succesfully removed"

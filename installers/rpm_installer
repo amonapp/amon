@@ -14,7 +14,7 @@ file_exists() {
 set -e
 mongo_install_dir="/usr/local/mongodb"
 mongo_extract_dir="mongodb-linux-i686-2.0.0"
-version=0.5
+version=$1 # Inherited from the main script
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 mongo_check=$(ps aux | grep -c mongo)
 
