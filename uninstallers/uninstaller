@@ -15,7 +15,7 @@ if [ $delete_mongo == y ]; then
 	echo "Amon will delete your MongoDB installation"
 else
 	echo "Amon will leave your MongoDB as it is"
-
+fi
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if command_exists dpkg ; then
