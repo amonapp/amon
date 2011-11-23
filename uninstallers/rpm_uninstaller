@@ -4,7 +4,7 @@
 
 set -e
 mongo_install_dir="/usr/local/mongodb"
-$delete_mongo=$1
+delete_mongo=$1
 
 # Pip is installed with the installer, so it should be arround
 pip uninstall pymongo amon tornado jinja2

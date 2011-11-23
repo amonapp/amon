@@ -11,7 +11,7 @@ set -e
 echo "Do you want to keep MongoDB? (y/n)"
 read delete_mongo
 
-if [ $delete_mongo == y ]; then
+if [[ $delete_mongo == "Y" || $delete_mongo == "y"  ]]; then
 	echo "Amon will delete your MongoDB installation"
 else
 	echo "Amon will leave your MongoDB as it is"

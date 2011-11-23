@@ -4,7 +4,7 @@
 
 # Set variables for the uninstall script
 set -e
-$delete_mongo=$1
+delete_mongo=$1
 mongo_install_dir="/usr/local/mongodb"
 amon_install_dir="/usr/local/amon"
 
