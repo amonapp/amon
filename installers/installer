@@ -1,5 +1,5 @@
 #!/bin/bash
-# The awesome one-liner for Amon
+# The awesome one-line installer for Amon
 # Author: Martin Rusev <martin@amon.cx>
 
 command_exists() {
@@ -11,17 +11,17 @@ version=0.5.1
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if command_exists dpkg ; then
-	curl http://install.amon.cx/debian -O
+	curl http://install.amon.cx/debian -o debian_installer
 	sudo bash debian_installer $version
 	rm -rf debian_installer*
 # RPM based distros - Tested and supported on : Fedora, CentOS
 elif command_exists rpm ; then
-	curl https://raw.github.com/martinrusev/amon/master/installers/rpm_installer -O
+	curl http://install.amon.cx/rpm -o rpm_installer
 	sudo bash rpm_installer $version
 	rm -rf rpm_installer*
 # Mac OS
 elif [ "$(uname -s)" == "Darwin" ]; then
-	curl https://raw.github.com/martinrusev/amon/master/installers/macos_installer -O
+	curl http://install.amon.cx/macos -o macos_installer
 	sudo bash macos_installer $version
 	rm -rf macos_installer*
 else 

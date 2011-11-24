@@ -3,30 +3,41 @@
 # Author: Martin Rusev <martin@amon.cx>
 
 # Set variables for the uninstall script
-set -e
+# Don't exit the script if some command fails
+set +e
 delete_mongo=$1
 mongo_install_dir="/usr/local/mongodb"
+site_packages=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
 
-echo $delete_mongo
+sudo rm -rf "$site_packages/pymongo*"
+sudo rm -rf "$site_packages/amon*"
+sudo rm -rf "$site_packages/torando*"
+sudo rm -rf "$site_packages/jinja2"
 
-pip uninstall pymongo amon tornado jinja2
+# Stop and delete the daemons 
+if [ -e /etc/init.d/amond ]; then
+	sudo /etc.init.d/amond stop
+	sudo rm -rf /etc/init.d/amond
+fi 
 
-# Stop all daemons 
-sudo /etc.init.d/amond stop
-sudo /etc/init.d/amon stop
+if [ -e /etc/init.d/amon ]; then
+	sudo /etc.init.d/amon stop
+	sudo rm -rf /etc/init.d/amon
+fi 
 
 # Cleanup the directories
 sudo rm -rf /etc/amon.conf
-
 
 # Remove Amon and mongo from the startup scripts
 sudo update-rc.d -f amond remove
 
 # Delete Mongo
-if [ $delete_mongo == y ]; then
+if [ "$delete_mongo" == 'with-mongo' ]; then
 	sudo /etc/init.d/mongodb stop
-	sudo rm -rf mongo_install_dir
+	sudo rm -rf $mongo_install_dir
 	sudo update-rc.d -f mongodb remove
+	sudo rm -rf /etc/init.d/mongodb
+	sudo rm -rf /usr/bin/mongo*
 fi 
 
 echo "*** Amon succesfully removed"

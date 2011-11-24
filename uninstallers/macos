@@ -16,8 +16,6 @@ command_exists() {
 
 pip uninstall pymongo amon tornado jinja2
 
-
-
 sudo rm -rf /etc/amon.conf
 sudo rm -rf $amon_install_dir
 

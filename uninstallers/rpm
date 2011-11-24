@@ -1,18 +1,27 @@
 #!/bin/bash
 # The even more awesome one-line uninstaller for Amon - RPM based distros 
 # Author: Martin Rusev <martin@amon.cx>
-
-set -e
+set +e
 mongo_install_dir="/usr/local/mongodb"
 delete_mongo=$1
 
-# Pip is installed with the installer, so it should be arround
-pip uninstall pymongo amon tornado jinja2
+site_packages=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
 
-# Stop all daemons 
-sudo /etc.init.d/amond stop
-sudo /etc/init.d/amon stop
-sudo /etc/init.d/mongodb stop
+sudo rm -rf "$site_packages/pymongo*"
+sudo rm -rf "$site_packages/amon*"
+sudo rm -rf "$site_packages/torando*"
+sudo rm -rf "$site_packages/jinja2"
+
+# Stop and delete the daemons 
+if [ -e /etc/init.d/amond ]; then
+	sudo /etc.init.d/amond stop
+	sudo rm -rf /etc/init.d/amond
+fi 
+
+if [ -e /etc/init.d/amon ]; then
+	sudo /etc.init.d/amon stop
+	sudo rm -rf /etc/init.d/amon
+fi 
 
 # Cleanup the directories
 sudo rm -rf /etc/amon.conf
@@ -21,10 +30,12 @@ sudo rm -rf /etc/amon.conf
 chkconfig --del amond
 
 # Delete Mongo
-if [ $delete_mongo == y ]; then
+if [ $delete_mongo == 'with-mongo' ]; then
 	sudo /etc/init.d/mongodb stop
-	sudo rm -rf mongo_install_dir
+	sudo rm -rf $mongo_install_dir
+	sudo rm -rf /etc/init.d/mongodb
 	chkconfig --del mongodb
+	sudo rm -rf /usr/bin/mongo*
 fi 
 
 
