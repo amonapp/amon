@@ -11,7 +11,7 @@ version=0.5.1
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if command_exists dpkg ; then
-	curl https://raw.github.com/martinrusev/amon/master/installers/debian_installer -O
+	curl http://install.amon.cx/debian -O
 	sudo bash debian_installer $version
 	rm -rf debian_installer*
 # RPM based distros - Tested and supported on : Fedora, CentOS

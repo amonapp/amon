@@ -1,0 +1,180 @@
+#!/bin/bash
+# The awesome one-liner for Amon - RPM based distros
+# Author: Martin Rusev <martin@amon.cx>
+
+command_exists() {
+    type "$1" &> /dev/null ;
+}
+
+file_exists() {
+	[ -f "$1" ]
+}
+
+# Set variables for the installation
+set -e
+mongo_install_dir="/usr/local/mongodb"
+mongo_extract_dir="mongodb-linux-i686-2.0.0"
+version=$1 # Inherited from the main script
+bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
+mongo_check=$(ps aux | grep -c mongo)
+
+echo "***  Installing Amon $version ..."
+
+# Install easy_install if necessary
+	if ! command_exists easy_install ; then
+		wget "http://peak.telecommunity.com/dist/ez_setup.py" 
+		sudo python ez_setup.py
+		rm -rf ez_setup.py
+	fi
+
+# Install Amon
+
+	# Cleanup the directory from old amon installations
+	sudo rm -rf amon-*
+    wget --no-check-certificate "https://s3-eu-west-1.amazonaws.com/amon/amon-$version.tar.gz" 
+	tar -zxvf "amon-$version.tar.gz" > /dev/null
+	cd "amon-$version"
+
+
+	# skip running yum if the programs are already installed.
+	if rpm --quiet -q gcc python-devel ; then
+		echo "*** Amon requirements already installed"
+	else 
+		echo "** Installing Amon requirements"
+		sudo yum -t -y install gcc python-devel
+	fi
+
+	if rpm --quiet -q gcc python-devel ; then 
+		echo "** success!"
+	fi
+   	
+	sudo python setup.py install
+	cd "$bash_script_dir"
+
+	# Copy the configuration file
+	if ! file_exists "/etc/amon.conf" ; then
+		sudo cp amon-$version/config/amon.conf /etc/amon.conf
+	fi
+
+	# Copy the collector daemon
+	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
+	
+	# make the collector daemon executable
+	sudo chmod +x /etc/init.d/amond
+
+	# Copy the web application daemon
+	sudo cp amon-$version/contrib/amon/amon /etc/init.d/amon
+	
+	# make the web app daemon executable
+	sudo chmod +x /etc/init.d/amon
+
+	# Add the collector daemon to the startup list
+	sudo chkconfig --add amond > /dev/null
+	
+	# Create a directory for the log files
+	sudo mkdir -p "$amon_install_dir"
+
+
+# Install MongoDB
+
+	install_mongodb()
+	{
+
+		wget "http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.0.tgz"
+		echo "***  Extracting MongoDB ..."
+		tar -zxvf "$mongo_extract_dir.tgz" > /dev/null
+
+	}
+
+	configure_mongodb()
+	{
+
+		echo ""
+		echo "***  MongoDB will be installed in $mongo_install_dir." 
+		echo "If you are not running as root, the installer will ask for your root password"
+
+		# Create mongo directories and log file
+		sudo mkdir $mongo_install_dir $mongo_install_dir/data $mongo_install_dir/bin && sudo touch $mongo_install_dir/mongodb.log
+
+		sudo cp $mongo_extract_dir/bin/mongod $mongo_install_dir/bin/mongod
+		
+		sudo cp $mongo_extract_dir/bin/mongo /usr/bin/mongo
+
+
+		# Copy the mongo configuration file
+		if ! file_exists "/etc/mongodb.conf"; then
+			sudo cp amon-$version/contrib/mongodb/mongodb.conf /etc/mongodb.conf
+		fi
+
+		# Copy the system daemon
+		if ! file_exists "/etc/init.d/mongodb"; then
+			sudo cp amon-$version/contrib/mongodb/rpm/mongodb /etc/init.d/mongodb
+		fi
+
+		# Make the mongo daemon executable
+		sudo chmod +x /etc/init.d/mongodb
+
+		# Add the mongo daemon to the startup list
+		sudo chkconfig --add mongodb > /dev/null
+		sudo chkconfig mongodb on
+
+	}
+
+	# Cleanup the current directory and start Mongo
+	start_mongodb()
+	{
+		rm -rf $mongo_extract_dir
+		rm -rf mongo
+		echo "*** Starting MongoDB"
+		echo ""
+
+		sudo /etc/init.d/mongodb start
+	}
+	
+	echo ""
+	echo ""
+
+	# Install MongoDB if it is not installed on the system
+	if ! command_exists mongo ; then
+		# Check one more time
+		if [ $mongo_check = '1' ]; then	 
+			install_mongodb
+			configure_mongodb
+			start_mongodb
+		fi
+	fi
+
+# Show a message about where to go for help.
+
+	print_troubleshooting_instructions() {
+		echo
+		echo "For troubleshooting instructions, please see the Amon User Guide :"
+		echo "http://amon.cx/guide/"
+		echo
+		echo "To uninstall Amon, \`curl uninstall.amon.cx | sh\`"
+	}
+
+
+# All done!
+  
+  # If the collector daemon is running - restart it 
+  if  pgrep amond > /dev/null; then
+	  echo "*** Amon succesfully updated"
+	  sudo /etc/init.d/amond restart
+  else
+	  echo "*** Amon succesfully installed"
+	  sudo /etc/init.d/amond start
+	  echo "*** Starting Amon "
+	  echo "*** The web application is not running by default, you can start with \`sudo /etc/init.d/amon start\`"
+  fi
+
+  # If the web application is running - restart it 
+  if  pgrep amon > /dev/null; then
+	  sudo /etc/init.d/amon restart
+  fi
+
+
+  # Cleanup the directory
+  sudo rm -rf amon-*
+  sudo rm -rf mongodb-*
+  print_troubleshooting_instructions

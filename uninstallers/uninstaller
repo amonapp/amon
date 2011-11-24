@@ -7,19 +7,16 @@ command_exists() {
 }
 
 set -e 
+delete_mongo=$1
+echo $delete_mongo
 
-echo "Do you want to keep MongoDB? (y/n)"
-read delete_mongo
-
-if [[ $delete_mongo == "Y" || $delete_mongo == "y"  ]]; then
-	echo "Amon will delete your MongoDB installation"
-else
-	echo "Amon will leave your MongoDB as it is"
+if [ "$delete_mongo" == 'with-mongo' ]; then
+	echo 'test me'
 fi
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if command_exists dpkg ; then
-	curl https://raw.github.com/martinrusev/amon/master/uninstallers/debian_uninstaller -O
+	curl http://uninstall.amon.cx/debian -O debian_uninstaller
 	sudo bash debian_uninstaller $delete_mongo
 	rm -rf debian_uninstaller*
 # RPM based distros - Tested and supported on : Fedora, CentOS

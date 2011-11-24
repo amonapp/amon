@@ -1,5 +1,5 @@
 *.pyc
 _build/
 .sass-cache
-deploy.py
+keys.py
 *tar.gz
