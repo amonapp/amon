@@ -37,14 +37,14 @@ echo "***  Installing Amon $version ..."
 
 
 	# skip running yum if the programs are already installed.
-	if rpm --quiet -q gcc python-devel ; then
+	if rpm --quiet -q gcc python-devel sysstat ; then
 		echo "*** Amon requirements already installed"
 	else 
 		echo "** Installing Amon requirements"
-		sudo yum -t -y install gcc python-devel
+		sudo yum -t -y install gcc python-devel sysstat 
 	fi
 
-	if rpm --quiet -q gcc python-devel ; then 
+	if rpm --quiet -q gcc python-devel sysstat ; then 
 		echo "** success!"
 	fi
    	

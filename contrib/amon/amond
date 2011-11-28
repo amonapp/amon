@@ -23,7 +23,7 @@ from amon.backends.mongodb import backend
 
 PIDFILE = '/var/run/amond.pid'
 # Keep all log files in one place
-LOGFILE = '/usr/local/amon/amon.log'
+LOGFILE = '/usr/local/amon/amond.log'
 
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)

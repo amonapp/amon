@@ -40,14 +40,14 @@ echo "***  Installing Amon $version ..."
 
 	# Ensure that we have the pymongo driver dependecies
 	# Skip installing python and gcc if they are already installed.
-	if dpkg-query -W python-dev gcc ; then
+	if dpkg-query -W python-dev gcc sysstat ; then
 		echo "*** Amon requirements already installed"
 	else
 		echo "** Installing Amon requirements"
-		sudo apt-get -y install gcc python-dev
+		sudo apt-get -y install gcc python-dev sysstat
 	fi
 
-	if dpkg-query -W python-dev gcc ; then 
+	if dpkg-query -W python-dev gcc sysstat ; then 
 		echo "** success!"
 	fi
 
@@ -112,7 +112,7 @@ echo "***  Installing Amon $version ..."
 
 		# Copy the system daemon
 		if ! file_exists "/etc/init.d/mongodb"; then
-			sudo cp amon-$version/contrib/mongodb/mongodb /etc/init.d/mongodb
+			sudo cp amon-$version/contrib/mongodb/debian/mongodb /etc/init.d/mongodb
 		fi
 
 		# Make the mongo daemon executable

@@ -34,10 +34,11 @@ for i in installers:
 
 # Deploy new Amon versions
 
-#amon_archive = 'amon-0.5.1.tar.gz'
-#amon_bucket = conn.get_bucket('amon')
-#k = Key(amon_bucket)
-#k.key = amon_archive
-#full_path = "{0}/{1}".format(path, amon_archive)
-#k.set_contents_from_filename(full_path)
-#k.make_public()
+amon_archive = 'amon-0.5.1.tar.gz'
+amon_bucket = conn.get_bucket('amon')
+k = Key(amon_bucket)
+k.key = amon_archive
+full_path = "{0}/{1}".format(path, amon_archive)
+
+k.set_contents_from_filename(full_path)
+k.make_public()
