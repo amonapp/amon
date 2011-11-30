@@ -34,7 +34,7 @@ for i in installers:
 
 # Deploy new Amon versions
 
-amon_archive = 'amon-0.5.1.tar.gz'
+amon_archive = 'amon-0.5.2.tar.gz'
 amon_bucket = conn.get_bucket('amon')
 k = Key(amon_bucket)
 k.key = amon_archive

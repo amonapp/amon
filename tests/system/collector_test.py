@@ -1,6 +1,5 @@
 from amon.system.collector import system_info_collector, process_info_collector
-from nose.tools import *
-
+from nose.tools import eq_
 
 class TestSystemCheck(object):
 
@@ -58,7 +57,7 @@ class TestSystemCheck(object):
 class TestProcessCheck(object):
 
 	def __init__(self):
-		self.process_checks = ('cron', ) # something that's available in most linux distributions
+		self.process_checks = ('cron',) # something that's available in most linux distributions
 
 
 	def test_process(self):
@@ -67,5 +66,4 @@ class TestProcessCheck(object):
 			
 			assert 'memory' in process_dict
 			assert 'cpu' in process_dict
-			assert 'pid' in process_dict
-			assert 'user' in process_dict
+			
