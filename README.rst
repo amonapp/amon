@@ -1,5 +1,5 @@
 =============================================================
-Amon - developer friendly system monitoring and logging tool
+Amon - Web application debugging and monitoring toolkit
 =============================================================
 
 Introduction
@@ -22,9 +22,9 @@ Monitor your database or server
 Navigate quickly through your logs with a nice and clean web interface
 
 
-**4. Language agnostic exception handling**
+**4. Language agnostic exception logging**
 
-Catch exceptions in Rails, Django, Node.js out of the box. Easy extendable to any 
+Catch and log Rails, Django, Node.js exceptions out of the box. Easy extendable to any 
 language/framework that supports http and json
 
 

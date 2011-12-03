@@ -34,8 +34,8 @@ echo "***  Installing Amon $version ..."
 
 	# Cleanup the directory from old amon installations
 	sudo rm -rf amon-*
-    wget --no-check-certificate "https://s3-eu-west-1.amazonaws.com/amon/amon-$version.tar.gz" 
-	tar -zxvf "amon-$version.tar.gz" > /dev/null
+    wget "http://install.amon.cx/amon-latest.tar.gz" 
+	tar -zxvf "amon-latest.tar.gz" > /dev/null
 	cd "amon-$version"
 
 	# Ensure that we have the pymongo driver dependecies
