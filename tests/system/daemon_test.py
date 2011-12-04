@@ -4,6 +4,7 @@ from amon.system.runner import runner
 from amon.backends.mongodb import backend
 import unittest
 from nose.tools import eq_
+import sys
 
 class TestDaemon(unittest.TestCase):
 
@@ -36,7 +37,8 @@ class TestDaemon(unittest.TestCase):
 		eq_(1, memory.count())
 		eq_(1, loadavg.count())
 		eq_(1, disk.count())
-		eq_(1, network.count())
+		if sys.platform != 'darwin':
+			eq_(1, network.count())
 		
 
 

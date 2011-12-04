@@ -1,5 +1,5 @@
 import subprocess	
-
+import sys
 def get_disk_volumes():
 		df = subprocess.Popen(['df','-h'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]	
 		
@@ -18,6 +18,9 @@ def get_disk_volumes():
 
 
 def get_network_interfaces():
+	if sys.platform == 'darwin':
+		return False
+
 	interfaces_info = open('/proc/net/dev' , 'r').readlines()
 
 	interfaces_list = []
