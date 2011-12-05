@@ -14,12 +14,12 @@ sudo rm -rf "$site_packages/jinja2"
 
 # Stop and delete the daemons 
 if [ -e /etc/init.d/amond ]; then
-	sudo /etc.init.d/amond stop
+	sudo /etc/init.d/amond stop
 	sudo rm -rf /etc/init.d/amond
 fi 
 
 if [ -e /etc/init.d/amon ]; then
-	sudo /etc.init.d/amon stop
+	sudo /etc/init.d/amon stop
 	sudo rm -rf /etc/init.d/amon
 fi 
 
