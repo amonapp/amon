@@ -1,21 +1,64 @@
 import os
 import re
 import subprocess
+import sys
 
 class SystemInfoCollector(object):
 
 	def __init__(self):
 		pass
 	
+	def get_macos_stats(self):
+		'''
+		Some stats on MacOS doesn't work the same way as in Linux. 
+		This function returns the values for these exceptions
+		'''
+
+		stats_dict = {}
+
+		stats = subprocess.Popen(['top','-F','-R','-l','1'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]	
+		lines = stats.splitlines()
+		lines = lines[0:10]
+		for line in lines:
+
+			if line.startswith('PhysMem'):
+				
+				memory = line.split(',')
+				memory_values = map(lambda x: int(re.findall(r'\d+', x)[0]), memory)
+				memtotal = memory_values[-2]+memory_values[-1]
+				stats_dict['memory'] = {'memfree' : memory_values[-2], 'memtotal': memtotal, 'swapfree': 0, 'swaptotal': 0}
+
+			if line.startswith('Load'):
+				
+				load = line.split(',')
+				load_values = map(lambda x: re.findall(r'\d+.\d+', x)[0], load)
+				load_values.append(0) # scheduled_processes 
+				load_values = map(lambda x: str(x), load_values) # convert the values to strings. WORKARROUND
+				stats_dict['loadavg'] = load_values
+
+			if line.startswith('CPU'):
+				
+				cpu = line.split(',')
+				cpu_values = map(lambda x: re.findall(r'\d+.\d+', x)[0], cpu)
+				cpu_values = map(lambda x: int(float(x)), cpu_values) # convert the values to int
+				cpu_columns = ['user','system', 'idle']
+				stats_dict['cpu'] = dict(zip(cpu_columns, cpu_values))
+				
+		return	stats_dict
+
 	def get_memory_info(self):
 		
+		mem_dict = {}
+		_save_to_dict = ['MemFree', 'MemTotal', 'SwapFree', 'SwapTotal']
+		
+		if sys.platform == 'darwin':
+			mem_dict = self.get_macos_stats()['memory']
+			return mem_dict
+
 		regex = re.compile(r'([0-9]+)')
 
-		mem_dict = {}
 		
 		with open('/proc/meminfo', 'r') as lines:
-			
-			_save_to_dict = ['MemFree', 'MemTotal', 'SwapFree', 'SwapTotal']
 			
 			for line in lines:
 				values = line.split(':')	
@@ -84,6 +127,9 @@ class SystemInfoCollector(object):
 
 
 	def get_network_traffic(self):
+
+		if sys.platform == 'darwin':
+			return False
 		
 		lines = open("/proc/net/dev", "r").readlines()
 
@@ -106,11 +152,18 @@ class SystemInfoCollector(object):
 
 
 	def get_load_average(self):
+		_loadavg_columns = ['minute','five_minutes','fifteen_minutes','scheduled_processes']
+		
+		if sys.platform == 'darwin':
+			loadavg = self.get_macos_stats()['loadavg']
+			load_dict = dict(zip(_loadavg_columns, loadavg))
+			
+			return load_dict
+
 		lines = open('/proc/loadavg','r').readlines()
 
 		load_data = lines[0].split()
 
-		_loadavg_columns = ['minute','five_minutes','fifteen_minutes','scheduled_processes']
 		_loadavg_values = load_data[:4]
 		
 		load_dict = dict(zip(_loadavg_columns, _loadavg_values))	
@@ -119,6 +172,10 @@ class SystemInfoCollector(object):
 		
 
 	def get_cpu_utilization(self):
+		if sys.platform == 'darwin':
+			cpu_dict = self.get_macos_stats()['cpu']
+			return cpu_dict
+
 		# Get only the cpu stats
 		mpstat = subprocess.Popen(['iostat', '-c'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]
 				
@@ -177,9 +234,6 @@ class ProcessInfoCollector(object):
 		return process_info
 	
 	
-	def _pid_list(self):
-		return [int(x) for x in os.listdir('/proc') if x.isdigit()] 
-
 
 process_info_collector = ProcessInfoCollector()
 
