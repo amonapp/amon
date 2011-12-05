@@ -27,7 +27,7 @@ echo "***  Installing Amon $version ..."
 	if ! command_exists easy_install ; then
 		wget "http://peak.telecommunity.com/dist/ez_setup.py" 
 		sudo python ez_setup.py
-		rm -rf ez_setup.py
+		rm -f ez_setup.py
 	fi
 
 # Install Amon
@@ -174,7 +174,7 @@ echo "***  Installing Amon $version ..."
   fi
 
   # Cleanup
-  sudo rm -rf amon-*
-  sudo rm -rf mongodb-*
+  sudo rm -rf amon-$version
+  sudo rm -rf $mongo_extract_dir
   
   print_troubleshooting_instructions

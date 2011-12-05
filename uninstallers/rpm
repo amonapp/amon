@@ -15,16 +15,15 @@ sudo rm -rf "$site_packages/jinja2"
 # Stop and delete the daemons 
 if [ -e /etc/init.d/amond ]; then
 	sudo /etc/init.d/amond stop
-	sudo rm -rf /etc/init.d/amond
+	sudo rm /etc/init.d/amond
 fi 
 
 if [ -e /etc/init.d/amon ]; then
 	sudo /etc/init.d/amon stop
-	sudo rm -rf /etc/init.d/amon
+	sudo rm /etc/init.d/amon
 fi 
 
-# Cleanup the directories
-sudo rm -rf /etc/amon.conf
+sudo rm /etc/amon.conf
 
 # Remove Amon and mongo from the startup scripts
 chkconfig --del amond
@@ -33,7 +32,7 @@ chkconfig --del amond
 if [ $delete_mongo == 'with-mongo' ]; then
 	sudo /etc/init.d/mongodb stop
 	sudo rm -rf $mongo_install_dir
-	sudo rm -rf /etc/init.d/mongodb
+	sudo rm /etc/init.d/mongodb
 	chkconfig --del mongodb
 	sudo rm -rf /usr/bin/mongo*
 fi 

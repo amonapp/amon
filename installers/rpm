@@ -175,6 +175,6 @@ echo "***  Installing Amon $version ..."
 
 
   # Cleanup the directory
-  sudo rm -rf amon-*
-  sudo rm -rf mongodb-*
+  sudo rm -rf amon-$version
+  sudo rm -rf $mongo_extract_dir
   print_troubleshooting_instructions
