@@ -12,7 +12,7 @@ file_exists() {
 
 # Check if it is 32 or 64 bit machine
 MACHINE_TYPE=`uname -m`
-if [ "${MACHINE_TYPE}" == 'x86' ]; then
+if [ "$MACHINE_TYPE" == 'i686' ]; then
 	# 32-bit
 	echo "32-bit architecture detected"
 	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.1.tgz"
@@ -28,7 +28,7 @@ fi
 # Set variables for the installation
 set -e # Exit the installer on error
 mongo_install_dir="/usr/local/mongodb" # This where we will store mongod, the database and the log files
-mongo_check=$(ps aux | grep -c mongo | grep -v grep) # Check if mongo is running, remove 'grep' from the results
+mongo_check=$(ps aux | grep -c mongo) # Check if mongo is running, remove 'grep' from the results
 version=$1 # Amon version - Inherited from the main script
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 amon_install_dir="/usr/local/amon"
@@ -144,6 +144,7 @@ echo "***  Installing Amon $version ..."
 		echo ""
 
 		sudo /etc/init.d/mongodb start
+		sleep 3 # Wait for Mongo to write the journal files
 	}
 	
 	echo ""
@@ -151,8 +152,8 @@ echo "***  Installing Amon $version ..."
 
 	# Install MongoDB if it is not installed on the system
 	if ! command_exists mongo ; then
-		# Check one more time, the value should be 0
-		if [ $mongo_check = '0' ]; then	 
+		# Check one more time, the value should be 1
+		if [ $mongo_check = '1' ]; then	 
 			install_mongodb
 			configure_mongodb
 			start_mongodb

@@ -1,9 +1,11 @@
 #!/bin/bash
 # The even more awesome one-line uninstaller for Amon - RPM based distros 
 # Author: Martin Rusev <martin@amon.cx>
+# Don't exit the script if some command fails
 set +e
+delete_mongo=$1 # Inherited from the main script
 mongo_install_dir="/usr/local/mongodb"
-delete_mongo=$1
+amon_dir="/usr/local/amon"
 
 site_packages=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
 
@@ -25,16 +27,19 @@ fi
 
 sudo rm /etc/amon.conf
 
+# Remove the directory with the Amon log files
+sudo rm -rf "$amon_dir" # Delete /usr/local/amon
+
 # Remove Amon and mongo from the startup scripts
 chkconfig --del amond
 
 # Delete Mongo
 if [ $delete_mongo == 'with-mongo' ]; then
-	sudo /etc/init.d/mongodb stop
-	sudo rm -rf $mongo_install_dir
-	sudo rm /etc/init.d/mongodb
-	chkconfig --del mongodb
-	sudo rm -rf /usr/bin/mongo*
+	sudo /etc/init.d/mongodb stop #Stop the daemon
+	sudo rm -rf $mongo_install_dir # Delete /usr/local/mongodb
+	sudo rm /etc/init.d/mongodb # Remove the process from the startup list
+	chkconfig --del mongodb 
+	sudo rm /usr/bin/mongo
 fi 
 
 

@@ -2,12 +2,11 @@
 # The even more awesome one-line uninstaller for Amon - Debian based distros 
 # Author: Martin Rusev <martin@amon.cx>
 
-# Set variables for the uninstall script
-# Don't exit the script if some command fails
-set +e
-delete_mongo=$1
+set +e # Don't exit the script if some command fails
+delete_mongo=$1 # Inherited from the main script
 mongo_install_dir="/usr/local/mongodb"
 site_packages=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
+amon_dir="/usr/local/amon"
 
 sudo rm -rf "$site_packages/pymongo*"
 sudo rm -rf "$site_packages/amon*"
@@ -25,19 +24,22 @@ if [ -e /etc/init.d/amon ]; then
 	sudo rm /etc/init.d/amon
 fi 
 
-# Cleanup the directories
+# Delete the config file
 sudo rm /etc/amon.conf
+
+# Remove the directory with the Amon log files
+sudo rm -rf "$amon_dir"
 
 # Remove Amon and mongo from the startup scripts
 sudo update-rc.d -f amond remove
 
 # Delete Mongo
 if [ "$delete_mongo" == 'with-mongo' ]; then
-	sudo /etc/init.d/mongodb stop
-	sudo rm -rf $mongo_install_dir
-	sudo update-rc.d -f mongodb remove
-	sudo rm /etc/init.d/mongodb
-	sudo rm -rf /usr/bin/mongo*
+	sudo /etc/init.d/mongodb stop # Stop the daemon
+	sudo rm -rf $mongo_install_dir # Delete /usr/local/mongodb
+	sudo update-rc.d -f mongodb remove # Remove the process from the startup list
+	sudo rm /etc/init.d/mongodb # Delete the configuration file
+	sudo rm  /usr/bin/mongo # Delete the mongo executable in /usr/bin
 fi 
 
 echo "*** Amon succesfully removed"

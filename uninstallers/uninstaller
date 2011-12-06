@@ -12,22 +12,22 @@ delete_mongo=$1
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if command_exists dpkg ; then
-	rm -rf debian_uninstaller* # just in case, if and old version of the same file exists
+	rm debian_uninstaller* # just in case, if and old version of the same file exists
 	curl  http://uninstall.amon.cx/debian -o debian_uninstaller
 	sudo bash debian_uninstaller $delete_mongo
-	rm -rf debian_uninstaller*
+	rm  debian_uninstaller*
 # RPM based distros - Tested and supported on : Fedora, CentOS
 elif command_exists rpm ; then
-	rm -rf rpm_uninstaller* # just in case, if and old version of the same file exists
+	rm rpm_uninstaller* # just in case, if and old version of the same file exists
 	curl  http://uninstall.amon.cx/rpm -o rpm_uninstaller
 	sudo bash rpm_uninstaller $delete_mongo
-	rm -rf rpm_uninstaller*
+	rm rpm_uninstaller*
 # Mac OS
 elif [ "$(uname -s)" != "Darwin" ]; then
-	rm -rf macos_uninstaller* # just in case, if and old version of the same file exists
+	rm macos_uninstaller* # just in case, if and old version of the same file exists
 	curl  http://uninstall.amon.cx/rpm -o macos_uninstaller
 	sudo bash macos_uninstaller $delete_mongo
-	rm -rf macos_uninstaller*
+	rm macos_uninstaller*
 else 
 	echo "Your operating system is not supported at the moment"
 fi
