@@ -1,4 +1,7 @@
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 try:
 	config_file = file('/etc/amon.conf').read()
