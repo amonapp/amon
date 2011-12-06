@@ -1,23 +1,26 @@
-from pymongo import DESCENDING, ASCENDING 
 from datetime import datetime, timedelta
+import tornado.web
 from amon.core import settings
 from amon.web.template import render
-from amon.backends.mongodb import MongoBackend
 from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
 from amon.system.utils import get_disk_volumes, get_network_interfaces
-import tornado.web
+from amon.web.models import (
+	dashboard_model,		
+	common_model,
+	system_model,
+	process_model,
+	exception_model,
+	log_model
+)
 
 
-class Base(tornado.web.RequestHandler):
+class BaseView(tornado.web.RequestHandler):
 
 	def initialize(self):
-		self.mongo = MongoBackend()
 		self.now = datetime.now()
 
-		self.unread_col = self.mongo.get_collection('unread')
-		self.unread_values = self.unread_col.find_one()
-		
-		super(Base, self).initialize()
+		self.unread_values = common_model.get_unread_values()		
+		super(BaseView, self).initialize()
 
 
 	def write_error(self, status_code, **kwargs):
@@ -37,38 +40,33 @@ class Base(tornado.web.RequestHandler):
 		self.write(_template)
 	
 
-class Dashboard(Base):
+class Dashboard(BaseView):
 
 	def initialize(self):
 		super(Dashboard, self).initialize()
 
 	def get(self):
-		last_check = {}
-		process_check = {}
-		active_system_checks = settings.SYSTEM_CHECKS
 		active_process_checks = settings.PROCESS_CHECKS
+		active_system_checks = settings.SYSTEM_CHECKS
 
 		# Get the first element from the settings - used for the last check date in the template
-		system_check_first = active_system_checks[0]
-		process_check_first = active_process_checks[0]
+		try:
+			process_check_first = active_process_checks[0]
+		except IndexError:
+			process_check_first = False
 
 		try:
-			for check in active_system_checks:
-				row = self.mongo.get_collection(check)
-				# don't break the dashboard if the daemon is stopped
-				last_check[check] = row.find({"last":{"$exists" : False}},limit=1).sort('time', DESCENDING)[0]
-		except Exception, e:
-			last_check = False
-			raise e
-
-		for check in active_process_checks:
-			row = self.mongo.get_collection(check)
-			process_check[check] = row.find({"last":{"$exists" : False}}, limit=1).sort('time', DESCENDING)[0]
+			system_check_first = active_system_checks[0]
+		except IndexError: 
+			system_check_first = False
+		
+		last_system_check = dashboard_model.get_last_system_check(active_system_checks)
+		last_process_check = dashboard_model.get_last_process_check(active_process_checks)
 
 		_template = render(template="dashboard.html",
 				current_page='dashboard',
-				last_check=last_check,
-				process_check=process_check,
+				last_check=last_system_check,
+				process_check=last_process_check,
 				system_check_first=system_check_first,
 				process_check_first=process_check_first,
 				unread_values=self.unread_values
@@ -76,7 +74,7 @@ class Dashboard(Base):
 
 		self.write(_template)
 
-class System(Base):
+class System(BaseView):
 
 	def initialize(self):
 		super(System, self).initialize()
@@ -88,6 +86,7 @@ class System(Base):
 
 		if date_from:
 			date_from = datestring_to_unixtime(date_from)
+		
 		# Default - 24 hours period
 		else:
 			day = timedelta(hours=24)
@@ -100,22 +99,10 @@ class System(Base):
 		else:
 			date_to = datetime_to_unixtime(self.now)
 		
-		checks = {}
 		active_checks = settings.SYSTEM_CHECKS
-		try:
-			for check in active_checks:
-				row = self.mongo.get_collection(check)
-				checks[check] = row.find({"time": {"$gte": date_from,"$lt": date_to }}).sort('time', ASCENDING)
-		except Exception, e:
-			checks = False
-			raise e
-
-		try:
-			row = self.mongo.get_collection('cpu')
-			start_date = row.find_one()
-		except Exception, e:
-			start_date = False
-
+	
+		checks = system_model.get_system_data(active_checks, date_from, date_to)
+		start_date = system_model.get_start_date()
 
 		if checks != False:
 			network = []
@@ -124,6 +111,7 @@ class System(Base):
 			disk = []
 			volumes = []
 			
+			# Add network adapters 
 			if 'network' in active_checks:
 				for check in checks['network']:
 					network.append(check)	
@@ -133,6 +121,7 @@ class System(Base):
 					if interface not in network_interfaces:
 						network_interfaces.append(interface)
 
+			# Add disk volumes
 			if 'disk' in active_checks:
 				for check in checks['disk']:
 					disk.append(check)
@@ -157,12 +146,11 @@ class System(Base):
 
 			self.write(_template)
 
-class Processes(Base):
+class Processes(BaseView):
 
 	def initialize(self):
 		super(Processes, self).initialize()
 		self.current_page = 'processes'
-		self.processes = settings.PROCESS_CHECKS
 
 	def get(self):
 		day = timedelta(hours=24)
@@ -182,12 +170,8 @@ class Processes(Base):
 			date_to = datetime_to_unixtime(self.now)
 
 		
-		process_data = {}
-		for process in self.processes:
-			row = self.mongo.get_collection(process)
-			process_data[process] = row.find({"time": {"$gte": date_from, '$lt': date_to}})\
-					.sort('time', ASCENDING)
-		
+		processes = settings.PROCESS_CHECKS
+		process_data = process_model.get_process_data(processes, date_from, date_to)
 
 		_template = render(template='processes.html',
 					  current_page=self.current_page,
@@ -201,7 +185,7 @@ class Processes(Base):
 		self.write(_template)
 
 
-class Exceptions(Base):
+class Exceptions(BaseView):
 	
 	def initialize(self):
 		super(Exceptions, self).initialize()
@@ -209,12 +193,8 @@ class Exceptions(Base):
 
 	def get(self):
 		
-		row = self.mongo.get_collection('exceptions') 
-		
-		exceptions = row.find().sort('last_occurrence', DESCENDING)
-
-		# Update unread count
-		self.unread_col.update({"id": 1}, {"$set": {"exceptions": 0}})
+		exceptions = exception_model.get_exceptions()
+		exception_model.mark_as_read()
 
 		_template = render(template='exceptions.html',
 					  exceptions=exceptions,
@@ -224,7 +204,7 @@ class Exceptions(Base):
 
 		self.write(_template)
 
-class Logs(Base):
+class Logs(BaseView):
 
 	def initialize(self):
 		super(Logs, self).initialize()
@@ -232,12 +212,8 @@ class Logs(Base):
 
 	def get(self):
 
-		# Update unread count
-		self.unread_col.update({"id": 1}, {"$set": {"logs": 0}})
-		
-		row = self.mongo.get_collection('logs') 
-		logs = row.find().sort('time', DESCENDING)
- 
+		logs = log_model.get_logs()
+		log_model.mark_as_read()
 
 		_template =  render(template='logs.html',
 					 current_page=self.current_page,
@@ -252,18 +228,8 @@ class Logs(Base):
 		level = self.get_arguments('level[]')
 		filter = self.get_argument('filter', None)
 
-		query = {}
-		if level:
-			level_params = [{'level': x} for x in level]
-			query = {"$or" : level_params}
-
-		if filter:
-			query['_searchable'] = { "$regex": str(filter), "$options": 'i'}
-
-		row = self.mongo.get_collection('logs') 
-		
-		logs = row.find(query).sort('time', DESCENDING)
-
+		logs = log_model.filtered_logs(level, filter)
+	
 		_template = render(template='partials/logs_filter.html', 
 				logs=logs)
 
