@@ -35,11 +35,19 @@ class TestTemplateFilters(unittest.TestCase):
 		eq_(full_container_50, '250px')
 
 
+		full_container_0 = progress_width(0, 300, container_type='full' )
+		eq_(full_container_0, '0px')
+
+
 		medium_container = progress_width(300, 300, container_type='medium' )
 		eq_(medium_container, '245px')
 
 		medium_container_50 = progress_width(150, 300, container_type='medium' )
 		eq_(medium_container_50, '122px')
+
+		medium_container_0 = progress_width(0, 300, container_type='medium' )
+		eq_(medium_container_0, '0px')
+
 
 		small_container = progress_width(300, 300, container_type='small' )
 		eq_(small_container, '145px')
@@ -48,11 +56,29 @@ class TestTemplateFilters(unittest.TestCase):
 		small_container_50 = progress_width(150, 300, container_type='small' )
 		eq_(small_container_50, '72px')
 
+		small_container_0 = progress_width(0, 300, container_type='small' )
+		eq_(small_container_0, '0px')
+
+	def test_progress_width_with_zeroes(self):
+		empty_container_full = progress_width(0,0, container_type='full' )
+		eq_(empty_container_full, '0px')
+
+
+		empty_container_medium = progress_width(0,0, container_type='medium' )
+		eq_(empty_container_medium, '0px')
+
+
+		empty_container_small = progress_width(0,0, container_type='small' )
+		eq_(empty_container_small, '0px')
 
 	def test_url(self):
 		_url = url('more', 'and', 'even', 'more')
 		eq_(_url, 'more/and/even/more')
 
+
+	def test_base_url(self):
+		_base_url = base_url()
+		assert isinstance(_base_url, str)
 
 	def test_check_additional_data(self):
 		ignored_dicts = [{'occurrence': 12223323}, {'occurrence': 1212121221}]

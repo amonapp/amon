@@ -10,13 +10,29 @@ file_exists() {
 	[ -f "$1" ]
 }
 
+# Check if it is 32 or 64 bit machine
+MACHINE_TYPE=`uname -m`
+if [ "${MACHINE_TYPE}" == 'x86' ]; then
+	# 32-bit
+	echo "32-bit architecture detected"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.1.tgz"
+	mongo_extract_dir="mongodb-linux-i686-2.0.1"
+else
+	# 64-bit
+	echo "64-bit architecture detected"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.0.1.tgz"
+	mongo_extract_dir="mongodb-linux-x86_64-2.0.1"
+fi
+
+
 # Set variables for the installation
-set -e
-mongo_install_dir="/usr/local/mongodb"
-mongo_extract_dir="mongodb-linux-i686-2.0.0"
-version=$1 # Inherited from the main script
+set -e # Exit the installer on error
+mongo_install_dir="/usr/local/mongodb" # This where we will store mongod, the database and the log files
+mongo_check=$(ps aux | grep -c mongo | grep -v grep) # Check if mongo is running, remove 'grep' from the results
+version=$1 # Amon version - Inherited from the main script
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
-mongo_check=$(ps aux | grep -c mongo)
+amon_install_dir="/usr/local/amon"
+
 
 echo "***  Installing Amon $version ..."
 
@@ -24,18 +40,18 @@ echo "***  Installing Amon $version ..."
 	if ! command_exists easy_install ; then
 		wget "http://peak.telecommunity.com/dist/ez_setup.py" 
 		sudo python ez_setup.py
-		rm -rf ez_setup.py
+		rm -f ez_setup.py
 	fi
 
 # Install Amon
 
-	# Cleanup the directory from old amon installations
-	sudo rm -rf amon-*
+	sudo rm -rf amon-* # Cleanups old archives from previous install, that could break the updating process
     wget "http://install.amon.cx/amon-latest.tar.gz" 
 	tar -zxvf "amon-latest.tar.gz" > /dev/null
 	cd "amon-$version"
 
 
+	# Ensure that we have the pymongo driver dependecies
 	# skip running yum if the programs are already installed.
 	if rpm --quiet -q gcc python-devel sysstat ; then
 		echo "*** Amon requirements already installed"
@@ -48,10 +64,10 @@ echo "***  Installing Amon $version ..."
 		echo "** success!"
 	fi
    	
-	sudo python setup.py install
+	sudo python setup.py install # Install Amon and all the dependecies
 	cd "$bash_script_dir"
 
-	# Copy the configuration file
+	# Copy the configuration file. Don't overwrite if it exists from previous installation
 	if ! file_exists "/etc/amon.conf" ; then
 		sudo cp amon-$version/config/amon.conf /etc/amon.conf
 	fi
@@ -80,7 +96,7 @@ echo "***  Installing Amon $version ..."
 	install_mongodb()
 	{
 
-		wget "http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.0.tgz"
+		wget "$mongo_download_url"
 		echo "***  Extracting MongoDB ..."
 		tar -zxvf "$mongo_extract_dir.tgz" > /dev/null
 
@@ -91,13 +107,13 @@ echo "***  Installing Amon $version ..."
 
 		echo ""
 		echo "***  MongoDB will be installed in $mongo_install_dir." 
-		echo "If you are not running as root, the installer will ask for your root password"
 
 		# Create mongo directories and log file
 		sudo mkdir $mongo_install_dir $mongo_install_dir/data $mongo_install_dir/bin && sudo touch $mongo_install_dir/mongodb.log
 
 		sudo cp $mongo_extract_dir/bin/mongod $mongo_install_dir/bin/mongod
 		
+		# Copy the mongo file to /usr/bin, so that it can be called from anywhere
 		sudo cp $mongo_extract_dir/bin/mongo /usr/bin/mongo
 
 
@@ -124,7 +140,6 @@ echo "***  Installing Amon $version ..."
 	start_mongodb()
 	{
 		rm -rf $mongo_extract_dir
-		rm -rf mongo
 		echo "*** Starting MongoDB"
 		echo ""
 
@@ -136,8 +151,8 @@ echo "***  Installing Amon $version ..."
 
 	# Install MongoDB if it is not installed on the system
 	if ! command_exists mongo ; then
-		# Check one more time
-		if [ $mongo_check = '1' ]; then	 
+		# Check one more time, the value should be 0
+		if [ $mongo_check = '0' ]; then	 
 			install_mongodb
 			configure_mongodb
 			start_mongodb
@@ -175,6 +190,8 @@ echo "***  Installing Amon $version ..."
 
 
   # Cleanup the directory
-  sudo rm -rf amon-$version
-  sudo rm -rf $mongo_extract_dir
+  sudo rm -rf amon-$version  #Delete the directory with the Amon install files
+
+  sudo rm -rf $mongo_extract_dir # Delete the Mongo directory
+ 
   print_troubleshooting_instructions

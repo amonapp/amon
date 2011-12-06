@@ -129,8 +129,11 @@ def progress_width(value, total, container_type='full'):
 	value = clean_string(value)
 	total = clean_string(total)
 
-	percentage = float(value)/float(total) * 100
-	progress_width = container_width/100.0 * percentage
+	if value > 0 and total > 0:
+		percentage = float(value)/float(total) * 100
+		progress_width = container_width/100.0 * percentage
+	else:
+		progress_width = 0
 
 	return '{0}px'.format(int(progress_width))
 
@@ -193,14 +196,25 @@ def beautify_json(value):
 		return value
 
 
+def base_url():
+	host = settings.WEB_APP['host']
+	port = settings.WEB_APP['port']
+
+	# Add http if the host is an IP address
+	if not host.startswith('http'):
+		host = "http://{0}".format(host)
+
+	base_url = "{0}:{1}".format(host, port)
+
+
+	return base_url
+
 
 def render(*args, **kwargs):
 	
 	env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
 	
-	env.globals['base_url'] = "{0}:{1}".format(settings.WEB_APP['host'],
-									settings.WEB_APP['port'])
-
+	env.globals['base_url'] = base_url()
 	env.filters['time'] = timeformat
 	env.filters['date_to_js'] = date_to_js
 	env.filters['date'] = dateformat
