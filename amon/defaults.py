@@ -35,3 +35,6 @@ WEB_APP = {
 	'host': _web_app.get('host', 'http://127.0.0.1'),
 	'port': _web_app.get('port', 2464)
 }
+
+ACL = config.get('acl', False)
+SECRET = config.get('secret', False)
