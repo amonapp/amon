@@ -3,12 +3,9 @@ from pymongo import DESCENDING, ASCENDING
 
 class BaseModel(object):
 
-	def __init__(self, database=None):
+	def __init__(self):
 		self.mongo = MongoBackend()
 		
-		# Leave that option for testing
-		if database != None:
-			self.mongo.database = database
 
 class DashboardModel(BaseModel):
 	
@@ -48,6 +45,11 @@ class SystemModel(BaseModel):
 	def __init__(self):
 		super(SystemModel, self).__init__()
 
+	"""
+	Return pymongo object every active check
+	Example: 
+		active_checks = ['cpu'] will get everything in the collection amon_cpu, between date_from and date_to
+	"""
 	def get_system_data(self, active_checks, date_from, date_to):
 		
 		checks = {}
@@ -55,7 +57,7 @@ class SystemModel(BaseModel):
 		try:
 			for check in active_checks:
 				row = self.mongo.get_collection(check)
-				checks[check] = row.find({"time": {"$gte": date_from,"$lt": date_to }}).sort('time', ASCENDING)
+				checks[check] = row.find({"time": {"$gte": date_from,"$lte": date_to }}).sort('time', ASCENDING)
 		except Exception, e:
 			checks = False
 
@@ -85,6 +87,8 @@ class ProcessModel(BaseModel):
 			row = self.mongo.get_collection(process)
 			process_data[process] = row.find({"time": {"$gte": date_from, '$lt': date_to}})\
 					.sort('time', ASCENDING)
+
+		return process_data
 
 
 class ExceptionModel(BaseModel):

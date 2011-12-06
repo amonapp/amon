@@ -175,7 +175,7 @@ class Processes(BaseView):
 
 		_template = render(template='processes.html',
 					  current_page=self.current_page,
-					  processes=self.processes,
+					  processes=processes,
 					  process_data=process_data,
 					  date_from=date_from,
 					  date_to=date_to,
