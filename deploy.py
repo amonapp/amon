@@ -37,8 +37,8 @@ amon_archive = 'amon-latest.tar.gz'
 k.key = amon_archive
 full_path = "{0}/{1}".format(path, amon_archive)
 
-#k.set_contents_from_filename(full_path)
-#k.make_public()
+k.set_contents_from_filename(full_path)
+k.make_public()
 
 
 # Deploy contrib files

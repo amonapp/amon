@@ -112,6 +112,8 @@ class TestLogModel(unittest.TestCase):
 		
 		result = self.model.get_logs()
 		eq_(result.count(), 3)
+		
+		self.logs.remove()
 
 
 	def test_filtered_logs(self):
@@ -139,6 +141,8 @@ class TestLogModel(unittest.TestCase):
 
 		result = self.model.filtered_logs([], 'test')
 		eq_(result.count(), 2)
+		
+		self.logs.remove()
 
 
 class TestExceptionModel(unittest.TestCase):
@@ -159,6 +163,8 @@ class TestExceptionModel(unittest.TestCase):
 		eq_(result.count(), 2)
 		
 		eq_(result[0]['last_occurrence'], minute_ago)
+		
+		self.exceptions.remove()
 
 
 class TestDashboardModel(unittest.TestCase):
@@ -182,6 +188,8 @@ class TestDashboardModel(unittest.TestCase):
 
 		result = self.model.get_last_process_check(active_checks)
 		eq_(result['cron']['time'], minute_ago)
+		
+		cron.remove()
 
 
 	def test_get_last_system_check(self):
@@ -197,4 +205,7 @@ class TestDashboardModel(unittest.TestCase):
 
 		result = self.model.get_last_system_check(active_checks)
 		eq_(result['cpu']['time'], minute_ago)
+
+
+		cpu.remove()
 	

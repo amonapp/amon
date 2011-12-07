@@ -71,6 +71,24 @@ class TestTemplateFilters(unittest.TestCase):
 		empty_container_small = progress_width(0,0, container_type='small' )
 		eq_(empty_container_small, '0px')
 
+
+	def test_value_bigger_than_total(self):
+		container_full = progress_width(600,0, container_type='full' )
+		eq_(container_full, '500px')
+
+
+	def test_with_big_numbers(self):
+		container_full = progress_width(12332323600,3434344, container_type='full')
+		eq_(container_full, '500px') # Value bigger than total - container is 100%
+
+		container = progress_width(95,12332, container_type='full')
+		eq_(container, '3px') 
+
+
+		container_full = progress_width(1232,34343, container_type='full')
+		eq_(container_full, '17px') # Value bigger than total - container is 100%
+
+
 	def test_url(self):
 		_url = url('more', 'and', 'even', 'more')
 		eq_(_url, 'more/and/even/more')

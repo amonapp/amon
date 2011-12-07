@@ -99,6 +99,11 @@ class SystemInfoCollector(object):
 
 				# strip /dev/
 				_name = _volume['volume'].replace('/dev/', '')
+				
+				# Encrypted directories -> /home/something/.Private
+				if '.' in _name:
+					_name = _name.replace('.','')
+				
 				data[_name] = _volume
 
 		return data

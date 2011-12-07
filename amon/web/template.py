@@ -1,8 +1,7 @@
+from __future__ import division
 from jinja2 import Environment, FileSystemLoader
 from amon.core import settings
-#from amon.web.settings import TEMPLATES_DIR
-from settings import TEMPLATES_DIR
-
+from amon.web.settings import TEMPLATES_DIR
 from datetime import datetime, time
 import re
 import string
@@ -105,7 +104,10 @@ def clean_string(variable):
 	whitelist = string.digits + string.punctuation
 	new_string = ''
 	
-	if not isinstance(variable, int) and not isinstance(variable, float):
+	if not isinstance(variable, int)\
+	and not isinstance(variable, float)\
+	and not isinstance(variable, long):
+		
 		for char in variable:
 			if char in whitelist:
 				new_string += char
@@ -130,13 +132,21 @@ def progress_width(value, total, container_type='full'):
 	value = clean_string(value)
 	total = clean_string(total)
 
+	# Avoid zero division errors
+	total = total if total != 0 else 1
+
 	try:
 		percentage = float(value)/float(total) * 100.0
 		progress_width = (container_width/100.0) * percentage
-	except:
+	except Exception, e:
+		#raise e 
 		progress_width = 0 # Don't break the dashboard
 
-	return '{0}px'.format(int(progress_width))
+	progress_width = int(progress_width)
+	# The progress bar cannot be bigger than the container
+	progress_width = container_width if progress_width > container_width else progress_width 
+
+	return '{0}px'.format(progress_width)
 
 
 class RecursiveDict(object):
