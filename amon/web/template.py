@@ -101,15 +101,16 @@ def to_int(value):
 
 # Removes the letters from a string
 # From 24.5MB -> 24.5 -> used in the progress width
-def clean_string(var):
+def clean_string(variable):
 	whitelist = string.digits + string.punctuation
 	new_string = ''
-	if not isinstance(var, int) and not isinstance(var, float):
-		for char in var:
+	
+	if not isinstance(variable, int) and not isinstance(variable, float):
+		for char in variable:
 			if char in whitelist:
 				new_string += char
 	else:
-		return var
+		return variable
 
 	return new_string
 
@@ -129,11 +130,11 @@ def progress_width(value, total, container_type='full'):
 	value = clean_string(value)
 	total = clean_string(total)
 
-	if value > 0 and total > 0:
-		percentage = float(value)/float(total) * 100
-		progress_width = container_width/100.0 * percentage
-	else:
-		progress_width = 0
+	try:
+		percentage = float(value)/float(total) * 100.0
+		progress_width = (container_width/100.0) * percentage
+	except:
+		progress_width = 0 # Don't break the dashboard
 
 	return '{0}px'.format(int(progress_width))
 
