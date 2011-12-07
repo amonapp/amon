@@ -34,7 +34,7 @@ class TestSystemCheck(object):
 
 	def test_cpu(self):
 		cpu = system_info_collector.get_cpu_utilization()
-		
+
 		assert 'idle' in cpu
 		assert 'user' in cpu
 		assert 'system' in cpu

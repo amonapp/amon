@@ -102,7 +102,7 @@ class System(BaseView):
 		active_checks = settings.SYSTEM_CHECKS
 	
 		checks = system_model.get_system_data(active_checks, date_from, date_to)
-		start_date = system_model.get_start_date()
+		first_check_date = system_model.get_first_check_date()
 
 		if checks != False:
 			network = []
@@ -140,7 +140,7 @@ class System(BaseView):
 						  disk=disk,
 						  date_from=date_from,
 						  date_to=date_to,
-						  start_date=start_date,
+						  first_check_date=first_check_date,
 						  unread_values=self.unread_values
 						  )
 

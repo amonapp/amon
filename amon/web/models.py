@@ -63,8 +63,10 @@ class SystemModel(BaseModel):
 
 		return checks
 
-
-	def get_start_date(self):
+	"""
+	Used in the Javascript calendar - doesn't permit checks for dates before this date
+	"""
+	def get_first_check_date(self):
 		try:
 			row = self.mongo.get_collection('cpu')
 			start_date = row.find_one()

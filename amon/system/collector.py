@@ -187,8 +187,10 @@ class SystemInfoCollector(object):
 		cpu_columns = []
 		cpu_values = []
 		header_regex = re.compile(r'.*?([%][a-zA-Z0-9]+)[\s+]?') # the header values are %idle, %wait
-		value_regex = re.compile(r'\d+\.\d+') # values are 0.00
+		# International float numbers - could be 0.00 or 0,00
+		value_regex = re.compile(r'\d+[\.,]\d+') 
 		stats = mpstat.split('\n')
+
 
 		for value in stats:
 			values = re.findall(value_regex, value)

@@ -7,7 +7,7 @@ command_exists() {
 }
 
 set -e 
-version=0.5.4
+version=0.5.5
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if command_exists dpkg ; then
