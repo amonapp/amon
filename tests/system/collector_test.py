@@ -16,7 +16,6 @@ class TestSystemCheck(object):
 
 		for v in memory_dict.values():
 			assert isinstance(v, int)
-			assert_not_equal(v, 0)
 
 
 	def test_disk(self):
