@@ -188,7 +188,7 @@ class SystemInfoCollector(object):
 		for value in stats:
 			values = re.findall(value_regex, value)
 			if len(values) > 4:
-				cpu_values = map(lambda x: int(float(x)), values) # Convert the values to float and then to int
+				cpu_values = map(lambda x: int(float(x.replace(',', '.'))), values) # Convert the values to float and then to int
 
 			header = re.findall(header_regex, value)
 			if len(header) > 4:
