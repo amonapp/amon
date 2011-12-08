@@ -22,7 +22,7 @@
 	</li>
 	<li class='with_labels'>
 		<h3>Loadavg</h3>
-		{% set loadavg_max = 1 * 1.15 %}
+		{% set loadavg_max = last_check.loadavg.cores|to_int * 1.15 %}
 		<div class="container small">
 			<span class="label">1 minute</span>
 			<span class="progress" style='width: {{ last_check.loadavg.minute|progress_width(loadavg_max, 'small') }}'></span>
@@ -59,9 +59,10 @@
 		<h3>Disks</h3>
 		{% for volume  in last_check.disk %}
 		{% if volume != '_id' and volume != 'time' %}
+
 		<div class="container medium">
 			<span class='label'>{{ volume }}</span>
-			<span class="progress" style='width: {{ last_check.disk[volume].used|progress_width(last_check.disk[volume].total, 'medium') }}'>
+			<span class="progress" style='width: {{ last_check.disk[volume].percent|progress_width_percent('medium') }}'>
 			</span>
 			<span class="data">{{ last_check.disk[volume].used }} of {{ last_check.disk[volume].total }}</span>
 		</div>

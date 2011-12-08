@@ -97,6 +97,8 @@ class SystemInfoCollector(object):
 			if line[0].startswith('/'):
 				_volume = dict(zip(_columns, line))
 
+				_volume['percent'] = _volume['percent'].replace("%",'') # Delete the % sign for easier calculation later
+
 				# strip /dev/
 				_name = _volume['volume'].replace('/dev/', '')
 				

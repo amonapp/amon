@@ -26,11 +26,31 @@ class TestTemplateFilters(unittest.TestCase):
 		string = clean_string('24.5MB')
 		eq_(string, 24.5)
 
-		string = clean_string('1.9T')
-		eq_(string, 1992294.4)
+	
+	def test_progress_width_percent(self):
+		full_container = progress_width_percent(100, container_type='full' )
+		eq_(full_container, '500px')
 
-		string = clean_string('12.5G')
-		eq_(string, 12800)
+		full_container = progress_width_percent(50, container_type='full' )
+		eq_(full_container, '250px')
+
+		full_container = progress_width_percent(0, container_type='full' )
+		eq_(full_container, '0px')
+
+		container = progress_width_percent(100, container_type='medium' )
+		eq_(container, '245px')
+
+		container = progress_width_percent(50, container_type='medium' )
+		eq_(container, '122px')
+
+		container = progress_width_percent(0, container_type='medium' )
+		eq_(container, '0px')
+
+		container = progress_width_percent(100, container_type='small' )
+		eq_(container, '145px')
+
+		container = progress_width_percent(50, container_type='small' )
+		eq_(container, '72px')
 
 	def test_progress_width(self):
 		full_container = progress_width(300, 300, container_type='full' )
@@ -86,12 +106,11 @@ class TestTemplateFilters(unittest.TestCase):
 		container_full = progress_width(12332323600,3434344, container_type='full')
 		eq_(container_full, '500px') # Value bigger than total - container is 100%
 
-		container = progress_width(95,12332, container_type='full')
-		eq_(container, '3px') 
-
+		container = progress_width(9,12233332, container_type='full')
+		eq_(container, '0px') 
 
 		container_full = progress_width(1232,34343, container_type='full')
-		eq_(container_full, '17px') # Value bigger than total - container is 100%
+		eq_(container_full, '15px') 
 
 
 	def test_url(self):

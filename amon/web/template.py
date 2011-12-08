@@ -119,14 +119,6 @@ def clean_string(variable):
 			extracted_value = extracted_value[0]
 			extracted_value.replace(",",".")
 			extracted_value = float(extracted_value)
-			
-			# Terabytes
-			if "T" in variable:
-				extracted_value =extracted_value*1024*1024
-				
-			# Gigabytes
-			if "G" in variable:
-				extracted_value = extracted_value*1024
 		else:
 			extracted_value = 0
 
@@ -137,7 +129,8 @@ def clean_string(variable):
 def clean_slashes(string):
 	return re.sub('[^A-Za-z0-9]+', '', string).strip().lower()
 
-def progress_width(value, total, container_type='full'):
+
+def progress_width_percent(percent, container_type='full'):
 
 	if container_type == 'full': 
 		container_width = 500
@@ -146,24 +139,29 @@ def progress_width(value, total, container_type='full'):
 	else:
 		container_width = 145
 
+	try:
+		progress_width = (container_width/100.0)*int(percent)
+	except:
+		progress_width = 0 # Don't break the dashboard
+
+	progress_width = int(progress_width)
+	
+	# The progress bar cannot be bigger than the container
+	progress_width = container_width if progress_width > container_width else progress_width 
+
+	return '{0}px'.format(int(progress_width))
+
+def progress_width(value, total, container_type='full'):
+
 	value = clean_string(value)
 	total = clean_string(total)
 
 	# Avoid zero division errors
 	total = total if total != 0 else 1
+	percentage = value/total * 100.0
+	percentage = int(percentage)
 
-	try:
-		percentage = value/total * 100.0
-		progress_width = (container_width/100.0) * percentage
-	except Exception, e:
-		raise e 
-		progress_width = 0 # Don't break the dashboard
-
-	progress_width = int(progress_width)
-	# The progress bar cannot be bigger than the container
-	progress_width = container_width if progress_width > container_width else progress_width 
-
-	return '{0}px'.format(progress_width)
+	return progress_width_percent(percentage, container_type)
 
 
 class RecursiveDict(object):
@@ -247,17 +245,21 @@ def render(*args, **kwargs):
 	
 	env.globals['base_url'] = base_url()
 	env.filters['url'] = url
-	
+
+	# Used everywhere
 	env.filters['time'] = timeformat
 	env.filters['date_to_js'] = date_to_js
 	env.filters['date'] = dateformat
 	env.filters['to_int'] =  to_int
 	env.filters['time_in_words'] = time_in_words 
-	env.filters['progress_width'] = progress_width
 	env.filters['exceptions_dict'] = exceptions_dict
 	env.filters['test_additional_data'] = check_additional_data
 	env.filters['clean_slashes'] = clean_slashes
 	env.filters['beautify_json'] = beautify_json
+
+	# Dashboard filters
+	env.filters['progress_width'] = progress_width
+	env.filters['progress_width_percent'] = progress_width_percent
 	env.filters['format_float'] = format_float
 
 	if 'template' in kwargs:
