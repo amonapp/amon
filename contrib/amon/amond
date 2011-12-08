@@ -73,8 +73,8 @@ if __name__ == "__main__":
 		if 'start' == sys.argv[1]:
 			try:
 				daemon.start()
-			except:
-				pass
+			except Exception, e:
+				logging.exception("Amond cant be started")
 		elif 'stop' == sys.argv[1]:
 			print "Stopping Amon ..."
 			daemon.stop()
