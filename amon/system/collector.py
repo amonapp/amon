@@ -172,7 +172,18 @@ class SystemInfoCollector(object):
 		_loadavg_values = load_data[:4]
 		
 		load_dict = dict(zip(_loadavg_columns, _loadavg_values))	
+
+
+		# Get cpu cores 
+		cpuinfo = subprocess.Popen(['cat', '/proc/cpuinfo'], stdout=subprocess.PIPE, close_fds=True)
+		grep = subprocess.Popen(['grep', 'cores'], stdin=cpuinfo.stdout, stdout=subprocess.PIPE, close_fds=True)
+		sort = subprocess.Popen(['sort', '-u'], stdin=grep.stdout, stdout=subprocess.PIPE, close_fds=True)\
+				.communicate()[0]
 		
+		cores = re.findall(r'\d+', sort) 
+		load_dict['cores'] = cores[0]
+
+
 		return load_dict 
 		
 
@@ -203,6 +214,7 @@ class SystemInfoCollector(object):
 				cpu_columns = map(lambda x: x.replace('%', ''), header) 
 
 		cpu_dict = dict(zip(cpu_columns, cpu_values))
+
 
 		return cpu_dict
 		

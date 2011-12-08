@@ -24,8 +24,13 @@ class TestTemplateFilters(unittest.TestCase):
 
 	def test_clean_string(self):
 		string = clean_string('24.5MB')
-		eq_(string, '24.5')
+		eq_(string, 24.5)
 
+		string = clean_string('1.9T')
+		eq_(string, 1992294.4)
+
+		string = clean_string('12.5G')
+		eq_(string, 12800)
 
 	def test_progress_width(self):
 		full_container = progress_width(300, 300, container_type='full' )

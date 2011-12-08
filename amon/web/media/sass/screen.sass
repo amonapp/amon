@@ -526,9 +526,16 @@ ul.stats_bars
         position: relative
         top: 0px
         left: 0px
-        height: 30px
+        height: 28px
         background: url(../images/green_bar.png)
+        border: 1px solid #75A22B 
         +border-radius(6px)
+        &.red
+          background: url(../images/red_bar.png)
+          border: 1px solid #BC0000 
+        &.yellow
+          background: url(../images/yellow_bar.png)
+          border: 1px solid #F1B603 
       .data
         position: relative
         width: $full_bar

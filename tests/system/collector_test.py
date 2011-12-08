@@ -50,6 +50,7 @@ class TestSystemCheck(object):
 		assert 'five_minutes' in loadavg
 		assert 'fifteen_minutes' in loadavg
 		assert 'scheduled_processes' in loadavg
+		assert 'cores' in loadavg
 
 		for v in loadavg.values():
 			assert isinstance(v, str)

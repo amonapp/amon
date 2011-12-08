@@ -84,12 +84,12 @@
 		<div class="container medium">
 			<span class="label">CPU</span>
 			<span class="progress" style='width: {{ process_check[process].cpu|progress_width(100, 'medium') }}'></span>
-			<span class="data">{{ process_check[process].cpu }}</span>
+			<span class="data">{{ process_check[process].cpu|format_float }}</span>
 		</div>
 		<div class="container medium last">
 			<span class="label">Memory</span>
 			<span class="progress" style='width:{{ process_check[process].memory|progress_width(total_ram, 'medium') }}'></span>
-			<span class="data">{{ process_check[process].memory }} of {{ total_ram }} MB</span>
+			<span class="data">{{ process_check[process].memory|format_float }} of {{ total_ram }} MB</span>
 		
 		</div>
 		</li>

@@ -101,20 +101,37 @@ def to_int(value):
 # Removes the letters from a string
 # From 24.5MB -> 24.5 -> used in the progress width
 def clean_string(variable):
-	whitelist = string.digits + string.punctuation
-	new_string = ''
 	
-	if not isinstance(variable, int)\
-	and not isinstance(variable, float)\
-	and not isinstance(variable, long):
+	if isinstance(variable, int)\
+	or isinstance(variable, float)\
+	or isinstance(variable, long):
 		
-		for char in variable:
-			if char in whitelist:
-				new_string += char
-	else:
+		variable = float(variable) if not isinstance(variable, float) else variable
+		
 		return variable
 
-	return new_string
+	else:
+		
+		value_regex = re.compile(r'\d+[\.,]\d+') 
+		extracted_value = value_regex.findall(variable)
+
+		if len(extracted_value) > 0:
+			extracted_value = extracted_value[0]
+			extracted_value.replace(",",".")
+			extracted_value = float(extracted_value)
+			
+			# Terabytes
+			if "T" in variable:
+				extracted_value =extracted_value*1024*1024
+				
+			# Gigabytes
+			if "G" in variable:
+				extracted_value = extracted_value*1024
+		else:
+			extracted_value = 0
+
+		return extracted_value
+		
 
 # Used in the charts, where a disk drive could be with several slashes
 def clean_slashes(string):
@@ -136,10 +153,10 @@ def progress_width(value, total, container_type='full'):
 	total = total if total != 0 else 1
 
 	try:
-		percentage = float(value)/float(total) * 100.0
+		percentage = value/total * 100.0
 		progress_width = (container_width/100.0) * percentage
 	except Exception, e:
-		#raise e 
+		raise e 
 		progress_width = 0 # Don't break the dashboard
 
 	progress_width = int(progress_width)
@@ -220,12 +237,17 @@ def base_url():
 
 	return base_url
 
+# Removes the scientific notation and displays floats normally
+def format_float(value):
+	return format(float(value), "g")
 
 def render(*args, **kwargs):
 	
 	env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
 	
 	env.globals['base_url'] = base_url()
+	env.filters['url'] = url
+	
 	env.filters['time'] = timeformat
 	env.filters['date_to_js'] = date_to_js
 	env.filters['date'] = dateformat
@@ -234,9 +256,9 @@ def render(*args, **kwargs):
 	env.filters['progress_width'] = progress_width
 	env.filters['exceptions_dict'] = exceptions_dict
 	env.filters['test_additional_data'] = check_additional_data
-	env.filters['url'] = url
 	env.filters['clean_slashes'] = clean_slashes
 	env.filters['beautify_json'] = beautify_json
+	env.filters['format_float'] = format_float
 
 	if 'template' in kwargs:
 		template = env.get_template(kwargs['template'])
