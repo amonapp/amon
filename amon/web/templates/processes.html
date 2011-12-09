@@ -22,6 +22,7 @@ Processes check
 </ul>
 </form>
 {% for process in processes  %}
+{% set sanitized_process = process|clean_slashes %}
 <h2>{{ process }}</h2>
 <div class='legend'>
 		<ul>
@@ -35,8 +36,8 @@ Processes check
 			</li>
 		</ul>
 </div>
-<div class="chart" id="{{ process }}_cpu"></div>
-<div class="chart" id="{{ process }}_memory"></div>
+<div class="chart" id="{{ sanitized_process }}_cpu"></div>
+<div class="chart" id="{{ sanitized_process }}_memory"></div>
 {% endfor %}
 
 {% endblock %}
@@ -47,24 +48,25 @@ Processes check
 <script type="text/javascript">
 	
 	{% for process in process_data  %}
-	var {{ process }}_cpu = []
-	var {{ process }}_memory = []
+	{% set sanitized_process = process|clean_slashes %}
+	var {{ sanitized_process }}_cpu = []
+	var {{ sanitized_process }}_memory = []
 		{% for data in process_data[process]  %}
-		{{ process }}_cpu.push([{{ data.time * 1000 }}, {{ data.cpu }}])
-		{{ process }}_memory.push([{{ data.time * 1000 }}, {{ data.memory }}])
+		{{ sanitized_process }}_cpu.push([{{ data.time * 1000 }}, {{ data.cpu }}])
+		{{ sanitized_process }}_memory.push([{{ data.time * 1000 }}, {{ data.memory }}])
 
 		{% endfor %}
 
 
-    $.plot($("#{{ process }}_cpu"),
-           [{ data: {{ process }}_cpu, label: "CPU" }],
+    $.plot($("#{{ sanitized_process }}_cpu"),
+           [{ data: {{ sanitized_process }}_cpu, label: "CPU" }],
            { 
 				xaxis: { mode: 'time',  timeformat: "%d/%m %H:%M" },
 				yaxis: { min: 0, },
 	
 			});
-	$.plot($("#{{ process }}_memory"),
-           [{ data: {{ process }}_memory, label: "Memory" }],
+	$.plot($("#{{ sanitized_process }}_memory"),
+           [{ data: {{ sanitized_process }}_memory, label: "Memory" }],
            { 
 				xaxis: { mode: 'time',  timeformat: "%d/%m %H:%M" },
 				yaxis: { min: 0, },
