@@ -35,7 +35,7 @@ class TestTemplateFilters(unittest.TestCase):
 		eq_(full_container, '250px')
 
 		full_container = progress_width_percent(0, container_type='full' )
-		eq_(full_container, '0px')
+		eq_(full_container, '0px; border:0px')
 
 		container = progress_width_percent(100, container_type='medium' )
 		eq_(container, '245px')
@@ -44,7 +44,7 @@ class TestTemplateFilters(unittest.TestCase):
 		eq_(container, '122px')
 
 		container = progress_width_percent(0, container_type='medium' )
-		eq_(container, '0px')
+		eq_(container, '0px; border:0px')
 
 		container = progress_width_percent(100, container_type='small' )
 		eq_(container, '145px')
@@ -61,7 +61,7 @@ class TestTemplateFilters(unittest.TestCase):
 
 
 		full_container_0 = progress_width(0, 300, container_type='full' )
-		eq_(full_container_0, '0px')
+		eq_(full_container_0, '0px; border:0px')
 
 
 		medium_container = progress_width(300, 300, container_type='medium' )
@@ -71,7 +71,7 @@ class TestTemplateFilters(unittest.TestCase):
 		eq_(medium_container_50, '122px')
 
 		medium_container_0 = progress_width(0, 300, container_type='medium' )
-		eq_(medium_container_0, '0px')
+		eq_(medium_container_0, '0px; border:0px')
 
 
 		small_container = progress_width(300, 300, container_type='small' )
@@ -82,19 +82,19 @@ class TestTemplateFilters(unittest.TestCase):
 		eq_(small_container_50, '72px')
 
 		small_container_0 = progress_width(0, 300, container_type='small' )
-		eq_(small_container_0, '0px')
+		eq_(small_container_0, '0px; border:0px')
 
 	def test_progress_width_with_zeroes(self):
 		empty_container_full = progress_width(0,0, container_type='full' )
-		eq_(empty_container_full, '0px')
+		eq_(empty_container_full, '0px; border:0px')
 
 
 		empty_container_medium = progress_width(0,0, container_type='medium' )
-		eq_(empty_container_medium, '0px')
+		eq_(empty_container_medium, '0px; border:0px')
 
 
 		empty_container_small = progress_width(0,0, container_type='small' )
-		eq_(empty_container_small, '0px')
+		eq_(empty_container_small, '0px; border:0px')
 
 
 	def test_value_bigger_than_total(self):
@@ -107,7 +107,7 @@ class TestTemplateFilters(unittest.TestCase):
 		eq_(container_full, '500px') # Value bigger than total - container is 100%
 
 		container = progress_width(9,12233332, container_type='full')
-		eq_(container, '0px') 
+		eq_(container, '0px; border:0px') 
 
 		container_full = progress_width(1232,34343, container_type='full')
 		eq_(container_full, '15px') 

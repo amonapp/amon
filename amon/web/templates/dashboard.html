@@ -17,7 +17,7 @@
 		{% set cpu = last_check.cpu.system + last_check.cpu.user %}
 		<div class="container">
 			<span class="progress" style='width:{{ cpu|progress_width(100) }};'></span>
-			<span class="data">{{ cpu }}%</span>
+			<span class="data">{{ cpu|to_int }}%</span>
 		</div>
 	</li>
 	<li class='with_labels'>

@@ -34,13 +34,19 @@ class TestSystemCheck(object):
 	def test_cpu(self):
 		cpu = system_info_collector.get_cpu_utilization()
 
+		# For debugging purposes only
+		#print cpu
+		#import subprocess
+		#mpstat = subprocess.Popen(['iostat', '-c'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]
+		#print mpstat
+
 		assert 'idle' in cpu
 		assert 'user' in cpu
 		assert 'system' in cpu
 
-
 		for v in cpu.values():
-			assert isinstance(v, int)
+			# Could be 1.10 - 4, 10.10 - 5, 100.00 - 6
+			assert len(v) == 4 or len(v) == 5 or len(v) == 6
 
 
 	def test_loadavg(self):

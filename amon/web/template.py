@@ -4,7 +4,6 @@ from amon.core import settings
 from amon.web.settings import TEMPLATES_DIR
 from datetime import datetime, time
 import re
-import string
 
 def age(from_date, since_date = None, target_tz=None, include_seconds=False):
 	'''
@@ -149,7 +148,14 @@ def progress_width_percent(percent, container_type='full'):
 	# The progress bar cannot be bigger than the container
 	progress_width = container_width if progress_width > container_width else progress_width 
 
-	return '{0}px'.format(int(progress_width))
+	progress_width = int(progress_width)
+	
+	# If the progress bar is 0px -> don't show the border`
+	no_border = ''
+	if progress_width == 0: 
+		no_border = "; border:0px"
+	
+	return '{0}px{1}'.format(progress_width, no_border)
 
 def progress_width(value, total, container_type='full'):
 

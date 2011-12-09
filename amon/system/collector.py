@@ -212,7 +212,7 @@ class SystemInfoCollector(object):
 			values = re.findall(value_regex, value)
 			if len(values) > 4:
 				values = map(lambda x: x.replace(',','.'), values) # Replace , with . if necessary
-				cpu_values = map(lambda x: int(float(x)), values) # Convert the values to float and then to int
+				cpu_values = map(lambda x: format(float(x), ".2f"), values) # Convert the values to float with 2 points precision
 
 			header = re.findall(header_regex, value)
 			if len(header) > 4:
