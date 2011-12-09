@@ -33,9 +33,14 @@ Exceptions
 			{% if exc.backtrace %}
 			<li>
 				<h4>Backtrace:</h4>
+				<a class='show_full_trace' rel="{{ exc._id }}" href="">Full trace</a>
 				<p class='backtrace'>
 				{% for line in exc.backtrace %}
+
 					<span >{{ line }}</span>
+					{% if loop.index == 5 %}
+					<p class="hidden" id='full-trace-{{ exc._id }}'>{% endif %}
+					{% if loop.last %}</p>{% endif %}
 				{% endfor %}
 				</p>
 			</li>	
@@ -63,6 +68,16 @@ Exceptions
 		
 		e.preventDefault(); 
 	
+	});
+
+	$('.show_full_trace').click(function(e)
+	{
+		
+		exception_id = $(this).attr('rel');
+		$('#full-trace-'+exception_id).toggle();
+		
+		e.preventDefault(); 
+
 	});
 
 </script>

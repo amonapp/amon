@@ -418,16 +418,28 @@ $log_width: 800px
   div.exception_additional_data
     float: left
     display: none
-  p.backtrace
+  a.show_full_trace
+    float: right
+    font-size: 1.6em
+    margin-top: 17px
+    color: black
+  p.backtrace, p.hidden
     padding: 7px
+    padding-right: 0px
     margin-left: 5px
     margin-top: 2px
+    padding-bottom: 0px
     span
       float: left
       clear: left
       width: 100%
       padding-top: 4px
+      line-height: 1.4em
       color: #464646
+  p.hidden
+    margin-top: 0px
+    display: none
+    padding-top: 0px
   ul.exception_data
     margin-top: 1px
     float: left
