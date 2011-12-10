@@ -148,6 +148,7 @@ class Processes(BaseView):
 		processes = settings.PROCESS_CHECKS
 		process_data = process_model.get_process_data(processes, date_from, date_to)
 
+
 		_template = render(template='processes.html',
 					  current_page=self.current_page,
 					  processes=processes,

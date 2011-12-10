@@ -87,7 +87,9 @@ class ProcessModel(BaseModel):
 		process_data = {}
 		for process in active_checks:
 			row = self.mongo.get_collection(process)
-			process_data[process] = row.find({"time": {"$gte": date_from, '$lte': date_to}}).sort('time', ASCENDING)
+			cursor = row.find({"time": {"$gte": date_from, '$lte': date_to}}).sort('time', ASCENDING) 
+			
+			process_data[process] = cursor
 
 		return process_data
 
