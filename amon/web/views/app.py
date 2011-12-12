@@ -1,6 +1,6 @@
 from datetime import timedelta
 from amon.core import settings
-from amon.web.base import BaseView
+from amon.web.views.base import BaseView
 from amon.web.template import render
 from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
 from amon.system.utils import get_disk_volumes, get_network_interfaces
@@ -12,14 +12,12 @@ from amon.web.models import (
 	log_model
 )
 
-class Dashboard(BaseView):
+class DashboardView(BaseView):
 
 	def initialize(self):
-		super(Dashboard, self).initialize()
+		super(DashboardView, self).initialize()
 
 	def get(self):
-
-		self.session['test_me'] = "martin"
 
 		active_process_checks = settings.PROCESS_CHECKS
 		active_system_checks = settings.SYSTEM_CHECKS
@@ -49,10 +47,10 @@ class Dashboard(BaseView):
 
 		self.write(_template)
 
-class System(BaseView):
+class SystemView(BaseView):
 
 	def initialize(self):
-		super(System, self).initialize()
+		super(SystemView, self).initialize()
 
 	def get(self):
 		
@@ -121,10 +119,10 @@ class System(BaseView):
 
 			self.write(_template)
 
-class Processes(BaseView):
+class ProcessesView(BaseView):
 
 	def initialize(self):
-		super(Processes, self).initialize()
+		super(ProcessesView, self).initialize()
 		self.current_page = 'processes'
 
 	def get(self):
@@ -161,10 +159,10 @@ class Processes(BaseView):
 		self.write(_template)
 
 
-class Exceptions(BaseView):
+class ExceptionsView(BaseView):
 	
 	def initialize(self):
-		super(Exceptions, self).initialize()
+		super(ExceptionsView, self).initialize()
 		self.current_page = 'exceptions'
 
 	def get(self):
@@ -180,10 +178,10 @@ class Exceptions(BaseView):
 
 		self.write(_template)
 
-class Logs(BaseView):
+class LogsView(BaseView):
 
 	def initialize(self):
-		super(Logs, self).initialize()
+		super(LogsView, self).initialize()
 		self.current_page = 'logs'
 
 	def get(self):

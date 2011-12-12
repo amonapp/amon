@@ -10,14 +10,18 @@ System check
 <ul class='tabs'>
 	<li>
 		<label for="">From:</label>
-		<input type="text" name='date_from' id="date_from" value="{{ date_from|date }}" />
+		<div class="input_background">
+			<input type="text" name='date_from' id="date_from" value="{{ date_from|date }}" />
+		</div>
 	</li>
 	<li>
 		<label for="">To:</label>
-		<input type="text" name='date_to' id="date_to" value='{{ date_to|date }}' />
+		<div class="input_background">
+			<input type="text" name='date_to' id="date_to" value='{{ date_to|date }}' />
+		</div>
 	</li>
-	<li>
-	<input type="submit" value="Update" />
+	<li class='with_button'>
+		<input type="submit" class="button update" value="Update" />
 	</li>
 </ul>
 </form>

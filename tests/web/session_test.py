@@ -1,5 +1,5 @@
 import unittest
-from amon.web.base import BaseView
+from amon.web.views.base import BaseView
 from amon.web.server import application
 from tornado.httpclient import HTTPRequest 
 from nose.tools import eq_

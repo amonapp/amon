@@ -226,12 +226,31 @@ ul.tabs
   li
     float: left
     margin-right: 20px
+    .button
+      background: url(../images/buttons.png)
+      border: 0px
+      text-indent: -3000px
+      cursor: pointer
+      &.update
+        width: 82px
+        height: 34px
+        &:hover
+          background-position: 0px -34px
+          height: 36px
     &:last-child
       margin-right: 0px
+    &.with_button
+      margin-top: 27px
     label
       float: left
       font-size: 1.6em
       margin-bottom: 8px
+    div.input_background
+      background: #FAFAFA 
+      padding: 4px
+      float: left
+      clear: left
+      +border-radius(6px)
 input[type=text]
   clear: both
   float: left
@@ -244,24 +263,24 @@ input[type=text]
   color: #727272 
   &:focus
     border: 1px solid #7AB317 
-    +box-shadow(#DEECC5 0px 0px 6px) 
-input[type=submit]
-  margin-top: 22px
-  background: #DEECC5 
-  border: 1px solid white
-  font-weight: bold
-  height: 37px
-  padding-bottom: 5px
-  padding-left: 18px
-  padding-right: 18px
-  cursor: pointer
-  color: #7AB317  
-  float: left
-  +border-radius(6px)
-  &:hover
-    background: #7AB317 
-    color: white
-    border: 1px solid #7AB317 
+    +box-shadow(#DEECC5 0px 0px 4px) 
+  //input[type=submit]
+  //margin-top: 22px
+  //background: #DEECC5 
+  //border: 1px solid white
+  //font-weight: bold
+  //height: 37px
+  //padding-bottom: 5px
+  //padding-left: 18px
+  //padding-right: 18px
+  //cursor: pointer
+  //color: #7AB317  
+  //float: left
+  //+border-radius(6px)
+  //&:hover
+    //background: #7AB317 
+    //color: white
+    //border: 1px solid #7AB317 
 // Logs
 .logs_filter
   margin-top: 25px
@@ -297,6 +316,7 @@ input[type=submit]
       color: #7AB317  
       float: left
       outline: none
+      text-decoration: none
       +border-radius(6px)
       input[type=checkbox]
         display: none
@@ -593,4 +613,4 @@ ul.options_list
       &:hover
         color: #EEBFBF 
         background: #BC0000 
-        
+

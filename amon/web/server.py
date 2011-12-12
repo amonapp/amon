@@ -1,6 +1,7 @@
-from amon.web.views import Dashboard, System, Processes, Exceptions, Logs
+from amon.web.views.app import DashboardView, SystemView, ProcessesView, ExceptionsView, LogsView
+from amon.web.views.auth import LoginView
 from amon.web.settings import PROJECT_ROOT
-from amon.web.api import ApiLogs, ApiException
+from amon.web.views.api import ApiLogs, ApiException
 import os
 import tornado.web
 import base64
@@ -13,11 +14,12 @@ app_settings = {
 }
 
 handlers = [
-	(r"/", Dashboard),
-	(r"/system", System),
-	(r"/processes", Processes),
-	(r"/exceptions", Exceptions),
-	(r"/logs", Logs),
+	(r"/", DashboardView),
+	(r"/system", SystemView),
+	(r"/processes", ProcessesView),
+	(r"/exceptions", ExceptionsView),
+	(r"/logs", LogsView),
+	(r"/login", LoginView),
 	(r"/api/log", ApiLogs),
 	(r"/api/exception", ApiException),
 	(r"/media/(.*)", tornado.web.StaticFileHandler, {"path": app_settings['static_path']}),
