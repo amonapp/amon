@@ -11,6 +11,14 @@ div.center
   width: 360px
   height: 100px
   margin-top: 15px
+  .message
+    background: #FBEFEF
+    margin-top: 15px
+    border: 6px solid #F5CFCF 
+    padding: 10px
+    font-size: 1.4em
+    line-height: 1.4em
+    +border-radius(6px)
   .logo
     margin: 0 auto
     text-align: center
@@ -34,6 +42,13 @@ div.center
       background-position: -100px 0px
       &:hover
         background-position: -100px -40px
+        height: 38px
+    &.create
+      width: 79px
+      height: 38px
+      background-position: -200px 0px
+      &:hover
+        background-position: -200px -40px
         height: 38px
   ul
     float: left
@@ -63,5 +78,4 @@ div.login_box
       background: url(../images/user.png)
     &.password
       background: url(../images/password.png)
-
 
