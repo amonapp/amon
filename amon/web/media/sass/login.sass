@@ -6,4 +6,62 @@ body
   font-size: 62.5%
   height: 100%
   font-family: Arial, Helvetica, sans-serif
+div.center
+  margin: 0 auto
+  width: 360px
+  height: 100px
+  margin-top: 15px
+  .logo
+    margin: 0 auto
+    text-align: center
+    display: block
+  input[type=text], input[type=password] 
+    width: 265px
+    height: 40px
+    padding-left: 45px
+    border: 1px solid #D2D2D2 
+    +border-radius(6px)
+    position: relative
+  .button
+    float: right
+    background: url(../images/buttons.png)
+    border: 0px
+    text-indent: -3000px
+    cursor: pointer
+    &.login
+      width: 70px
+      height: 38px
+      background-position: -100px 0px
+      &:hover
+        background-position: -100px -40px
+        height: 38px
+  ul
+    float: left
+    li
+      float: left
+      width: 316px
+      clear: left
+      margin: 18px
+        bottom: 5px
+        top: 14px
+        right: 13px
+div.login_box
+  margin-top: 15px
+  background: url(../images/box.png)
+  +border-radius(6px)
+  border: 6px solid #F0F0F0 
+  float: left
+  padding-bottom: 10px
+  .background-label
+    width: 41px
+    height: 44px
+    float: left
+    margin-bottom: -46px
+    position: relative
+    z-index: 100
+    &.username
+      background: url(../images/user.png)
+    &.password
+      background: url(../images/password.png)
+
 
