@@ -32,7 +32,7 @@ class BaseView(tornado.web.RequestHandler):
 		self.write(_template)
 
 	def _create_session(self):
-		session_id = self.get_secure_cookie('session_cookie_name', 'session_id')
+		session_id = self.get_secure_cookie('session_id')
 
 		kw = {'security_model': [],
 				'duration': 900,
@@ -54,5 +54,12 @@ class BaseView(tornado.web.RequestHandler):
 			return old_session
 
 		return new_session	
+
+	def save_session(self):
+		if self.session is not None and self.session._delete_cookie:
+			self.clear_cookie('session_id')
+		elif self.session is not None:
+			self.session.refresh() # advance expiry time and save session
+			self.set_secure_cookie('session_id', self.session.session_id, expires=self.session.expires)
 
 

@@ -20,7 +20,6 @@ class TestCommonModel(unittest.TestCase):
 		self.model = CommonModel()
 		self.model.mongo.database = 'amon_test'
 
-
 	# TODO - save some real exceptions and check if they are properly saved
 	def test_unread(self):
 		unread = self.model.get_unread_values()

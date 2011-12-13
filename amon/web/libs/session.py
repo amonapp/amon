@@ -4,10 +4,6 @@
 Sessions module for the Tornado framework.
 Milan Cermak <milan.cermak@gmail.com> 
 
-This module implements sessions for Tornado. It can store
-session data in files or MySQL databse, Memcached, Redis
-and MongoDB.
-
 USAGE:
 ======
 
@@ -198,7 +194,7 @@ class BaseSession(collections.MutableMapping):
 		return datetime.datetime.utcnow() + self.regeneration_interval
 
 	def invalidate(self): 
-		"""Destorys the session, both server-side and client-side.
+		"""Destroys the session, both server-side and client-side.
 		As a best practice, it should be used when the user logs out of
 		the application."""
 		self.delete() # remove server-side
@@ -267,7 +263,7 @@ mongo = mongo_backend.get_collection('sessions')
 
 class MongoDBSession(BaseSession):
 	"""Class implementing the MongoDB based session storage.
-	All sessions are stored in a collection "tornado_sessions" in the db
+	All sessions are stored in a collection "sessions" in the db
 	you specify in the session_storage setting.
 
 	The session document structure is following:
@@ -284,7 +280,7 @@ class MongoDBSession(BaseSession):
 	def __init__(self, **kwargs):
 		super(MongoDBSession, self).__init__(**kwargs)
 		
-		self.db = mongo # pymongo Collection object - amon_sessions
+		self.db = mongo # pymongo Collection object - sessions
 		if not kwargs.has_key('session_id'):
 			self.save()
 
@@ -305,6 +301,7 @@ class MongoDBSession(BaseSession):
 			 'user_agent': self.user_agent}, # new document
 			upsert=True)
 		self.db.database.connection.end_request()
+		self.dirty = False
 
 	@staticmethod
 	def load(session_id):

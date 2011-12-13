@@ -15,6 +15,7 @@
 		To access the application, please create a user using the form below.	
 		</div>
 		<div class="login_box">
+			<form action="{{ base_url|url('create_user') }}" method='post'>
 			<ul>
 				<li>
 					<label for="" class='background-label username'></label>
@@ -29,7 +30,7 @@
 				</li>
 			
 			</ul>
-		
+			</form>
 		</div>
 	
 	</div>
