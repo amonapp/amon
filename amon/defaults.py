@@ -37,4 +37,4 @@ WEB_APP = {
 }
 
 ACL = config.get('acl', False)
-SECRET = config.get('secret', False)
+SECRET_KEY = config.get('secret_key', '')

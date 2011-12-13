@@ -10,22 +10,34 @@
 <body>
 	<div class="center">
 		<img class='logo' src="/media/images/logo.png" alt="" />
+		{% if message %}
+			<div class="message green">
+				{{ message }}
+			</div>
+		{% endif %}
 		<div class="login_box">
+			<form action="{{ base_url|url('login') }}" method='post'>
 			<ul>
+				{% if errors %}
+				<li>
+					<span class="error">
+						{{ errors }}
+					</span>
+				</li>
+				{% endif %}
 				<li>
 					<label for="" class='background-label username'></label>
-					<input id="" name="" type="text" placeholder='Username' />
+					<input name="username" type="text" placeholder='Username' />
 				</li>
 				<li>
 					<label for="" class='background-label password'></label>
-					<input id="" name="" type="password" placeholder='Password' />
+					<input name="password" type="password" placeholder='Password' />
 				</li>
 				<li>
 					<input type="submit" value="Login" class='button login' />
 				</li>
-			
 			</ul>
-		
+			</form>
 		</div>
 	
 	</div>

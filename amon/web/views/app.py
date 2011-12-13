@@ -11,12 +11,14 @@ from amon.web.models import (
 	exception_model,
 	log_model
 )
+from amon.web.decorators import logged_in
 
 class DashboardView(BaseView):
 
 	def initialize(self):
 		super(DashboardView, self).initialize()
 
+	@logged_in
 	def get(self):
 
 		active_process_checks = settings.PROCESS_CHECKS

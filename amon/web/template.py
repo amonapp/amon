@@ -272,6 +272,9 @@ def render(*args, **kwargs):
 		template = env.get_template(kwargs['template'])
 	else:
 		template = env.get_template('blank.html')
+	
+	# Global variables
+	env.globals['acl'] = True
 
 	return template.render(*args, **kwargs)
 

@@ -21,6 +21,10 @@
 			
 				{% endblock %}
 				</h1>
+				{% if acl == True %}
+					<a href="{{ base_url|url('logout') }}" class='button logout' title='Logout'></a>
+				{% endif %}
+				
 				{% block filter %}
 				
 				{% endblock %}

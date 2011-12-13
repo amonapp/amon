@@ -1,16 +1,15 @@
 from amon.web.views.app import DashboardView, SystemView, ProcessesView, ExceptionsView, LogsView
-from amon.web.views.auth import LoginView, CreateUserView
+from amon.web.views.auth import LoginView, CreateUserView, LogoutView
 from amon.web.settings import PROJECT_ROOT
+from amon.core import settings
 from amon.web.views.api import ApiLogs, ApiException
-import os
+import os.path
 import tornado.web
-import base64
-import uuid
 	
 app_settings = {
 	"static_path": os.path.join(PROJECT_ROOT, "media"),
 	"debug": "True",
-	"cookie_secret": base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes)  
+	"cookie_secret": settings.SECRET_KEY
 }
 
 handlers = [
@@ -22,6 +21,7 @@ handlers = [
 	(r"/logs", LogsView),
 	# Auth
 	(r"/login", LoginView),
+	(r"/logout", LogoutView),
 	(r"/create_user", CreateUserView),
 	# API
 	(r"/api/log", ApiLogs),

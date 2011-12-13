@@ -11,14 +11,27 @@ div.center
   width: 360px
   height: 100px
   margin-top: 15px
+  .error
+    float: left
+    background: #BC0000
+    margin-top: 4px
+    font-size: 1.4em
+    padding: 8px
+      top: 5px
+      bottom: 5px
+    color: white
+    +border-radius(4px)
   .message
     background: #FBEFEF
     margin-top: 15px
-    border: 6px solid #F5CFCF 
+    border: 5px solid #F5CFCF 
     padding: 10px
     font-size: 1.4em
     line-height: 1.4em
-    +border-radius(6px)
+    +border-radius(5px)
+    &.green
+      background: #F0F7E4
+      border: 5px solid  #CEDDB5 
   .logo
     margin: 0 auto
     text-align: center

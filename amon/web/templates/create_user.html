@@ -10,7 +10,7 @@
 <body>
 	<div class="center">
 		<img class='logo' src="/media/images/logo.png" alt="" />
-		<div class="message">
+		<div class="message red">
 		Amon is no longer in read-only mode.
 		To access the application, please create a user using the form below.	
 		</div>
@@ -19,11 +19,17 @@
 			<ul>
 				<li>
 					<label for="" class='background-label username'></label>
-					<input id="" name="" type="text" placeholder='Username' />
+					<input id="" name="username" type="text" placeholder='Username' value="{{ form_data.username }}" />
+					{% if errors.username %}
+						<p class="error">{{ errors.username }}</p>
+					{% endif %}
 				</li>
 				<li>
 					<label for="" class='background-label password'></label>
-					<input id="" name="" type="password" placeholder='Password' />
+					<input id="" name="password" type="password" placeholder='Password' />
+					{% if errors.password %}
+						<p class="error">{{ errors.password }}</p>
+					{% endif %}
 				</li>
 				<li>
 					<input type="submit" value="Create" class='button create' />

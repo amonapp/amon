@@ -1,5 +1,6 @@
 from amon.backends.mongodb import MongoBackend
 from pymongo import DESCENDING, ASCENDING 
+from hashlib import sha1
 
 class BaseModel(object):
 
@@ -153,9 +154,35 @@ class CommonModel(BaseModel):
 		return unread_values
 
 
+class UserModel(BaseModel):
+	
+	def __init__(self):
+		super(UserModel, self).__init__()
+		self.collection = self.mongo.get_collection('users')
+
+
+	def create_user(self, userdata):
+		userdata['password'] = sha1(userdata['password']).hexdigest()
+		self.collection.save(userdata)
+
+	def check_user(self, userdata):
+		userdata['password'] = sha1(userdata['password']).hexdigest()
+		result = self.collection.find_one({"username": userdata['username'],
+									"password": userdata['password']})
+
+
+		return result
+
+	def username_exists(self, username):
+		result = self.collection.find({"username": username}).count()
+
+		return result
+
+
 dashboard_model = DashboardModel()
 common_model = CommonModel()
 process_model = ProcessModel()
 system_model = SystemModel()
 exception_model = ExceptionModel()
 log_model = LogModel()
+user_model = UserModel()
