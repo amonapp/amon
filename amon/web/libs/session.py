@@ -135,7 +135,7 @@ class BaseSession(collections.MutableMapping):
 		return len(self.data.keys())
 
 	def _generate_session_id(cls):
-		return os.urandom(32).encode('hex') # 256 bits of entropy
+		return os.urandom(16).encode('hex') 
 
 	def _is_expired(self):
 		"""Check if the session has expired."""

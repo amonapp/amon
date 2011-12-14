@@ -232,12 +232,7 @@ def base_url():
 	host = settings.WEB_APP['host']
 	port = settings.WEB_APP['port']
 
-	# Add http if the host is an IP address
-	if not host.startswith('http'):
-		host = "http://{0}".format(host)
-
 	base_url = "{0}:{1}".format(host, port)
-
 
 	return base_url
 

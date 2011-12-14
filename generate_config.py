@@ -1,6 +1,6 @@
 import os.path
 import uuid
-from hashlib import sha1
+import base64
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 config_path =  os.path.join(ROOT, 'config', 'amon.conf')
@@ -17,7 +17,7 @@ try:
 except:
 	config = {}
 
-config['secret_key'] = sha1(uuid.uuid4().bytes + uuid.uuid4().bytes).hexdigest()
+config['secret_key'] = base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes)
 
 
 with open(generated_config_path,'w+') as f:

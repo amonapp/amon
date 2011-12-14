@@ -9,7 +9,9 @@ import tornado.web
 app_settings = {
 	"static_path": os.path.join(PROJECT_ROOT, "media"),
 	"debug": "True",
-	"cookie_secret": settings.SECRET_KEY
+	"cookie_secret": settings.SECRET_KEY,
+	"login_url" : "{0}:{1}/login".format(settings.WEB_APP['host'], settings.WEB_APP['port']),
+	"session": {"duration": 900, "regeneration_interval": 240, "domain": settings.WEB_APP['host']}
 }
 
 handlers = [

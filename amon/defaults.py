@@ -31,10 +31,18 @@ SYSTEM_CHECKS = config.get('system_checks', ['cpu', 'memory', 'disk', 'network',
 
 PROCESS_CHECKS = config.get('process_checks', [])
 
+
+host = _web_app.get('host', 'http://127.0.0.1')
+
+if not host.startswith('http'):
+	host = "http://{0}".format(host)
+
 WEB_APP = {
-	'host': _web_app.get('host', 'http://127.0.0.1'),
+	'host': host,
 	'port': _web_app.get('port', 2464)
 }
+
+
 
 ACL = config.get('acl', False)
 SECRET_KEY = config.get('secret_key', '')

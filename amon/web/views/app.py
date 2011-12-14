@@ -1,4 +1,6 @@
 from datetime import timedelta
+from tornado.web import authenticated
+
 from amon.core import settings
 from amon.web.views.base import BaseView
 from amon.web.template import render
@@ -11,14 +13,13 @@ from amon.web.models import (
 	exception_model,
 	log_model
 )
-from amon.web.decorators import logged_in
 
 class DashboardView(BaseView):
 
 	def initialize(self):
 		super(DashboardView, self).initialize()
-
-	@logged_in
+	
+	@authenticated
 	def get(self):
 
 		active_process_checks = settings.PROCESS_CHECKS
@@ -54,6 +55,7 @@ class SystemView(BaseView):
 	def initialize(self):
 		super(SystemView, self).initialize()
 
+	@authenticated
 	def get(self):
 		
 		date_from = self.get_argument('date_from', False)
@@ -127,6 +129,7 @@ class ProcessesView(BaseView):
 		super(ProcessesView, self).initialize()
 		self.current_page = 'processes'
 
+	@authenticated
 	def get(self):
 		day = timedelta(hours=24)
 		_yesterday = self.now - day
@@ -167,6 +170,7 @@ class ExceptionsView(BaseView):
 		super(ExceptionsView, self).initialize()
 		self.current_page = 'exceptions'
 
+	@authenticated
 	def get(self):
 		
 		exceptions = exception_model.get_exceptions()
@@ -186,6 +190,7 @@ class LogsView(BaseView):
 		super(LogsView, self).initialize()
 		self.current_page = 'logs'
 
+	@authenticated
 	def get(self):
 
 		logs = log_model.get_logs()
@@ -200,6 +205,7 @@ class LogsView(BaseView):
 		self.write(_template)
 
 
+	@authenticated
 	def post(self):
 		level = self.get_arguments('level[]')
 		filter = self.get_argument('filter', None)
