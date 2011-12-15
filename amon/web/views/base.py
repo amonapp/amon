@@ -1,5 +1,6 @@
 import tornado.web
 from datetime import datetime
+from os import getenv
 from amon.core import settings
 from amon.web.models import common_model
 from amon.web.libs.session import MongoDBSession
@@ -21,6 +22,11 @@ class BaseView(tornado.web.RequestHandler):
 		super(BaseView, self).initialize()
 
 	def get_current_user(self):
+		# For the testing suite
+		print getenv('AMON_ENV_HTTP_TEST')
+		if getenv('AMON_ENV_HTTP_TEST', None) == 'test':
+			return 1
+
 		acl = settings.ACL
 		if acl == 'True':
 			try:

@@ -5,7 +5,8 @@ from amon.web.models import (
 	ProcessModel,
 	LogModel,
 	ExceptionModel,
-	DashboardModel
+	DashboardModel,
+	UserModel
 )
 from nose.tools import eq_
 from time import time
@@ -13,12 +14,13 @@ from time import time
 now = int(time())
 minute_ago = (now-60)
 two_minutes_ago = (now-120)
+import os
+os.environ['AMON_ENV'] = 'test'
 
 class TestCommonModel(unittest.TestCase):
 	
 	def setUp(self):
 		self.model = CommonModel()
-		self.model.mongo.database = 'amon_test'
 
 	# TODO - save some real exceptions and check if they are properly saved
 	def test_unread(self):
@@ -35,7 +37,6 @@ class TestSystemModel(unittest.TestCase):
 
 	def setUp(self):
 		self.model = SystemModel()
-		self.model.mongo.database = 'amon_test'
 
 
 	def test_get_system_data(self):
@@ -71,7 +72,6 @@ class TestProcessModel(unittest.TestCase):
 
 	def setUp(self):
 		self.model = ProcessModel()
-		self.model.mongo.database = 'amon_test'
 
 	def test_get_process_data(self):
 		
@@ -98,7 +98,6 @@ class TestLogModel(unittest.TestCase):
 	
 	def setUp(self):
 		self.model = LogModel()
-		self.model.mongo.database = 'amon_test'
 		self.logs = self.model.mongo.get_collection('logs')
 
 
@@ -149,7 +148,6 @@ class TestExceptionModel(unittest.TestCase):
 
 	def setUp(self):
 		self.model = ExceptionModel()
-		self.model.mongo.database = 'amon_test'
 		self.exceptions = self.model.mongo.get_collection('exceptions')
 
 
@@ -171,7 +169,6 @@ class TestDashboardModel(unittest.TestCase):
 	
 	def setUp(self):
 		self.model = DashboardModel()
-		self.model.mongo.database = 'amon_test'
 
 	
 	def test_get_last_process_check(self):
@@ -207,4 +204,43 @@ class TestDashboardModel(unittest.TestCase):
 
 
 		cpu.remove()
+
+
+class TestUserModel(unittest.TestCase):
+
+	def setUp(self):
+		self.model = UserModel()
+
+
+	def test_create_user(self):
+		self.model.collection.remove()
+		self.model.create_user({'username': "test", 'password': '1234'})
+		eq_(self.model.collection.count(),1)
 	
+
+	def test_check_user(self):
+		self.model.collection.remove()
+		user_dict = {"username": "test", "password": "1234"}
+		self.model.create_user(user_dict)
+
+		result = self.model.check_user({"username": "test", "password": "1234"})
+
+		# username, pass, _id
+		eq_(len(result), 3)
+
+		result = self.model.check_user({"username": "noname","password": ""})
+
+		eq_(result, {})
+
+
+	def test_username_exists(self):
+		self.model.collection.remove()
+		
+		result = self.model.username_exists("test")
+		eq_(result, 0)
+		
+		self.model.create_user({'username': "test", 'password': '1234'})
+
+		result = self.model.username_exists("test")
+		eq_(result, 1)
+

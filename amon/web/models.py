@@ -1,11 +1,17 @@
 from amon.backends.mongodb import MongoBackend
 from pymongo import DESCENDING, ASCENDING 
 from hashlib import sha1
+from os import getenv
 
 class BaseModel(object):
 
 	def __init__(self):
 		self.mongo = MongoBackend()
+		
+		# Set in the test suite 
+		#  os.environ['AMON_ENV'] = 'test'
+		if getenv('AMON_ENV', None) == 'test':
+			self.mongo.database = 'amon_test'
 		
 
 class DashboardModel(BaseModel):

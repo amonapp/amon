@@ -24,8 +24,8 @@ class LoginView(BaseView):
 
 	def post(self):
 		form_data = {
-				"username": self.get_argument('username', None),
-				"password": self.get_argument('password', None),
+				"username": self.get_argument('username', ''),
+				"password": self.get_argument('password', ''),
 				}
 
 
@@ -76,8 +76,8 @@ class CreateUserView(BaseView):
 
 	def post(self):
 		form_data = {
-				"username": self.get_argument('username', None),
-				"password": self.get_argument('password', None),
+				"username": self.get_argument('username', ''),
+				"password": self.get_argument('password',''),
 				}
 		try:
 			valid_data = CreateUserForm.to_python(form_data)
