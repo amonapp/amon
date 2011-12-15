@@ -1,9 +1,7 @@
 from datetime import timedelta
 from tornado.web import authenticated
-
 from amon.core import settings
 from amon.web.views.base import BaseView
-from amon.web.template import render
 from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
 from amon.system.utils import get_disk_volumes, get_network_interfaces
 from amon.web.models import (
@@ -39,7 +37,7 @@ class DashboardView(BaseView):
 		last_system_check = dashboard_model.get_last_system_check(active_system_checks)
 		last_process_check = dashboard_model.get_last_process_check(active_process_checks)
 
-		_template = render(template="dashboard.html",
+		self.render("dashboard.html",
 				current_page='dashboard',
 				last_check=last_system_check,
 				process_check=last_process_check,
@@ -47,8 +45,6 @@ class DashboardView(BaseView):
 				process_check_first=process_check_first,
 				unread_values=self.unread_values
 				)
-
-		self.write(_template)
 
 class SystemView(BaseView):
 
@@ -108,7 +104,7 @@ class SystemView(BaseView):
 					if volume not in volumes:
 						volumes.append(volume)
 
-			_template = render(template='system.html',
+			self.render('system.html',
 						  current_page='system',
 						  checks=checks,
 						  network=network,
@@ -120,8 +116,6 @@ class SystemView(BaseView):
 						  first_check_date=first_check_date,
 						  unread_values=self.unread_values
 						  )
-
-			self.write(_template)
 
 class ProcessesView(BaseView):
 
@@ -152,7 +146,7 @@ class ProcessesView(BaseView):
 		process_data = process_model.get_process_data(processes, date_from, date_to)
 
 
-		_template = render(template='processes.html',
+		self.render('processes.html',
 					  current_page=self.current_page,
 					  processes=processes,
 					  process_data=process_data,
@@ -160,8 +154,6 @@ class ProcessesView(BaseView):
 					  date_to=date_to,
 					  unread_values=self.unread_values
 					 )
-
-		self.write(_template)
 
 
 class ExceptionsView(BaseView):
@@ -176,13 +168,11 @@ class ExceptionsView(BaseView):
 		exceptions = exception_model.get_exceptions()
 		exception_model.mark_as_read()
 
-		_template = render(template='exceptions.html',
+		self.render('exceptions.html',
 					  exceptions=exceptions,
 					  current_page=self.current_page,
 					  unread_values=self.unread_values
 					  )
-
-		self.write(_template)
 
 class LogsView(BaseView):
 
@@ -196,13 +186,11 @@ class LogsView(BaseView):
 		logs = log_model.get_logs()
 		log_model.mark_as_read()
 
-		_template =  render(template='logs.html',
+		self.render('logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
 					 unread_values=self.unread_values,
 					 )
-		
-		self.write(_template)
 
 
 	@authenticated
@@ -212,7 +200,5 @@ class LogsView(BaseView):
 
 		logs = log_model.filtered_logs(level, filter)
 	
-		_template = render(template='partials/logs_filter.html', 
-				logs=logs)
+		self.render('partials/logs_filter.html', logs=logs)
 
-		self.write(_template)

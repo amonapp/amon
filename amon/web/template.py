@@ -240,7 +240,7 @@ def base_url():
 def format_float(value):
 	return format(float(value), "g")
 
-def render(*args, **kwargs):
+def render(template, *args, **kwargs):
 	
 	env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
 	
@@ -263,13 +263,13 @@ def render(*args, **kwargs):
 	env.filters['progress_width_percent'] = progress_width_percent
 	env.filters['format_float'] = format_float
 
-	if 'template' in kwargs:
-		template = env.get_template(kwargs['template'])
-	else:
+	try:
+		template = env.get_template(template)
+	except:
 		template = env.get_template('blank.html')
 	
 	# Global variables
-	env.globals['acl'] = True
+	env.globals['acl'] = settings.ACL
 
 	return template.render(*args, **kwargs)
 

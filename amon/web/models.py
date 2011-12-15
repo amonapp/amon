@@ -171,7 +171,11 @@ class UserModel(BaseModel):
 									"password": userdata['password']})
 
 
-		return result
+		return result if result else {}
+
+	
+	def count_users(self):
+		 return self.collection.count()	
 
 	def username_exists(self, username):
 		result = self.collection.find({"username": username}).count()

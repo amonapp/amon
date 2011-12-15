@@ -1,5 +1,4 @@
 from amon.web.views.base import BaseView
-from amon.web.template import render
 from amon.web.forms import CreateUserForm
 from amon.web.models import user_model
 from formencode.validators import Invalid as InvalidForm
@@ -14,15 +13,13 @@ class LoginView(BaseView):
 	def get(self):
 		message =  self.session.get('message',None)
 		errors =  self.session.get('errors',None)
+		
+		try:
+			del self.session['errors']
+		except:
+			pass
 
-		_template = render(template='login.html',
-						message=message,
-						errors=errors)
-
-		self.delete_key(self.session.get('errors', None))
-		self.delete_key(self.session.get('form_data', None))
-
-		self.write(_template)
+		self.render('login.html', message=message, errors=errors)
 
 
 	def post(self):
@@ -50,7 +47,11 @@ class LogoutView(BaseView):
 
 
 	def get(self):
-		self.delete_key(self.session.get('user', None))
+		try:
+			del self.session['user']
+		except:
+			pass
+		
 		self.redirect('/login')
 
 class CreateUserView(BaseView):
@@ -60,16 +61,18 @@ class CreateUserView(BaseView):
 
 
 	def get(self):
+
 		errors = self.session.get('errors', None)
 		form_data = self.session.get('form_data', None)
 
+		# This page is active only when there are no users in the system
+		users = user_model.count_users()
 
-
-		_template = render(template='create_user.html',
-				errors=errors,
-				form_data=form_data)
-
-		self.write(_template)
+		if users == 0:
+			self.render('create_user.html', errors=errors, form_data=form_data)
+		else:
+			self.redirect('/login')
+		
 
 	def post(self):
 		form_data = {
@@ -81,9 +84,11 @@ class CreateUserView(BaseView):
 			user_model.create_user(valid_data)
 			self.session['message'] = 'Account successfuly created. You can now log in'
 
-
-			self.delete_key(self.session.get('errors', None))
-			self.delete_key(self.session.get('form_data', None))
+			try:
+				del self.session['errors']
+				del self.session['form_data']
+			except:
+				pass
 
 			self.redirect('/login')
 
