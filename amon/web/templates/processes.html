@@ -53,13 +53,13 @@ Processes check
 	
 	{% for process in process_data  %}
 	{% set sanitized_process = process|clean_slashes %}
-	var {{ sanitized_process }}_cpu = []
-	var {{ sanitized_process }}_memory = []
-		{% for data in process_data[process]  %}
-		{{ sanitized_process }}_cpu.push([{{ data.time * 1000 }}, {{ data.cpu }}])
-		{{ sanitized_process }}_memory.push([{{ data.time * 1000 }}, {{ data.memory }}])
+	var {{ sanitized_process }}_cpu = [ {% for data in process_data[process].clone()  %}
+		[{{ data.time * 1000 }}, {{ data.cpu }}],
+		{% endfor %}]
 
-		{% endfor %}
+	var {{ sanitized_process }}_memory = [{% for data in process_data[process]  %}
+		[{{ data.time * 1000 }}, {{ data.memory }}],
+		{% endfor %}]
 
 
     $.plot($("#{{ sanitized_process }}_cpu"),

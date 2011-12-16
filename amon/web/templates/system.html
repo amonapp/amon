@@ -131,12 +131,13 @@ $(function ()
 
 	var xaxis =  { mode: 'time',  timeformat: "%d/%m %H:%M" };
 
-	var memory_free = []
-	var memory_total = []
-	{% for m in checks.memory %}
-		memory_free.push([{{ m.time * 1000 }}, {% if not m.last %} {{ m.memfree }} {% else %} 0 {% endif %} ])
-		memory_total.push([{{ m.time * 1000 }}, {% if not m.last %} {{ m.memtotal }} {% else %} 0 {% endif %} ])
-	{% endfor %}
+	var memory_free = [{% for m in checks.memory.clone() %}
+	[{{ m.time * 1000 }}, {% if not m.last %} {{ m.memfree }} {% else %} 0 {% endif %}],
+	{% endfor %} ]
+	var memory_total = [{% for m in checks.memory.clone() %}
+	[{{ m.time * 1000 }}, {% if not m.last %} {{ m.memtotal }} {% else %} 0 {% endif %}],
+	{% endfor %} ]
+	
 	var memory_legend = $('#memory_legend');
 
     $.plot($("#memory"),
@@ -149,14 +150,17 @@ $(function ()
 			});
 
 
-	var loadavg_minute = []
-	var loadavg_five_minutes = []
-	var loadavg_fifteen_minutes = []
-	{% for l in checks.loadavg  %}
-		loadavg_minute.push([{{ l.time * 1000 }}, {% if not l.last %} {{ l.minute }} {% else %} 0 {% endif %} ])
-		loadavg_five_minutes.push([{{ l.time * 1000 }}, {% if not l.last %} {{ l.five_minutes }} {% else %} 0 {% endif %}])
-		loadavg_fifteen_minutes.push([{{ l.time * 1000 }}, {% if not l.last %} {{ l.fifteen_minutes }} {% else %} 0 {% endif %} ])
-	{% endfor %}
+	var loadavg_minute = [{% for l in checks.loadavg.clone() %}
+	[{{ l.time * 1000 }}, {% if not l.last %} {{ l.minute }} {% else %} 0 {% endif %} ],
+	{% endfor %} ]
+
+	var loadavg_five_minutes = [{% for l in checks.loadavg.clone() %}
+	[{{ l.time * 1000 }}, {% if not l.last %} {{ l.five_minutes }} {% else %} 0 {% endif %}],
+	{% endfor %}]
+
+	var loadavg_fifteen_minutes = [{% for l in checks.loadavg  %}
+		[{{ l.time * 1000 }}, {% if not l.last %} {{ l.fifteen_minutes }} {% else %} 0 {% endif %}],
+	{% endfor %}]
 	
 	
 	var loadavg_legend = $('#loadavg_legend');
@@ -173,14 +177,16 @@ $(function ()
 			});
 
 
-	var cpu_idle = []
-	var cpu_user = []
-	var cpu_system = []
-	{% for c in checks.cpu  %}
-		cpu_idle.push([{{ c.time * 1000 }}, {% if not c.last %} {{ c.idle }} {% else %} 0 {% endif %} ])
-		cpu_user.push([{{ c.time * 1000 }}, {% if not c.last %} {{ c.user }} {% else %} 0 {% endif %} ])
-		cpu_system.push([{{ c.time * 1000 }}, {% if not c.last %} {{ c.system }} {% else %} 0 {% endif %} ])
-	{% endfor %}
+	var cpu_idle = [{% for c in checks.cpu.clone()  %}
+	[{{ c.time * 1000 }}, {% if not c.last %} {{ c.idle }} {% else %} 0 {% endif %} ],
+	{% endfor %}]
+
+	var cpu_user = [{% for c in checks.cpu.clone()  %}
+	[{{ c.time * 1000 }}, {% if not c.last %} {{ c.user }} {% else %} 0 {% endif %} ],
+	{% endfor %}]
+	var cpu_system = [{% for c in checks.cpu  %}
+	[{{ c.time * 1000 }}, {% if not c.last %} {{ c.system }} {% else %} 0 {% endif %} ],
+	{% endfor %}]
 	var cpu_legend = $('#cpu_legend');
 
     $.plot($("#cpu"),
