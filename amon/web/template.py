@@ -4,6 +4,10 @@ from amon.core import settings
 from amon.web.settings import TEMPLATES_DIR
 from datetime import datetime, time
 import re
+try:
+	import json
+except:
+	import simplejson as json
 
 def age(from_date, since_date = None, target_tz=None, include_seconds=False):
 	'''
@@ -175,7 +179,7 @@ class RecursiveDict(object):
 	def __init__(self):
 		self.html = ''
 
-	def walk_dict(self, d,depth=0):
+	def walk_dict_exception(self, d,depth=0):
 		for k,v in sorted(d.items(),key=lambda x: x[0]):
 			if isinstance(v, dict):
 				# Continue the recursion only if the dictionary is not empty
@@ -184,17 +188,16 @@ class RecursiveDict(object):
 					# strip the mongo variable
 					if k != 'data':
 						self.html += '<li><span class="key">{0}</span>'.format(k)
-					self.walk_dict(v,depth+1)
+					self.walk_dict_exception(v,depth+1)
 					self.html += '</li>'
 					self.html += '</ul>'
 			else:
 				if v and k != 'occurrence':
 					self.html += '<li><span class="key_inner">{0}:</span><span class="value_inner">{1}</span></li>'.format(k,v)
 
-
 def exceptions_dict(dict):
 	dict_recursion = RecursiveDict()
-	dict_recursion.walk_dict(dict)
+	dict_recursion.walk_dict_exception(dict)
 	
 	return dict_recursion.html
 
@@ -218,12 +221,8 @@ def url(*args):
 
 
 def beautify_json(value):
-	# bold the keys
 	if isinstance(value, dict):
-		value_with_bold_keys = ''
-		for k,v in value.iteritems():
-			value_with_bold_keys += "<strong>{0}</strong>: {1}  , ".format(k,v)
-		return value_with_bold_keys
+		return json.dumps(value) # Remove the unicode symbol
 	else:
 		return value
 
