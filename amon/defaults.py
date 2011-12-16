@@ -42,7 +42,5 @@ WEB_APP = {
 	'port': _web_app.get('port', 2464)
 }
 
-
-
-ACL = config.get('acl', False)
-SECRET_KEY = config.get('secret_key', '')
+ACL = config.get('acl', "False") # Expects string
+SECRET_KEY = config.get('secret_key', 'TGJKhSSeZaPZr24W6GlByAaLVe0VKvg8qs+8O7yQ=') # Don't break the app if 
