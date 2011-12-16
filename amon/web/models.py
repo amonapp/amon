@@ -112,6 +112,8 @@ class ExceptionModel(BaseModel):
 
 		return exceptions
 
+	def delete_all(self):
+		self.collection.remove()
 
 class LogModel(BaseModel):
 	
@@ -137,6 +139,9 @@ class LogModel(BaseModel):
 		logs = self.collection.find(query).sort('time', DESCENDING)
 
 		return logs
+		
+	def delete_all(self):
+		self.collection.remove()
 
 
 class UnreadModel(BaseModel):

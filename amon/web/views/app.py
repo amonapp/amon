@@ -44,7 +44,6 @@ class DashboardView(BaseView):
 				process_check=last_process_check,
 				system_check_first=system_check_first,
 				process_check_first=process_check_first,
-				unread_values=self.unread_values
 				)
 
 class SystemView(BaseView):
@@ -115,7 +114,6 @@ class SystemView(BaseView):
 						  date_from=date_from,
 						  date_to=date_to,
 						  first_check_date=first_check_date,
-						  unread_values=self.unread_values
 						  )
 
 class ProcessesView(BaseView):
@@ -153,7 +151,6 @@ class ProcessesView(BaseView):
 					  process_data=process_data,
 					  date_from=date_from,
 					  date_to=date_to,
-					  unread_values=self.unread_values
 					 )
 
 
@@ -172,7 +169,6 @@ class ExceptionsView(BaseView):
 		self.render('exceptions.html',
 					  exceptions=exceptions,
 					  current_page=self.current_page,
-					  unread_values=self.unread_values
 					  )
 
 class LogsView(BaseView):
@@ -190,7 +186,6 @@ class LogsView(BaseView):
 		self.render('logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
-					 unread_values=self.unread_values,
 					 )
 
 
@@ -202,4 +197,38 @@ class LogsView(BaseView):
 		logs = log_model.filtered_logs(level, filter)
 	
 		self.render('partials/logs_filter.html', logs=logs)
+
+
+class SettingsView(BaseView):
+
+	def initialize(self):
+		super(SettingsView, self).initialize()
+		self.current_page = 'settings'
+
+	@authenticated
+	def get(self, action=None):
+		
+		message = self.session.get('message', '')
+		
+		try:
+			del self.session['message']
+		except:
+			pass
+
+		if action != None:
+			if action == 'delete_exceptions':
+				exception_model.delete_all()
+				self.session['message'] = 'All Exceptions deleted'
+				self.redirect('/settings')
+
+			if action == 'delete_logs':
+				log_model.delete_all()
+				self.session['message'] = 'All Logs deleted'
+				self.redirect('/settings')
+		else:
+			self.render('settings.html',
+					 current_page=self.current_page,
+					 message=message
+					 )
+
 

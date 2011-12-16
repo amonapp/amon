@@ -3,6 +3,12 @@
 {% block title %}Dashboard{% endblock %}
 {% block breadcrumb %}Dashboard {% endblock %}
 {% block content %}
+{% if acl == "False" %}
+<div class="message red">
+	Amon is in read-only mode. Check this <a href='http://amon.cx/guide/modes'>guide</a> if you want to enable authentication and settings.
+</div>
+{% endif %}
+
 {% if last_check %}
 <h2>System</h2>
 <ul class='stats_bars'>

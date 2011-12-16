@@ -49,17 +49,22 @@
 				</li>
 				<li>
 					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/logs">
-						{% if unread_values.logs and current_page != 'logs' %}
-							<span class="unread">{{ unread_values.logs }}</span>
+						{% if app.unread_values.logs and current_page != 'logs' %}
+							<span class="unread">{{ app.unread_values.logs }}</span>
 						{% endif %}
 					Logs</a>
 				</li>
 				<li>
 					<a class='top {% if current_page=='exceptions' %}active{% endif %}' href="/exceptions">
-					{% if unread_values.exceptions and current_page != 'exceptions' %}
-						<span class="unread">{{ unread_values.exceptions }}</span>{% endif %}
+					{% if app.unread_values.exceptions and current_page != 'exceptions' %}
+						<span class="unread">{{ app.unread_values.exceptions }}</span>{% endif %}
 					Exceptions</a>
 				</li>
+				{% if acl == "True" and app.user %}
+				<li>
+					<a class='top {% if current_page=='settings' %}active{% endif %}' href="/settings">Settings</a>
+				</li>
+				{% endif %}
 			</ul>
 	    </div> 
 </div>

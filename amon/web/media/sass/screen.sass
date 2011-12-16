@@ -238,6 +238,7 @@ input[type=text]
   width: 100%
   margin-top: 25px
   float: left
+  margin-bottom: 6px
   li
     float: left
     font-size: 1.4em
@@ -274,27 +275,31 @@ input[type=text]
       input[type=checkbox]
         display: none
       &.notset
-        border: 1px solid #F0F0F0  
+        border: 3px solid #F0F0F0  
         color: #7E8285
         &:hover, &.active
           background: #7E8285
+          border: 3px solid #7E8285  
           color: white
       &.info
-        border: 1px solid #DEECC5
+        border: 3px solid #DEECC5
         color: #7AB317
         &:hover, &.active
+          border: 3px solid #7AB317
           background: #7AB317
           color: white
       &.warning
-        border: 1px solid #EEBFBF 
+        border: 3px solid #EEBFBF 
         color: #BC0000 
         &:hover, &.active
+          border: 3px solid #BC0000
           background: #BC0000 
           color: white
       &.debug
-        border: 1px solid #FDCB34
+        border: 3px solid #FDCB34
         color: #FDCB34 
         &:hover, &.active
+          border: 3px solid #FDCB34
           background: #FDCB34 
           color: white
 
@@ -313,7 +318,7 @@ $log_width: 800px
       width: $log_width
       height: 30px
       background: #FBFBFB
-      border: 1px solid #F0F0F0
+      border: 3px solid #F0F0F0
       +border-radius(6px)
     span.date
       color: #858585
@@ -568,9 +573,85 @@ ul.options_list
     float: left
     +border-radius(6px)
     &.delete
-      background: #EEBFBF 
+      background: #FBEFEF 
+      border: 3px solid #F5CFCF 
       color: #BC0000 
       &:hover
-        color: #EEBFBF 
+        color: white 
         background: #BC0000 
+        border: 3px solid #9B0000 
+// Messages
+.message
+  background: #FBEFEF
+  float: left
+  clear: left
+  margin-left: 20px
+  width: $body_width - 20px
+  margin-top: 15px
+  border: 5px solid #F5CFCF 
+  padding: 10px
+  font-size: 1.4em
+  line-height: 1.4em
+  +border-radius(5px)
+  a
+    color: black
+  &.green
+    background: #F0F7E4
+    border: 5px solid  #CEDDB5 
+// Reveal plugin
+.reveal-modal-bg  
+  position: fixed 
+  height: 100%
+  width: 100%
+  background: #000
+  background: rgba(0,0,0,0.1)
+  z-index: 100
+  display: none
+  top: 0
+  left: 0 
+.reveal-modal 
+  visibility: hidden
+  top: 100px 
+  left: 50%
+  margin-left: -300px
+  width: 520px
+  background: white
+  border: 5px solid #D2D2D2   
+  position: absolute
+  z-index: 101
+  padding: 30px 40px 34px
+  +border-radius(6px)
+  .close-reveal-modal
+    &.top
+      font-size: 22px
+      line-height: 0.5
+      position: absolute
+      top: 8px
+      right: 11px
+      color: #aaa
+      font-weight: bold
+      cursor: pointer
+  h1
+    font-size: 2.8em
+    margin-bottom: 10px
+  p
+    float: left
+    font-size: 1.4em
+  ul
+    float: left
+    margin-top: 20px
+    clear: left
+    li
+      float: left
+      font-size: 1.4em
+      margin-right: 15px
+      a
+        color: red
+        text-decoration: underline
+        &.cancel
+          color: #747474 
+          cursor: pointer
+
+		 
+
 

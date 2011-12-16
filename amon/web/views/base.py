@@ -12,13 +12,15 @@ class BaseView(tornado.web.RequestHandler):
 		self.session = self._create_session()
 		self.now = datetime.now()
 
+		# Unread logs and exceptions -> in the sidebar
+		unread_values = unread_model.get_unread_values()		
+		
 		# Template variables. Passing that dictionary to Jinja
 		self.template_vars = {
-			"user": self.current_user
+			"user": self.current_user,
+			"unread_values": unread_values
 		}
 
-		# Unread logs and exceptions -> in the sidebar
-		self.unread_values = unread_model.get_unread_values()		
 		super(BaseView, self).initialize()
 
 	def get_current_user(self):
@@ -33,7 +35,19 @@ class BaseView(tornado.web.RequestHandler):
 			except KeyError:
 				return None
 		else:
-			return 1
+			# Delete the cookie with user data, so the next time acl is set to true it will 
+			# redirect to the login page
+			try:
+				del self.session['user']
+			except:
+				pass
+
+			# Check is the page is in the list with pages that a read-only by default
+			list = ['/', '/exceptions', '/logs', '/system', '/processes']
+			if self.request.uri in list:
+				return 1
+			else:
+				 return None
 
 	def write_error(self, status_code, **kwargs):
 		error_trace = None

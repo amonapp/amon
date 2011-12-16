@@ -12,20 +12,22 @@ class LoginView(BaseView):
 
 	def get(self):
 
-		# Redirect if there are not users
+		# Redirect if there are no users in the database
 		users = user_model.count_users()
 		if users == 0:
 			self.redirect('/create_user')
+		else:
+			message =  self.session.get('message',None)
+			errors =  self.session.get('errors',None)
 
-		message =  self.session.get('message',None)
-		errors =  self.session.get('errors',None)
-		
-		try:
-			del self.session['errors']
-		except:
-			pass
+			
+			try:
+				del self.session['errors']
+				del self.session['message']
+			except:
+				pass
 
-		self.render('login.html', message=message, errors=errors)
+			self.render('login.html', message=message, errors=errors)
 
 
 	def post(self):

@@ -1,4 +1,10 @@
-from amon.web.views.app import DashboardView, SystemView, ProcessesView, ExceptionsView, LogsView
+from amon.web.views.app import(
+		DashboardView,
+		SystemView,
+		ProcessesView,
+		ExceptionsView,
+		LogsView,
+		SettingsView)
 from amon.web.views.auth import LoginView, CreateUserView, LogoutView
 from amon.web.settings import PROJECT_ROOT
 from amon.core import settings
@@ -21,6 +27,8 @@ handlers = [
 	(r"/processes", ProcessesView),
 	(r"/exceptions", ExceptionsView),
 	(r"/logs", LogsView),
+	(r"^/settings", SettingsView),
+	(r"^/settings/(?P<action>\w+)$", SettingsView),
 	# Auth
 	(r"/login", LoginView),
 	(r"/logout", LogoutView),
