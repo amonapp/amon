@@ -1,12 +1,12 @@
 import unittest
 from amon.web.models import (
-	CommonModel, 
 	SystemModel,
 	ProcessModel,
 	LogModel,
 	ExceptionModel,
 	DashboardModel,
-	UserModel
+	UserModel,
+	UnreadModel
 )
 from nose.tools import eq_
 from time import time
@@ -15,15 +15,15 @@ now = int(time())
 minute_ago = (now-60)
 two_minutes_ago = (now-120)
 import os
-os.environ['AMON_ENV'] = 'test'
+os.environ['AMON_ENV'] = 'test' # Switches the database to amon_test.
 
-class TestCommonModel(unittest.TestCase):
+class TestUnreadModel(unittest.TestCase):
 	
 	def setUp(self):
-		self.model = CommonModel()
+		self.model = UnreadModel()
 
-	# TODO - save some real exceptions and check if they are properly saved
 	def test_unread(self):
+		self.model.collection.remove()
 		unread = self.model.get_unread_values()
 		
 		eq_(1,unread['id'])
@@ -31,6 +31,26 @@ class TestCommonModel(unittest.TestCase):
 		# Check if there is a log and exception field
 		eq_(True, unread.has_key('logs'))
 		eq_(True, unread.has_key('exceptions'))
+
+	
+	def test_mark_logs_as_read(self):
+		self.model.get_unread_values() # It will create the record if it doesn't exist
+		self.model.collection.update({"id": 1}, {"$inc": {"logs": 1}})
+
+		self.model.mark_logs_as_read()
+		
+		result = self.model.get_unread_values()
+		eq_(result['logs'], 0)
+
+	def test_mark_exceptions_as_read(self):
+		self.model.get_unread_values() # It will create the record if it doesn't exist
+		self.model.collection.update({"id": 1}, {"$inc": {"exceptions": 1}})
+
+		self.model.mark_exceptions_as_read()
+		
+		result = self.model.get_unread_values()
+		eq_(result['exceptions'], 0)
+		
 
 class TestSystemModel(unittest.TestCase):
 
@@ -148,20 +168,19 @@ class TestExceptionModel(unittest.TestCase):
 
 	def setUp(self):
 		self.model = ExceptionModel()
-		self.exceptions = self.model.mongo.get_collection('exceptions')
 
 
 	def test_get_exceptions(self):
-		self.exceptions.remove()
-		self.exceptions.insert({"exception_class" : "test", "message": "test", "last_occurrence": two_minutes_ago})
-		self.exceptions.insert({"exception_class" : "test", "message": "test", "last_occurrence": minute_ago})
+		self.model.collection.remove()
+		self.model.collection.insert({"exception_class" : "test", "message": "test", "last_occurrence": two_minutes_ago})
+		self.model.collection.insert({"exception_class" : "test", "message": "test", "last_occurrence": minute_ago})
 
 		result = self.model.get_exceptions()
 		eq_(result.count(), 2)
 		
 		eq_(result[0]['last_occurrence'], minute_ago)
 		
-		self.exceptions.remove()
+		self.model.collection.remove()
 
 
 class TestDashboardModel(unittest.TestCase):

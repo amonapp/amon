@@ -2,7 +2,7 @@ import tornado.web
 from datetime import datetime
 from os import getenv
 from amon.core import settings
-from amon.web.models import common_model
+from amon.web.models import unread_model
 from amon.web.libs.session import MongoDBSession
 from amon.web.template import render as jinja_render
 
@@ -18,12 +18,11 @@ class BaseView(tornado.web.RequestHandler):
 		}
 
 		# Unread logs and exceptions -> in the sidebar
-		self.unread_values = common_model.get_unread_values()		
+		self.unread_values = unread_model.get_unread_values()		
 		super(BaseView, self).initialize()
 
 	def get_current_user(self):
 		# For the testing suite
-		print getenv('AMON_ENV_HTTP_TEST')
 		if getenv('AMON_ENV_HTTP_TEST', None) == 'test':
 			return 1
 

@@ -105,26 +105,22 @@ class ExceptionModel(BaseModel):
 	
 	def __init__(self):
 		super(ExceptionModel, self).__init__()
-		self.row = self.mongo.get_collection('exceptions') 
+		self.collection = self.mongo.get_collection('exceptions') 
 
 	def get_exceptions(self):
-		exceptions = self.row.find().sort('last_occurrence', DESCENDING)
+		exceptions = self.collection.find().sort('last_occurrence', DESCENDING)
 
 		return exceptions
-
-	def mark_as_read(self):
-		unread_collection = self.mongo.get_collection('unread')
-		unread_collection.update({"id": 1}, {"$set": {"exceptions": 0}})
 
 
 class LogModel(BaseModel):
 	
 	def __init__(self):
 		super(LogModel, self).__init__()
-		self.row = self.mongo.get_collection('logs') 
+		self.collection = self.mongo.get_collection('logs') 
 
 	def get_logs(self):
-		logs = self.row.find().sort('time', DESCENDING)
+		logs = self.collection.find().sort('time', DESCENDING)
 
 		return logs
 
@@ -138,25 +134,32 @@ class LogModel(BaseModel):
 		if filter:
 			query['_searchable'] = { "$regex": str(filter), "$options": 'i'}
 
-		logs = self.row.find(query).sort('time', DESCENDING)
+		logs = self.collection.find(query).sort('time', DESCENDING)
 
 		return logs
 
-	def mark_as_read(self):
-		unread_collection = self.mongo.get_collection('unread')
-		unread_collection.update({"id": 1}, {"$set": {"logs": 0}})
 
-
-class CommonModel(BaseModel):
+class UnreadModel(BaseModel):
 
 	def __init__(self):
-		super(CommonModel, self).__init__()
+		super(UnreadModel, self).__init__()
+		self.collection = self.mongo.get_collection('unread')
 
+	def mark_logs_as_read(self):
+		self.collection.update({"id": 1}, {"$set": {"logs": 0}})
+
+	def mark_exceptions_as_read(self):
+		self.collection.update({"id": 1}, {"$set": {"exceptions": 0}})
 
 	def get_unread_values(self):
-		unread_collection = self.mongo.get_collection('unread')
-		unread_values = unread_collection.find_one()
 
+		record_exists = self.collection.count()
+
+		if record_exists == 0:
+			self.collection.insert({'id':1, 'exceptions': 0, 'logs': 0})
+
+		unread_values = self.collection.find_one()
+		
 		return unread_values
 
 
@@ -190,9 +193,9 @@ class UserModel(BaseModel):
 
 
 dashboard_model = DashboardModel()
-common_model = CommonModel()
 process_model = ProcessModel()
 system_model = SystemModel()
 exception_model = ExceptionModel()
 log_model = LogModel()
 user_model = UserModel()
+unread_model = UnreadModel()

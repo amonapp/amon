@@ -9,7 +9,8 @@ from amon.web.models import (
 	system_model,
 	process_model,
 	exception_model,
-	log_model
+	log_model,
+	unread_model
 )
 
 class DashboardView(BaseView):
@@ -166,7 +167,7 @@ class ExceptionsView(BaseView):
 	def get(self):
 		
 		exceptions = exception_model.get_exceptions()
-		exception_model.mark_as_read()
+		unread_model.mark_exceptions_as_read()
 
 		self.render('exceptions.html',
 					  exceptions=exceptions,
@@ -184,7 +185,7 @@ class LogsView(BaseView):
 	def get(self):
 
 		logs = log_model.get_logs()
-		log_model.mark_as_read()
+		unread_model.mark_logs_as_read()
 
 		self.render('logs.html',
 					 current_page=self.current_page,
