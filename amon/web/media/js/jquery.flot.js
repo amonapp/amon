@@ -124,7 +124,7 @@
                     tickColor: '#eee', // color for the ticks, e.g. "rgba(0,0,0,0.15)"
                     labelMargin: 10, // in pixels
                     axisMargin: 8, // in pixels
-                    borderWidth: 1, // in pixels
+                    borderWidth: 3, // in pixels
                     minBorderMargin: null, // in pixels, null means taken from points radius
                     markings: null, // array of ranges or fn: axes -> array of ranges
                     markingsColor: "#f4f4f4",

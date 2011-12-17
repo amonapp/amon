@@ -4,9 +4,7 @@
 	<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
 	<span class='level {{ log.level }}'>{{ log.level }}</span>
 </div>
-<p>
-	{{ log.message|beautify_json }}
-</p>
+<pre class='log_content'><code>{{ log.message|beautify_json }}</code></pre>
 </li>
 {% endfor %}
 

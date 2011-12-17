@@ -1,5 +1,6 @@
 @import "compass/reset"
 @import "compass/css3"
+$body_width: 800px
 html
   height: 100%
 body
@@ -33,6 +34,18 @@ body
         top: 20px
         left: 20px
         bottom: 20px
+    .button
+      background: url(../images/buttons.png)
+      border: 0px
+      text-indent: -3000px
+      &.logout
+        margin-top: 20px
+        float: right
+        width: 34px
+        height: 34px
+        background-position: -300px 0px
+        &:hover
+          background-position: -300px -34px
   // Used in charts
   h2
     float: left
@@ -52,49 +65,6 @@ body
       left: 0px
       top: 15px
       bottom: 5px
-  table.info
-    float: left
-    width: 800px
-    clear: left
-    margin-left: 30px
-    td
-    .thead
-      background: url(../images/table_heading.png) repeat-x 
-      td
-        font-size: 1.4em
-        color:  #b4b4b4
-        padding:
-          top: 10px
-          bottom: 15px
-        &.status
-          padding-left: 10px
-    .tbody
-      margin-top: 20px
-      &.odd
-        background: #F1F1F0 
-      td
-        margin: 10px
-        padding: 8px
-          left: 0px
-        font-size: 1.4em
-        color: #656565 
-  .status
-    width: 10px
-    span
-      width: 18px
-      height: 18px
-      float: left
-      margin-left: 20px
-      background: url(../images/status_icons.png) no-repeat
-    .ok
-      background-position: 0px -36px
-    .warning
-      background-position: 0px -18px
-  .overview
-    width: 80px
-    font-weight: bold
-  .check
-    width: 150px
 .left
   float: left
   width: 159px
@@ -145,7 +115,6 @@ body
         &:hover, &.active
           font-weight: bold
           background: #F0F0F0 
-        
     ul
       float: left
       li
@@ -225,13 +194,32 @@ ul.tabs
   float: left
   li
     float: left
-    margin-right: 20px
+    margin-right: 18px
+    .button
+      background: url(../images/buttons.png)
+      border: 0px
+      text-indent: -3000px
+      cursor: pointer
+      &.update
+        width: 86px
+        height: 38px
+        &:hover
+          background-position: 0px -38px
+          height: 38px
     &:last-child
       margin-right: 0px
+    &.with_button
+      margin-top: 25px
     label
       float: left
       font-size: 1.6em
       margin-bottom: 8px
+div.input_background
+  background: #FAFAFA 
+  padding: 4px
+  float: left
+  clear: left
+  +border-radius(6px)
 input[type=text]
   clear: both
   float: left
@@ -244,37 +232,21 @@ input[type=text]
   color: #727272 
   &:focus
     border: 1px solid #7AB317 
-    +box-shadow(#DEECC5 0px 0px 6px) 
-input[type=submit]
-  margin-top: 22px
-  background: #DEECC5 
-  border: 1px solid white
-  font-weight: bold
-  height: 37px
-  padding-bottom: 5px
-  padding-left: 18px
-  padding-right: 18px
-  cursor: pointer
-  color: #7AB317  
-  float: left
-  +border-radius(6px)
-  &:hover
-    background: #7AB317 
-    color: white
-    border: 1px solid #7AB317 
-// Logs
+    +box-shadow(#DEECC5 0px 0px 4px) 
+  // Logs
 .logs_filter
+  width: 100%
   margin-top: 25px
-  float: right
+  float: left
+  margin-bottom: 6px
   li
     float: left
     font-size: 1.4em
-    margin-left: 15px
+    margin-left: 20px
     line-height: 1.6em
-    input[type=checkbox]
-      margin-top: 10px
-      margin-right: 5px
-      float: left
+    &.search
+      float: right
+      margin-top: -5px
     span
       margin-top: 5px
       float: left
@@ -287,41 +259,47 @@ input[type=submit]
     span.warning
       color: #FF0000 
     input[type=text]
-      width: 150px
+      width: 350px
+      float: right
       font-size: 1em
     a.button
       border: 1px solid white
       padding-bottom: 5px
-      padding-left: 10px
-      padding-right: 10px
+      padding-left: 15px
+      padding-right: 15px
       color: #7AB317  
       float: left
       outline: none
+      text-decoration: none
       +border-radius(6px)
       input[type=checkbox]
         display: none
       &.notset
-        border: 1px solid #F0F0F0  
+        border: 3px solid #F0F0F0  
         color: #7E8285
         &:hover, &.active
           background: #7E8285
+          border: 3px solid #7E8285  
           color: white
       &.info
-        border: 1px solid #DEECC5
+        border: 3px solid #DEECC5
         color: #7AB317
         &:hover, &.active
+          border: 3px solid #7AB317
           background: #7AB317
           color: white
       &.warning
-        border: 1px solid #EEBFBF 
+        border: 3px solid #EEBFBF 
         color: #BC0000 
         &:hover, &.active
+          border: 3px solid #BC0000
           background: #BC0000 
           color: white
       &.debug
-        border: 1px solid #FDCB34
+        border: 3px solid #FDCB34
         color: #FDCB34 
         &:hover, &.active
+          border: 3px solid #FDCB34
           background: #FDCB34 
           color: white
 
@@ -331,7 +309,7 @@ $log_width: 800px
   margin: 20px
   width: $log_width
   li
-    padding-bottom: 40px
+    padding-bottom: 20px
     float: left
     clear: left
     width: $log_width
@@ -340,7 +318,7 @@ $log_width: 800px
       width: $log_width
       height: 30px
       background: #FBFBFB
-      border: 1px solid #F0F0F0
+      border: 3px solid #F0F0F0
       +border-radius(6px)
     span.date
       color: #858585
@@ -349,13 +327,19 @@ $log_width: 800px
       margin:
         top: 9px
         left: 8px
-    p
+    pre.log_content
       font-size: 1.4em
+      line-height: 1.4em
       float: left
       clear: left
       padding-top: 10px
-      strong
-        font-weight: bold
+      width: $log_width
+      display: block
+      code
+        word-wrap: normal
+        white-space: normal
+        display: block
+        width: $log_width
     span.level
       float: right
       height: 14px
@@ -425,6 +409,7 @@ $log_width: 800px
     color: black
   p.backtrace, p.hidden
     padding: 7px
+    font-size: 1.4em
     padding-right: 0px
     margin-left: 5px
     margin-top: 2px
@@ -588,9 +573,85 @@ ul.options_list
     float: left
     +border-radius(6px)
     &.delete
-      background: #EEBFBF 
+      background: #FBEFEF 
+      border: 3px solid #F5CFCF 
       color: #BC0000 
       &:hover
-        color: #EEBFBF 
+        color: white 
         background: #BC0000 
-        
+        border: 3px solid #9B0000 
+// Messages
+.message
+  background: #FBEFEF
+  float: left
+  clear: left
+  margin-left: 20px
+  width: $body_width - 20px
+  margin-top: 15px
+  border: 5px solid #F5CFCF 
+  padding: 10px
+  font-size: 1.4em
+  line-height: 1.4em
+  +border-radius(5px)
+  a
+    color: black
+  &.green
+    background: #F0F7E4
+    border: 5px solid  #CEDDB5 
+// Reveal plugin
+.reveal-modal-bg  
+  position: fixed 
+  height: 100%
+  width: 100%
+  background: #000
+  background: rgba(0,0,0,0.1)
+  z-index: 100
+  display: none
+  top: 0
+  left: 0 
+.reveal-modal 
+  visibility: hidden
+  top: 100px 
+  left: 50%
+  margin-left: -300px
+  width: 520px
+  background: white
+  border: 5px solid #D2D2D2   
+  position: absolute
+  z-index: 101
+  padding: 30px 40px 34px
+  +border-radius(6px)
+  .close-reveal-modal
+    &.top
+      font-size: 22px
+      line-height: 0.5
+      position: absolute
+      top: 8px
+      right: 11px
+      color: #aaa
+      font-weight: bold
+      cursor: pointer
+  h1
+    font-size: 2.8em
+    margin-bottom: 10px
+  p
+    float: left
+    font-size: 1.4em
+  ul
+    float: left
+    margin-top: 20px
+    clear: left
+    li
+      float: left
+      font-size: 1.4em
+      margin-right: 15px
+      a
+        color: red
+        text-decoration: underline
+        &.cancel
+          color: #747474 
+          cursor: pointer
+
+		 
+
+

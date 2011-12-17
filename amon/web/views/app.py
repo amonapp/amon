@@ -1,51 +1,26 @@
-from datetime import datetime, timedelta
-import tornado.web
+from datetime import timedelta
+from tornado.web import authenticated
 from amon.core import settings
-from amon.web.template import render
+from amon.web.views.base import BaseView
 from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
 from amon.system.utils import get_disk_volumes, get_network_interfaces
 from amon.web.models import (
 	dashboard_model,		
-	common_model,
 	system_model,
 	process_model,
 	exception_model,
-	log_model
+	log_model,
+	unread_model
 )
 
-
-class BaseView(tornado.web.RequestHandler):
+class DashboardView(BaseView):
 
 	def initialize(self):
-		self.now = datetime.now()
-
-		self.unread_values = common_model.get_unread_values()		
-		super(BaseView, self).initialize()
-
-
-	def write_error(self, status_code, **kwargs):
-		error_trace = None
-		
-		if "exc_info" in kwargs:
-		  import traceback
-		  error_trace= ""
-		  for line in traceback.format_exception(*kwargs["exc_info"]):
-			error_trace += line 
-		
-		_template = render(template="error.html", 
-				status_code=status_code,
-				error_trace=error_trace,
-				unread_values=None)
-
-		self.write(_template)
+		super(DashboardView, self).initialize()
 	
-
-class Dashboard(BaseView):
-
-	def initialize(self):
-		super(Dashboard, self).initialize()
-
+	@authenticated
 	def get(self):
+
 		active_process_checks = settings.PROCESS_CHECKS
 		active_system_checks = settings.SYSTEM_CHECKS
 
@@ -63,24 +38,22 @@ class Dashboard(BaseView):
 		last_system_check = dashboard_model.get_last_system_check(active_system_checks)
 		last_process_check = dashboard_model.get_last_process_check(active_process_checks)
 
-		_template = render(template="dashboard.html",
+		self.render("dashboard.html",
 				current_page='dashboard',
 				last_check=last_system_check,
 				process_check=last_process_check,
 				system_check_first=system_check_first,
 				process_check_first=process_check_first,
-				unread_values=self.unread_values
 				)
 
-		self.write(_template)
-
-class System(BaseView):
+class SystemView(BaseView):
 
 	def initialize(self):
-		super(System, self).initialize()
+		super(SystemView, self).initialize()
 
+	@authenticated
 	def get(self):
-
+		
 		date_from = self.get_argument('date_from', False)
 		date_to = self.get_argument('date_to', False)
 
@@ -131,7 +104,7 @@ class System(BaseView):
 					if volume not in volumes:
 						volumes.append(volume)
 
-			_template = render(template='system.html',
+			self.render('system.html',
 						  current_page='system',
 						  checks=checks,
 						  network=network,
@@ -141,17 +114,15 @@ class System(BaseView):
 						  date_from=date_from,
 						  date_to=date_to,
 						  first_check_date=first_check_date,
-						  unread_values=self.unread_values
 						  )
 
-			self.write(_template)
-
-class Processes(BaseView):
+class ProcessesView(BaseView):
 
 	def initialize(self):
-		super(Processes, self).initialize()
+		super(ProcessesView, self).initialize()
 		self.current_page = 'processes'
 
+	@authenticated
 	def get(self):
 		day = timedelta(hours=24)
 		_yesterday = self.now - day
@@ -173,64 +144,91 @@ class Processes(BaseView):
 		processes = settings.PROCESS_CHECKS
 		process_data = process_model.get_process_data(processes, date_from, date_to)
 
-		_template = render(template='processes.html',
+
+		self.render('processes.html',
 					  current_page=self.current_page,
 					  processes=processes,
 					  process_data=process_data,
 					  date_from=date_from,
 					  date_to=date_to,
-					  unread_values=self.unread_values
 					 )
 
-		self.write(_template)
 
-
-class Exceptions(BaseView):
+class ExceptionsView(BaseView):
 	
 	def initialize(self):
-		super(Exceptions, self).initialize()
+		super(ExceptionsView, self).initialize()
 		self.current_page = 'exceptions'
 
+	@authenticated
 	def get(self):
 		
 		exceptions = exception_model.get_exceptions()
-		exception_model.mark_as_read()
+		unread_model.mark_exceptions_as_read()
 
-		_template = render(template='exceptions.html',
+		self.render('exceptions.html',
 					  exceptions=exceptions,
 					  current_page=self.current_page,
-					  unread_values=self.unread_values
 					  )
 
-		self.write(_template)
-
-class Logs(BaseView):
+class LogsView(BaseView):
 
 	def initialize(self):
-		super(Logs, self).initialize()
+		super(LogsView, self).initialize()
 		self.current_page = 'logs'
 
+	@authenticated
 	def get(self):
 
 		logs = log_model.get_logs()
-		log_model.mark_as_read()
+		unread_model.mark_logs_as_read()
 
-		_template =  render(template='logs.html',
+		self.render('logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
-					 unread_values=self.unread_values,
 					 )
-		
-		self.write(_template)
 
 
+	@authenticated
 	def post(self):
 		level = self.get_arguments('level[]')
 		filter = self.get_argument('filter', None)
 
 		logs = log_model.filtered_logs(level, filter)
 	
-		_template = render(template='partials/logs_filter.html', 
-				logs=logs)
+		self.render('partials/logs_filter.html', logs=logs)
 
-		self.write(_template)
+
+class SettingsView(BaseView):
+
+	def initialize(self):
+		super(SettingsView, self).initialize()
+		self.current_page = 'settings'
+
+	@authenticated
+	def get(self, action=None):
+		
+		message = self.session.get('message', '')
+		
+		try:
+			del self.session['message']
+		except:
+			pass
+
+		if action != None:
+			if action == 'delete_exceptions':
+				exception_model.delete_all()
+				self.session['message'] = 'All Exceptions deleted'
+				self.redirect('/settings')
+
+			if action == 'delete_logs':
+				log_model.delete_all()
+				self.session['message'] = 'All Logs deleted'
+				self.redirect('/settings')
+		else:
+			self.render('settings.html',
+					 current_page=self.current_page,
+					 message=message
+					 )
+
+

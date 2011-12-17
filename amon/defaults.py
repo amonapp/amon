@@ -31,10 +31,16 @@ SYSTEM_CHECKS = config.get('system_checks', ['cpu', 'memory', 'disk', 'network',
 
 PROCESS_CHECKS = config.get('process_checks', [])
 
+
+host = _web_app.get('host', 'http://127.0.0.1')
+
+if not host.startswith('http'):
+	host = "http://{0}".format(host)
+
 WEB_APP = {
-	'host': _web_app.get('host', 'http://127.0.0.1'),
+	'host': host,
 	'port': _web_app.get('port', 2464)
 }
 
-ACL = config.get('acl', False)
-SECRET = config.get('secret', False)
+ACL = config.get('acl', "False") # Expects string
+SECRET_KEY = config.get('secret_key', 'TGJKhSSeZaPZr24W6GlByAaLVe0VKvg8qs+8O7yQ=') # Don't break the app if 

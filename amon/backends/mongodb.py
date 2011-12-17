@@ -10,7 +10,7 @@ from amon.core import settings
 class MongoBackend():
 
 	# Cron is for testing purposes
-	internal_collections = ['logs', 'exceptions', 'unread','cron']
+	internal_collections = ['logs', 'exceptions', 'unread','cron','sessions', 'users']
 
 	host = settings.MONGO['host']
 	port = settings.MONGO['port']
@@ -52,8 +52,13 @@ class MongoBackend():
 		db = self.get_database()
 		
 		if collection in self.valid_collections:
-			collection = "amon_{0}".format(collection)
+			if collection in self.internal_collections:
+				collection = "{0}".format(collection) # protect the collection that Amon uses internally
+			else:
+				collection = "amon_{0}".format(collection)
+			
 			collection = db[collection]
+		
 		else:
 			return False
 

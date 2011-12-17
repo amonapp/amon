@@ -5,7 +5,7 @@ Logs
 {% block breadcrumb %}
 Logs 
 {% endblock %}
-{% block filter %}
+{% block content %}
 <form action="{{ base_url|url('logs') }}" method='get' id='logs_filter_form'>
 <ul class='logs_filter'>
 	<li>
@@ -32,13 +32,13 @@ Logs
 		<span>debug</span>
 		</a>
 	</li>
-	<li>
+	<li class='search'>
+		<div class="input_background">
 		<input type="text" id="filter" name="filter" placeholder="Search" value="{% if filter != None %}{{ filter }}{% endif %}" />
+		</div>
 	</li>
 </ul>
 </form>
-{% endblock filter %}
-{% block content %}
 <ul class='log_list' id="log_list">
 	{% for log in logs  %}
 	<li>
@@ -46,9 +46,7 @@ Logs
 		<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
 		<span class='level {{ log.level }}'>{{ log.level }}</span>
 	</div>
-	<p>
-		{{ log.message|beautify_json }}
-	</p>
+	<pre class='log_content'><code>{{ log.message|beautify_json }}</code></pre>
 	</li>
 	{% endfor %}
 </ul>
