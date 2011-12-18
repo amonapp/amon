@@ -18,7 +18,7 @@ _web_app = config.get('web_app', {})
 
 MONGO = {
 	'port': _mongo.get('port', 27017),
-	'host': _mongo.get('host', 'localhost'),
+	'host': _mongo.get('host', '127.0.0.1'),
 	'user': _mongo.get('user', ''),
 	'password': _mongo.get('password', ''),
 	'database' : 'amon',
@@ -43,4 +43,10 @@ WEB_APP = {
 }
 
 ACL = config.get('acl', "False") # Expects string
-SECRET_KEY = config.get('secret_key', 'TGJKhSSeZaPZr24W6GlByAaLVe0VKvg8qs+8O7yQ=') # Don't break the app if 
+key = config.get('secret_key', None)
+
+if key != None and len(key) > 0:
+	SECRET_KEY = key
+else:
+	SECRET_KEY = 'TGJKhSSeZaPZr24W6GlByAaLVe0VKvg8qs+8O7y=' #Don't break the dashboard
+

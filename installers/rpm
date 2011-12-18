@@ -67,10 +67,11 @@ echo "***  Installing Amon $version ..."
 	sudo python setup.py install # Install Amon and all the dependecies
 	cd "$bash_script_dir"
 
-	# Copy the configuration file. Don't overwrite if it exists from previous installation
-	if ! file_exists "/etc/amon.conf" ; then
-		sudo cp amon-$version/config/amon.conf /etc/amon.conf
-	fi
+	python generate_config.py
+	
+	# Copy the generated configuration file from the current directory
+	# If Amon was previously installed, the generator will just a secret_key
+	sudo cp amon.conf /etc/amon.conf
 
 	# Copy the collector daemon
 	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
@@ -98,7 +99,7 @@ echo "***  Installing Amon $version ..."
 
 		wget "$mongo_download_url"
 		echo "***  Extracting MongoDB ..."
-		tar -zxvf "$mongo_extract_dir.tgz" > /dev/null
+		tar -zxvf "$mongo_extract_dir.tgz" > /dev/null # Extract Mongo
 
 	}
 
@@ -140,6 +141,7 @@ echo "***  Installing Amon $version ..."
 	start_mongodb()
 	{
 		rm -rf $mongo_extract_dir
+		rm -rf $mongo_extract_dir.tgz # Remove the archive
 		echo "*** Starting MongoDB"
 		echo ""
 
@@ -191,8 +193,8 @@ echo "***  Installing Amon $version ..."
 
 
   # Cleanup the directory
-  sudo rm -rf amon-$version  #Delete the directory with the Amon install files
+  rm -rf amon-$version  #Delete the directory with the Amon install files
+  rm amon-latest.tar.gz # Delete the archive
 
-  sudo rm -rf $mongo_extract_dir # Delete the Mongo directory
  
   print_troubleshooting_instructions

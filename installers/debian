@@ -27,7 +27,7 @@ fi
 # Set variables for the installation
 set -e # Exit the installer on error
 mongo_install_dir="/usr/local/mongodb" # This where we will store mongod, the database and the log files
-mongo_check=$(ps aux | grep -c mongo ) # Check if mongo is running, remove 'grep' from the results
+mongo_check=$(ps aux | grep -c mongo) # Check if mongo is running
 version=$1 # Amon version - Inherited from the main script
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 amon_install_dir="/usr/local/amon"
@@ -67,10 +67,11 @@ echo "***  Installing Amon $version ..."
 	sudo python setup.py install # Install Amon and all the dependecies
 	cd "$bash_script_dir"
 	
-	# Copy the configuration file. Don't overwrite if it exists from previous installation
-	if ! file_exists "/etc/amon.conf" ; then
-		sudo cp amon-$version/config/amon.conf /etc/amon.conf
-	fi
+	python generate_config.py
+	
+	# Copy the generated configuration file from the current directory
+	# If Amon was previously installed, the generator will just a secret_key
+	sudo cp amon.conf /etc/amon.conf
 
 	# Copy the collector daemon
 	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
@@ -137,6 +138,7 @@ echo "***  Installing Amon $version ..."
 	start_mongodb()
 	{
 		rm -rf $mongo_extract_dir
+		rm -rf $mongo_extract_dir.tgz # Remove the archive
 		echo "*** Starting MongoDB"
 		echo ""
 
@@ -185,7 +187,8 @@ echo "***  Installing Amon $version ..."
   fi
 
   # Cleanup
-  sudo rm -rf amon-$version # Delete the directory with the Amon install files
-  sudo rm -rf $mongo_extract_dir # Delete the Mongo directory
+  rm -rf amon-$version # Delete the directory with the Amon install files
+  rm amon-latest.tar.gz # Delete the archive
+  
   
   print_troubleshooting_instructions
