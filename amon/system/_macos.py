@@ -3,10 +3,7 @@ import re
 
 class MacOSSystemCollector(object):
 
-	def __init__(self):
-		pass
-
-	def get_loadavg(self):
+	def get_load_average(self):
 		loadavg_columns = ['minute','five_minutes','fifteen_minutes','cores']
 		
 		load = subprocess.Popen(['sysctl','vm.loadavg'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]	
@@ -95,16 +92,4 @@ class MacOSSystemCollector(object):
 				data[_name] = _volume
 
 		return data
-
-
-	def get_macos_stats(self):
-		'''
-		MacOS doesn't hav
-		'''
-
-		stats_dict = {}
-
-		stats = subprocess.Popen(['top','-F','-R','-l','1'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]	
-		lines = stats.splitlines()
-		lines = lines[0:10]
 

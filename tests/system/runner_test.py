@@ -1,5 +1,5 @@
-from nose.tools import *
 from amon.system.runner import runner
+import sys
 
 class TestRunner(object):
 
@@ -7,7 +7,8 @@ class TestRunner(object):
 		system_test = runner.system()
 
 		assert isinstance(system_test, dict)
-		assert 'network' in system_test
+		if sys.platform != 'darwin':
+			assert 'network' in system_test
 		assert 'memory' in system_test
 		assert 'cpu' in system_test
 		assert 'disk' in system_test
@@ -15,7 +16,8 @@ class TestRunner(object):
 
 	def test_system_empty(self):
 		empty = runner.empty()
-		assert 'network' in empty
+		if sys.platform != 'darwin':
+			assert 'network' in empty
 		assert 'memory' in empty
 		assert 'cpu' in empty
 		assert 'disk' in empty
