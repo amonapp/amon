@@ -60,7 +60,7 @@ if __name__ == "__main__":
 				pid = None
 
 			if pid:
-				print 'The Amon web app is running as pid %s' % pid
+				print 'Amon {0} running as pid {1}'.format(amon.__version__, pid)
 				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
 						settings.WEB_APP['port'])
 			else:

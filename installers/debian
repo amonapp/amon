@@ -46,9 +46,9 @@ echo "***  Installing Amon $version ..."
 
 	# Cleanup the directory from old amon installations
 	rm -rf amon-* # Cleanups old archives from previous install, that could break the updating process
-    wget "http://install.amon.cx/amon-latest.tar.gz" 
-	tar -zxvf "amon-latest.tar.gz" > /dev/null
-	cd "amon-$version"
+    
+	wget "http://install.amon.cx/amon-$version.tar.gz" 
+	tar -zxvf "amon-$version.tar.gz" > /dev/null
 
 	# Ensure that we have the pymongo driver dependecies
 	# Skip installing python and gcc if they are already installed.
@@ -64,18 +64,17 @@ echo "***  Installing Amon $version ..."
 	fi
 
 
+	cd "amon"
 	sudo python setup.py install # Install Amon and all the dependecies
 	python generate_config.py # Generate the configuration file
-	
-	cd "$bash_script_dir"
 	
 	
 	# Copy the generated configuration file from the current directory
 	# If Amon was previously installed, the generator will just a secret_key
-	sudo cp amon-$version/amon.conf /etc/amon.conf
+	sudo cp amon.conf /etc/amon.conf
 
 	# Copy the collector daemon
-	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
+	sudo cp contrib/amon/amond /etc/init.d/amond
 	
 	# make the collector daemon executable
 	sudo chmod +x /etc/init.d/amond
@@ -84,7 +83,7 @@ echo "***  Installing Amon $version ..."
 	sudo update-rc.d amond defaults > /dev/null
 
 	# Copy the web application daemon
-	sudo cp amon-$version/contrib/amon/amon /etc/init.d/amon
+	sudo cp contrib/amon/amon /etc/init.d/amon
 	
 	# make the web app daemon executable
 	sudo chmod +x /etc/init.d/amon
@@ -188,8 +187,9 @@ echo "***  Installing Amon $version ..."
   fi
 
   # Cleanup
-  rm -rf amon-$version # Delete the directory with the Amon install files
-  rm amon-latest.tar.gz # Delete the archive
+  cd $bash_script_dir  # Go back to the root directory
+  rm -rf amon # Delete the directory with the Amon install files
+  rm amon-$version.tar.gz # Delete the archive
   
   
   print_troubleshooting_instructions

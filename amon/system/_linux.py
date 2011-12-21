@@ -130,7 +130,7 @@ class LinuxSystemCollector(object):
 		cores = re.findall(r'\d+', sort) 
 		
 		try:
-			load_dict['cores'] = cores[0]
+			load_dict['cores'] = int(cores[0])
 		except:
 			load_dict['cores'] = 1 # Don't break if can't detect the cores 
 

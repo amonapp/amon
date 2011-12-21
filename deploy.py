@@ -2,6 +2,8 @@ from keys import key, secret
 import os
 path = os.path.dirname(os.path.abspath(__file__))
 
+version = "0.6.1"
+
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
 conn = S3Connection(key, secret)
@@ -32,13 +34,22 @@ for i in installers:
 	k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
 	k.make_public()
 
-# Deploy new Amon versions
-amon_archive = 'amon-latest.tar.gz'
+# Deploy new Amon versions - Linux
+amon_archive = 'amon-{0}.tar.gz'.format(version)
 k.key = amon_archive
 full_path = "{0}/{1}".format(path, amon_archive)
 
 k.set_contents_from_filename(full_path)
 k.make_public()
+
+
+amon_archive = 'amon-{0}.zip'.format(version)
+k.key = amon_archive
+full_path = "{0}/{1}".format(path, amon_archive)
+
+k.set_contents_from_filename(full_path)
+k.make_public()
+
 
 
 # Deploy contrib files
