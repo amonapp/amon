@@ -82,6 +82,8 @@ System check
 
 
 
+
+{% if network_interfaces %}
 <h2>Network</h2>
 {% for interface in network_interfaces %}
 {% if interface != 'lo' %}
@@ -101,6 +103,8 @@ System check
 	<div class="chart" id="network_{{ interface }}"></div>
 {% endif %}
 {% endfor %}
+
+{% endif %}
 
 <h2>Disk</h2>
 {% for volume in volumes  %}

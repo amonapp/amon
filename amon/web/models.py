@@ -22,26 +22,25 @@ class DashboardModel(BaseModel):
 	def get_last_system_check(self, active_system_checks):
 		last_check = {}
 		
-		try:
-			for check in active_system_checks:
-				row = self.mongo.get_collection(check)
-				# don't break the dashboard if the daemon is stopped
+		for check in active_system_checks:
+			row = self.mongo.get_collection(check)
+			# don't break the dashboard if the daemon is stopped
+			try:
 				last_check[check] = row.find({"last":{"$exists" : False}},limit=1).sort('time', DESCENDING)[0]
-		except Exception, e:
-			last_check = False
-			raise e
+			except IndexError:
+				last_check[check] = False
 
 		return last_check
 
 	def get_last_process_check(self, active_process_checks):
 		process_check = {}
 
-		try:
-			for check in active_process_checks:
-				row = self.mongo.get_collection(check)
+		for check in active_process_checks:
+			row = self.mongo.get_collection(check)
+			try:
 				process_check[check] = row.find({"last":{"$exists" : False}}, limit=1).sort('time', DESCENDING)[0]
-		except Exception, e:
-			process_check = False
+			except IndexError:
+				process_check[check] = False
 
 		return process_check
 
@@ -61,12 +60,13 @@ class SystemModel(BaseModel):
 		
 		checks = {}
 
-		try:
-			for check in active_checks:
-				row = self.mongo.get_collection(check)
+		for check in active_checks:
+			row = self.mongo.get_collection(check)
+			
+			try:
 				checks[check] = row.find({"time": {"$gte": date_from,"$lte": date_to }}).sort('time', ASCENDING)
-		except Exception, e:
-			checks = False
+			except IndexError:
+				checks[check] = False
 
 		return checks
 

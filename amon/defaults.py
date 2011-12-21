@@ -1,3 +1,4 @@
+import sys
 try:
     import json
 except ImportError:
@@ -27,7 +28,10 @@ MONGO = {
 # 1 minute default
 SYSTEM_CHECK_PERIOD = config.get('system_check_period', 60)
 
-SYSTEM_CHECKS = config.get('system_checks', ['cpu', 'memory', 'disk', 'network', 'loadavg'])
+SYSTEM_CHECKS = ['cpu', 'memory', 'disk', 'network', 'loadavg']
+
+if sys.platform == 'darwin':
+	del SYSTEM_CHECKS[3] # Delete network check on macos
 
 PROCESS_CHECKS = config.get('process_checks', [])
 
