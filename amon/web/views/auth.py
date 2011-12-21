@@ -55,12 +55,16 @@ class LogoutView(BaseView):
 
 
 	def get(self):
-		try:
-			del self.session['user']
-		except:
-			pass
 		
-		self.redirect('/login')
+		if self.acl == 'False':
+			self.redirect('/')
+		else:
+			try:
+				del self.session['user']
+			except:
+				pass
+			
+			self.redirect('/login')
 
 class CreateUserView(BaseView):
 
@@ -73,13 +77,17 @@ class CreateUserView(BaseView):
 		errors = self.session.get('errors', None)
 		form_data = self.session.get('form_data', None)
 
-		# This page is active only when there are no users in the system
-		users = user_model.count_users()
-
-		if users == 0:
-			self.render('create_user.html', errors=errors, form_data=form_data)
+		# This page is active only when acl is enabled
+		if self.acl == 'False':
+			self.redirect('/')
 		else:
-			self.redirect('/login')
+			# This page is active only when there are no users in the system
+			users = user_model.count_users()
+
+			if users == 0:
+				self.render('create_user.html', errors=errors, form_data=form_data)
+			else:
+				self.redirect('/login')
 		
 
 	def post(self):

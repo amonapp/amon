@@ -1,7 +1,10 @@
-from amon.backends.mongodb import backend
 from nose.tools import eq_
 import inspect
 import unittest
+from pymongo import Connection
+from pymongo.collection import Collection
+from pymongo.database import Database
+from amon.backends.mongodb import backend
 from amon.core import settings
 
 class TestMongoBackend(unittest.TestCase):
@@ -10,21 +13,23 @@ class TestMongoBackend(unittest.TestCase):
 		backend.database = 'amon_test'
 
 	def test_get_collection(self):
-		self.assertTrue(inspect.isclass(backend.get_collection('logs')))
-		self.assertTrue(inspect.isclass(backend.get_collection('exceptions')))
+		eq_(backend.get_collection('logs'), Collection(Database(Connection(u'127.0.0.1', 27017), u'amon_test'), u'logs'))
+		eq_(backend.get_collection('exceptions'), Collection(Database(Connection(u'127.0.0.1', 27017), u'amon_test'), u'exceptions'))
 
 	def test_get_false_collection(self):
-		self.assertFalse(inspect.isclass(backend.get_collection('test_me')))
-		self.assertFalse(inspect.isclass(backend.get_collection('test_me_again')))
+		self.assertFalse(backend.get_collection('test_me'))
+		self.assertFalse(backend.get_collection('test_me_again'))
 
 
 	def test_system_colllection(self):
 		for setting in settings.SYSTEM_CHECKS:
-			self.assertTrue(inspect.isclass(backend.get_collection(setting)))
+			collection = Collection(Database(Connection(u'127.0.0.1', 27017), u'amon_test'), u'amon_{0}'.format(setting))
+			eq_(backend.get_collection(setting), collection)
 
 	def test_process_collection(self):
 		for setting in settings.PROCESS_CHECKS:
-			self.assertTrue(inspect.isclass(backend.get_collection(setting)))
+			collection = Collection(Database(Connection(u'127.0.0.1', 27017), u'amon_test'), u'amon_{0}'.format(setting))
+			eq_(backend.get_collection(setting), collection)
 
 
 	def test_store_entry(self):

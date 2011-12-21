@@ -2,4 +2,6 @@
 _build/
 .sass-cache
 keys.py
+.DS_Store
 *tar.gz
+*.zip

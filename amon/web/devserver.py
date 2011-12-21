@@ -1,5 +1,9 @@
 import sys
-sys.path.insert(0, '/home/martin/amon')
+
+if sys.platform == 'darwin':
+	sys.path.insert(0, '/Users/User/amon')
+else:
+	sys.path.insert(0,'/home/martin/amon')
 
 
 from amon.web.server import application

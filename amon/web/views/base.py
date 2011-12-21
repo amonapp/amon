@@ -11,6 +11,7 @@ class BaseView(tornado.web.RequestHandler):
 	def initialize(self):
 		self.session = self._create_session()
 		self.now = datetime.now()
+		self.acl = settings.ACL
 
 		# Unread logs and exceptions -> in the sidebar
 		unread_values = unread_model.get_unread_values()		
@@ -28,8 +29,7 @@ class BaseView(tornado.web.RequestHandler):
 		if getenv('AMON_ENV_HTTP_TEST', None) == 'test':
 			return 1
 
-		acl = settings.ACL
-		if acl == 'True':
+		if self.acl == 'True':
 			try:
 				return self.session['user']
 			except KeyError:
