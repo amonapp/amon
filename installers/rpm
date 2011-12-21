@@ -45,7 +45,7 @@ echo "***  Installing Amon $version ..."
 
 # Install Amon
 
-	sudo rm -rf amon-* # Cleanups old archives from previous install, that could break the updating process
+	rm -rf amon-* # Cleanups old archives from previous install, that could break the updating process
     wget "http://install.amon.cx/amon-latest.tar.gz" 
 	tar -zxvf "amon-latest.tar.gz" > /dev/null
 	cd "amon-$version"
@@ -65,13 +65,14 @@ echo "***  Installing Amon $version ..."
 	fi
    	
 	sudo python setup.py install # Install Amon and all the dependecies
+	python generate_config.py
+	
 	cd "$bash_script_dir"
 
-	python generate_config.py
 	
 	# Copy the generated configuration file from the current directory
 	# If Amon was previously installed, the generator will just a secret_key
-	sudo cp amon.conf /etc/amon.conf
+	sudo cp amon-$version/amon.conf /etc/amon.conf
 
 	# Copy the collector daemon
 	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
