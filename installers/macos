@@ -13,11 +13,8 @@ file_exists() {
 
 # Set variables for the installation
 set -e
-mongo_install_dir="/usr/local/mongodb"
-mongo_extract_dir="mongodb-linux-i686-2.0.0"
 mongo_check=$(ps aux | grep -c mongo)
 version=$1 # Inherited from the main script
-bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 amon_install_dir="/usr/local/amon"
 
 echo "***  Installing Amon $version ..."
@@ -32,32 +29,33 @@ echo "***  Installing Amon $version ..."
 # Install Amon
 
 	# Cleanup the directory from old amon installations
-	sudo rm -rf amon-*
-	curl "https://s3-eu-west-1.amazonaws.com/amon/amon-$version.tar.gz" -O
-	tar -zxvf "amon-$version.tar.gz" > /dev/null
-	cd "amon-$version"
+	rm -rf amon-*
+    curl "http://install.amon.cx/amon-latest.tar.gz" 
+	tar -xf "amon.zip"
+	cd "amon"
 
 
-	#sudo python setup.py install
-	cd "$bash_script_dir"
+	sudo python setup.py install 
 	
-	# Copy the configuration file. Don't overwrite configurartion files
-	if ! file_exists "/etc/amon.conf" ; then
-		sudo cp amon-$version/config/amon.conf /etc/amon.conf
-	fi
-
+	python generate_config.py
+	
+	# Copy the generated configuration file from the current directory
+	# If Amon was previously installed, the generator will just a secret_key
+	sudo cp amon.conf /etc/amon.conf
+	
 	
 	# Create a directory for the daemons
-	sudo mkdir -p "/usr/local/amon"
+	sudo mkdir -p "$amon_install_dir"
 
 	# Copy the daemons
-	sudo cp amon-$version/contrib/amon/amon "$amon_install_dir"/amon
-	sudo cp amon-$version/contrib/amon/amond "$amon_install_dir"/amond
+	sudo cp contrib/amon/amon "$amon_install_dir"/amon
+	sudo cp contrib/amon/amond "$amon_install_dir"/amond
 	
 
 
 	mkdir -p ~/Library/LaunchAgents
-    sudo cp amon-$version/contrib/amon/macos/org.amon.amond.plist ~/Library/LaunchAgents/
+    cp contrib/amon/macos/org.amon.amond.plist ~/Library/LaunchAgents/
+    launchctl unload ~/Library/LaunchAgents/org.amon.amond.plist
     launchctl load -w ~/Library/LaunchAgents/org.amon.amond.plist
 
 
@@ -87,8 +85,8 @@ echo "***  Installing Amon $version ..."
   # If the collector daemon is running - restart it 
   if  [ "ps aux | grep org.amon.amond" ]; then
 	  echo "*** Amon succesfully updated"
-	  sudo launchctl stop org.amon.amond
-	  sudo launchctl start org.amon.amond
+	  launchctl stop org.amon.amond
+	  launchctl start org.amon.amond
   else
 	  echo "*** Amon succesfully installed"
 	  echo "*** The web application is not running by default, you can start with \`/usr/local/amon/amon start\`"
@@ -101,6 +99,8 @@ echo "***  Installing Amon $version ..."
 
 
   # Cleanup the directory
-  sudo rm -rf amon-*
+  rm -rf amon # Delete the directory with the Amon install files
+  rm amon-latest.zip # Delete the archive
+  
   print_troubleshooting_instructions
 

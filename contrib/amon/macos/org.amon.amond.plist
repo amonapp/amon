@@ -6,18 +6,19 @@
   <string>org.amon.amond</string>
   <key>ProgramArguments</key>
   <array>
+	  <string>/usr/bin/python</string>
   <string>/usr/local/amon/amond</string>
-    <string>run</string>
+    <string>start</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>
   <false/>
   <key>WorkingDirectory</key>
-  <string>/usr/local</string>
+  <string>/usr/local/amon</string>
  <key>StandardErrorPath</key>
-  <string>/usr/local/amon/output.log</string>
+  <string>/usr/local/amon/launchctl_output.log</string>
   <key>StandardOutPath</key>
-  <string>/usr/local/amon/output.log</string>
+  <string>/usr/local/amon/launchctl_output.log</string>
 </dict>
 </plist>

@@ -1,5 +1,6 @@
 from amon.system.collector import system_info_collector, process_info_collector
 from nose.tools import eq_, assert_not_equal
+import sys
 
 class TestSystemCheck(object):
 
@@ -43,10 +44,14 @@ class TestSystemCheck(object):
 		assert 'idle' in cpu
 		assert 'user' in cpu
 		assert 'system' in cpu
+		print cpu.values()
 
 		for v in cpu.values():
-			# Could be 1.10 - 4, 10.10 - 5, 100.00 - 6
-			assert len(v) == 4 or len(v) == 5 or len(v) == 6
+			if sys.platform == 'darwin':
+				assert isinstance(v, int)
+			else:
+				# Could be 1.10 - 4, 10.10 - 5, 100.00 - 6
+				assert len(v) == 4 or len(v) == 5 or len(v) == 6
 
 
 	def test_loadavg(self):
@@ -55,11 +60,12 @@ class TestSystemCheck(object):
 		assert 'minute' in loadavg
 		assert 'five_minutes' in loadavg
 		assert 'fifteen_minutes' in loadavg
-		assert 'scheduled_processes' in loadavg
 		assert 'cores' in loadavg
 
-		for v in loadavg.values():
-			assert isinstance(v, str)
+		assert isinstance(loadavg['cores'], int)
+		assert isinstance(loadavg['minute'], str)
+		assert isinstance(loadavg['five_minutes'], str)
+		assert isinstance(loadavg['fifteen_minutes'], str)
 
 class TestProcessCheck(object):
 

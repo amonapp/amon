@@ -1,6 +1,7 @@
 from amon.system.collector import system_info_collector, process_info_collector
 from amon.core import settings
 from time import time
+import sys
 
 class Runner(object):
 	
@@ -45,7 +46,7 @@ class Runner(object):
 				disk['time'] = now
 				system_info_dict['disk'] = disk
 
-		if 'network' in self.active_checks:
+		if 'network' in self.active_checks and sys.platform != 'darwin':
 			network = system_info_collector.get_network_traffic()
 
 			if network != False:
