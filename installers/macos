@@ -29,11 +29,11 @@ echo "***  Installing Amon $version ..."
 # Install Amon
 
 	# Cleanup the directory from old amon installations
-	rm -rf amon-*
-    curl "http://install.amon.cx/amon-latest.tar.gz" 
-	tar -xf "amon.zip"
+	rm -rf amon
+    curl "http://install.amon.cx/amon-$version.zip" 
+	tar -xf "amon-$version.zip"
+	
 	cd "amon"
-
 
 	sudo python setup.py install 
 	
@@ -100,7 +100,7 @@ echo "***  Installing Amon $version ..."
 
   # Cleanup the directory
   rm -rf amon # Delete the directory with the Amon install files
-  rm amon-latest.zip # Delete the archive
+  rm amon-$version.zip # Delete the archive
   
   print_troubleshooting_instructions
 

@@ -45,10 +45,9 @@ echo "***  Installing Amon $version ..."
 
 # Install Amon
 
-	sudo rm -rf amon-* # Cleanups old archives from previous install, that could break the updating process
-    wget "http://install.amon.cx/amon-latest.tar.gz" 
-	tar -zxvf "amon-latest.tar.gz" > /dev/null
-	cd "amon-$version"
+	rm -rf amon-* # Cleanups old archives from previous install, that could break the updating process
+    wget "http://install.amon.cx/amon-$version.tar.gz" 
+	tar -zxvf "amon-$version.tar.gz" > /dev/null
 
 
 	# Ensure that we have the pymongo driver dependecies
@@ -64,23 +63,24 @@ echo "***  Installing Amon $version ..."
 		echo "** success!"
 	fi
    	
+	cd "amon"
 	sudo python setup.py install # Install Amon and all the dependecies
-	cd "$bash_script_dir"
-
 	python generate_config.py
+	
+
 	
 	# Copy the generated configuration file from the current directory
 	# If Amon was previously installed, the generator will just a secret_key
 	sudo cp amon.conf /etc/amon.conf
 
 	# Copy the collector daemon
-	sudo cp amon-$version/contrib/amon/amond /etc/init.d/amond
+	sudo cp contrib/amon/amond /etc/init.d/amond
 	
 	# make the collector daemon executable
 	sudo chmod +x /etc/init.d/amond
 
 	# Copy the web application daemon
-	sudo cp amon-$version/contrib/amon/amon /etc/init.d/amon
+	sudo cp contrib/amon/amon /etc/init.d/amon
 	
 	# make the web app daemon executable
 	sudo chmod +x /etc/init.d/amon
@@ -120,12 +120,12 @@ echo "***  Installing Amon $version ..."
 
 		# Copy the mongo configuration file
 		if ! file_exists "/etc/mongodb.conf"; then
-			sudo cp amon-$version/contrib/mongodb/mongodb.conf /etc/mongodb.conf
+			sudo cp contrib/mongodb/mongodb.conf /etc/mongodb.conf
 		fi
 
 		# Copy the system daemon
 		if ! file_exists "/etc/init.d/mongodb"; then
-			sudo cp amon-$version/contrib/mongodb/rpm/mongodb /etc/init.d/mongodb
+			sudo cp contrib/mongodb/rpm/mongodb /etc/init.d/mongodb
 		fi
 
 		# Make the mongo daemon executable
@@ -193,8 +193,8 @@ echo "***  Installing Amon $version ..."
 
 
   # Cleanup the directory
-  rm -rf amon-$version  #Delete the directory with the Amon install files
-  rm amon-latest.tar.gz # Delete the archive
+  rm -rf amon  #Delete the directory with the Amon install files
+  rm amon-$version.tar.gz # Delete the archive
 
  
   print_troubleshooting_instructions
