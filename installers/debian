@@ -91,6 +91,8 @@ echo "***  Installing Amon $version ..."
 	# Create a directory for the log files
 	sudo mkdir -p "$amon_install_dir"
 
+	cd "$bash_script_dir"
+
 # Install MongoDB
 
 	install_mongodb()

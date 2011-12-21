@@ -16,6 +16,7 @@ set -e
 mongo_check=$(ps aux | grep -c mongo)
 version=$1 # Inherited from the main script
 amon_install_dir="/usr/local/amon"
+bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 
 echo "***  Installing Amon $version ..."
 
@@ -97,6 +98,8 @@ echo "***  Installing Amon $version ..."
 	  sudo /usr/local/amon/amon restart
   fi
 
+
+  cd "$bash_script_dir"
 
   # Cleanup the directory
   rm -rf amon # Delete the directory with the Amon install files
