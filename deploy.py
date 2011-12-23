@@ -35,20 +35,20 @@ for i in installers:
 	k.make_public()
 
 # Deploy new Amon versions - Linux
-amon_archive = 'amon-{0}.tar.gz'.format(version)
-k.key = amon_archive
-full_path = "{0}/{1}".format(path, amon_archive)
+#amon_archive = 'amon-{0}.tar.gz'.format(version)
+#k.key = amon_archive
+#full_path = "{0}/{1}".format(path, amon_archive)
 
-k.set_contents_from_filename(full_path)
-k.make_public()
+#k.set_contents_from_filename(full_path)
+#k.make_public()
 
 
-amon_archive = 'amon-{0}.zip'.format(version)
-k.key = amon_archive
-full_path = "{0}/{1}".format(path, amon_archive)
+#amon_archive = 'amon-{0}.zip'.format(version)
+#k.key = amon_archive
+#full_path = "{0}/{1}".format(path, amon_archive)
 
-k.set_contents_from_filename(full_path)
-k.make_public()
+#k.set_contents_from_filename(full_path)
+#k.make_public()
 
 
 
@@ -56,11 +56,12 @@ k.make_public()
 contrib_bucket = conn.get_bucket('config.amon.cx')
 k = Key(contrib_bucket)
 for distro in distros:
-	file = 'org.mongodb.mongod.plist' if distro == 'macos' else 'mongodb'
-	k.key = "{0}/{1}".format(distro, file)
-	full_path = "{0}/contrib/mongodb/{1}/{2}".format(path, distro, file)
-	k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
-	k.make_public()
+	if distro != 'macos':
+		file = 'mongodb'
+		k.key = "{0}/{1}".format(distro, file)
+		full_path = "{0}/contrib/mongodb/{1}/{2}".format(path, distro, file)
+		k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
+		k.make_public()
 
  # Deploy single files
 k.key = 'mongodb.conf'

@@ -12,7 +12,6 @@ file_exists() {
 
 
 # Set variables for the installation
-set -e
 mongo_check=$(ps aux | grep -c mongo)
 version=$1 # Inherited from the main script
 amon_install_dir="/usr/local/amon"
@@ -29,9 +28,12 @@ echo "***  Installing Amon $version ..."
 
 # Install Amon
 
-	# Cleanup the directory from old amon installations
+	# Cleanup the directory from old amon files
 	rm -rf amon
-    curl "http://install.amon.cx/amon-$version.zip" 
+	rm -rf "amon-$version.zip"
+	rm -rf macos_installer
+
+    curl -O "http://install.amon.cx/amon-$version.zip" 
 	tar -xf "amon-$version.zip"
 	
 	cd "amon"
@@ -54,11 +56,13 @@ echo "***  Installing Amon $version ..."
 	
 
 
-	mkdir -p ~/Library/LaunchAgents
-    cp contrib/amon/macos/org.amon.amond.plist ~/Library/LaunchAgents/
-    launchctl unload ~/Library/LaunchAgents/org.amon.amond.plist
-    launchctl load -w ~/Library/LaunchAgents/org.amon.amond.plist
-
+	#mkdir -p ~/Library/LaunchAgents
+	#cp contrib/amon/macos/org.amon.amond.plist ~/Library/LaunchAgents/org.amon.amond.plist
+	## Always with root, or it will complain about dubious ownership
+	## Check if the daemon is already loaded
+	#if  ! [ "launchctl list | grep org.amon.amond" ]; then
+		#sudo launchctl load -w ~/Library/LaunchAgents/org.amon.amond.plist
+	#fi
 
 # Install MongoDB - use homebrew or ports
 
@@ -73,6 +77,8 @@ echo "***  Installing Amon $version ..."
 # Show a message about where to go for help.
 
 	print_troubleshooting_instructions() {
+		echo "*** The collector daemon is not running by default, you can start it with \`sudo /usr/local/amon/amond start \`"
+		echo "*** The web application is not running by default, you can start with \`/usr/local/amon/amon start\`"
 		echo
 		echo "For troubleshooting instructions, please see the Amon User Guide :"
 		echo "http://amon.cx/guide/"
@@ -84,13 +90,9 @@ echo "***  Installing Amon $version ..."
 # All done!
   
   # If the collector daemon is running - restart it 
-  if  [ "ps aux | grep org.amon.amond" ]; then
+  if  [ "ps aux | grep amond" ]; then
 	  echo "*** Amon succesfully updated"
-	  launchctl stop org.amon.amond
-	  launchctl start org.amon.amond
-  else
-	  echo "*** Amon succesfully installed"
-	  echo "*** The web application is not running by default, you can start with \`/usr/local/amon/amon start\`"
+	  sudo /usr/local/amon/amond restart
   fi
 
   # If the web application is running - restart it 
