@@ -44,9 +44,14 @@ Logs
 	<li>
 	<div class="heading">
 		<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
-		<span class='level {{ log.level }}'>{{ log.level }}</span>
+		{% if log.level != 'notset' %}
+			<span class='level {{ log.level }}' title='{{ log.level }}'></span>
+		{% endif %}
+		{% if log.message|is_dict %}
+			<a class='collapse' rel='{{ loop.index }}' href="#">Expand</a>
+		{% endif %}
 	</div>
-	<pre class='log_content'><code>{{ log.message|beautify_json }}</code></pre>
+	<pre class='log_content'><code id='code_block-{{ loop.index }}'>{{ log.message|beautify_json }}</code></pre>
 	</li>
 	{% endfor %}
 </ul>
@@ -113,5 +118,24 @@ Logs
 
 		submit_filter_form();
 	});
+
+	$('.collapse').click(function(e){
+		
+		var log_id = $(this).attr('rel');
+		var code_block = $('#code_block-'+log_id)
+		var white_space = code_block.css('white-space');
+
+		if(white_space == 'normal'){
+			code_block.css('white-space', 'pre')
+			$(this).html('Collapse')
+		} else{
+			code_block.css('white-space', 'normal')
+			$(this).html('Expand')
+		}
+		
+		e.preventDefault(); 
+	});
+
+	
 </script>
 {% endblock js %}

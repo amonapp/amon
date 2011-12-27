@@ -10,26 +10,27 @@ Exceptions
 	{% for exc in exceptions  %}
 	<li>
 		<div class="heading">
-			<span class="occurrences" title='Total occurrences'>
-				{{ exc.total_occurrences }}
-			</span>
+			<span class="occurrences" title='Total occurrences'>{{ exc.total_occurrences }}</span>
 			<div class="exception_info">
 				<span class="date timestamp" title='{{ exc.last_occurrence|date }}'>{{ exc.last_occurrence }}</span>
 					<span class="exception">
 					{% if exc.exception_class  %}
-						{{ exc.exception_class }} at
-					{% endif %}
-					{% if exc.url %}
-						{{ exc.url }}
+						{{ exc.exception_class }}
 					{% endif %}
 				</span>
 				{% if exc.backtrace and exc.additional_data|test_additional_data==true %}
-					<a href="" class="collapse" rel='{{ loop.index }}' title='Expand'></a>
+					<a href="" class="collapse" rel='{{ loop.index }}' title='Expand'>Expand</a>
 				{% endif %}
 			</div>
 		</div>
 		<div class="exception_additional_data" id='exception_data-{{ loop.index }}'>
 		<ul class='exception_data'>
+					{% if exc.url %}
+						<li>
+						<h4>URL:</h4>
+						<p>{{ exc.url }}</p>
+						</li>
+					{% endif %}
 			{% if exc.backtrace %}
 			<li>
 				<h4>Backtrace:</h4>

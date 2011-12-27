@@ -103,15 +103,16 @@ body
         .unread
           float: right
           +border-radius(4px)
-          color: white
+          color: black
           padding:
             left: 6px
             right: 7px
             top: 2px
             bottom: 2px
-          background: #F1B604  
+          background: #FDCB34 
           margin-left: 3px
-          margin-top: -2px
+          margin-top: -3px
+          border: 2px solid #F1B604 
         &:hover, &.active
           font-weight: bold
           background: #F0F0F0 
@@ -196,20 +197,23 @@ ul.tabs
     float: left
     margin-right: 18px
     .button
-      background: url(../images/buttons.png)
       border: 0px
-      text-indent: -3000px
       cursor: pointer
       &.update
-        width: 86px
-        height: 38px
+        background: #89BC32
+        border: 2px solid #639213 
+        +border-radius(4px)
+        font-weight: bold
+        padding: 6px
+          left: 10px
+          right: 10px
+        color: white
         &:hover
-          background-position: 0px -38px
-          height: 38px
+          border: 2px solid #4D710F 
     &:last-child
       margin-right: 0px
     &.with_button
-      margin-top: 25px
+      margin-top: 28px
     label
       float: left
       font-size: 1.6em
@@ -275,31 +279,31 @@ input[type=text]
       input[type=checkbox]
         display: none
       &.notset
-        border: 3px solid #F0F0F0  
+        border: 2px solid #F1F1F1   
         color: #7E8285
         &:hover, &.active
-          background: #7E8285
-          border: 3px solid #7E8285  
-          color: white
+          background: #FBFBFB 
+          border: 2px solid #F2F2F2 
+          color: #7A7A7A 
       &.info
-        border: 3px solid #DEECC5
-        color: #7AB317
+        border: 2px solid #89BC32 
+        color: #89BC32 
         &:hover, &.active
-          border: 3px solid #7AB317
-          background: #7AB317
+          border: 2px solid #639213 
+          background: #89BC32 
           color: white
       &.warning
-        border: 3px solid #EEBFBF 
+        border: 2px solid #BC0000  
         color: #BC0000 
         &:hover, &.active
-          border: 3px solid #BC0000
+          border: 2px solid #9B0000 
           background: #BC0000 
           color: white
       &.debug
-        border: 3px solid #FDCB34
+        border: 2px solid #FDCB34 
         color: #FDCB34 
         &:hover, &.active
-          border: 3px solid #FDCB34
+          border: 2px solid #F1B603 
           background: #FDCB34 
           color: white
 
@@ -309,74 +313,80 @@ $log_width: 800px
   margin: 20px
   width: $log_width
   li
-    padding-bottom: 20px
+    padding-bottom: 10px
+    margin-bottom: 10px
     float: left
     clear: left
     width: $log_width
+    a.collapse
+      float: right
+      font-size: 1.6em
+      color: black
+      outline: none
     .heading
       float: left
+      padding-top: 15px
       width: $log_width
-      height: 30px
-      background: #FBFBFB
-      border: 3px solid #F0F0F0
-      +border-radius(6px)
+      border-top: 3px solid #F1F1F1 
     span.date
       color: #858585
       font-size: 1.4em
       float: left
-      margin:
-        top: 9px
-        left: 8px
     pre.log_content
       font-size: 1.4em
       line-height: 1.4em
       float: left
       clear: left
-      padding-top: 10px
-      width: $log_width
+      padding: 10px
+        left: 0px
+      width: $log_width - 20px
       display: block
       code
         word-wrap: normal
         white-space: normal
         display: block
-        width: $log_width
+        width: $log_width - 20px
     span.level
       float: right
-      height: 14px
-      width: 60px
-      +border-right-radius(4px)
-      color: white
-      font-weight: bold
-      font-size: 1.4em
-      padding: 8px
-        left: 10px
-        right: 10px
-      text-align: center
-      &.notset
-        background: url(../images/grey_bar.png)
+      margin: 10px
+        right: 0px
+        top: 0px
+      width: 10px
+      height: 10px
+      +border-radius(8px)
       &.warning
-        background: url(../images/red_bar.png)
+        background: #BC0000
+        border: 2px solid #9B0000 
       &.info
-        background: url(../images/green_bar.png)
+        background: #89BC32
+        border: 2px solid  #639213 
       &.debug
-        background: url(../images/yellow_bar.png)
+        background: #FDCB34
+        border: 2px solid #F1B603 
 // Exceptions 
 .exceptions_list
   @extend .log_list
   li
     padding-bottom: 10px
+  a.collapse
+    margin-top: -16px
   div.heading
     height: 100%
-    +border-bottom-radius(0px)
     span.occurrences
       float: left
-      width: 45px
-      height: 40px
-      background: url(../images/exception_counter.png) no-repeat
-      margin: 8px
+      height: 12px
+      width: 20px
+      margin-right: 10px
+      background: #F0F0F0
+      padding: 14px
+        top: 8px
+        bottom: 16px
+      border: 2px solid #DBDBDB 
+      +border-radius(4px)
+      color: #2B3239 
       text-align: center
-      line-height: 3em
-      font-size: 1.4em
+      line-height: 1.4em
+      font-size: 1.6em
       font-weight: bold
     div.exception_info
       float: left
@@ -385,22 +395,10 @@ $log_width: 800px
       width: 90%
       float: left
       clear: left
-      font-size: 1.4em
+      font-size: 1.6em
       padding:
-        left: 8px
         top: 10px
         bottom: 10px
-    a.collapse
-      width: 27px
-      height: 20px
-      background: url(../images/collapse.png) no-repeat
-      margin:
-        right: 10px
-        top: -4px
-      float: right
-      outline: none
-      &:hover, &.active
-        background-position: 0px -20px
   div.exception_additional_data
     float: left
     display: none
@@ -473,13 +471,14 @@ $full_bar: 500px
 .timestamp
   float: left
   font-size: 1.4em
-  margin-top: 8px
   color: #727272
 ul.stats_bars
   float: left
   clear: left
   margin-left: 25px
   margin-bottom: 20px
+  .timestamp
+    margin-top: 8px
   li
     float: left
     clear: left

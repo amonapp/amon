@@ -2,7 +2,7 @@
 <li>
 <div class="heading">
 	<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
-	<span class='level {{ log.level }}'>{{ log.level }}</span>
+	<span class='level {{ log.level }}' title='{{ log.level }}'></span>
 </div>
 <pre class='log_content'><code>{{ log.message|beautify_json }}</code></pre>
 </li>

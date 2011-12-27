@@ -222,9 +222,16 @@ def url(*args):
 
 def beautify_json(value):
 	if isinstance(value, dict):
-		return json.dumps(value) # Remove the unicode symbol
+		return json.dumps(value, indent=4) # Remove the unicode symbol
 	else:
 		return value
+
+# Used in the log page. Displays the expand button if the value is dictionary
+def is_dict(value):
+	if isinstance(value, dict):
+		return True
+	else:
+		return False
 
 
 def base_url():
@@ -261,6 +268,9 @@ def render(template, *args, **kwargs):
 	env.filters['progress_width'] = progress_width
 	env.filters['progress_width_percent'] = progress_width_percent
 	env.filters['format_float'] = format_float
+
+	# Log filters
+	env.filters['is_dict'] = is_dict
 
 	try:
 		template = env.get_template(template)
