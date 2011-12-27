@@ -652,7 +652,35 @@ ul.options_list
         &.cancel
           color: #747474 
           cursor: pointer
-
-		 
-
-
+ul.pagination
+  float: right
+  margin-bottom: 20px
+  li
+    float: left
+    margin-left: 15px
+    input[type=text]
+      width: 28px
+      height: 28px
+      border: 2px solid #E1E1E1 
+      padding: 0px
+      text-align: center
+      float: left
+    span.total_pages
+      float: left
+      font-size: 1.6em
+      margin-left: 6px
+      margin-top: 8px
+    a
+      width: 32px
+      float: left
+      display: block
+      height: 32px
+      background: url(../images/next-previous.png) no-repeat
+      &.previous
+        background-position: 0px 0px
+        &:hover
+          background-position: 0px -32px
+      &.next
+        background-position: -32px 0px
+        &:hover
+          background-position: -32px -32px

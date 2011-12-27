@@ -43,8 +43,14 @@ class BaseView(tornado.web.RequestHandler):
 				pass
 
 			# Check is the page is in the list with pages that a read-only by default
+			current_page = self.request.uri.split('?')
+			try:
+				url = current_page[0]
+			except:
+				url = self.request.uri
+
 			list = ['/', '/exceptions', '/logs', '/system', '/processes']
-			if self.request.uri in list:
+			if url in list:
 				return 1
 			else:
 				 return None

@@ -12,7 +12,32 @@ class BaseModel(object):
 		#  os.environ['AMON_ENV'] = 'test'
 		if getenv('AMON_ENV', None) == 'test':
 			self.mongo.database = 'amon_test'
+
+	def paginate(self, cursor, page=None):
 		
+		page = int(page)
+
+		page = 1 if page == None else page
+		page = 1 if page == 0 else page
+		
+		page_size = 10
+		rows = cursor.clone().count()
+		total_pages = rows/page_size
+
+		page = total_pages if page > total_pages else page
+
+		skip = page_size * (page - 1)
+
+
+		result = cursor.limit(page_size).skip(skip)
+
+		pagination = {
+				"pages": total_pages, 
+				"current_page": page,
+				"result": result 
+		}
+		
+		return pagination
 
 class DashboardModel(BaseModel):
 	
@@ -121,8 +146,9 @@ class LogModel(BaseModel):
 		super(LogModel, self).__init__()
 		self.collection = self.mongo.get_collection('logs') 
 
-	def get_logs(self):
-		logs = self.collection.find().sort('time', DESCENDING)
+	def get_logs(self, page=None):
+		query = self.collection.find().sort('time', DESCENDING)
+		logs = self.paginate(query, page)
 
 		return logs
 

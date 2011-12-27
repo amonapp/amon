@@ -179,8 +179,9 @@ class LogsView(BaseView):
 
 	@authenticated
 	def get(self):
+		page = self.get_argument('page',1)
 
-		logs = log_model.get_logs()
+		logs = log_model.get_logs(page)
 		unread_model.mark_logs_as_read()
 
 		self.render('logs.html',

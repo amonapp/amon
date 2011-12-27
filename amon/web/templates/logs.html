@@ -40,7 +40,7 @@ Logs
 </ul>
 </form>
 <ul class='log_list' id="log_list">
-	{% for log in logs  %}
+	{% for log in logs.result  %}
 	<li>
 	<div class="heading">
 		<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
@@ -54,6 +54,23 @@ Logs
 	<pre class='log_content'><code id='code_block-{{ loop.index }}'>{{ log.message|beautify_json }}</code></pre>
 	</li>
 	{% endfor %}
+</ul>
+<ul class='pagination'>
+	{% if logs.current_page > 1 %}
+	<li>
+		<a class='previous' href="{{ base_url|url('logs') }}?page={{ logs.current_page-1 }}" title='Previous page'></a>
+	</li>
+	{% endif %}
+	<li>
+		<input type="text" value="{{ logs.current_page }}" />
+		<span class="total_pages">/ {{ logs.pages }}</span>
+	</li>
+	{% if logs.pages > logs.current_page %}
+	<li>
+		<a class='next' title='Next page' href="{{ base_url|url('logs') }}?page={{ logs.current_page+1 }}"></a>
+	</li>
+	{% endif %}
+
 </ul>
 {% endblock content %}
 {% block js %}
