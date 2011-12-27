@@ -28,18 +28,46 @@ fi
 sudo rm /etc/amon.conf
 
 # Remove the directory with the Amon log files
-sudo rm -rf "$amon_dir" # Delete /usr/local/amon
+if [ -d "$amon_dir" ]; then
+	sudo rm -rf "$amon_dir" # Delete /usr/local/amon
+fi
 
 # Remove Amon and mongo from the startup scripts
 chkconfig --del amond
 
 # Delete Mongo
 if [ $delete_mongo == 'with-mongo' ]; then
-	sudo /etc/init.d/mongodb stop #Stop the daemon
-	sudo rm -rf $mongo_install_dir # Delete /usr/local/mongodb
-	sudo rm /etc/init.d/mongodb # Remove the process from the startup list
-	chkconfig --del mongodb 
-	sudo rm /usr/bin/mongo
+	
+	function is_integer() {
+		s=$(echo $1 | tr -d 0-9)
+		if [ -z "$s" ]; then
+			return 0
+		else
+			return 1
+		fi
+	}
+	
+	if [ -e /etc/init.d/mongodb ]; then
+		sudo /etc/init.d/mongodb stop # Stop the daemon
+		sudo rm /etc/mongodb.conf # Delete the configuration file
+		sudo rm /etc/init.d/mongodb 
+	fi
+	
+	if [ -d "$mongo_install_dir" ]; then
+		sudo rm -rf $mongo_install_dir # Delete /usr/local/mongodb
+	fi
+	
+	if [ -e /usr/bin/mongo ]; then
+		sudo rm  /usr/bin/mongo # Delete the mongo executable in /usr/bin
+	fi
+
+	chkconfig --del mongodb # Remove the process from the startup list 
+	
+	mongo_pid=$(ps aux | grep mongo | grep -v grep | awk '{print $2}')
+	sudo kill -9 $mongo_pid > /dev/null # Kill the mongo process by pid if the /etc method fails
+	
+	echo "*** MongoDB succesfully removed"
+
 fi 
 
 

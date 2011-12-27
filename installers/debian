@@ -121,12 +121,12 @@ echo "***  Installing Amon $version ..."
 
 		# Copy the mongo configuration file, only if it doesn't exist
 		if ! file_exists "/etc/mongodb.conf"; then
-			sudo cp amon-$version/contrib/mongodb/mongodb.conf /etc/mongodb.conf
+			sudo cp amon/contrib/mongodb/mongodb.conf /etc/mongodb.conf
 		fi
 
 		# Copy the system daemon
 		if ! file_exists "/etc/init.d/mongodb"; then
-			sudo cp amon-$version/contrib/mongodb/debian/mongodb /etc/init.d/mongodb
+			sudo cp amon/contrib/mongodb/debian/mongodb /etc/init.d/mongodb
 		fi
 
 		# Make the mongo daemon executable
@@ -145,7 +145,7 @@ echo "***  Installing Amon $version ..."
 		echo ""
 
 		sudo /etc/init.d/mongodb start
-		sleep 3 # Wait for Mongo to write the journal files
+		sleep 5 # Wait for Mongo to write the journal files
 	}
 	
 	echo ""
@@ -173,7 +173,7 @@ echo "***  Installing Amon $version ..."
 # All done!
   
   # If the collector daemon is running - restart it 
-  if  pgrep amond > /dev/null; then
+  if  pgrep -x amond > /dev/null; then
 	  echo "*** Amon succesfully updated"
 	  sudo /etc/init.d/amond restart
   else
@@ -184,7 +184,7 @@ echo "***  Installing Amon $version ..."
   fi
 
   # If the web application is running - restart it 
-  if  pgrep amon > /dev/null; then
+  if  pgrep -x amon > /dev/null; then
 	  sudo /etc/init.d/amon restart
   fi
 
