@@ -224,7 +224,7 @@ div.input_background
   float: left
   clear: left
   +border-radius(6px)
-input[type=text]
+input[type=text] 
   clear: both
   float: left
   width: 320px
@@ -238,75 +238,8 @@ input[type=text]
     border: 1px solid #7AB317 
     +box-shadow(#DEECC5 0px 0px 4px) 
   // Logs
-.logs_filter
-  width: 100%
-  margin-top: 25px
-  float: left
-  margin-bottom: 6px
-  li
-    float: left
-    font-size: 1.4em
-    margin-left: 20px
-    line-height: 1.6em
-    &.search
-      float: right
-      margin-top: -5px
-    span
-      margin-top: 5px
-      float: left
-    span.notset
-      color: #D2D2D2 
-    span.info
-      color: #92C142 
-    span.debug
-      color: #F1B602
-    span.warning
-      color: #FF0000 
-    input[type=text]
-      width: 350px
-      float: right
-      font-size: 1em
-    a.button
-      border: 1px solid white
-      padding-bottom: 5px
-      padding-left: 15px
-      padding-right: 15px
-      color: #7AB317  
-      float: left
-      outline: none
-      text-decoration: none
-      +border-radius(6px)
-      input[type=checkbox]
-        display: none
-      &.notset
-        border: 2px solid #F1F1F1   
-        color: #7E8285
-        &:hover, &.active
-          background: #FBFBFB 
-          border: 2px solid #F2F2F2 
-          color: #7A7A7A 
-      &.info
-        border: 2px solid #89BC32 
-        color: #89BC32 
-        &:hover, &.active
-          border: 2px solid #639213 
-          background: #89BC32 
-          color: white
-      &.warning
-        border: 2px solid #BC0000  
-        color: #BC0000 
-        &:hover, &.active
-          border: 2px solid #9B0000 
-          background: #BC0000 
-          color: white
-      &.debug
-        border: 2px solid #FDCB34 
-        color: #FDCB34 
-        &:hover, &.active
-          border: 2px solid #F1B603 
-          background: #FDCB34 
-          color: white
-
+.logs_update_button
+  margin-top: 3px
 $log_width: 800px
 .log_list
   float: left

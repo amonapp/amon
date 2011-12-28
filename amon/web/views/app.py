@@ -180,13 +180,17 @@ class LogsView(BaseView):
 	@authenticated
 	def get(self):
 		page = self.get_argument('page',1)
+		tags = self.get_arguments('tags', None)
+		query = self.get_argument('query', None)
 
-		logs = log_model.get_logs(page)
+		logs = log_model.get_logs(tags, query, page)
 		unread_model.mark_logs_as_read()
 
 		self.render('logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
+					 tags=tags,
+					 query=query
 					 )
 
 

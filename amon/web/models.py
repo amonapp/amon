@@ -145,8 +145,18 @@ class LogModel(BaseModel):
 		super(LogModel, self).__init__()
 		self.collection = self.mongo.get_collection('logs') 
 
-	def get_logs(self, page=None):
-		query = self.collection.find().sort('time', DESCENDING)
+	def get_logs(self, tags=None, search=None, page=None):
+		params = {}
+		
+		if tags:
+			level_params = [{'level': x} for x in tags]
+			params = {"$or" : level_params}
+
+		if search:
+			params['_searchable'] = { "$regex": str(search), "$options": 'i'}
+
+		query = self.collection.find(params).sort('time', DESCENDING)
+
 		logs = self.paginate(query, page)
 
 		return logs

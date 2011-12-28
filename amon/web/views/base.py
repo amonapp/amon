@@ -19,7 +19,8 @@ class BaseView(tornado.web.RequestHandler):
 		# Template variables. Passing that dictionary to Jinja
 		self.template_vars = {
 			"user": self.current_user,
-			"unread_values": unread_values
+			"unread_values": unread_values,
+			"url": self.request.uri
 		}
 
 		super(BaseView, self).initialize()

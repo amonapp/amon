@@ -5,37 +5,30 @@ Logs
 {% block breadcrumb %}
 Logs 
 {% endblock %}
+{% block header %}
+	<link rel="stylesheet" href="/media/css/chosen.css" />
+{% endblock %}
 {% block content %}
+{{ app.url }}
 <form action="{{ base_url|url('logs') }}" method='get' id='logs_filter_form'>
-<ul class='logs_filter'>
+<ul class='tabs'>
 	<li>
-		<a href="" class="button notset">
-			<input type="checkbox" name='level[]' value='notset' /> 
-			<span>notset</span>
-		</a>
-	</li>
-	<li>
-		<a href="" class="button info">
-		<input type="checkbox" name='level[]' value='info' /> 
-		<span>info</span>
-		</a>
-	</li>
-	<li>
-		<a href="" class="button warning">
-		<input type="checkbox" name='level[]' value='warning' /> 
-		<span>warning</span>
-		</a>
-	</li>
-	<li>
-		<a href="" class="button debug">
-		<input type="checkbox" name='level[]' value='debug'/>
-		<span>debug</span>
-		</a>
-	</li>
-	<li class='search'>
 		<div class="input_background">
-		<input type="text" id="filter" name="filter" placeholder="Search" value="{% if filter != None %}{{ filter }}{% endif %}" />
+		<select id='tags-select' name='tags' style="width:320px;" tabindex="3" multiple="" data-placeholder="Select level">
+			<option {% if 'notset' in tags %}selected="selected"{% endif %} value="notset">notset</option>
+			<option {% if 'info' in tags %}selected="selected"{% endif %} value="info">info</option>
+			<option {% if 'warning' in tags %}selected="selected"{% endif %} value="warning">warning</option>
+			<option {% if 'debug' in tags %}selected="selected"{% endif %} value="debug">debug</option>
+		</select>
 		</div>
+		</li>
+	<li >
+		<div class="input_background">
+		<input type="text" name="query" placeholder="Search" value="{% if query != None %}{{ query.0 }}{% endif %}" />
+		</div>
+	</li>
+	<li class='logs_update_button'>
+		<input type="submit" class="button update" value="Update" />
 	</li>
 </ul>
 </form>
@@ -58,7 +51,7 @@ Logs
 <ul class='pagination'>
 	{% if logs.current_page > 1 %}
 	<li>
-		<a class='previous' href="{{ base_url|url('logs') }}?page={{ logs.current_page-1 }}" title='Previous page'></a>
+		<a class='previous' href="{{ base_url }}{{ app.url }}?page={{ logs.current_page-1 }}" title='Previous page'></a>
 	</li>
 	{% endif %}
 	<li>
@@ -67,16 +60,19 @@ Logs
 	</li>
 	{% if logs.pages > logs.current_page %}
 	<li>
-		<a class='next' title='Next page' href="{{ base_url|url('logs') }}?page={{ logs.current_page+1 }}"></a>
+	<a class='next' title='Next page' href="{{ base_url }}{{ app.url }}{% if query == None %}&{% endif %}?page={{ logs.current_page+1 }}">
+	</a>
 	</li>
 	{% endif %}
 
 </ul>
 {% endblock content %}
 {% block js %}
-<script type="text/javascript" src='/media/js/form2object.min.js'></script>
 <script type="text/javascript" src='/media/js/spin.min.js'></script>
+<script type="text/javascript" src='/media/js/chosen/chosen.jquery.min.js'></script>
 <script type="text/javascript">
+
+	$("#tags-select").chosen(); 	
 	$('.timestamp').relativeDate();
 
 	var opts = {
@@ -91,50 +87,6 @@ Logs
 	};
 	var target = document.getElementById('log_list');
 	var spinner = new Spinner(opts);
-
-	function submit_filter_form()
-	{
-		form_data = form2object('logs_filter_form', '.', true);
-		$('#log_list').empty();
-		spinner.spin(target);
-		
-		var filter = $.post("/logs", form_data);
-		
-		filter.complete(function(data) { 
-			spinner.stop();
-			$('#log_list').append(data.responseText);
-			$('.timestamp').relativeDate();
-		});
-	}
-
-	$(".logs_filter input[type=checkbox]").click(function()
-	{
-		submit_filter_form();
-	});
-	$('#filter').keyup(function(event) 
-	{
-		var value = $(this).val();
-		if(value.length > 3)
-		{
-			submit_filter_form();
-		}
-
-		if(value.length == 0)
-		{
-			submit_filter_form();
-		}
-
-	});
-	$('.button').click(function(event){
-		event.preventDefault(); 	
-		
-		var checkbox = $(this).find('input[type=checkbox]');
-		(checkbox.is(":checked")) ? checkbox.removeAttr("checked") : checkbox.attr("checked","true");
-		$(this).toggleClass('active'); 
-    
-
-		submit_filter_form();
-	});
 
 	$('.collapse').click(function(e){
 		
