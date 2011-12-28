@@ -4,6 +4,8 @@ from hashlib import sha1
 from os import getenv
 
 class BaseModel(object):
+	
+	page_size = 10
 
 	def __init__(self):
 		self.mongo = MongoBackend()
@@ -15,21 +17,18 @@ class BaseModel(object):
 
 	def paginate(self, cursor, page=None):
 		
-		page = int(page)
-
-		page = 1 if page == None else page
+		page = 1 if page == None else int(page)
 		page = 1 if page == 0 else page
 		
-		page_size = 10
 		rows = cursor.clone().count()
-		total_pages = rows/page_size
-
+		total_pages = rows/self.page_size
+		total_pages = 1 if total_pages == 0 else total_pages
+		
 		page = total_pages if page > total_pages else page
 
-		skip = page_size * (page - 1)
+		skip = self.page_size * (page - 1)
 
-
-		result = cursor.limit(page_size).skip(skip)
+		result = cursor.limit(self.page_size).skip(skip)
 
 		pagination = {
 				"pages": total_pages, 

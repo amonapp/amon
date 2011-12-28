@@ -6,7 +6,8 @@ from amon.web.models import (
 	ExceptionModel,
 	DashboardModel,
 	UserModel,
-	UnreadModel
+	UnreadModel,
+	BaseModel
 )
 from nose.tools import eq_
 from time import time
@@ -129,7 +130,7 @@ class TestLogModel(unittest.TestCase):
 		self.logs.insert({"level" : "info", "message" : "test"})
 		
 		result = self.model.get_logs()
-		eq_(result.count(), 3)
+		eq_(result['result'].count(), 3)
 		
 		self.logs.remove()
 
@@ -263,3 +264,46 @@ class TestUserModel(unittest.TestCase):
 		result = self.model.username_exists("test")
 		eq_(result, 1)
 
+class TestPagination(unittest.TestCase):
+
+	def setUp(self):
+		self.model = BaseModel()
+		self.model.page_size = 10
+		self.collection = self.model.mongo.get_collection('logs')
+		self.collection.remove()
+
+
+	def test_one_page(self):
+
+		for i in range(0,10):
+			dict = {'id': i}
+			self.collection.insert(dict)
+
+		result = self.collection.find()
+
+		paginate = self.model.paginate(result)
+		
+		eq_(paginate['pages'], 1)
+		eq_(paginate['result'].count(), 10)
+
+		self.collection.remove()
+
+
+	def test_multiple_pages(self):
+		
+		for i in range(0, 50):
+			dict = {'id': i}
+			self.collection.insert(dict)
+
+		result = self.collection.find()
+
+		paginate = self.model.paginate(result)
+		
+		eq_(paginate['pages'], 5)
+		# Count ignores limit and skip by default, overwriting the default with 'True'
+		eq_(paginate['result'].count('True'), 10)
+		
+		self.collection.remove()
+
+
+	
