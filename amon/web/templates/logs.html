@@ -9,7 +9,6 @@ Logs
 	<link rel="stylesheet" href="/media/css/chosen.css" />
 {% endblock %}
 {% block content %}
-{{ app.url }}
 <form action="{{ base_url|url('logs') }}" method='get' id='logs_filter_form'>
 <ul class='tabs'>
 	<li>
@@ -24,7 +23,7 @@ Logs
 		</li>
 	<li >
 		<div class="input_background">
-		<input type="text" name="query" placeholder="Search" value="{% if query != None %}{{ query.0 }}{% endif %}" />
+		<input type="text" name="query" id="query" placeholder="Search" value="{% if query != None %}{{ query.0 }}{% endif %}" />
 		</div>
 	</li>
 	<li class='logs_update_button'>
@@ -48,11 +47,13 @@ Logs
 	</li>
 	{% endfor %}
 </ul>
+{% if logs.pages > 1 %}
 <ul class='pagination'>
 	{% if logs.current_page > 1 %}
 	<li>
-		<a class='previous' href="{{ base_url }}{{ app.url }}?page={{ logs.current_page-1 }}" title='Previous page'></a>
+		<a class='previous' href="{{ base_url|url('logs')|query_dict({'tags': tags, 'query': query }, logs.current_page-1) }}" title='Previous page'></a>
 	</li>
+
 	{% endif %}
 	<li>
 		<input type="text" value="{{ logs.current_page }}" />
@@ -60,12 +61,12 @@ Logs
 	</li>
 	{% if logs.pages > logs.current_page %}
 	<li>
-	<a class='next' title='Next page' href="{{ base_url }}{{ app.url }}{% if query == None %}&{% endif %}?page={{ logs.current_page+1 }}">
+	<a class='next' title='Next page' href="{{ base_url|url('logs')|query_dict({'tags': tags, 'query': query},logs.current_page+1) }}">
 	</a>
 	</li>
 	{% endif %}
-
 </ul>
+{% endif %}
 {% endblock content %}
 {% block js %}
 <script type="text/javascript" src='/media/js/spin.min.js'></script>
@@ -104,6 +105,20 @@ Logs
 		
 		e.preventDefault(); 
 	});
+
+
+	$("#logs_filter_form").submit(function()
+    {
+		// Check the query element
+		query_val = $('#query').val();
+
+		// Remove it from the form and submit
+		if(query_val == ''){
+			$('#query').attr('disabled', 'disabled');
+		}
+
+        return true; // ensure form still submits
+    });
 
 	
 </script>

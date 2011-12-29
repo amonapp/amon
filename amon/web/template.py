@@ -233,6 +233,32 @@ def is_dict(value):
 	else:
 		return False
 
+# url -> usually the base url -> http://something.com
+# params_dict -> dict {"tags": ['test', 'some'], "other_param": ['test']}
+def query_dict(url, params_dict, page):
+	
+	query_lists = []
+	for dict in params_dict:
+		dict_items = []
+		values_list = params_dict[dict]
+		if values_list:
+			for value in values_list:
+				dict_items.append("{0}={1}".format(dict, value))
+			# Join all the values
+			query_lists.append("&".join(dict_items))
+		
+	# Finally separate the different params with ?
+	query_string = url
+	
+	if len(query_lists) > 0:
+		query_string+='?'
+		query_string+= "?".join(query_lists)
+		query_string+="&page={0}".format(page)
+	# No params - only the page number
+	else:
+		query_string+="?page={0}".format(page)
+	
+	return query_string
 
 def base_url():
 	host = settings.WEB_APP['host']
@@ -271,6 +297,7 @@ def render(template, *args, **kwargs):
 
 	# Log filters
 	env.filters['is_dict'] = is_dict
+	env.filters['query_dict'] = query_dict
 
 	try:
 		template = env.get_template(template)
