@@ -272,7 +272,6 @@ class TestPagination(unittest.TestCase):
 		self.collection = self.model.mongo.get_collection('logs')
 		self.collection.remove()
 
-
 	def test_one_page(self):
 
 		for i in range(0,10):

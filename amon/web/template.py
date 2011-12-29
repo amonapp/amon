@@ -235,7 +235,7 @@ def is_dict(value):
 
 # url -> usually the base url -> http://something.com
 # params_dict -> dict {"tags": ['test', 'some'], "other_param": ['test']}
-def query_dict(url, params_dict, page):
+def query_dict(url, params_dict, page=None):
 	
 	query_lists = []
 	for dict in params_dict:
@@ -253,10 +253,12 @@ def query_dict(url, params_dict, page):
 	if len(query_lists) > 0:
 		query_string+='?'
 		query_string+= "?".join(query_lists)
-		query_string+="&page={0}".format(page)
+		if page != None:
+			query_string+="&page={0}".format(page)
 	# No params - only the page number
 	else:
-		query_string+="?page={0}".format(page)
+		if page != None:
+			query_string+="?page={0}".format(page)
 	
 	return query_string
 

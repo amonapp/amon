@@ -36,9 +36,7 @@ Logs
 	<li>
 	<div class="heading">
 		<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
-		{% if log.level != 'notset' %}
-			<span class='level {{ log.level }}' title='{{ log.level }}'></span>
-		{% endif %}
+			<span class='tag' title='{{ log.level }}'>{{ log.level }}</span>
 		{% if log.message|is_dict %}
 			<a class='collapse' rel='{{ loop.index }}' href="#">Expand</a>
 		{% endif %}

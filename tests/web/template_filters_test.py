@@ -135,4 +135,31 @@ class TestTemplateFilters(unittest.TestCase):
 		string = '//test---/'
 		clean = clean_slashes(string)
 		eq_(clean, 'test')
-	
+
+	def test_query_dict(self):
+		base_url = 'local'
+		
+		# Single parameter with single value
+		uri = query_dict(base_url, {'tags': ['test']},1)
+		eq_(uri, 'local?tags=test&page=1')
+
+		# Single parameter with multiple values
+		uri = query_dict(base_url, {'tags': ['test', 'more']},1)
+		eq_(uri, 'local?tags=test&tags=more&page=1')
+
+		# Single parameter, no page, no values
+		uri = query_dict(base_url, {'tags': []})
+		eq_(uri, 'local')
+
+		# Single parameter, page , no values
+		uri = query_dict(base_url, {'tags': []},1)
+		eq_(uri, 'local?page=1')
+		
+		# Multiple paramaters with multiple values
+		uri = query_dict(base_url, {'tags': ['test', 'more'], 'query': ['test','me']},1)
+		eq_(uri, 'local?query=test&query=me?tags=test&tags=more&page=1')
+		
+		# Single parameter, page , value is None
+		uri = query_dict(base_url, {'tags': None },1)
+		eq_(uri, 'local?page=1')
+
