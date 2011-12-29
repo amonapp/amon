@@ -5,7 +5,7 @@ from os import getenv
 
 class BaseModel(object):
 	
-	page_size = 10
+	page_size = 50
 
 	def __init__(self):
 		self.mongo = MongoBackend()

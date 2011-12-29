@@ -27,8 +27,8 @@ Exceptions
 		<ul class='exception_data'>
 					{% if exc.url %}
 						<li>
-						<h4>URL:</h4>
-						<p>{{ exc.url }}</p>
+							<h4>URL:</h4>
+							<span class='data url'>{{ exc.url }}</span>
 						</li>
 					{% endif %}
 			{% if exc.backtrace %}
