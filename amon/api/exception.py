@@ -1,5 +1,5 @@
 from time import time
-from amon.backends.mongodb import backend
+from amon.api.models import ExceptionAPIModel, CommonAPIModel
 from hashlib import md5
 
 """
@@ -16,7 +16,8 @@ class Exception(object):
 
 	def __init__(self):
 		self.exception = {}
-		self.collection = 'exceptions'
+		self.model = ExceptionAPIModel()
+		self.common_model = CommonAPIModel()
 
 	def __call__(self, *args, **kwargs):
 		
@@ -41,15 +42,14 @@ class Exception(object):
 		if enviroment: additional_data['enviroment'] = enviroment
 		if data: additional_data['data'] = data
 
-		exceptions_collection = backend.get_collection(self.collection)
-		exception_in_db = exceptions_collection.find_one({"exception_id" : exception_id})
+		exception_in_db = self.model.collection.find_one({"exception_id" : exception_id})
 
 		if exception_in_db is not None:
 			exception_in_db['last_occurrence'] = now
 			exception_in_db['additional_data'].insert(0, additional_data)
 			exception_in_db['total_occurrences']  = exception_in_db['total_occurrences']+1
 
-			exceptions_collection.update({'_id' : exception_in_db['_id']}, exception_in_db)
+			self.model.collection.update({'_id' : exception_in_db['_id']}, exception_in_db)
 		else:
 			entry = {'last_occurrence': now,
 					 'exception_id': exception_id,
@@ -61,14 +61,6 @@ class Exception(object):
 			entry['additional_data'] = [additional_data]
 			entry['total_occurrences'] = 1
 			
-			backend.store_entry(entry, self.collection)
+			self.model.save_exception(entry)
 			
-		
-		unread = backend.get_collection('unread')
-		unread_counter = unread.find({"id": 1}).count()
-
-		if unread_counter == 0:
-			_counter = {'id':1, 'exceptions': 1, 'logs': 0}
-			unread.save(_counter)
-		else:
-			unread.update({"id": 1}, {"$inc": {"exceptions": 1}})
+		self.common_model.upsert_unread('exceptions')

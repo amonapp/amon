@@ -11,16 +11,17 @@ Logs
 {% block content %}
 <form action="{{ base_url|url('logs') }}" method='get' id='logs_filter_form'>
 <ul class='tabs'>
+	{% if all_tags %}
 	<li>
 		<div class="input_background">
 		<select id='tags-select' name='tags' style="width:320px;" tabindex="3" multiple="" data-placeholder="Select level">
-			<option {% if 'notset' in tags %}selected="selected"{% endif %} value="notset">notset</option>
-			<option {% if 'info' in tags %}selected="selected"{% endif %} value="info">info</option>
-			<option {% if 'warning' in tags %}selected="selected"{% endif %} value="warning">warning</option>
-			<option {% if 'debug' in tags %}selected="selected"{% endif %} value="debug">debug</option>
+			{% for t in all_tags  %}
+				<option {% if t.tag in tags %}selected="selected"{% endif %} value="{{ t.tag }}">{{ t.tag }}</option>
+			{% endfor %}
 		</select>
 		</div>
 		</li>
+	{% endif %}
 	<li >
 		<div class="input_background">
 		<input type="text" name="query" id="query" placeholder="Search" value="{% if query != None %}{{ query.0 }}{% endif %}" />
@@ -36,7 +37,15 @@ Logs
 	<li>
 	<div class="heading">
 		<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
-			<span class='tag' title='{{ log.level }}'>{{ log.level }}</span>
+		{% if log.tags %}
+			{% if log.tags|is_str %}
+				<span class='tag' title='{{ log.tags }}'>{{ log.tags }}</span>
+			{% else %}
+				{% for tag in log.tags  %}
+					<span class='tag' title='{{ tag }}'>{{ tag }}</span>
+				{% endfor %}
+			{% endif %}
+		{% endif %}
 		{% if log.message|is_dict %}
 			<a class='collapse' rel='{{ loop.index }}' href="#">Expand</a>
 		{% endif %}

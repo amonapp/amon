@@ -10,7 +10,7 @@ from amon.core import settings
 class MongoBackend():
 
 	# Cron is for testing purposes
-	internal_collections = ['logs', 'exceptions', 'unread','cron','sessions', 'users']
+	internal_collections = ['logs', 'exceptions', 'unread','cron','sessions', 'users','tags']
 
 	host = settings.MONGO['host']
 	port = settings.MONGO['port']

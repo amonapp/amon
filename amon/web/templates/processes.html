@@ -5,9 +5,23 @@ Processes check
 {% block breadcrumb %}
 Processes check 
 {% endblock %}
+{% block header %}
+	<link rel="stylesheet" href="/media/css/chosen.css" />
+{% endblock %}
 {% block content %}
 <form action="{{ base_url|url('processes') }}">
 <ul class='tabs'>
+	<li>
+		<label for="">Select process:</label>
+		<div class="input_background system-charts-dropdown">
+		<select id='process-select' name='processes' style="width:220px;" tabindex="3" multiple="" data-placeholder="Select process">
+			{% for p in all_processes_checks  %}
+				<option {% if p in processes %}selected='selected' {% endif %} value="{{ p }}">{{ p }}</option>
+			{% endfor %}
+		</select>
+		</div>
+	</li>
+
 	<li>
 		<label for="">From:</label>
 		<div class="input_background">
@@ -25,7 +39,7 @@ Processes check
 	</li>
 </ul>
 </form>
-{% for process in processes  %}
+{% for process in processes_checks  %}
 {% set sanitized_process = process|clean_slashes %}
 <h2>{{ process }}</h2>
 <div class='legend'>
@@ -49,6 +63,7 @@ Processes check
 <script type="text/javascript" src='/media/js/jquery.flot.js'></script>
 <script type="text/javascript" src='/media/js/jquery-ui.min.js'></script>
 <script type="text/javascript" src='/media/js/jquery-ui-timepicker-addon.js'></script>
+<script type="text/javascript" src='/media/js/chosen/chosen.jquery.min.js'></script>
 <script type="text/javascript">
 	
 	{% for process in process_data  %}
@@ -91,6 +106,7 @@ var datetime_options = {
 };
 $('#date_from').datetimepicker(datetime_options);
 $('#date_to').datetimepicker(datetime_options);
+$("#process-select").chosen(); 	
 </script>
 
 {% endblock %}

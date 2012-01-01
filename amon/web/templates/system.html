@@ -5,9 +5,24 @@ System check
 {% block breadcrumb %}
 System check 
 {% endblock %}
+{% block header %}
+	<link rel="stylesheet" href="/media/css/chosen.css" />
+{% endblock %}
 {% block content %}
 <form action="{{ base_url|url('system') }}">
 <ul class='tabs'>
+	<li>
+		<label for="">Select charts:</label>
+		<div class="input_background system-charts-dropdown">
+		<select id='charts-select' name='charts' style="width:220px;" tabindex="3" multiple="" data-placeholder="Select charts">
+			<option {% if 'memory' in charts %}selected="selected"{% endif %} value="memory">Memory</option>
+			<option {% if 'cpu' in charts %}selected='selected' {% endif %} value="cpu">CPU</option>
+			<option {% if 'loadavg' in charts %}selected='selected' {% endif %} value="loadavg">Load Average</option>
+			<option {% if 'network' in charts %}selected='selected' {% endif %} value="network">Network</option>
+			<option {% if 'disk' in charts %}selected='selected' {% endif %} value="disk">Disk</option>
+		</select>
+		</div>
+	</li>
 	<li>
 		<label for="">From:</label>
 		<div class="input_background">
@@ -25,6 +40,8 @@ System check
 	</li>
 </ul>
 </form>
+{% if 'memory' in active_checks %}
+
 <h2>Memory</h2>
 <div class='legend'>
 	<ul>
@@ -39,7 +56,9 @@ System check
 	</ul>
 </div>
 <div class="chart" id="memory"></div>
+{% endif %}
 
+{% if 'loadavg' in active_checks %}
 <h2>Loadavg</h2>
 <div class='legend'>
 	<ul>
@@ -58,8 +77,9 @@ System check
 	</ul>
 </div>
 <div class="chart" id="loadavg"></div>
+{% endif %}
 
-
+{% if 'cpu' in active_checks %}
 <h2>CPU</h2>
 <div class='legend'>
 		<ul>
@@ -79,35 +99,38 @@ System check
 </div>
 
 <div class="chart" id="cpu"></div>
+{% endif %}
 
 
 
+{% if 'network' in active_checks %}
 
 {% if network_interfaces %}
 <h2>Network</h2>
-{% for interface in network_interfaces %}
-{% if interface != 'lo' %}
-	<h3>{{ interface }}</h3>
-	<div class='legend'>
-		<ul>
-			<li>
-				<span class="color one"></span>
-				<span>Recieved</span>
-			</li>
-			<li>
-			<span class="color two"><!-- --></span>
-				<span class='last'>Transfered</span>
-			</li>
-		</ul>
-	</div>
-	<div class="chart" id="network_{{ interface }}"></div>
+	{% for interface in network_interfaces %}
+	{% if interface != 'lo' %}
+		<h3>{{ interface }}</h3>
+		<div class='legend'>
+			<ul>
+				<li>
+					<span class="color one"></span>
+					<span>Recieved</span>
+				</li>
+				<li>
+				<span class="color two"><!-- --></span>
+					<span class='last'>Transfered</span>
+				</li>
+			</ul>
+		</div>
+		<div class="chart" id="network_{{ interface }}"></div>
+	{% endif %}
+	{% endfor %}
+	{% endif %}
 {% endif %}
-{% endfor %}
 
-{% endif %}
-
-<h2>Disk</h2>
-{% for volume in volumes  %}
+{% if 'disk' in active_checks %}
+	<h2>Disk</h2>
+	{% for volume in volumes  %}
 	<h3>{{ volume }}</h3>
 	<div class='legend'>
 		<ul>
@@ -123,18 +146,23 @@ System check
 	</div>
 	<div class="chart" id="disk_{{ volume|clean_slashes  }}"></div>
 	{% endfor %}
+{% endif %}
 
 {% endblock %}
 {% block js %}
 <script type="text/javascript" src='/media/js/jquery.flot.js'></script>
 <script type="text/javascript" src='/media/js/jquery-ui.min.js'></script>
 <script type="text/javascript" src='/media/js/jquery-ui-timepicker-addon.js'></script>
+<script type="text/javascript" src='/media/js/chosen/chosen.jquery.min.js'></script>
 <script language="javascript" type="text/javascript">
 $(function () 
 {
 
+
 	var xaxis =  { mode: 'time',  timeformat: "%d/%m %H:%M" };
 
+	{% if 'memory' in active_checks %}
+	
 	var memory_free = [{% for m in checks.memory.clone() %}
 	[{{ m.time * 1000 }}, {% if not m.last %} {{ m.memfree }} {% else %} 0 {% endif %}],
 	{% endfor %} ]
@@ -153,7 +181,10 @@ $(function ()
 				yaxis: { min: 0 },
 			});
 
-
+	{% endif %}
+	
+	{% if 'loadavg' in active_checks %}
+	
 	var loadavg_minute = [{% for l in checks.loadavg.clone() %}
 	[{{ l.time * 1000 }}, {% if not l.last %} {{ l.minute }} {% else %} 0 {% endif %} ],
 	{% endfor %} ]
@@ -180,7 +211,10 @@ $(function ()
 				yaxis: { min: 0 },
 			});
 
-
+	{% endif %}
+	
+	{% if 'cpu' in active_checks %}
+	
 	var cpu_idle = [{% for c in checks.cpu.clone()  %}
 	[{{ c.time * 1000 }}, {% if not c.last %} {{ c.idle }} {% else %} 0 {% endif %} ],
 	{% endfor %}]
@@ -204,6 +238,11 @@ $(function ()
 	
 			});
 
+	{% endif %}
+	
+	{% if 'network' in active_checks %}
+	
+	{% endif %}
 	{% for interface  in network_interfaces  %}
 		
 		var network_recieved_{{ interface }} =   [
@@ -228,6 +267,8 @@ $(function ()
 	{% endfor %}
 
 
+	{% if 'disk' in active_checks %}
+	
 	{% for volume in volumes  %}
 	
 	var disk_total_{{ volume|clean_slashes  }} =	[
@@ -251,7 +292,7 @@ $(function ()
 			});
 	{% endfor %}
 
-
+	{% endif %}
 
 });
 var datetime_options = {
@@ -266,7 +307,7 @@ var datetime_options = {
 };
 $('#date_from').datetimepicker(datetime_options);
 $('#date_to').datetimepicker(datetime_options);
-
+$("#charts-select").chosen(); 	
 </script>
 {% endblock %}
 

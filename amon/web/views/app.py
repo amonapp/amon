@@ -56,6 +56,7 @@ class SystemView(BaseView):
 		
 		date_from = self.get_argument('date_from', False)
 		date_to = self.get_argument('date_to', False)
+		charts = self.get_arguments('charts', None)
 
 		if date_from:
 			date_from = datestring_to_unixtime(date_from)
@@ -72,7 +73,10 @@ class SystemView(BaseView):
 		else:
 			date_to = datetime_to_unixtime(self.now)
 		
-		active_checks = settings.SYSTEM_CHECKS
+		if len(charts) > 0:
+			active_checks = charts
+		else:
+			active_checks = settings.SYSTEM_CHECKS
 	
 		checks = system_model.get_system_data(active_checks, date_from, date_to)
 		first_check_date = system_model.get_first_check_date()
@@ -106,6 +110,8 @@ class SystemView(BaseView):
 
 			self.render('system.html',
 						  current_page='system',
+						  active_checks=active_checks,
+						  charts=charts,
 						  checks=checks,
 						  network=network,
 						  network_interfaces=network_interfaces,
@@ -127,6 +133,9 @@ class ProcessesView(BaseView):
 		day = timedelta(hours=24)
 		_yesterday = self.now - day
 
+		processes = self.get_arguments('processes', None)
+
+
 		date_from = self.get_argument('date_from', False)
 		date_to = self.get_argument('date_to', False)
 
@@ -140,13 +149,19 @@ class ProcessesView(BaseView):
 		else:
 			date_to = datetime_to_unixtime(self.now)
 
+		all_processes_checks = settings.PROCESS_CHECKS
 		
-		processes = settings.PROCESS_CHECKS
-		process_data = process_model.get_process_data(processes, date_from, date_to)
-
+		if len(processes) > 0:
+			processes_checks = processes
+		else:
+			processes_checks = settings.PROCESS_CHECKS
+		
+		process_data = process_model.get_process_data(processes_checks, date_from, date_to)
 
 		self.render('processes.html',
 					  current_page=self.current_page,
+					  all_processes_checks=all_processes_checks,
+					  processes_checks=processes_checks,
 					  processes=processes,
 					  process_data=process_data,
 					  date_from=date_from,
@@ -184,25 +199,16 @@ class LogsView(BaseView):
 		query = self.get_argument('query', None)
 
 		logs = log_model.get_logs(tags, query, page)
+		all_tags = log_model.get_tags()
 		unread_model.mark_logs_as_read()
 
 		self.render('logs.html',
 					 current_page=self.current_page,
 					 logs=logs,
 					 tags=tags,
+					 all_tags=all_tags,
 					 query=query
 					 )
-
-
-	@authenticated
-	def post(self):
-		level = self.get_arguments('level[]')
-		filter = self.get_argument('filter', None)
-
-		logs = log_model.filtered_logs(level, filter)
-	
-		self.render('partials/logs_filter.html', logs=logs)
-
 
 class SettingsView(BaseView):
 

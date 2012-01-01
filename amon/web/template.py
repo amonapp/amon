@@ -74,8 +74,11 @@ def time_in_words(value):
 # TODO - Add one date filter with formats comming from the template
 def dateformat(value, format='%d-%m-%Y-%H:%M'):
 	# Converts unix time to a readable date format
-	_ = datetime.utcfromtimestamp(value)
-	return _.strftime(format)
+	try:
+		_ = datetime.utcfromtimestamp(value)
+		return _.strftime(format)
+	except:
+		return None
 
 def timeformat(value, format='%H:%M'):
 	# Converts unix time to a readable 24 hour-minute format
@@ -233,6 +236,14 @@ def is_dict(value):
 	else:
 		return False
 
+# Used in the log page. Checks the log tag
+def is_str(value):
+	if isinstance(value, str) or isinstance(value, unicode):
+		return True
+	else:
+		return False
+
+
 # url -> usually the base url -> http://something.com
 # params_dict -> dict {"tags": ['test', 'some'], "other_param": ['test']}
 def query_dict(url, params_dict, page=None):
@@ -299,6 +310,7 @@ def render(template, *args, **kwargs):
 
 	# Log filters
 	env.filters['is_dict'] = is_dict
+	env.filters['is_str'] = is_str
 	env.filters['query_dict'] = query_dict
 
 	try:

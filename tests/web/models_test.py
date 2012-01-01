@@ -142,24 +142,24 @@ class TestLogModel(unittest.TestCase):
 		self.logs.insert({"level" : "warning", "message" : "test", "_searchable": "test_more"})
 		self.logs.insert({"level" : "debug", "message" : "test", "_searchable": "another_thing"})
 
-		result = self.model.filtered_logs(['info'], None)
-		eq_(result.count(), 1)
+		result = self.model.get_logs(['info'], None)
+		eq_(result['result'].count(), 1)
 
 		
-		result = self.model.filtered_logs(['info','debug'], None)
-		eq_(result.count(), 2)
+		result = self.model.get_logs(['info','debug'], None)
+		eq_(result['result'].count(), 2)
 
 
-		result = self.model.filtered_logs(['info','debug','warning'], None)
-		eq_(result.count(), 3)
+		result = self.model.get_logs(['info','debug','warning'], None)
+		eq_(result['result'].count(), 3)
 
 
-		result = self.model.filtered_logs(['info'], 'test')
-		eq_(result.count(), 1)
+		result = self.model.get_logs(['info'], 'test')
+		eq_(result['result'].count(), 1)
 
 
-		result = self.model.filtered_logs([], 'test')
-		eq_(result.count(), 2)
+		result = self.model.get_logs([], 'test')
+		eq_(result['result'].count(), 2)
 		
 		self.logs.remove()
 

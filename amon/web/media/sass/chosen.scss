@@ -166,9 +166,13 @@
 	float: left;
 	clear: Left;
 	padding: 10px;
-	width: 326px;
+	width: 296px;
+	border: 1px solid #FAFAFA; 
   margin: 0;
   list-style: none;
+}
+.system-charts-dropdown .chzn-container .chzn-results li {
+	width: 195px;
 }
 .chzn-container .chzn-results .active-result {
   cursor: pointer;

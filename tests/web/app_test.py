@@ -23,7 +23,6 @@ class TestWebApplication(AsyncHTTPTestCase):
 		response = self.fetch('/logout')
 		eq_(response.code, 200)
 
-	
 	def test_create_user(self):
 		response = self.fetch('/create_user', follow_redirects=False)
 		eq_(response.code, 302)

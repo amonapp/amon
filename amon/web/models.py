@@ -144,13 +144,14 @@ class LogModel(BaseModel):
 	def __init__(self):
 		super(LogModel, self).__init__()
 		self.collection = self.mongo.get_collection('logs') 
+		self.tags = self.mongo.get_collection('tags')
 
 	def get_logs(self, tags=None, search=None, page=None):
 		params = {}
 		
 		if tags:
-			level_params = [{'level': x} for x in tags]
-			params = {"$or" : level_params}
+			tags_params = [{'tags': x} for x in tags]
+			params = {"$or" : tags_params}
 
 		if search:
 			params['_searchable'] = { "$regex": str(search), "$options": 'i'}
@@ -161,20 +162,11 @@ class LogModel(BaseModel):
 
 		return logs
 
-	def filtered_logs(self, level, filter):
-
-		query = {}
-		if level:
-			level_params = [{'level': x} for x in level]
-			query = {"$or" : level_params}
-
-		if filter:
-			query['_searchable'] = { "$regex": str(filter), "$options": 'i'}
-
-		logs = self.collection.find(query).sort('time', DESCENDING)
-
-		return logs
 		
+	def get_tags(self):
+	
+		return self.tags.find()
+
 	def delete_all(self):
 		self.collection.remove()
 
