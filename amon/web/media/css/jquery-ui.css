@@ -298,10 +298,10 @@
  * http://docs.jquery.com/UI/Slider#theming
  */
 .ui-slider { position: relative; text-align: left;  }
-.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; background: #89BC32; border:1px solid #639213;  }
 .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
 
-.ui-slider-horizontal { height: .8em; background: #D2D2D2; border: 1px solid #ADADAD; }
+.ui-slider-horizontal { height: .8em; background: #F0F0F0; border: 1px solid #D8D8D8; margin-bottom:5px; }
 .ui-slider-horizontal .ui-slider-handle { top: -.3em; margin-left: -.6em; }
 .ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
 .ui-slider-horizontal .ui-slider-range-min { left: 0; }
@@ -394,9 +394,9 @@
 
 
 /* css for timepicker */
-.ui-timepicker-div{ margin-top: 6px; }
+.ui-timepicker-div{ margin-top: 12px; }
 .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
-.ui-timepicker-div dl{ text-align: left; }
+.ui-timepicker-div dl{ text-align: left;  }
 .ui-timepicker-div dl dt{ height: 25px; }
 .ui-timepicker-div dl dd{ margin: -25px 10px 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }

@@ -33,7 +33,7 @@ class TestLoggingApi(unittest.TestCase):
 		log({"message": {"dict_key": "value", "dict_key2": "value_2"}})
 		
 		entry = log.model.collection.find_one()
-		eq_(entry['_searchable'], 'dict_key:dict_key2')
+		eq_(entry['_searchable'], ':dict_key:dict_key2')
 
 
 	def test_log_searchable_string(self):

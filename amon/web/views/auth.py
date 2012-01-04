@@ -19,7 +19,7 @@ class LoginView(BaseView):
 		else:
 			message =  self.session.get('message',None)
 			errors =  self.session.get('errors',None)
-
+			next = self.get_argument('next', None)
 			
 			try:
 				del self.session['errors']
@@ -27,7 +27,7 @@ class LoginView(BaseView):
 			except:
 				pass
 
-			self.render('login.html', message=message, errors=errors)
+			self.render('login.html', message=message, errors=errors, next=next)
 
 
 	def post(self):

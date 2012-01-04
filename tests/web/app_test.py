@@ -50,9 +50,9 @@ class TestPasswordProtected(AsyncHTTPTestCase):
 	
 	def test_log_api(self):
 		response = self.fetch('/api/log')
-		eq_(response.code, status_code)
+		eq_(response.code, 200)
 
 	def test_exception_api(self):
 		response = self.fetch('/api/exception')
-		eq_(response.code, status_code)
+		eq_(response.code, 200)
 

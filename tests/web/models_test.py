@@ -125,9 +125,9 @@ class TestLogModel(unittest.TestCase):
 	def test_get_logs(self):
 		self.logs.remove()
 
-		self.logs.insert({"level" : "info", "message" : "test"})
-		self.logs.insert({"level" : "info", "message" : "test"})
-		self.logs.insert({"level" : "info", "message" : "test"})
+		self.logs.insert({"tags" : "info", "message" : "test"})
+		self.logs.insert({"tags" : "info", "message" : "test"})
+		self.logs.insert({"tags" : "info", "message" : "test"})
 		
 		result = self.model.get_logs()
 		eq_(result['result'].count(), 3)
@@ -138,9 +138,9 @@ class TestLogModel(unittest.TestCase):
 	def test_filtered_logs(self):
 		self.logs.remove()
 		
-		self.logs.insert({"level" : "info", "message" : "test", "_searchable": "test"})
-		self.logs.insert({"level" : "warning", "message" : "test", "_searchable": "test_more"})
-		self.logs.insert({"level" : "debug", "message" : "test", "_searchable": "another_thing"})
+		self.logs.insert({"tags" : "info", "message" : "test", "_searchable": "test"})
+		self.logs.insert({"tags" : "warning", "message" : "test", "_searchable": "test_more"})
+		self.logs.insert({"tags" : "debug", "message" : "test", "_searchable": "another_thing"})
 
 		result = self.model.get_logs(['info'], None)
 		eq_(result['result'].count(), 1)

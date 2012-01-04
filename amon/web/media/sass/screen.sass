@@ -34,18 +34,18 @@ body
         top: 20px
         left: 20px
         bottom: 20px
-    .button
-      background: url(../images/buttons.png)
-      border: 0px
+    .logout
+      background: url(../images/logout.png)
       text-indent: -3000px
-      &.logout
-        margin-top: 20px
-        float: right
-        width: 34px
-        height: 34px
-        background-position: -300px 0px
-        &:hover
-          background-position: -300px -34px
+      margin-top: 20px
+      float: right
+      padding: 0px
+      border: 0px
+      width: 34px
+      height: 34px
+      background-position: 0px 0px
+      &:hover
+        background-position: 0px -34px
   // Used in charts
   h2
     float: left
@@ -196,20 +196,6 @@ ul.tabs
   li
     float: left
     margin-right: 18px
-    .button
-      border: 0px
-      cursor: pointer
-      &.update
-        background: #89BC32
-        color: white
-        border: 2px solid  #639213 
-        +border-radius(4px)
-        font-weight: bold
-        padding: 6px
-          left: 10px
-          right: 10px
-        &:hover
-          color: #4D710F 
     &:last-child
       margin-right: 0px
     &.with_button
@@ -234,6 +220,8 @@ input[type=text]
   border: 1px solid #D2D2D2 
   +border-radius(6px)
   color: #727272 
+  &.logs-search
+    width: 330px
   &:focus
     border: 1px solid #7AB317 
     +box-shadow(#DEECC5 0px 0px 4px) 
@@ -293,24 +281,6 @@ $log_width: 800px
         white-space: normal
         display: block
         width: $log_width - 20px
-    span.level
-      float: right
-      margin: 10px
-        right: 0px
-        top: 0px
-      width: 10px
-      height: 10px
-      +border-radius(8px)
-      &.warning
-        background: #BC0000
-        border: 2px solid #9B0000 
-      &.info
-        background: #89BC32
-        border: 2px solid  #639213 
-      &.debug
-        background: #FDCB34
-        border: 2px solid #F1B603 
-// Exceptions 
 .exceptions_list
   @extend .log_list
   li
@@ -523,13 +493,11 @@ ul.options_list
     float: left
     +border-radius(6px)
     &.delete
-      background: #FBEFEF 
-      border: 3px solid #F5CFCF 
-      color: #BC0000 
+      color: white 
+      background: #BC0000 
+      border: 2px solid #8A0000 
       &:hover
-        color: white 
-        background: #BC0000 
-        border: 3px solid #9B0000 
+        color: #5E0000  
 // Messages
 .message
   background: #FBEFEF
@@ -595,12 +563,6 @@ ul.options_list
       float: left
       font-size: 1.4em
       margin-right: 15px
-      a
-        color: red
-        text-decoration: underline
-        &.cancel
-          color: #747474 
-          cursor: pointer
 ul.pagination
   float: right
   margin-bottom: 20px
@@ -633,3 +595,29 @@ ul.pagination
         background-position: -32px 0px
         &:hover
           background-position: -32px -32px
+.button
+  border: 0px
+  text-decoration: none
+  cursor: pointer
+  background: #89BC32
+  color: white
+  border: 2px solid  #639213 
+  +border-radius(4px)
+  font-weight: bold
+  padding: 6px
+    left: 10px
+    right: 10px
+  &:hover
+    color: #4D710F 
+  &.cancel
+    background: #F0F0F0 
+    border: 2px solid #D8D8D8 
+    color: #7A7A7A 
+  &.delete
+    color: white 
+    background: #BC0000 
+    border: 2px solid #8A0000 
+    &:hover
+      color: #5E0000  
+
+
