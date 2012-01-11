@@ -77,15 +77,19 @@
 	</li>
 </ul>
 {% endif %}
+{% if last_process_check %}
 <h2>Processes</h2>
 <ul class='stats_bars'>
 	<li>
 		<h3>Last check</h3>
+		{% if process_check_first %}
 		<span class="timestamp" title='{{ process_check[process_check_first].time|date }}'>
 			{{ process_check[process_check_first].time }}
 		</span>
+		{% endif %}
 	</li>
 {% for process in process_check %}
+	{% if process_check[process] != False %}
 	<li class='with_labels'>
 		<h3>{{ process }}</h3>
 		<div class="container medium">
@@ -97,12 +101,12 @@
 			<span class="label">Memory</span>
 			<span class="progress" style='width:{{ process_check[process].memory|progress_width(total_ram, 'medium') }}'></span>
 			<span class="data">{{ process_check[process].memory|format_float }} of {{ total_ram }} MB</span>
-		
 		</div>
 		</li>
-
+	{% endif %}
 {% endfor %}
 </ul>
+{% endif %}
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
