@@ -126,12 +126,7 @@ Logs
 
         return true; // ensure form still submits
     });
-        $(".tag").click(function(e){
-                $('#tags-select option[value="' + $(this).text() +'"]').attr('selected','selected');
-                $('#tags-select').trigger('liszt:updated');
-        });    
-
-
+       
 	$(".tag").click(function(e){
         $('#tags-select option[value="' + $(this).text() +'"]').attr('selected','selected');
         $('#tags-select').trigger('liszt:updated');
