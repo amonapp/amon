@@ -170,6 +170,7 @@ class TestLogModel(unittest.TestCase):
 		self.logs.insert({"tags" : ["info", "debug"] , "message" : "test", "_searchable": "test"})
 		self.logs.insert({"tags" : ["warning", "python"] , "message" : "test", "_searchable": "test"})
 		self.logs.insert({"tags" : ["image", "test"] , "message" : "test", "_searchable": "test"})
+		self.logs.insert({"tags" : ["php", "notag"] , "message" : "test", "_searchable": "test"})
 		
 		result = self.model.get_logs(['info'], None)
 		eq_(result['result'].count(), 3)
@@ -181,7 +182,10 @@ class TestLogModel(unittest.TestCase):
 		eq_(result['result'].count(), 1)
 
 		result = self.model.get_logs(['python'], None)
+		
+
 		eq_(result['result'].count(), 1)
+
 
 class TestExceptionModel(unittest.TestCase):
 
