@@ -5,241 +5,241 @@ from amon.web.views.base import BaseView
 from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
 from amon.system.utils import get_disk_volumes, get_network_interfaces
 from amon.web.models import (
-	dashboard_model,		
-	system_model,
-	process_model,
-	exception_model,
-	log_model,
-	unread_model
-)
+        dashboard_model,		
+        system_model,
+        process_model,
+        exception_model,
+        log_model,
+        unread_model
+        )
 
 class DashboardView(BaseView):
 
-	def initialize(self):
-		super(DashboardView, self).initialize()
-	
-	@authenticated
-	def get(self):
+    def initialize(self):
+        super(DashboardView, self).initialize()
 
-		active_process_checks = settings.PROCESS_CHECKS
-		active_system_checks = settings.SYSTEM_CHECKS
+    @authenticated
+    def get(self):
 
-		# Get the first element from the settings - used for the last check date in the template
-		try:
-			process_check_first = active_process_checks[0]
-		except IndexError:
-			process_check_first = False
+        active_process_checks = settings.PROCESS_CHECKS
+        active_system_checks = settings.SYSTEM_CHECKS
 
-		try:
-			system_check_first = active_system_checks[0]
-		except IndexError: 
-			system_check_first = False
-		
-		last_system_check = dashboard_model.get_last_system_check(active_system_checks)
-		last_process_check = dashboard_model.get_last_process_check(active_process_checks)
+        # Get the first element from the settings - used for the last check date in the template
+        try:
+            process_check_first = active_process_checks[0]
+        except IndexError:
+            process_check_first = False
 
-		self.render("dashboard.html",
-				current_page='dashboard',
-				last_check=last_system_check,
-				process_check=last_process_check,
-				system_check_first=system_check_first,
-				process_check_first=process_check_first,
-				)
+        try:
+            system_check_first = active_system_checks[0]
+        except IndexError: 
+            system_check_first = False
+
+        last_system_check = dashboard_model.get_last_system_check(active_system_checks)
+        last_process_check = dashboard_model.get_last_process_check(active_process_checks)
+
+        self.render("dashboard.html",
+                current_page='dashboard',
+                last_check=last_system_check,
+                process_check=last_process_check,
+                system_check_first=system_check_first,
+                process_check_first=process_check_first,
+                )
 
 class SystemView(BaseView):
 
-	def initialize(self):
-		super(SystemView, self).initialize()
+    def initialize(self):
+        super(SystemView, self).initialize()
 
-	@authenticated
-	def get(self):
-		
-		date_from = self.get_argument('date_from', False)
-		date_to = self.get_argument('date_to', False)
-		charts = self.get_arguments('charts', None)
+    @authenticated
+    def get(self):
 
-		if date_from:
-			date_from = datestring_to_unixtime(date_from)
-		
-		# Default - 24 hours period
-		else:
-			day = timedelta(hours=24)
-			yesterday = self.now - day
+        date_from = self.get_argument('date_from', False)
+        date_to = self.get_argument('date_to', False)
+        charts = self.get_arguments('charts', None)
 
-			date_from = datetime_to_unixtime(yesterday)
-		
-		if date_to:
-			date_to = datestring_to_unixtime(date_to)
-		else:
-			date_to = datetime_to_unixtime(self.now)
-		
-		if len(charts) > 0:
-			active_checks = charts
-		else:
-			active_checks = settings.SYSTEM_CHECKS
-	
-		checks = system_model.get_system_data(active_checks, date_from, date_to)
-		first_check_date = system_model.get_first_check_date()
+        if date_from:
+            date_from = datestring_to_unixtime(date_from)
 
-		if checks != False:
-			network = []
-			network_interfaces = []
-			
-			disk = []
-			volumes = []
-			
-			# Add network adapters 
-			if 'network' in active_checks:
-				for check in checks['network']:
-					network.append(check)	
+        # Default - 24 hours period
+        else:
+            day = timedelta(hours=24)
+            yesterday = self.now - day
 
-				_interfaces = get_network_interfaces()
-				for interface in _interfaces:
-					if interface not in network_interfaces:
-						network_interfaces.append(interface)
+            date_from = datetime_to_unixtime(yesterday)
 
-			# Add disk volumes
-			if 'disk' in active_checks:
-				for check in checks['disk']:
-					disk.append(check)
-			
-				_volumes = get_disk_volumes()
-				for volume in _volumes:
-					if volume not in volumes:
-						volumes.append(volume)
+        if date_to:
+            date_to = datestring_to_unixtime(date_to)
+        else:
+            date_to = datetime_to_unixtime(self.now)
 
-			self.render('system.html',
-						  current_page='system',
-						  active_checks=active_checks,
-						  charts=charts,
-						  checks=checks,
-						  network=network,
-						  network_interfaces=network_interfaces,
-						  volumes=volumes,
-						  disk=disk,
-						  date_from=date_from,
-						  date_to=date_to,
-						  first_check_date=first_check_date,
-						  )
+        if len(charts) > 0:
+            active_checks = charts
+        else:
+            active_checks = settings.SYSTEM_CHECKS
+
+        checks = system_model.get_system_data(active_checks, date_from, date_to)
+        first_check_date = system_model.get_first_check_date()
+
+        if checks != False:
+            network = []
+            network_interfaces = []
+
+            disk = []
+            volumes = []
+
+            # Add network adapters 
+            if 'network' in active_checks:
+                for check in checks['network']:
+                    network.append(check)	
+
+                _interfaces = get_network_interfaces()
+                for interface in _interfaces:
+                    if interface not in network_interfaces:
+                        network_interfaces.append(interface)
+
+            # Add disk volumes
+            if 'disk' in active_checks:
+                for check in checks['disk']:
+                    disk.append(check)
+
+                _volumes = get_disk_volumes()
+                for volume in _volumes:
+                    if volume not in volumes:
+                        volumes.append(volume)
+
+            self.render('system.html',
+                    current_page='system',
+                    active_checks=active_checks,
+                    charts=charts,
+                    checks=checks,
+                    network=network,
+                    network_interfaces=network_interfaces,
+                    volumes=volumes,
+                    disk=disk,
+                    date_from=date_from,
+                    date_to=date_to,
+                    first_check_date=first_check_date,
+                    )
 
 class ProcessesView(BaseView):
 
-	def initialize(self):
-		super(ProcessesView, self).initialize()
-		self.current_page = 'processes'
+    def initialize(self):
+        super(ProcessesView, self).initialize()
+        self.current_page = 'processes'
 
-	@authenticated
-	def get(self):
-		day = timedelta(hours=24)
-		_yesterday = self.now - day
+    @authenticated
+    def get(self):
+        day = timedelta(hours=24)
+        _yesterday = self.now - day
 
-		processes = self.get_arguments('processes', None)
+        processes = self.get_arguments('processes', None)
 
 
-		date_from = self.get_argument('date_from', False)
-		date_to = self.get_argument('date_to', False)
+        date_from = self.get_argument('date_from', False)
+        date_to = self.get_argument('date_to', False)
 
-		if date_from:
-			date_from = datestring_to_unixtime(date_from)
-		else:
-			date_from = datetime_to_unixtime(_yesterday)
-		
-		if date_to:
-			date_to = datestring_to_unixtime(date_to)
-		else:
-			date_to = datetime_to_unixtime(self.now)
+        if date_from:
+            date_from = datestring_to_unixtime(date_from)
+        else:
+            date_from = datetime_to_unixtime(_yesterday)
 
-		all_processes_checks = settings.PROCESS_CHECKS
-		
-		if len(processes) > 0:
-			processes_checks = processes
-		else:
-			processes_checks = settings.PROCESS_CHECKS
-		
-		process_data = process_model.get_process_data(processes_checks, date_from, date_to)
+        if date_to:
+            date_to = datestring_to_unixtime(date_to)
+        else:
+            date_to = datetime_to_unixtime(self.now)
 
-		self.render('processes.html',
-					  current_page=self.current_page,
-					  all_processes_checks=all_processes_checks,
-					  processes_checks=processes_checks,
-					  processes=processes,
-					  process_data=process_data,
-					  date_from=date_from,
-					  date_to=date_to,
-					 )
+        all_processes_checks = settings.PROCESS_CHECKS
+
+        if len(processes) > 0:
+            processes_checks = processes
+        else:
+            processes_checks = settings.PROCESS_CHECKS
+
+        process_data = process_model.get_process_data(processes_checks, date_from, date_to)
+
+        self.render('processes.html',
+                current_page=self.current_page,
+                all_processes_checks=all_processes_checks,
+                processes_checks=processes_checks,
+                processes=processes,
+                process_data=process_data,
+                date_from=date_from,
+                date_to=date_to,
+                )
 
 
 class ExceptionsView(BaseView):
-	
-	def initialize(self):
-		super(ExceptionsView, self).initialize()
-		self.current_page = 'exceptions'
 
-	@authenticated
-	def get(self):
-		
-		exceptions = exception_model.get_exceptions()
-		unread_model.mark_exceptions_as_read()
+    def initialize(self):
+        super(ExceptionsView, self).initialize()
+        self.current_page = 'exceptions'
 
-		self.render('exceptions.html',
-					  exceptions=exceptions,
-					  current_page=self.current_page,
-					  )
+    @authenticated
+    def get(self):
+
+        exceptions = exception_model.get_exceptions()
+        unread_model.mark_exceptions_as_read()
+
+        self.render('exceptions.html',
+                exceptions=exceptions,
+                current_page=self.current_page,
+                )
 
 class LogsView(BaseView):
 
-	def initialize(self):
-		super(LogsView, self).initialize()
-		self.current_page = 'logs'
+    def initialize(self):
+        super(LogsView, self).initialize()
+        self.current_page = 'logs'
 
-	@authenticated
-	def get(self):
-		page = self.get_argument('page',1)
-		tags = self.get_arguments('tags', None)
-		query = self.get_argument('query', None)
+    @authenticated
+    def get(self):
+        page = self.get_argument('page',1)
+        tags = self.get_arguments('tags', None)
+        query = self.get_argument('query', None)
 
-		logs = log_model.get_logs(tags, query, page)
-		all_tags = log_model.get_tags()
-		unread_model.mark_logs_as_read()
+        logs = log_model.get_logs(tags, query, page)
+        all_tags = log_model.get_tags()
+        unread_model.mark_logs_as_read()
 
-		self.render('logs.html',
-					 current_page=self.current_page,
-					 logs=logs,
-					 tags=tags,
-					 all_tags=all_tags,
-					 query=query
-					 )
+        self.render('logs.html',
+                current_page=self.current_page,
+                logs=logs,
+                tags=tags,
+                all_tags=all_tags,
+                query=query
+                )
 
 class SettingsView(BaseView):
 
-	def initialize(self):
-		super(SettingsView, self).initialize()
-		self.current_page = 'settings'
+    def initialize(self):
+        super(SettingsView, self).initialize()
+        self.current_page = 'settings'
 
-	@authenticated
-	def get(self, action=None):
-		
-		message = self.session.get('message', '')
-		
-		try:
-			del self.session['message']
-		except:
-			pass
+    @authenticated
+    def get(self, action=None):
 
-		if action != None:
-			if action == 'delete_exceptions':
-				exception_model.delete_all()
-				self.session['message'] = 'All Exceptions deleted'
-				self.redirect('/settings')
+        message = self.session.get('message', '')
 
-			if action == 'delete_logs':
-				log_model.delete_all()
-				self.session['message'] = 'All Logs deleted'
-				self.redirect('/settings')
-		else:
-			self.render('settings.html',
-					 current_page=self.current_page,
-					 message=message
-					 )
+        try:
+            del self.session['message']
+        except:
+            pass
+
+        if action != None:
+            if action == 'delete_exceptions':
+                exception_model.delete_all()
+                self.session['message'] = 'All Exceptions deleted'
+                self.redirect('/settings')
+
+            if action == 'delete_logs':
+                log_model.delete_all()
+                self.session['message'] = 'All Logs deleted'
+                self.redirect('/settings')
+        else:
+            self.render('settings.html',
+                    current_page=self.current_page,
+                    message=message
+                    )
 
 

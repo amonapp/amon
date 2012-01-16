@@ -1,6 +1,6 @@
-=============================================================
+==================================================================
 Amon - Server monitoring, logging and error tracking for web apps
-=============================================================
+==================================================================
 
 Introduction
 =============
@@ -29,6 +29,9 @@ Navigate quickly through your log data with a nice and clean web interface
 
 Catch and log Rails, Django, Node.js exceptions out of the box. Easy extendable to any 
 language/framework that supports http and json
+
+
+(https://raw.github.com/martinrusev/amon/master/preview/screenshot.png)](https://raw.github.com/martinrusev/amon/master/preview/screenshot.png)
 
 
 More info
