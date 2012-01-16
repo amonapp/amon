@@ -31,7 +31,7 @@ Catch and log Rails, Django, Node.js exceptions out of the box. Easy extendable 
 language/framework that supports http and json
 
 
-(https://raw.github.com/martinrusev/amon/master/preview/screenshot.png)](https://raw.github.com/martinrusev/amon/master/preview/screenshot.png)
+[https://raw.github.com/martinrusev/amon/master/preview/screenshot.png](https://raw.github.com/martinrusev/amon/master/preview/screenshot.png)
 
 
 More info
