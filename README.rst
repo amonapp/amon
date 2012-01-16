@@ -1,5 +1,5 @@
 =============================================================
-Amon - Web application debugging and monitoring toolkit
+Amon - Server monitoring, logging and error tracking for web apps
 =============================================================
 
 Introduction
@@ -20,7 +20,7 @@ code. Master/worker aware - perfect for monitoring web servers
 
 **3. Application logging**
 
-Log events, user and performance data. Amon doesn't restrict you to strings, 
+Log events, user and performance data. Amon allows you to log any datastructure,  
 so you can log dictionaries, hashes, arrays, etc. 
 Navigate quickly through your log data with a nice and clean web interface
 
