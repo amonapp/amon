@@ -27,6 +27,7 @@ LOGFILE = '/usr/local/amon/amond.log'
 
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
+log = logging.getLogger('amond')
 
 class AmonDaemon(Daemon):
 	
@@ -36,7 +37,7 @@ class AmonDaemon(Daemon):
 		try:
 			backend.store_entries(system_info_empty)
 		except Exception, e:
-			logging.exception('Saving empty system info failed')
+			log.exception('Saving empty system info failed')
 
 	# Executed on stop and restart
 	def __del__(self):
@@ -53,14 +54,14 @@ class AmonDaemon(Daemon):
 			try:			
 				backend.store_entries(system_info)
 			except Exception, e:			
-				logging.exception('Saving system info failed')
+				log.exception('Saving system info failed')
 			
 			process_info = runner.processes()
 
 			try:
 				backend.store_entries(process_info)
 			except Exception, e:			
-				logging.exception('Saving process info failed')
+				log.exception('Saving process info failed')
 
 			# Checks the system every 60 seconds
 			time.sleep(settings.SYSTEM_CHECK_PERIOD)
@@ -74,7 +75,7 @@ if __name__ == "__main__":
 			try:
 				daemon.start()
 			except Exception, e:
-				logging.exception("Amond cant be started")
+				log.exception("Amond cant be started")
 		elif 'stop' == sys.argv[1]:
 			print "Stopping Amon ..."
 			daemon.stop()
