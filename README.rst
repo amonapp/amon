@@ -45,7 +45,7 @@ Amon blog -> http://amon.cx/blog
 Requirements
 =============
 
-Python 2.5+
+Python 2.6+
 
 pymongo >=2.0
 
