@@ -1,5 +1,5 @@
 ==================================================================
-Amon - Server monitoring, logging and error tracking for web apps
+Amon - Server monitoring, simplified logging and error tracking for web apps
 ==================================================================
 
 Introduction
