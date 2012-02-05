@@ -25,7 +25,7 @@ so you can log dictionaries, hashes, arrays, etc.
 Navigate quickly through your log data with a nice and clean web interface
 
 
-**4. Exception logging**
+**4. Exception tracking**
 
 Catch and log Rails, Django, Node.js exceptions out of the box. Easy extendable to any 
 language/framework that supports http and json
