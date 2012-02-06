@@ -30,6 +30,8 @@ set -e # Exit the installer on error
 mongo_install_dir="/usr/local/mongodb" # This where we will store mongod, the database and the log files
 mongo_check=$(ps aux | grep -c mongo) # Check if mongo is running, remove 'grep' from the results
 version=$1 # Amon version - Inherited from the main script
+python=$2 # Path to the python binary
+verbose=$3 # Print operations to the terminal if 1, else >/dev/null
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
 amon_install_dir="/usr/local/amon"
 
@@ -39,13 +41,13 @@ echo "***  Installing Amon $version ..."
 # Install easy_install if necessary
 	if ! command_exists easy_install ; then
 		wget "http://peak.telecommunity.com/dist/ez_setup.py" 
-		sudo python ez_setup.py
+		sudo $python ez_setup.py
 		rm -f ez_setup.py
 	fi
 
 # Install Amon
 
-	rm -rf amon-* # Cleanups old archives from previous install, that could break the updating process
+	rm -rf amon-* # Cleans up old archives from previous installs, that could break the updating process
     wget "http://install.amon.cx/amon-$version.tar.gz" 
 	tar -zxvf "amon-$version.tar.gz" > /dev/null
 
@@ -64,8 +66,8 @@ echo "***  Installing Amon $version ..."
 	fi
    	
 	cd "amon"
-	sudo python setup.py install # Install Amon and all the dependecies
-	python generate_config.py
+	sudo $python setup.py install # Install Amon and all the dependecies
+	$python generate_config.py
 	
 
 	

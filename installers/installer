@@ -6,23 +6,53 @@ file_exists() {
 	[ -f "$1" ]
 }
 
+usage()
+{
+cat << EOF
+
+    This script installs Amon and MongoDB.
+
+    OPTIONS:
+    -h      Show this message
+    -p   	Path to a python binary
+    -v      Verbose
+EOF
+}
+
+PYTHON=python
+VERBOSE=
+while getopts “ht:p:v” OPTION
+do
+    case $OPTION in
+        h)
+            usage
+            ;;
+        p)
+            PYTHON=$OPTARG
+            ;;
+        v)
+            VERBOSE=1
+            ;;
+    esac
+done
+
 set -e 
-version=0.7
+VERSION=0.7
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if file_exists /etc/debian_version ; then
 	curl http://install.amon.cx/debian -o debian_installer
-	sudo bash debian_installer $version
+	sudo bash debian_installer $VERSION $PYTHON $VERBOSE
 	rm -rf debian_installer
 # RPM based distros - Tested and supported on : Fedora, CentOS, Amazon Linux AMI
 elif file_exists /etc/system-release ; then
 	curl http://install.amon.cx/rpm -o rpm_installer
-	sudo bash rpm_installer $version
+	sudo bash rpm_installer $VERSION $PYTHON $VERBOSE
 	rm -rf rpm_installer
 # Mac OS
 elif [ "$(uname -s)" == "Darwin" ]; then
 	curl http://install.amon.cx/macos -o macos_installer
-	sudo bash macos_installer $version
+	sudo bash macos_installer $VERSION
 	rm -rf macos_installer
 else 
 	echo "Your operating system is not supported at the moment"
