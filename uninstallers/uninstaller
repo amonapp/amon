@@ -1,33 +1,107 @@
-#!/bin/bash
-# The awesome one-line uninstaller for Amon
+#!/usr/bin/env bash
+# The one-line uninstaller for Amon
 # Author: Martin Rusev <martin@amon.cx>
 
 command_exists() {
     type "$1" &> /dev/null ;
 }
 
-set -e 
+set +e # Don't exit the script if some command fails
 # curl uninstall.amon.cx | bash -s with-mongo
 delete_mongo=$1
+DISTRO=
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
-if command_exists dpkg ; then
-	rm -rf debian_uninstaller # just in case, if and old version of the same file exists
-	curl http://uninstall.amon.cx/debian -o debian_uninstaller
-	sudo bash debian_uninstaller $delete_mongo
-	rm -rf debian_uninstaller
-# RPM based distros - Tested and supported on : Fedora, CentOS
-elif command_exists rpm ; then
-	rm -rf rpm_uninstaller # just in case, if and old version of the same file exists
-	curl  http://uninstall.amon.cx/rpm -o rpm_uninstaller
-	sudo bash rpm_uninstaller $delete_mongo
-	rm -rf rpm_uninstaller
+if file_exists /etc/debian_version ; then
+    DISTRO='debian'
+# RPM based distros - Tested and supported on : Fedora, CentOS, Amazon Linux AMI
+elif file_exists /etc/system-release ; then
+    DISTRO='rpm'
 # Mac OS
 elif [ "$(uname -s)" != "Darwin" ]; then
 	rm -rf macos_uninstaller # just in case, if and old version of the same file exists
 	curl  http://uninstall.amon.cx/rpm -o macos_uninstaller
 	sudo bash macos_uninstaller $delete_mongo
 	rm -rf macos_uninstaller
+    exit
 else 
 	echo "Your operating system is not supported at the moment"
+    exit
 fi
+
+mongo_install_dir="/usr/local/mongodb"
+site_packages=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
+amon_dir="/usr/local/amon"
+
+sudo rm -rf "$site_packages/pymongo*"
+sudo rm -rf "$site_packages/amon*"
+sudo rm -rf "$site_packages/tornado*"
+sudo rm -rf "$site_packages/jinja2"
+
+# Stop and delete the daemons 
+if [ -e /etc/init.d/amond ]; then
+	sudo /etc/init.d/amond stop
+	sudo rm /etc/init.d/amond
+fi 
+
+if [ -e /etc/init.d/amon ]; then
+	sudo /etc/init.d/amon stop
+	sudo rm /etc/init.d/amon
+fi 
+
+# Delete the config file
+sudo rm /etc/amon.conf
+
+# Remove the directory with the Amon log files
+if [ -d "$amon_dir" ]; then
+	sudo rm -rf "$amon_dir"
+fi
+
+# Remove Amond from the startup list
+if [ "$DISTRO" == 'debian' ]; then
+    sudo update-rc.d -f amond remove
+elif [ "$DISTRO" == 'rpm']; then
+    chkconfig --del amond
+fi
+
+
+
+# Delete Mongo
+if [ "$delete_mongo" == 'with-mongo' ]; then
+
+	function is_integer() {
+		s=$(echo $1 | tr -d 0-9)
+		if [ -z "$s" ]; then
+			return 0
+		else
+			return 1
+		fi
+	}
+
+	if [ -e /etc/init.d/mongodb ]; then
+		sudo /etc/init.d/mongodb stop # Stop the daemon
+		sudo rm /etc/mongodb.conf # Delete the configuration file
+	fi
+
+	if [ -d "$mongo_install_dir" ]; then
+		sudo rm -rf $mongo_install_dir # Delete /usr/local/mongodb
+	fi
+
+    if [ "$DISTRO" == 'debian' ]; then
+	    sudo update-rc.d -f mongodb remove # Remove the process from the startup list
+    elif [ "$DISTRO" == 'rpm']; then
+	    chkconfig --del mongodb # Remove the process from the startup list 
+    fi
+
+	
+	if [ -e /usr/bin/mongo ]; then
+		sudo rm  /usr/bin/mongo # Delete the mongo executable in /usr/bin
+	fi
+
+	mongo_pid=$(ps aux | grep mongo | grep -v grep | awk '{print $2}')
+	sudo kill -9 $mongo_pid > /dev/null # Kill the mongo process by pid if the /etc method fails
+	
+	echo "*** MongoDB succesfully removed"
+fi 
+
+echo "*** Amon succesfully removed"

@@ -9,6 +9,9 @@ from boto.s3.connection import S3Connection
 conn = S3Connection(key, secret)
 
 uninstall_bucket = conn.get_bucket('uninstall.amon.cx')
+install_bucket = conn.get_bucket('install.amon.cx')
+contrib_bucket = conn.get_bucket('config.amon.cx')
+
 k = Key(uninstall_bucket)
 
 distros = ['debian', 'rpm', 'macos']
@@ -22,7 +25,6 @@ for u in uninstallers:
 	k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
 	k.make_public()
 
-install_bucket = conn.get_bucket('install.amon.cx')
 k = Key(install_bucket)
 
 installers = list(distros)
@@ -52,7 +54,6 @@ k.make_public()
 
 
 # Deploy contrib files
-contrib_bucket = conn.get_bucket('config.amon.cx')
 k = Key(contrib_bucket)
 for distro in distros:
 	if distro != 'macos':

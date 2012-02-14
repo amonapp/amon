@@ -1,59 +1,256 @@
-#!/bin/bash
-# The awesome one-line installer for Amon
+#!/usr/bin/env bash
+# The one-line installer for Amon
 # Author: Martin Rusev <martin@amon.cx>
-
+set -e
 file_exists() {
 	[ -f "$1" ]
 }
 
-usage()
-{
-cat << EOF
-
-    This script installs Amon and MongoDB.
-
-    OPTIONS:
-    -h      Show this message
-    -p   	Path to a python binary
-    -v      Verbose
-EOF
+command_exists() {
+    type "$1" &> /dev/null ;
 }
 
-PYTHON=python
-VERBOSE=
-while getopts “ht:p:v” OPTION
-do
-    case $OPTION in
-        h)
-            usage
-            ;;
-        p)
-            PYTHON=$OPTARG
-            ;;
-        v)
-            VERBOSE=1
-            ;;
-    esac
-done
-
-set -e 
+DISTRO=
 VERSION=0.7
+PYTHON=python
+VERBOSE=0
+
+#while getopts "h" option; do
+    #case "$option" in
+        #p) 
+            #PYTHON=$OPTARG
+            #;;
+        #b)
+            #BETA=1
+            #;;
+        #v)
+            #VERBOSE=1
+            #;;
+    #esac
+#done
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if file_exists /etc/debian_version ; then
-	curl http://install.amon.cx/debian -o debian_installer
-	sudo bash debian_installer $VERSION $PYTHON $VERBOSE
-	rm -rf debian_installer
+    DISTRO='debian'
 # RPM based distros - Tested and supported on : Fedora, CentOS, Amazon Linux AMI
 elif file_exists /etc/system-release ; then
-	curl http://install.amon.cx/rpm -o rpm_installer
-	sudo bash rpm_installer $VERSION $PYTHON $VERBOSE
-	rm -rf rpm_installer
+    DISTRO='rpm'
 # Mac OS
 elif [ "$(uname -s)" == "Darwin" ]; then
-	curl http://install.amon.cx/macos -o macos_installer
+    DISTRO='mac'
+	curl "$INSTALL_URL"macos -o macos_installer
 	sudo bash macos_installer $VERSION
 	rm -rf macos_installer
+    exit
 else 
+    DISTRO=0
 	echo "Your operating system is not supported at the moment"
 fi
+
+
+# Check if it is 32 or 64 bit machine
+MACHINE_TYPE=`uname -m`
+if [ "$MACHINE_TYPE" == 'i686' ]; then
+	# 32-bit
+	echo "32-bit architecture detected"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.1.tgz"
+	mongo_extract_dir="mongodb-linux-i686-2.0.1"
+else
+	# 64-bit
+	echo "64-bit architecture detected"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.0.1.tgz"
+	mongo_extract_dir="mongodb-linux-x86_64-2.0.1"
+fi
+
+# Set variables for the installation
+#set -e # Exit the installer on error
+mongo_install_dir="/usr/local/mongodb" # This where we will store mongod, the database and the log files
+mongo_check=$(ps aux | grep -c mongo) # Check if mongo is running
+bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
+amon_install_dir="/usr/local/amon"
+
+
+echo "***  Installing Amon $VERSION ..."
+
+# Install easy_install if necessary
+    if ! command_exists easy_install ; then
+        wget "http://peak.telecommunity.com/dist/ez_setup.py" 
+        sudo $PYTHON ez_setup.py
+        rm -f ez_setup.py
+    fi
+
+# Install Amon
+
+    # Cleans up the directory from old amon installations
+    rm -rf amon-* # Cleans up old archives from previous installs, that could break the updating process
+
+    wget "http://install.amon.cx/amon-$VERSION.tar.gz" 
+    tar -zxvf "amon-$VERSION.tar.gz" > /dev/null
+
+    if [ "$DISTRO" == 'debian' ]; then
+    # Ensure that we have the pymongo driver dependecies
+        # Skip installing python and gcc if they are already installed.
+        if dpkg-query -W python-dev gcc sysstat ; then
+            echo "*** Amon requirements already installed"
+        else
+            echo "** Installing Amon requirements"
+            sudo apt-get -y install gcc python-dev sysstat
+        fi
+
+        if dpkg-query -W python-dev gcc sysstat ; then 
+            echo "** success!"
+        fi
+    elif [ "$DISTRO" == 'rpm' ]; then
+        if rpm --quiet -q gcc python-devel sysstat ; then
+            echo "*** Amon requirements already installed"
+        else 
+            echo "** Installing Amon requirements"
+            sudo yum -t -y install gcc python-devel sysstat 
+        fi
+
+        if rpm --quiet -q gcc python-devel sysstat ; then 
+            echo "** success!"
+        fi
+    fi
+
+	cd "amon"
+	sudo $PYTHON setup.py install # Install Amon and all the dependecies
+	$PYTHON generate_config.py # Generate the configuration file
+	
+	
+	# Copy the generated configuration file from the current directory
+	# If Amon was previously installed, the generator will just a secret_key
+	sudo cp amon.conf /etc/amon.conf
+
+	# Copy the collector daemon
+	sudo cp contrib/amon/amond /etc/init.d/amond
+	
+	# make the collector daemon executable
+	sudo chmod +x /etc/init.d/amond
+
+	# Add the collector daemon to the startup list
+    if [ '$DISTRO' == 'debian' ]; then
+	    sudo update-rc.d amond defaults > /dev/null
+    elif [ '$DISTRO' == 'rpm' ]; then
+	    sudo chkconfig --add amond > /dev/null
+		sudo chkconfig amond on
+    fi
+
+	# Copy the web application daemon
+	sudo cp contrib/amon/amon /etc/init.d/amon
+	
+	# make the web app daemon executable
+	sudo chmod +x /etc/init.d/amon
+
+	# Create a directory for the log files
+	sudo mkdir -p "$amon_install_dir"
+
+	cd "$bash_script_dir"
+
+# Install MongoDB
+
+	install_mongodb()
+	{
+
+		wget "$mongo_download_url"
+		echo "***  Extracting MongoDB ..."
+		tar -zxvf "$mongo_extract_dir.tgz" > /dev/null
+
+	}
+
+	configure_mongodb()
+	{
+
+		echo ""
+		echo "***  MongoDB will be installed in $mongo_install_dir." 
+		
+		# Create mongo directories and log file
+		sudo mkdir $mongo_install_dir $mongo_install_dir/data $mongo_install_dir/bin && sudo touch $mongo_install_dir/mongodb.log
+
+		sudo cp $mongo_extract_dir/bin/mongod $mongo_install_dir/bin/mongod
+		
+		# Copy the mongo file to /usr/bin, so that it can be called from anywhere
+		sudo cp $mongo_extract_dir/bin/mongo /usr/bin/mongo 
+
+
+		# Copy the mongo configuration file, only if it doesn't exist
+		if ! file_exists "/etc/mongodb.conf"; then
+			sudo cp amon/contrib/mongodb/mongodb.conf /etc/mongodb.conf
+		fi
+
+		# Copy the system daemon
+		if ! file_exists "/etc/init.d/mongodb"; then
+			sudo cp amon/contrib/mongodb/debian/mongodb /etc/init.d/mongodb
+		fi
+
+		# Make the mongo daemon executable
+		sudo chmod +x /etc/init.d/mongodb
+
+        if [ '$DISTRO' == 'debian' ]; then
+		    sudo update-rc.d mongodb defaults > /dev/null
+        elif [ '$DISTRO' == 'rpm' ]; then
+		    sudo chkconfig --add mongodb > /dev/null
+		    sudo chkconfig mongodb on
+        fi
+
+	}
+
+	# Cleanup the current directory and start Mongo
+	start_mongodb()
+	{
+		rm -rf $mongo_extract_dir
+		rm -rf $mongo_extract_dir.tgz # Remove the archive
+		echo "*** Starting MongoDB"
+		echo ""
+
+		sudo /etc/init.d/mongodb start
+		sleep 5 # Wait for Mongo to write the journal files
+	}
+	
+	echo ""
+	
+	# Install MongoDB if it is not installed on the system
+	if ! command_exists mongo ; then
+		# Check one more time, the value should be 1
+		if [ $mongo_check = '1' ]; then	 
+			install_mongodb
+			configure_mongodb
+			start_mongodb
+		fi
+	fi
+
+# Show a message about where to go for help.
+
+	print_troubleshooting_instructions() {
+		echo
+		echo "For troubleshooting instructions, please see the Amon User Guide :"
+		echo "http://amon.cx/guide/"
+		echo
+		echo "To uninstall Amon, \`curl uninstall.amon.cx | sh\`"
+	}
+
+# All done!
+  
+  # If the collector daemon is running - restart it 
+  if  pgrep -x amond > /dev/null; then
+	  echo "*** Amon succesfully updated"
+	  sudo /etc/init.d/amond restart
+  else
+	  echo "*** Amon succesfully installed"
+	  sudo /etc/init.d/amond start
+	  echo "*** Starting Amon "
+	  echo "*** The web application is not running by default, you can start with \`sudo /etc/init.d/amon start\`"
+  fi
+
+  # If the web application is running - restart it 
+  if  pgrep -x amon > /dev/null; then
+	  sudo /etc/init.d/amon restart
+  fi
+
+  # Cleanup
+  cd $bash_script_dir  # Go back to the root directory
+  rm -rf amon # Delete the directory with the Amon install files
+  rm amon-$VERSION.tar.gz # Delete the archive
+  
+  
+  print_troubleshooting_instructions
