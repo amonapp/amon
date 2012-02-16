@@ -10,8 +10,13 @@ command_exists() {
     type "$1" &> /dev/null ;
 }
 
+function die(){
+ echo $1
+ exit 1
+}
+
 DISTRO=
-VERSION=0.7
+VERSION=0.7.1
 PYTHON=python
 VERBOSE=0
 
@@ -43,8 +48,8 @@ elif [ "$(uname -s)" == "Darwin" ]; then
 	rm -rf macos_installer
     exit
 else 
-    DISTRO=0
 	echo "Your operating system is not supported at the moment"
+    exit
 fi
 
 
@@ -53,13 +58,13 @@ MACHINE_TYPE=`uname -m`
 if [ "$MACHINE_TYPE" == 'i686' ]; then
 	# 32-bit
 	echo "32-bit architecture detected"
-	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.1.tgz"
-	mongo_extract_dir="mongodb-linux-i686-2.0.1"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.2.tgz"
+	mongo_extract_dir="mongodb-linux-i686-2.0.2"
 else
 	# 64-bit
 	echo "64-bit architecture detected"
-	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.0.1.tgz"
-	mongo_extract_dir="mongodb-linux-x86_64-2.0.1"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.0.2.tgz"
+	mongo_extract_dir="mongodb-linux-x86_64-2.0.2"
 fi
 
 # Set variables for the installation
@@ -115,7 +120,7 @@ echo "***  Installing Amon $VERSION ..."
 
 	cd "amon"
 	sudo $PYTHON setup.py install # Install Amon and all the dependecies
-	$PYTHON generate_config.py # Generate the configuration file
+	$PYTHON generate_config.py || die # Generate the configuration file
 	
 	
 	# Copy the generated configuration file from the current directory
@@ -130,7 +135,7 @@ echo "***  Installing Amon $VERSION ..."
 
 	# Add the collector daemon to the startup list
     if [ '$DISTRO' == 'debian' ]; then
-	    sudo update-rc.d amond defaults > /dev/null
+	    sudo update-rc.d amond defaults > /dev/null 
     elif [ '$DISTRO' == 'rpm' ]; then
 	    sudo chkconfig --add amond > /dev/null
 		sudo chkconfig amond on
@@ -231,17 +236,19 @@ echo "***  Installing Amon $VERSION ..."
 
 # All done!
   
-  # If the collector daemon is running - restart it 
-  if  pgrep -x amond > /dev/null; then
+    CHECK_AMOND=$(pgrep amond)
+
+    # The amond process doesn't exist
+    if [[ -z "$CHECK_AMOND" ]]; then
+	    echo "*** Amon succesfully installed"
+	    sudo /etc/init.d/amond start
+	    echo "*** Starting Amon "
+	    echo "*** The web application is not running by default, you can start with \`sudo /etc/init.d/amon start\`"
+    else
 	  echo "*** Amon succesfully updated"
 	  sudo /etc/init.d/amond restart
-  else
-	  echo "*** Amon succesfully installed"
-	  sudo /etc/init.d/amond start
-	  echo "*** Starting Amon "
-	  echo "*** The web application is not running by default, you can start with \`sudo /etc/init.d/amon start\`"
-  fi
-
+    fi
+ 
   # If the web application is running - restart it 
   if  pgrep -x amon > /dev/null; then
 	  sudo /etc/init.d/amon restart
@@ -249,7 +256,7 @@ echo "***  Installing Amon $VERSION ..."
 
   # Cleanup
   cd $bash_script_dir  # Go back to the root directory
-  rm -rf amon # Delete the directory with the Amon install files
+  sudo rm -rf amon # Delete the directory with the install files
   rm amon-$VERSION.tar.gz # Delete the archive
   
   

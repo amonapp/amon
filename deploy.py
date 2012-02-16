@@ -2,7 +2,7 @@ from keys import key, secret
 import os
 path = os.path.dirname(os.path.abspath(__file__))
 
-version = "0.7"
+version = "0.7.1"
 
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
@@ -14,7 +14,7 @@ contrib_bucket = conn.get_bucket('config.amon.cx')
 
 k = Key(uninstall_bucket)
 
-distros = ['debian', 'rpm', 'macos']
+distros = ['macos']
 
 uninstallers = list(distros)
 uninstallers.append('uninstaller')

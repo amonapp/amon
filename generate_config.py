@@ -1,12 +1,7 @@
+from __future__ import with_statement
 import os.path
 import uuid
 import base64
-import sys
-PYTHON = sys.version_info
-
-# Import with for python 2.5.x
-if  PYTHON[0] == 2 and PYTHON[1] == 5:
-    from __future__ import with_statement
 
 # Current directory
 ROOT = os.path.abspath(os.path.dirname(__file__))
