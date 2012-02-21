@@ -2,6 +2,10 @@
 # The one-line uninstaller for Amon
 # Author: Martin Rusev <martin@amon.cx>
 
+file_exists() {
+	[ -f "$1" ]
+}
+
 command_exists() {
     type "$1" &> /dev/null ;
 }
@@ -89,7 +93,7 @@ if [ "$delete_mongo" == 'with-mongo' ]; then
 
     if [ "$DISTRO" == 'debian' ]; then
 	    sudo update-rc.d -f mongodb remove # Remove the process from the startup list
-    elif [ "$DISTRO" == 'rpm']; then
+    elif [ "$DISTRO" == 'rpm' ]; then
 	    chkconfig --del mongodb # Remove the process from the startup list 
     fi
 

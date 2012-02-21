@@ -185,7 +185,11 @@ echo "***  Installing Amon $VERSION ..."
 
 		# Copy the system daemon
 		if ! file_exists "/etc/init.d/mongodb"; then
-			sudo cp amon/contrib/mongodb/debian/mongodb /etc/init.d/mongodb
+            if [ '$DISTRO' == 'debian' ]; then
+			    sudo cp amon/contrib/mongodb/debian/mongodb /etc/init.d/mongodb
+            elif [ '$DISTRO' == 'rpm' ]; then 
+			    sudo cp amon/contrib/mongodb/rpm/mongodb /etc/init.d/mongodb
+            fi
 		fi
 
 		# Make the mongo daemon executable

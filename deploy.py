@@ -37,20 +37,20 @@ for i in installers:
 	k.make_public()
 
 # Deploy new Amon versions - Linux
-amon_archive = 'amon-{0}.tar.gz'.format(version)
-k.key = amon_archive
-full_path = "{0}/{1}".format(path, amon_archive)
+#amon_archive = 'amon-{0}.tar.gz'.format(version)
+#k.key = amon_archive
+#full_path = "{0}/{1}".format(path, amon_archive)
 
-k.set_contents_from_filename(full_path)
-k.make_public()
+#k.set_contents_from_filename(full_path)
+#k.make_public()
 
 
-amon_archive = 'amon-{0}.zip'.format(version)
-k.key = amon_archive
-full_path = "{0}/{1}".format(path, amon_archive)
+#amon_archive = 'amon-{0}.zip'.format(version)
+#k.key = amon_archive
+#full_path = "{0}/{1}".format(path, amon_archive)
 
-k.set_contents_from_filename(full_path)
-k.make_public()
+#k.set_contents_from_filename(full_path)
+#k.make_public()
 
 
 # Deploy contrib files
