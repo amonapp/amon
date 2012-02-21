@@ -43,6 +43,7 @@ elif file_exists /etc/system-release ; then
 # Mac OS
 elif [ "$(uname -s)" == "Darwin" ]; then
     DISTRO='mac'
+	INSTALL_URL="http://install.amon.cx/"
 	curl "$INSTALL_URL"macos -o macos_installer
 	sudo bash macos_installer $VERSION
 	rm -rf macos_installer
