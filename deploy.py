@@ -20,10 +20,10 @@ uninstallers = list(distros)
 uninstallers.append('uninstaller')
 
 for u in uninstallers:
-	k.key = u
-	full_path = "{0}/uninstallers/{1}".format(path, u)
-	k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
-	k.make_public()
+    k.key = u
+    full_path = "{0}/uninstallers/{1}".format(path, u)
+    k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
+    k.make_public()
 
 k = Key(install_bucket)
 
@@ -31,10 +31,10 @@ installers = list(distros)
 installers.append('installer')
 
 for i in installers:
-	k.key = i
-	full_path = "{0}/installers/{1}".format(path, i)
-	k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
-	k.make_public()
+    k.key = i
+    full_path = "{0}/installers/{1}".format(path, i)
+    k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
+    k.make_public()
 
 # Deploy new Amon versions - Linux
 #amon_archive = 'amon-{0}.tar.gz'.format(version)
@@ -56,12 +56,12 @@ for i in installers:
 # Deploy contrib files
 k = Key(contrib_bucket)
 for distro in distros:
-	if distro != 'macos':
-		file = 'mongodb'
-		k.key = "{0}/{1}".format(distro, file)
-		full_path = "{0}/contrib/mongodb/{1}/{2}".format(path, distro, file)
-		k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
-		k.make_public()
+    if distro != 'macos':
+        file = 'mongodb'
+        k.key = "{0}/{1}".format(distro, file)
+        full_path = "{0}/contrib/mongodb/{1}/{2}".format(path, distro, file)
+        k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
+        k.make_public()
 
  # Deploy single files
 k.key = 'mongodb.conf'

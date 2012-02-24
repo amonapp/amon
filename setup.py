@@ -46,15 +46,15 @@ sdict = {
     'url': 'https://github.com/martinrusev/amon',
     'author' : 'Martin Rusev',
     'author_email' : 'martinrusev@live.com',
-	'keywords' : ['Amon', 'monitoring', 'logging', 'exception handling'],
+    'keywords' : ['Amon', 'monitoring', 'logging', 'exception handling'],
     'license' : 'GPL',
     'packages' : packages,
-	'data_files' : data_files,
-	'install_requires': 
-	[
+    'data_files' : data_files,
+    'install_requires': 
+    [
         'pymongo>=2.0',
-		'tornado>=2.0',
-		'formencode==1.2.4',
+        'tornado>=2.0',
+        'formencode==1.2.4',
         'Jinja2>=2.4',
 		'pip',
         'pytz'
@@ -69,8 +69,8 @@ sdict = {
 }
 
 try:
-	from setuptools import setup
+    from setuptools import setup
 except ImportError:
-	from distutils.core import setup
+    from distutils.core import setup
 
 setup(**sdict)
