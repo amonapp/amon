@@ -56,7 +56,8 @@ sdict = {
 		'tornado>=2.0',
 		'formencode==1.2.4',
         'Jinja2>=2.4',
-		'pip'
+		'pip',
+        'pytz'
     ],
     'classifiers' : [
     'Development Status :: 3 - Alpha',
