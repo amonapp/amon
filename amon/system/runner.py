@@ -1,6 +1,6 @@
 from amon.system.collector import system_info_collector, process_info_collector
 from amon.core import settings
-from time import time
+from amon.utils.dates import unix_utc_now
 import sys
 
 class Runner(object):
@@ -13,7 +13,7 @@ class Runner(object):
         
         system_info_dict = {}
         
-        now = int(time()) # unix time
+        now = unix_utc_now() # unix time
         
         if 'memory' in self.active_checks:
             memory = system_info_collector.get_memory_info()
@@ -58,14 +58,14 @@ class Runner(object):
     # empty dictionary, used when stopping the daemon to avoid chart bugs
     def empty(self):
         empty_dict = {}
-        now = int(time())
+        now = unix_utc_now()
         for check in self.active_checks:
             empty_dict[check] = {'time': now, 'last': 1}
 
         return empty_dict
 
     def processes(self):
-        now = int(time()) # unix time
+        now = unix_utc_now()
 
         process_info_dict = {}
         for process in self.process_checks:

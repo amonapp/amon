@@ -49,6 +49,8 @@ WEB_APP = {
 ACL = config.get('acl', "False") # Expects string
 key = config.get('secret_key', None)
 
+TIMEZONE = config.get('timezone','UTC')
+
 if key != None and len(key) > 0:
     SECRET_KEY = key
 else:
