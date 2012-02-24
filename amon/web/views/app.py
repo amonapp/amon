@@ -5,7 +5,7 @@ from amon.web.views.base import BaseView
 from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
 from amon.system.utils import get_disk_volumes, get_network_interfaces
 from amon.web.models import (
-        dashboard_model,		
+        dashboard_model,        
         system_model,
         process_model,
         exception_model,
@@ -91,7 +91,7 @@ class SystemView(BaseView):
             # Add network adapters 
             if 'network' in active_checks:
                 for check in checks['network']:
-                    network.append(check)	
+                    network.append(check)   
 
                 _interfaces = get_network_interfaces()
                 for interface in _interfaces:
