@@ -9,7 +9,7 @@
 </div>
 {% endif %}
 
-{% if last_check %}
+{% if last_check.cpu %}
 <h2>System</h2>
 <ul class='stats_bars'>
 	<li>
@@ -76,8 +76,12 @@
 	{% endfor %}
 	</li>
 </ul>
+{% else %}
+<div class="message">
+No data. Please ensure that amond is running
+</div>
 {% endif %}
-{% if process_check %}
+{% if process_check and last_check.cpu %}
 <h2>Processes</h2>
 <ul class='stats_bars'>
 	<li>
