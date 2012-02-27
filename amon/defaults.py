@@ -7,8 +7,9 @@ except ImportError:
 try:
     config_file = file('/etc/amon.conf').read()
     config = json.loads(config_file)
-except:
-    config = {}
+except Exception, e:
+    print "There was an error in your configuration file (/etc/amon.conf)"
+    raise e
 
 #  Amon Defaults
 BACKEND = config.get('backend', 'mongodb')

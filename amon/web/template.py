@@ -75,19 +75,19 @@ def time_in_words(value):
 def dateformat(value, format='%d-%m-%Y-%H:%M'):
     # Converts unix time to a readable date format
     try:
-        _ = datetime.utcfromtimestamp(value)
+        _ = datetime.fromtimestamp(value)
         return _.strftime(format)
     except:
         return None
 
 def timeformat(value, format='%H:%M'):
     # Converts unix time to a readable 24 hour-minute format
-    _ = datetime.utcfromtimestamp(value)
+    _ = datetime.fromtimestamp(value)
     return _.strftime(format)
 
 def date_to_js(value, format='%Y, %m, %d, %H, %M'):
     # Converts unixtime to a javascript Date list
-    _ = datetime.utcfromtimestamp(value)
+    _ = datetime.fromtimestamp(value)
     js_time_list = _.strftime(format).split(',')
     # Substract one month in js January is 0, February is 1, etc.
     js_time_list[1] = str(int(js_time_list[1])-1) 

@@ -40,6 +40,7 @@ System check
 	</li>
 </ul>
 </form>
+
 {% if 'memory' in active_checks %}
 
 <h2>Memory</h2>
@@ -164,10 +165,10 @@ $(function ()
 	{% if 'memory' in active_checks %}
 	
 	var memory_free = [{% for m in checks.memory.clone() %}
-	[{{ m.time * 1000 }}, {% if not m.last %} {{ m.memfree }} {% else %} 0 {% endif %}],
+	[{{ (m.time) }}, {% if not m.last %} {{ m.memfree }} {% else %} 0 {% endif %}],
 	{% endfor %} ]
 	var memory_total = [{% for m in checks.memory.clone() %}
-	[{{ m.time * 1000 }}, {% if not m.last %} {{ m.memtotal }} {% else %} 0 {% endif %}],
+	[{{ (m.time) }}, {% if not m.last %} {{ m.memtotal }} {% else %} 0 {% endif %}],
 	{% endfor %} ]
 	
 	var memory_legend = $('#memory_legend');

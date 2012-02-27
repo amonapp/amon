@@ -10,7 +10,7 @@ class BaseView(tornado.web.RequestHandler):
 
     def initialize(self):
         self.session = self._create_session()
-        self.now = datetime.now()
+        self.now = datetime.utcnow()
         self.acl = settings.ACL
 
         # Unread logs and exceptions -> in the sidebar

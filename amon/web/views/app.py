@@ -2,7 +2,12 @@ from datetime import timedelta
 from tornado.web import authenticated
 from amon.core import settings
 from amon.web.views.base import BaseView
-from amon.web.utils import datestring_to_unixtime,datetime_to_unixtime
+from amon.utils.dates import (
+        datestring_to_utc_datetime,
+        datetime_to_unixtime,
+        utc_unixtime_to_localtime,
+        localtime_utc_timedelta
+        )
 from amon.system.utils import get_disk_volumes, get_network_interfaces
 from amon.web.models import (
         dashboard_model,        
@@ -53,25 +58,24 @@ class SystemView(BaseView):
 
     @authenticated
     def get(self):
-
         date_from = self.get_argument('date_from', False)
         date_to = self.get_argument('date_to', False)
         charts = self.get_arguments('charts', None)
 
         if date_from:
-            date_from = datestring_to_unixtime(date_from)
-
+            date_from = datestring_to_utc_datetime(date_from)
         # Default - 24 hours period
         else:
             day = timedelta(hours=24)
-            yesterday = self.now - day
-
-            date_from = datetime_to_unixtime(yesterday)
+            date_from = self.now - day
 
         if date_to:
-            date_to = datestring_to_unixtime(date_to)
+            date_to = datestring_to_utc_datetime(date_to)
         else:
-            date_to = datetime_to_unixtime(self.now)
+            date_to = self.now
+
+        date_from = datetime_to_unixtime(date_from)
+        date_to = datetime_to_unixtime(date_to)
 
         if len(charts) > 0:
             active_checks = charts
@@ -80,6 +84,15 @@ class SystemView(BaseView):
 
         checks = system_model.get_system_data(active_checks, date_from, date_to)
         first_check_date = system_model.get_first_check_date()
+
+        # Convert the dates to local time for display
+        date_from = utc_unixtime_to_localtime(date_from)
+        date_to = utc_unixtime_to_localtime(date_to)
+
+        # Get the difference between UTC and localtime - used to display 
+        # the ticks in the charts
+        zone_difference = localtime_utc_timedelta()
+        print zone_difference
 
         if checks != False:
             network = []
@@ -120,6 +133,7 @@ class SystemView(BaseView):
                     date_from=date_from,
                     date_to=date_to,
                     first_check_date=first_check_date,
+                    zone_difference=zone_difference
                     )
 
 class ProcessesView(BaseView):
