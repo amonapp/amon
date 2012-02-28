@@ -104,6 +104,7 @@ class SystemModel(BaseModel):
         except Exception, e:
             start_date = False
 
+        start_date = start_date.get('time', 0)
         return start_date
 
 

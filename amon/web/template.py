@@ -315,8 +315,10 @@ def render(template, *args, **kwargs):
 
     try:
         template = env.get_template(template)
-    except:
-        template = env.get_template('blank.html')
+    except Exception, e:
+        #template = env.get_template('blank.html')
+        raise e
+        pass
     
     # Global variables
     env.globals['acl'] = settings.ACL

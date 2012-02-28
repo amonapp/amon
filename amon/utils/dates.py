@@ -25,6 +25,7 @@ def localtime_utc_timedelta(_timezone=None):
 
     return timezones_difference_list
 
+
 # Converts date strings: '31-07-2011-17:46' to an UTC datetime object using the
 # timezone in the config file
 # The _timezone parameter is used only in the test suite
@@ -66,8 +67,13 @@ def utc_unixtime_to_localtime(unixtime, _timezone=None):
 
 # Used in the collector, saves all the data in UTC
 def unix_utc_now():
-    d = datetime.datetime.utcnow()
+    d = datetime.utcnow()
     _unix = calendar.timegm(d.utctimetuple())
 
     return _unix
 
+def utc_now_to_localtime(_timezone=None):
+    now = unix_utc_now()
+    local_unix_time = utc_unixtime_to_localtime(now, _timezone)
+
+    return local_unix_time

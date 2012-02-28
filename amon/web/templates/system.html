@@ -165,10 +165,23 @@ $(function ()
 	{% if 'memory' in active_checks %}
 	
 	var memory_free = [{% for m in checks.memory.clone() %}
-	[{{ (m.time) }}, {% if not m.last %} {{ m.memfree }} {% else %} 0 {% endif %}],
+    {% if zone_difference.0 == 'negative' %}
+	[{{ (m.time + zone_difference.1 ) * 1000 }},
+    {% else %}
+	[{{ (m.time - zone_difference.1 ) * 1000 }},
+    {% endif %}
+    
+    {% if not m.last %} {{ m.memfree }} {% else %} 0 {% endif %}],
 	{% endfor %} ]
-	var memory_total = [{% for m in checks.memory.clone() %}
-	[{{ (m.time) }}, {% if not m.last %} {{ m.memtotal }} {% else %} 0 {% endif %}],
+	
+    var memory_total = [{% for m in checks.memory.clone() %}
+    {% if zone_difference.0 == 'negative' %}
+	[{{ (m.time + zone_difference.1 ) * 1000 }},
+    {% else %}
+	[{{ (m.time - zone_difference.1 ) * 1000 }},
+    {% endif %}
+    
+    {% if not m.last %} {{ m.memtotal }} {% else %} 0 {% endif %}],
 	{% endfor %} ]
 	
 	var memory_legend = $('#memory_legend');
@@ -187,15 +200,34 @@ $(function ()
 	{% if 'loadavg' in active_checks %}
 	
 	var loadavg_minute = [{% for l in checks.loadavg.clone() %}
-	[{{ l.time * 1000 }}, {% if not l.last %} {{ l.minute }} {% else %} 0 {% endif %} ],
+    
+    {% if zone_difference.0 == 'negative' %}
+	[{{ (l.time + zone_difference.1 ) * 1000 }},
+    {% else %}
+	[{{ (l.time - zone_difference.1 ) * 1000 }},
+    {% endif %}
+    
+    {% if not l.last %} {{ l.minute }} {% else %} 0 {% endif %} ],
 	{% endfor %} ]
 
 	var loadavg_five_minutes = [{% for l in checks.loadavg.clone() %}
-	[{{ l.time * 1000 }}, {% if not l.last %} {{ l.five_minutes }} {% else %} 0 {% endif %}],
+    {% if zone_difference.0 == 'negative' %}
+	[{{ (l.time + zone_difference.1 ) * 1000 }},
+    {% else %}
+	[{{ (l.time - zone_difference.1 ) * 1000 }},
+    {% endif %}
+    
+    {% if not l.last %} {{ l.five_minutes }} {% else %} 0 {% endif %}],
 	{% endfor %}]
 
 	var loadavg_fifteen_minutes = [{% for l in checks.loadavg  %}
-		[{{ l.time * 1000 }}, {% if not l.last %} {{ l.fifteen_minutes }} {% else %} 0 {% endif %}],
+    {% if zone_difference.0 == 'negative' %}
+	[{{ (l.time + zone_difference.1 ) * 1000 }},
+    {% else %}
+	[{{ (l.time - zone_difference.1 ) * 1000 }},
+    {% endif %}
+        
+        {% if not l.last %} {{ l.fifteen_minutes }} {% else %} 0 {% endif %}],
 	{% endfor %}]
 	
 	
@@ -217,14 +249,32 @@ $(function ()
 	{% if 'cpu' in active_checks %}
 	
 	var cpu_idle = [{% for c in checks.cpu.clone()  %}
-	[{{ c.time * 1000 }}, {% if not c.last %} {{ c.idle }} {% else %} 0 {% endif %} ],
+    {% if zone_difference.0 == 'negative' %}
+	[{{ (c.time + zone_difference.1 ) * 1000 }},
+    {% else %}
+	[{{ (c.time - zone_difference.1 ) * 1000 }},
+    {% endif %}
+    
+    {% if not c.last %} {{ c.idle }} {% else %} 0 {% endif %} ],
 	{% endfor %}]
 
 	var cpu_user = [{% for c in checks.cpu.clone()  %}
-	[{{ c.time * 1000 }}, {% if not c.last %} {{ c.user }} {% else %} 0 {% endif %} ],
+    {% if zone_difference.0 == 'negative' %}
+	[{{ (c.time + zone_difference.1 ) * 1000 }},
+    {% else %}
+	[{{ (c.time - zone_difference.1 ) * 1000 }},
+    {% endif %}
+    
+    {% if not c.last %} {{ c.user }} {% else %} 0 {% endif %} ],
 	{% endfor %}]
-	var cpu_system = [{% for c in checks.cpu  %}
-	[{{ c.time * 1000 }}, {% if not c.last %} {{ c.system }} {% else %} 0 {% endif %} ],
+	
+    var cpu_system = [{% for c in checks.cpu  %}
+    {% if zone_difference.0 == 'negative' %}
+	[{{ (c.time + zone_difference.1 ) * 1000 }},
+    {% else %}
+	[{{ (c.time - zone_difference.1 ) * 1000 }},
+    {% endif %}
+    {% if not c.last %} {{ c.system }} {% else %} 0 {% endif %} ],
 	{% endfor %}]
 	var cpu_legend = $('#cpu_legend');
 
@@ -248,11 +298,23 @@ $(function ()
 		
 		var network_recieved_{{ interface }} =   [
 						{% for n in network %}
-							[ {{ n.time * 1000 }}, {%if n[interface] %} {{ n[interface].recv_bytes }} {% endif %} ] , 
+							[ {% if zone_difference.0 == 'negative' %}
+                            {{ (n.time + zone_difference.1 ) * 1000 }},
+                            {% else %}
+                            {{ (n.time - zone_difference.1 ) * 1000 }},
+                            {% endif %}
+                            
+                            {%if n[interface] %} {{ n[interface].recv_bytes }} {% endif %} ] , 
 						{% endfor %}];
 		var network_transfered_{{ interface }} = [
 						{% for n in network %} 
-							[ {{ n.time * 1000 }}, {% if n[interface] %}  {{ n[interface].trans_bytes }} {% endif %} ] ,
+							[ {% if zone_difference.0 == 'negative' %}
+                            {{ (n.time + zone_difference.1 ) * 1000 }},
+                            {% else %}
+                            {{ (n.time - zone_difference.1 ) * 1000 }},
+                            {% endif %}
+                            
+                            {% if n[interface] %}  {{ n[interface].trans_bytes }} {% endif %} ] ,
 						{% endfor %}];
 	
 		$.plot($("#network_{{ interface }}"),
@@ -274,11 +336,24 @@ $(function ()
 	
 	var disk_total_{{ volume|clean_slashes  }} =	[
 					{% for  d in disk %} [ 
-						{{ d.time * 1000 }}, {% if d[volume] %}  {{ d[volume].total|to_int }}  {% endif %}    ],  
+						    {% if zone_difference.0 == 'negative' %}
+                            {{ (d.time + zone_difference.1 ) * 1000 }},
+                            {% else %}
+                            {{ (d.time - zone_difference.1 ) * 1000 }},
+                            {% endif %}
+
+                        {% if d[volume] %}  {{ d[volume].total|to_int }}  {% endif %}    ],  
 					{% endfor %}];
 	var disk_free_{{ volume|clean_slashes }} = [
 				{% for  d in disk %}
-					[ {{ d.time * 1000 }}, {% if d[volume] %} {{ d[volume].free|to_int }} {% endif %} ],
+					[ 
+                        {% if zone_difference.0 == 'negative' %}
+                        {{ (d.time + zone_difference.1 ) * 1000 }},
+                        {% else %}
+                        {{ (d.time - zone_difference.1 ) * 1000 }},
+                        {% endif %}
+                        
+                        {% if d[volume] %} {{ d[volume].free|to_int }} {% endif %} ],
 				{% endfor %}];
 
 
@@ -300,11 +375,10 @@ var datetime_options = {
 	separator: '-',
 	dateFormat: 'dd-mm-yy',  
 	timeFormat: 'hh:mm',
-	hourGrid: 4,
+	hourGrid: 2,
 	minuteGrid: 10,
-	maxDate: new Date(),
-	minDate: new Date({{ first_check_date.time|date_to_js }}),
-
+	maxDate: new Date({{ max_date*1000 }}),
+    minDate: new Date({{ first_check_date*1000 }})
 };
 $('#date_from').datetimepicker(datetime_options);
 $('#date_to').datetimepicker(datetime_options);

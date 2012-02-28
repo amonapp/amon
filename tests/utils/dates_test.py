@@ -64,3 +64,19 @@ class TestDates(unittest.TestCase):
         # UTC
         result = localtime_utc_timedelta(_timezone='UTC') 
         eq_(result, ('positive', 0))
+
+    def test_utc_now_to_localtime(self):
+        # +5 ( 0:00 in Mawson is 19:00 UTC )
+        utc_now = unix_utc_now()
+        result = utc_now_to_localtime(_timezone='Antarctica/Mawson')
+        eq_(result, utc_now+18000)
+
+        # +2 ( 0:00 in Sofia is 22:00 UTC )
+        utc_now = unix_utc_now()
+        result = utc_now_to_localtime(_timezone='Europe/Sofia')
+        eq_(result, utc_now+7200)
+
+
+    def test_unix_utc_now(self):
+        result = unix_utc_now()
+        assert isinstance(result, int)

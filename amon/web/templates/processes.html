@@ -69,11 +69,21 @@ Processes check
 	{% for process in process_data  %}
 	{% set sanitized_process = process|clean_slashes %}
 	var {{ sanitized_process }}_cpu = [ {% for data in process_data[process].clone()  %}
-		[{{ data.time * 1000 }}, {{ data.cpu }}],
+        [{% if zone_difference.0 == 'negative' %}
+                {{ (data.time + zone_difference.1 ) * 1000 }},
+                {% else %}
+                {{ (data.time - zone_difference.1 ) * 1000 }},
+                {% endif %}
+        {{ data.cpu }}],
 		{% endfor %}]
 
 	var {{ sanitized_process }}_memory = [{% for data in process_data[process]  %}
-		[{{ data.time * 1000 }}, {{ data.memory }}],
+		[{% if zone_difference.0 == 'negative' %}
+                {{ (data.time + zone_difference.1 ) * 1000 }},
+                {% else %}
+                {{ (data.time - zone_difference.1 ) * 1000 }},
+                {% endif %}
+        {{ data.memory }}],
 		{% endfor %}]
 
 
@@ -99,9 +109,9 @@ var datetime_options = {
 	separator: '-',
 	dateFormat: 'dd-mm-yy',  
 	timeFormat: 'hh:mm',
-	hourGrid: 4,
+	hourGrid: 2,
 	minuteGrid: 10,
-	maxDate: new Date()
+	maxDate: new Date({{ max_date*1000 }})
 
 };
 $('#date_from').datetimepicker(datetime_options);

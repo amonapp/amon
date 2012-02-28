@@ -6,7 +6,8 @@ from amon.utils.dates import (
         datestring_to_utc_datetime,
         datetime_to_unixtime,
         utc_unixtime_to_localtime,
-        localtime_utc_timedelta
+        localtime_utc_timedelta,
+        utc_now_to_localtime
         )
 from amon.system.utils import get_disk_volumes, get_network_interfaces
 from amon.web.models import (
@@ -86,13 +87,16 @@ class SystemView(BaseView):
         first_check_date = system_model.get_first_check_date()
 
         # Convert the dates to local time for display
+        first_check_date = utc_unixtime_to_localtime(first_check_date)
         date_from = utc_unixtime_to_localtime(date_from)
         date_to = utc_unixtime_to_localtime(date_to)
 
         # Get the difference between UTC and localtime - used to display 
         # the ticks in the charts
         zone_difference = localtime_utc_timedelta()
-        print zone_difference
+
+        # Get the max date - utc, converted to localtime
+        max_date = utc_now_to_localtime()
 
         if checks != False:
             network = []
@@ -133,7 +137,8 @@ class SystemView(BaseView):
                     date_from=date_from,
                     date_to=date_to,
                     first_check_date=first_check_date,
-                    zone_difference=zone_difference
+                    zone_difference=zone_difference,
+                    max_date=max_date
                     )
 
 class ProcessesView(BaseView):
@@ -144,24 +149,26 @@ class ProcessesView(BaseView):
 
     @authenticated
     def get(self):
-        day = timedelta(hours=24)
-        _yesterday = self.now - day
 
         processes = self.get_arguments('processes', None)
-
-
         date_from = self.get_argument('date_from', False)
         date_to = self.get_argument('date_to', False)
 
         if date_from:
-            date_from = datestring_to_unixtime(date_from)
+            date_from = datestring_to_utc_datetime(date_from)
+        # Default - 24 hours period
         else:
-            date_from = datetime_to_unixtime(_yesterday)
+            day = timedelta(hours=24)
+            date_from = self.now - day
 
         if date_to:
-            date_to = datestring_to_unixtime(date_to)
+            date_to = datestring_to_utc_datetime(date_to)
         else:
-            date_to = datetime_to_unixtime(self.now)
+            date_to = self.now
+
+        date_from = datetime_to_unixtime(date_from)
+        date_to = datetime_to_unixtime(date_to)
+
 
         all_processes_checks = settings.PROCESS_CHECKS
 
@@ -172,6 +179,17 @@ class ProcessesView(BaseView):
 
         process_data = process_model.get_process_data(processes_checks, date_from, date_to)
 
+        # Convert the dates to local time for display
+        date_from = utc_unixtime_to_localtime(date_from)
+        date_to = utc_unixtime_to_localtime(date_to)
+
+        # Get the difference between UTC and localtime - used to display 
+        # the ticks in the charts
+        zone_difference = localtime_utc_timedelta()
+
+        # Get the max date - utc, converted to localtime
+        max_date = utc_now_to_localtime()
+
         self.render('processes.html',
                 current_page=self.current_page,
                 all_processes_checks=all_processes_checks,
@@ -180,6 +198,8 @@ class ProcessesView(BaseView):
                 process_data=process_data,
                 date_from=date_from,
                 date_to=date_to,
+                zone_difference=zone_difference,
+                max_date=max_date
                 )
 
 
