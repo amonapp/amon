@@ -2,6 +2,7 @@ from __future__ import division
 from jinja2 import Environment, FileSystemLoader
 from amon.core import settings
 from amon.web.settings import TEMPLATES_DIR
+from amon.utils.dates import utc_unixtime_to_localtime
 from datetime import datetime, time
 import re
 try:
@@ -70,15 +71,21 @@ def time_in_words(value):
 
     return time_ago
 
-
-# TODO - Add one date filter with formats comming from the template
+# Converts unix time to readable date format 
+# Used in the tooltips on the frontend
 def dateformat(value, format='%d-%m-%Y-%H:%M'):
-    # Converts unix time to a readable date format
     try:
         _ = datetime.fromtimestamp(value)
         return _.strftime(format)
     except:
         return None
+
+# Localized unix timestamp
+def dateformat_local(value, format='%d-%m-%Y-%H:%M'):
+    value = utc_unixtime_to_localtime(value)
+
+    return dateformat(value)
+   
 
 def timeformat(value, format='%H:%M'):
     # Converts unix time to a readable 24 hour-minute format
@@ -296,6 +303,7 @@ def render(template, *args, **kwargs):
     env.filters['time'] = timeformat
     env.filters['date_to_js'] = date_to_js
     env.filters['date'] = dateformat
+    env.filters['date_local'] = dateformat_local
     env.filters['to_int'] =  to_int
     env.filters['time_in_words'] = time_in_words 
     env.filters['exceptions_dict'] = exceptions_dict
@@ -318,7 +326,6 @@ def render(template, *args, **kwargs):
     except Exception, e:
         #template = env.get_template('blank.html')
         raise e
-        pass
     
     # Global variables
     env.globals['acl'] = settings.ACL

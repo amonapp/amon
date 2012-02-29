@@ -77,10 +77,10 @@ if __name__ == "__main__":
 			except Exception, e:
 				log.exception("Amond cant be started")
 		elif 'stop' == sys.argv[1]:
-			print "Stopping Amon ..."
+			print "Stopping Amond ..."
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
-			print "Restaring Amon ..."
+			print "Restaring Amond ..."
 			daemon.restart()
 		elif 'status' == sys.argv[1]:
 			try:
@@ -93,9 +93,9 @@ if __name__ == "__main__":
 				pid = None
 
 			if pid:
-				print 'Amon is running as pid %s' % pid
+				print 'Amond is running as pid %s' % pid
 			else:
-				print 'Amon is not running.'
+				print 'Amond is not running.'
 		
 		else:
 			print "Unknown command"

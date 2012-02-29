@@ -12,7 +12,7 @@ Exceptions
 		<div class="heading">
 			<span class="occurrences" title='Total occurrences'>{{ exc.total_occurrences }}</span>
 			<div class="exception_info">
-				<span class="date timestamp" title='{{ exc.last_occurrence|date }}'>{{ exc.last_occurrence }}</span>
+				<span class="date timestamp" title='{{ exc.last_occurrence|date_local }}'>{{ exc.last_occurrence }}</span>
 					<span class="exception">
 					{% if exc.exception_class  %}
 						{{ exc.exception_class }}

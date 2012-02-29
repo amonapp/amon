@@ -36,7 +36,7 @@ Logs
 	{% for log in logs.result  %}
 	<li>
 	<div class="heading">
-		<span class='date timestamp' title='{{ log.time|date }}'>{{ log.time }}</span>
+		<span class='date timestamp' title='{{ log.time|date_local }}'>{{ log.time }}</span>
 		{% if log.tags %}
 			{% if log.tags|is_str %}
 				<span class='tag' title='{{ log.tags }}'>{{ log.tags }}</span>

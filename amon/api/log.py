@@ -1,4 +1,4 @@
-from time import time
+from amon.utils.dates import unix_utc_now
 from amon.api.models import LogsAPIModel, CommonAPIModel
 
 class Log(object):
@@ -41,7 +41,7 @@ class Log(object):
         
         message = log_dict.get('message', '')
 
-        now = int(time())
+        now = unix_utc_now()
 
         self.check_tags(tags)
 

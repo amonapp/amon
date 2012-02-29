@@ -73,6 +73,7 @@ def unix_utc_now():
     return _unix
 
 def utc_now_to_localtime(_timezone=None):
+    _timezone = _timezone if _timezone else settings.TIMEZONE
     now = unix_utc_now()
     local_unix_time = utc_unixtime_to_localtime(now, _timezone)
 

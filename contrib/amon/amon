@@ -44,10 +44,10 @@ if __name__ == "__main__":
 			except:
 				pass
 		elif 'stop' == sys.argv[1]:
-			print "Stopping the Amon web application ..."
+			print "Stopping Amon ..."
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
-			print "Restaring the Amon web application ..."
+			print "Restaring Amon ..."
 			daemon.restart()
 		elif 'status' == sys.argv[1]:
 			try:
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
 						settings.WEB_APP['port'])
 			else:
-				print 'The Amon web application is not running.'
+				print 'Amon {0} is not running.'.format(amon.__version__)
 		
 		else:
 			print "Unknown command"

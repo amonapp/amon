@@ -1,5 +1,5 @@
-from time import time
 from amon.api.models import ExceptionAPIModel, CommonAPIModel
+from amon.utils.dates import unix_utc_now
 from hashlib import md5
 
 """
@@ -21,7 +21,7 @@ class Exception(object):
 
     def __call__(self, *args, **kwargs):
         
-        now = int(time())
+        now = unix_utc_now()
 
         exception_dict = args[0]
         exception_class = exception_dict.get('exception_class', '')
