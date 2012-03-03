@@ -281,12 +281,7 @@ def query_dict(url, params_dict, page=None):
     return query_string
 
 def base_url():
-    host = settings.WEB_APP['host']
-    port = settings.WEB_APP['port']
-
-    base_url = "{0}:{1}".format(host, port)
-
-    return base_url
+    return ''
 
 # Removes the scientific notation and displays floats normally
 def format_float(value):
