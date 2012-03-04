@@ -139,27 +139,28 @@ class LinuxSystemCollector(object):
 
     def get_cpu_utilization(self):
 
-        # Get only the cpu stats
-        mpstat = subprocess.Popen(['iostat', '-c'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]
-                
+        sar = subprocess.Popen(['sar','1', '1'], stdout=subprocess.PIPE, close_fds=True,shell=False).communicate()[0]
         cpu_columns = []
         cpu_values = []
         header_regex = re.compile(r'.*?([%][a-zA-Z0-9]+)[\s+]?') # the header values are %idle, %wait
         # International float numbers - could be 0.00 or 0,00
         value_regex = re.compile(r'\d+[\.,]\d+') 
-        stats = mpstat.split('\n')
-
-
-        for value in stats:
-            values = re.findall(value_regex, value)
-            if len(values) > 4:
-                values = map(lambda x: x.replace(',','.'), values) # Replace , with . if necessary
-                cpu_values = map(lambda x: format(float(x), ".2f"), values) # Convert the values to float with 2 points precision
-
-            header = re.findall(header_regex, value)
-            if len(header) > 4:
+        stats = sar.split('\n')
+        
+        #take the 3rd line
+        header_line = stats.pop(2)
+        #take the next line too
+        values_line = stats.pop(2)
+        
+        values = re.findall(value_regex, values_line)
+        if len(values) > 4:
+            values = map(lambda x: x.replace(',','.'), values) # Replace , with . if necessary
+            cpu_values = map(lambda x: format(float(x)/100, ".2f"), values) # Convert the values to float with 2 points precision
+        
+        header = re.findall(header_regex, header_line)
+        if len(header) > 4:
                 cpu_columns = map(lambda x: x.replace('%', ''), header) 
-
+        
         cpu_dict = dict(zip(cpu_columns, cpu_values))
 
 
