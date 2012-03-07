@@ -45,6 +45,7 @@ class LogsAPIModel(BaseModel):
 
     def save_log(self, log):
         self.collection.insert(log)
+        self.collection.ensure_index('_searchable')
 
 class ExceptionAPIModel(BaseModel):
 
@@ -54,3 +55,4 @@ class ExceptionAPIModel(BaseModel):
 
     def save_exception(self, exception):
         self.collection.insert(exception)
+        self.collection.ensure_index('message')
