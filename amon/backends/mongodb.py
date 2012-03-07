@@ -65,6 +65,10 @@ class MongoBackend():
         return collection
 
     
+    def index(self, collection):
+        collection = self.get_collection(collection)
+        collection.ensure_index([('time', pymongo.DESCENDING)])
+    
 
     def store_entry(self, entry, collection):
         """ Stores a system entry  """
@@ -82,5 +86,6 @@ class MongoBackend():
         '''
         for key, value in entries.iteritems():
             self.store_entry(value, key)
+            self.index(key)
 
 backend = MongoBackend()

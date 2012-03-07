@@ -49,6 +49,7 @@ WEB_APP = {
 
 ACL = config.get('acl', "False") # Expects string
 key = config.get('secret_key', None)
+PROXY = config.get('proxy', None) # Relative baseurl if true
 
 TIMEZONE = config.get('timezone','UTC')
 

@@ -4,6 +4,7 @@ from amon.core import settings
 from amon.web.settings import TEMPLATES_DIR
 from amon.utils.dates import utc_unixtime_to_localtime
 from datetime import datetime, time
+import pytz
 import re
 try:
     import json
@@ -75,7 +76,7 @@ def time_in_words(value):
 # Used in the tooltips on the frontend
 def dateformat(value, format='%d-%m-%Y-%H:%M'):
     try:
-        _ = datetime.fromtimestamp(value)
+        _ = datetime.fromtimestamp(value, pytz.utc)
         return _.strftime(format)
     except:
         return None
@@ -86,15 +87,14 @@ def dateformat_local(value, format='%d-%m-%Y-%H:%M'):
 
     return dateformat(value)
    
-
 def timeformat(value, format='%H:%M'):
     # Converts unix time to a readable 24 hour-minute format
-    _ = datetime.fromtimestamp(value)
+    _ = datetime.fromtimestamp(value, pytz.utc)
     return _.strftime(format)
 
 def date_to_js(value, format='%Y, %m, %d, %H, %M'):
     # Converts unixtime to a javascript Date list
-    _ = datetime.fromtimestamp(value)
+    _ = datetime.fromtimestamp(value, pytz.utc)
     js_time_list = _.strftime(format).split(',')
     # Substract one month in js January is 0, February is 1, etc.
     js_time_list[1] = str(int(js_time_list[1])-1) 
@@ -281,12 +281,16 @@ def query_dict(url, params_dict, page=None):
     return query_string
 
 def base_url():
-    host = settings.WEB_APP['host']
-    port = settings.WEB_APP['port']
 
-    base_url = "{0}:{1}".format(host, port)
+    if settings.PROXY is None:
+        host = settings.WEB_APP['host']
+        port = settings.WEB_APP['port']
 
-    return base_url
+        base_url = "{0}:{1}".format(host, port)
+
+        return base_url
+    else:
+        return ''
 
 # Removes the scientific notation and displays floats normally
 def format_float(value):
