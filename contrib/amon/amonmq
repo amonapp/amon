@@ -5,32 +5,36 @@
 # Default-Stop:      0 1 6
 # Short-Description: Starts the Amon ZeroMQ server
 ### END INIT INFO
-import logging
 import sys
-import zmq
-
 try:
     import amon
 except:
     print 'Amon is not installed'
     sys.exit()
 
+import logging
+import json
+import zmq
+from amon.api import log as _log
+from amon.api import exception as _exception
+
+
 from amon.system.daemon import Daemon
 from amon.core import settings
 
 PIDFILE = '/var/run/amonmq.pid'
 # Keep all log files in one place
-#LOGFILE = '/usr/local/amon/amonmq.log'
+LOGFILE = '/usr/local/amon/amonmq.log'
 
 # Configure logging
-#logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
+logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
 
 class AmonMQDaemon(Daemon):
 
     def run(self):
         context = zmq.Context()
         router = context.socket(zmq.ROUTER)
-        router.bind('tcp://*:5570')
+        router.bind('tcp:/{0}:{1}'.format(settings.HOST, int(settings.PORT)))
 
         poll = zmq.Poller()
         poll.register(router, zmq.POLLIN)
@@ -41,7 +45,21 @@ class AmonMQDaemon(Daemon):
                 if sockets[router] == zmq.POLLIN:
                     _id = router.recv()
                     msg = router.recv(copy=True)
-                    #print 'Server received %s id %s\n' % (msg, _id)
+                    
+                    try:
+                        data = json.loads(msg)
+                    except:
+                        data = None # Invalid entry
+
+                    try:
+                        entry_type = data['type']
+                    except:
+                        entry_type = None
+
+                    if entry_type == 'log':
+                        _log(data['content'])
+                    elif entry_type == 'exception':
+                        _exception(data['content'])
 
         router.close()
         context.term()
