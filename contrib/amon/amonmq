@@ -17,8 +17,6 @@ import json
 import zmq
 from amon.api import log as _log
 from amon.api import exception as _exception
-
-
 from amon.system.daemon import Daemon
 from amon.core import settings
 
@@ -34,7 +32,11 @@ class AmonMQDaemon(Daemon):
     def run(self):
         context = zmq.Context()
         router = context.socket(zmq.ROUTER)
-        router.bind('tcp:/{0}:{1}'.format(settings.HOST, int(settings.PORT)))
+        
+        try:
+            router.bind('tcp:/{0}:{1}'.format(settings.ZEROMQ))
+        except Exception, e:
+            raise e
 
         poll = zmq.Poller()
         poll.register(router, zmq.POLLIN)
@@ -43,7 +45,7 @@ class AmonMQDaemon(Daemon):
             sockets = dict(poll.poll())
             if router in sockets:
                 if sockets[router] == zmq.POLLIN:
-                    _id = router.recv()
+                    _id = router.recv() # Internal id, not relevant for this case
                     msg = router.recv(copy=True)
                     
                     try:
