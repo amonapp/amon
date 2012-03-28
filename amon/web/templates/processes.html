@@ -91,14 +91,14 @@ Processes check
            [{ data: {{ sanitized_process }}_cpu, label: "CPU" }],
            { 
 				xaxis: { mode: 'time',  timeformat: "%d/%m %H:%M" },
-				yaxis: { min: 0, },
+				yaxis: { min: 0, tickFormatter: function (v) { return v.toFixed(1) + " %"; }  },
 	
 			});
 	$.plot($("#{{ sanitized_process }}_memory"),
            [{ data: {{ sanitized_process }}_memory, label: "Memory" }],
            { 
 				xaxis: { mode: 'time',  timeformat: "%d/%m %H:%M" },
-				yaxis: { min: 0, },
+				yaxis: { min: 0, tickFormatter: function (v) { return v.toFixed() + " MB"; }  },
 				colors: [ "#25CA20"],                
 	
 			});

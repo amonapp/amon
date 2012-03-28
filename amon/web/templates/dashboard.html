@@ -75,6 +75,20 @@
 		{% endif %}
 	{% endfor %}
 	</li>
+	<li>
+        <h3>Network</h3>
+        <ul class='network-stats'>
+        	<li>
+            {% for interface in last_check.network  %}
+            {% if interface != '_id' and interface != 'time' and interface != 'server_id' %}
+                <span class='label'>{{ interface }}</span>
+                <span class="received" title='Received'>{{ last_check.network[interface]['kb_received'] }}kb/s</span>
+                <span class="transmitted" title='Transmitted'>{{ last_check.network[interface]['kb_transmitted'] }}kb/s</span>
+            {% endif %}
+            {% endfor %}
+            </li>
+        </ul>
+    </li>
 </ul>
 {% else %}
 <div class="message">
@@ -99,7 +113,7 @@ No data. Please ensure that amond is running
 		<div class="container medium">
 			<span class="label">CPU</span>
 			<span class="progress" style='width: {{ process_check[process].cpu|progress_width(100, 'medium') }}'></span>
-			<span class="data">{{ process_check[process].cpu|format_float }}</span>
+			<span class="data">{{ process_check[process].cpu|format_float }}%</span>
 		</div>
 		<div class="container medium last">
 			<span class="label">Memory</span>

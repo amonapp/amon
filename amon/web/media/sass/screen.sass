@@ -386,7 +386,7 @@ $log_width: 800px
     padding-top: 3px
     font-size: 1.4em
 // Dashboard
-$small_bar: 160px
+$small_bar: 158px
 $medium_bar: 245px
 $full_bar: 500px
 .timestamp
@@ -408,9 +408,9 @@ ul.stats_bars
       margin-top: 20px
       div.container
         .progress
-          top: -14px
+          top: -15px
         .data
-          top: -35px
+          top: -37px
     h3
       float: left
       width: 100px
@@ -418,13 +418,36 @@ ul.stats_bars
         top: 6px
         right: 20px
       text-align: right
+    ul.network-stats
+      float: left
+      span.label
+        font-size: 1.4em
+        color: #797979 
+        float: left
+        margin:
+          top: 7px
+          right: 15px
+      span.transmitted
+        margin:
+          top: 7px
+          right: 20px
+        float: left
+        background: url(../images/arrow-up.png) no-repeat 0px 2px
+        padding-left: 20px
+        font-size: 1.3em
+        font-weight: bold
+        color: #2B3239 
+      span.received
+        @extend span.transmitted
+        background: url(../images/arrow-down.png) no-repeat 0px 2px
     div.container
       float: left
       width: $full_bar
       height: 30px
       background: #FBFBFB 
+      background: #FBFBFB 
       +border-radius(6px)
-      border: 1px solid #F0F0F0 
+      border: 2px solid #F0F0F0 
       &.medium
         width: $medium_bar
         margin-right: 10px
@@ -443,25 +466,19 @@ ul.stats_bars
         width: 100px
         display: block
         position: relative
-        top: 0px
-        left: 0px
-        height: 28px
+        top: -2px
+        left: -1px
+        height: 29px
         background: url(../images/green_bar.png)
-        border: 1px solid #75A22B 
+        border: 2px solid #75A22B 
         +border-radius(6px)
-        &.red
-          background: url(../images/red_bar.png)
-          border: 1px solid #BC0000 
-        &.yellow
-          background: url(../images/yellow_bar.png)
-          border: 1px solid #F1B603 
       .data
         position: relative
         width: $full_bar
         text-align: center
-        top: -22px
+        top: -25px
         display: block
-        font-size: 1.4em
+        font-size: 1.3em
         font-weight: bold
         +text-shadow(rgba(white, .2) 1px 1px 0, rgba(white, .2) 1px 1px 0, rgba(white, .2) 1px 1px 0)
         color: #2B3239 

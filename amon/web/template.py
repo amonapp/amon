@@ -150,7 +150,7 @@ def progress_width_percent(percent, container_type='full'):
     elif container_type == 'medium':
         container_width = 245
     else:
-        container_width = 145
+        container_width = 158
 
     try:
         progress_width = (container_width/100.0)*int(percent)
@@ -167,7 +167,7 @@ def progress_width_percent(percent, container_type='full'):
     # If the progress bar is 0px -> don't show the border`
     no_border = ''
     if progress_width == 0: 
-        no_border = "; border:0px"
+        no_border = "; border:2px solid transparent; background: none;"
     
     return '{0}px{1}'.format(progress_width, no_border)
 

@@ -192,7 +192,7 @@ $(function ()
 		   ],
            { 
 				xaxis: xaxis,
-				yaxis: { min: 0 },
+				yaxis: { min: 0, tickFormatter: function (v) { return v + " MB"; }  },
 			});
 
 	{% endif %}
@@ -285,7 +285,7 @@ $(function ()
 		   ],
            { 
 				xaxis: xaxis,
-				yaxis: { min: 0 },
+				yaxis: { min: 0, tickFormatter: function (v) { return v + " %"; }    },
 	
 			});
 
@@ -293,28 +293,28 @@ $(function ()
 	
 	{% if 'network' in active_checks %}
 	
-	{% endif %}
+	
 	{% for interface  in network_interfaces  %}
 		
 		var network_recieved_{{ interface }} =   [
-						{% for n in network %}
+						{% for n in checks.network.clone() %}
 							[ {% if zone_difference.0 == 'negative' %}
                             {{ (n.time + zone_difference.1 ) * 1000 }},
                             {% else %}
                             {{ (n.time - zone_difference.1 ) * 1000 }},
                             {% endif %}
                             
-                            {%if n[interface] %} {{ n[interface].recv_bytes }} {% endif %} ] , 
+                            {%if n[interface] %} {{ n[interface].kb_received }} {% endif %} ] , 
 						{% endfor %}];
 		var network_transfered_{{ interface }} = [
-						{% for n in network %} 
+						{% for n in checks.network.clone() %} 
 							[ {% if zone_difference.0 == 'negative' %}
                             {{ (n.time + zone_difference.1 ) * 1000 }},
                             {% else %}
                             {{ (n.time - zone_difference.1 ) * 1000 }},
                             {% endif %}
                             
-                            {% if n[interface] %}  {{ n[interface].trans_bytes }} {% endif %} ] ,
+                            {% if n[interface] %}  {{ n[interface].kb_transmitted }} {% endif %} ] ,
 						{% endfor %}];
 	
 		$.plot($("#network_{{ interface }}"),
@@ -324,10 +324,11 @@ $(function ()
 		   ],
            { 
 				xaxis: xaxis,
-				yaxis: { min: 0 },
+				yaxis: { min: 0, tickFormatter: function (v) { return v.toFixed(2) + " kb"; }  },
 	
 			});
 	{% endfor %}
+	{% endif %} {# network #}
 
 
 	{% if 'disk' in active_checks %}
@@ -364,7 +365,7 @@ $(function ()
 		   ],
            { 
 				xaxis: xaxis,
-				yaxis: { min: 0 },
+				yaxis: { min: 0 , tickFormatter: function (v) { return v.toFixed(2) + " GB"; }   },
 			});
 	{% endfor %}
 
