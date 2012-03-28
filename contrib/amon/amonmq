@@ -26,22 +26,22 @@ LOGFILE = '/usr/local/amon/amonmq.log'
 
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
+log = logging.getLogger('amonmq')
 
 class AmonMQDaemon(Daemon):
 
     def run(self):
-        context = zmq.Context()
-        router = context.socket(zmq.ROUTER)
-        
-        try:
-            router.bind('tcp:/{0}:{1}'.format(settings.ZEROMQ))
-        except Exception, e:
-            raise e
-
-        poll = zmq.Poller()
-        poll.register(router, zmq.POLLIN)
-
         while True:
+            context = zmq.Context()
+            router = context.socket(zmq.ROUTER)
+            
+            try:
+                router.bind('tcp://{0}'.format(settings.ZEROMQ))
+            except Exception, e:
+                log.exception(e)
+            
+            poll = zmq.Poller()
+            poll.register(router, zmq.POLLIN)
             sockets = dict(poll.poll())
             if router in sockets:
                 if sockets[router] == zmq.POLLIN:
@@ -80,8 +80,8 @@ if __name__ == "__main__":
         if 'start' == sys.argv[1]:
             try:
                 daemon.start()
-            except:
-                pass
+            except Exception, e:
+                raise e
         elif 'stop' == sys.argv[1]:
             print "Stopping AmonMQ ..."
             daemon.stop()
@@ -110,4 +110,3 @@ if __name__ == "__main__":
     else:
         print "usage: %s start|stop|restart|status" % sys.argv[0]
         sys.exit(2)
-

@@ -50,7 +50,7 @@ WEB_APP = {
 ACL = config.get('acl', "False") # Expects string
 key = config.get('secret_key', None)
 PROXY = config.get('proxy', None) # Relative baseurl if true
-ZEROMQ = config.get('zeromq', 'localhost:5464') # TCP address for the ZeroMQ daemon
+ZEROMQ = config.get('zeromq', '127.0.0.1:5464') # TCP address for the ZeroMQ daemon
 
 TIMEZONE = config.get('timezone','UTC')
 
