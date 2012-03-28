@@ -88,24 +88,20 @@ class LinuxSystemCollector(object):
 
     def get_network_traffic(self):
 
-        lines = open("/proc/net/dev", "r").readlines()
+        stats = subprocess.Popen(['sar','-n','DEV','1','1'], stdout=subprocess.PIPE, close_fds=True)\
+                .communicate()[0]
+        network_data = stats.splitlines()
+        data = {}
+        for line in network_data:
+            if line.startswith('Average'):
+                elements = line.split()
+                interface = elements[1]
+                if interface not in ['IFACE', 'lo']:
+                    # rxkB/s - Total number of kilobytes received per second  
+                    # txkB/s - Total number of kilobytes transmitted per second
+                    data[interface] = {"kb_received": elements[4] , "kb_transmitted": elements[5]}
 
-        columnLine = lines[1]
-        _, receiveCols , transmitCols = columnLine.split("|")
-        receiveCols = map(lambda a:"recv_"+a, receiveCols.split())
-        transmitCols = map(lambda a:"trans_"+a, transmitCols.split())
-
-        cols = receiveCols+transmitCols
-
-        faces = {}
-
-        for line in lines[2:]:
-            if line.find(":") < 0: continue
-            face, data = line.split(":")
-            faceData = dict(zip(cols, data.split()))
-            faces[face.strip()] = faceData
-
-        return faces
+        return data
 
 
     def get_load_average(self):
@@ -140,7 +136,9 @@ class LinuxSystemCollector(object):
     def get_cpu_utilization(self):
 
         # Get only the cpu stats
-        mpstat = subprocess.Popen(['iostat', '-c'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]
+        #mpstat = subprocess.Popen(['iostat', '-c'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]
+        mpstat = subprocess.Popen(['sar', '1','1'], stdout=subprocess.PIPE, close_fds=True).communicate()[0]
+
                 
         cpu_columns = []
         cpu_values = []

@@ -56,10 +56,16 @@ class AmonMQDaemon(Daemon):
                     except:
                         entry_type = None
 
-                    if entry_type == 'log':
-                        _log(data['content'])
-                    elif entry_type == 'exception':
-                        _exception(data['content'])
+                    try:
+                        content = data['content']
+                    except:
+                        content = None
+                    
+                    if content != None:
+                        if entry_type == 'log':
+                            _log(data['content'])
+                        elif entry_type == 'exception':
+                            _exception(data['content'])
 
         router.close()
         context.term()
