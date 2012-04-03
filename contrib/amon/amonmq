@@ -24,22 +24,23 @@ PIDFILE = '/var/run/amonmq.pid'
 # Keep all log files in one place
 LOGFILE = '/usr/local/amon/amonmq.log'
 
-# Configure logging
-logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
-log = logging.getLogger('amonmq')
+# Configure logger
+FORMAT = '%(asctime)-15s %(message)s'
+logging.basicConfig(filename=LOGFILE,level=logging.DEBUG, format=FORMAT) 
+logger = logging.getLogger('amonmq')
 
 class AmonMQDaemon(Daemon):
 
     def run(self):
+        context = zmq.Context()
+        router = context.socket(zmq.ROUTER)
+
+        try:
+            router.bind('tcp://{0}'.format(settings.ZEROMQ))
+        except Exception, e:
+            logger.exception(e)
+
         while True:
-            context = zmq.Context()
-            router = context.socket(zmq.ROUTER)
-            
-            try:
-                router.bind('tcp://{0}'.format(settings.ZEROMQ))
-            except Exception, e:
-                log.exception(e)
-            
             poll = zmq.Poller()
             poll.register(router, zmq.POLLIN)
             sockets = dict(poll.poll())
@@ -47,7 +48,7 @@ class AmonMQDaemon(Daemon):
                 if sockets[router] == zmq.POLLIN:
                     _id = router.recv() # Internal id, not relevant for this case
                     msg = router.recv(copy=True)
-                    
+
                     try:
                         data = json.loads(msg)
                     except:
@@ -62,12 +63,19 @@ class AmonMQDaemon(Daemon):
                         content = data['content']
                     except:
                         content = None
-                    
+
                     if content != None:
                         if entry_type == 'log':
-                            _log(data['content'])
+                            try:
+                                _log(data['content'])
+                            except Exception, e:
+                                logger.exception(e)
+
                         elif entry_type == 'exception':
-                            _exception(data['content'])
+                            try:
+                                _exception(data['content'])
+                            except Exception, e:
+                                logger.exception(e)
 
         router.close()
         context.term()
@@ -80,8 +88,8 @@ if __name__ == "__main__":
         if 'start' == sys.argv[1]:
             try:
                 daemon.start()
-            except Exception, e:
-                raise e
+            except:
+                pass
         elif 'stop' == sys.argv[1]:
             print "Stopping AmonMQ ..."
             daemon.stop()
@@ -99,7 +107,8 @@ if __name__ == "__main__":
                 pid = None
 
             if pid:
-                print 'AmonMQ {0} running as pid {1}'.format(amon.__version__, pid)
+                print 'AmonMQ {0} running as pid {1} at {2}'.format(amon.__version__, 
+                        pid, settings.ZEROMQ)
             else:
                 print 'AmonMQ {0} is not running.'.format(amon.__version__)
 
