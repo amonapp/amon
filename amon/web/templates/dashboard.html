@@ -49,10 +49,11 @@
 		<h3>Memory</h3>
 		<div class="container medium">
 			{% set total_ram = last_check.memory.memtotal %}
+			{% set used_ram = total_ram - last_check.memory.memfree %}
 			<span class='label'>RAM</span>
-			<span class="progress" style='width: {{ last_check.memory.memfree|progress_width(last_check.memory.memtotal, 'medium') }}'>
+			<span class="progress" style='width: {{ used_ram|progress_width(last_check.memory.memtotal, 'medium') }}'>
 			</span>
-			<span class="data">{{ last_check.memory.memfree }} of {{ last_check.memory.memtotal }}MB</span>
+			<span class="data">{{ used_ram }} of {{ last_check.memory.memtotal }}MB</span>
 		</div>
 		<div class="container medium last">
 			{% set swap_free = last_check.memory.swaptotal - last_check.memory.swapfree %}
