@@ -52,7 +52,7 @@ System check
 		</li>
 		<li>
 		<span class="color two"><!-- --></span>
-			<span class='last'>Free memory</span>
+			<span class='last'>Used memory</span>
 		</li>
 	</ul>
 </div>
@@ -141,7 +141,7 @@ System check
 			</li>
 			<li>
 			<span class="color two"><!-- --></span>
-				<span class='last'>Free</span>
+				<span class='last'>Used</span>
 			</li>
 		</ul>
 	</div>
@@ -164,14 +164,14 @@ $(function ()
 
 	{% if 'memory' in active_checks %}
 	
-	var memory_free = [{% for m in checks.memory.clone() %}
+	var memory_used = [{% for m in checks.memory.clone() %}
     {% if zone_difference.0 == 'negative' %}
 	[{{ (m.time + zone_difference.1 ) * 1000 }},
     {% else %}
 	[{{ (m.time - zone_difference.1 ) * 1000 }},
     {% endif %}
     
-    {% if not m.last %} {{ m.memfree }} {% else %} 0 {% endif %}],
+    {% if not m.last %} {{ m.memtotal-m.memfree }} {% else %} 0 {% endif %}],
 	{% endfor %} ]
 	
     var memory_total = [{% for m in checks.memory.clone() %}
@@ -188,7 +188,7 @@ $(function ()
 
     $.plot($("#memory"),
            [	{ data: memory_total, label: "Total memory" },
-				{ data: memory_free, label: "Free memory"  }
+				{ data: memory_used, label: "Used memory"  }
 		   ],
            { 
 				xaxis: xaxis,
@@ -345,7 +345,7 @@ $(function ()
 
                         {% if d[volume] %}  {{ d[volume].total|to_int }}  {% endif %}    ],  
 					{% endfor %}];
-	var disk_free_{{ volume|clean_slashes }} = [
+	var disk_used_{{ volume|clean_slashes }} = [
 				{% for  d in disk %}
 					[ 
                         {% if zone_difference.0 == 'negative' %}
@@ -354,14 +354,14 @@ $(function ()
                         {{ (d.time - zone_difference.1 ) * 1000 }},
                         {% endif %}
                         
-                        {% if d[volume] %} {{ d[volume].free|to_int }} {% endif %} ],
+                        {% if d[volume] %} {{ d[volume].used|to_int }} {% endif %} ],
 				{% endfor %}];
 
 
 	$.plot($("#disk_{{ volume|clean_slashes }}"),
 			[	
 				{ data: disk_total_{{ volume|clean_slashes }}, label: "Total" },
-				{ data: disk_free_{{ volume|clean_slashes }}, label: "Free"  }
+				{ data: disk_used_{{ volume|clean_slashes }}, label: "Used"  }
 		   ],
            { 
 				xaxis: xaxis,
