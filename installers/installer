@@ -16,23 +16,9 @@ function die(){
 }
 
 DISTRO=
-VERSION=0.7.5
+VERSION=0.9.0
 PYTHON=python
 VERBOSE=0
-
-#while getopts "h" option; do
-    #case "$option" in
-        #p) 
-            #PYTHON=$OPTARG
-            #;;
-        #b)
-            #BETA=1
-            #;;
-        #v)
-            #VERBOSE=1
-            #;;
-    #esac
-#done
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
 if file_exists /etc/debian_version ; then
@@ -147,6 +133,12 @@ echo "***  Installing Amon $VERSION ..."
 	
 	# make the web app daemon executable
 	sudo chmod +x /etc/init.d/amon
+
+	# Copy the ZeroMQ daemon
+	sudo cp contrib/amon/amonmq /etc/init.d/amonmq
+	
+	# make the ZeroMQ daemon executable
+	sudo chmod +x /etc/init.d/amonmq
 
 	# Create a directory for the log files
 	sudo mkdir -p "$amon_install_dir"
