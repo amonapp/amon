@@ -44,14 +44,14 @@ fi
 MACHINE_TYPE=`uname -m`
 if [ "$MACHINE_TYPE" == 'i686' ]; then
 	# 32-bit
-	echo "32-bit architecture detected"
-	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.2.tgz"
-	mongo_extract_dir="mongodb-linux-i686-2.0.2"
+	echo "*** 32-bit architecture detected"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.4.tgz"
+	mongo_extract_dir="mongodb-linux-i686-2.0.4"
 else
 	# 64-bit
-	echo "64-bit architecture detected"
-	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.0.2.tgz"
-	mongo_extract_dir="mongodb-linux-x86_64-2.0.2"
+	echo "*** 64-bit architecture detected"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.0.4.tgz"
+	mongo_extract_dir="mongodb-linux-x86_64-2.0.4"
 fi
 
 # Set variables for the installation
@@ -121,9 +121,9 @@ echo "***  Installing Amon $VERSION ..."
 	sudo chmod +x /etc/init.d/amond
 
 	# Add the collector daemon to the startup list
-    if [ '$DISTRO' == 'debian' ]; then
+    if [ "$DISTRO" == 'debian' ]; then
 	    sudo update-rc.d amond defaults > /dev/null 
-    elif [ '$DISTRO' == 'rpm' ]; then
+    elif [ "$DISTRO" == 'rpm' ]; then
 	    sudo chkconfig --add amond > /dev/null
 		sudo chkconfig amond on
     fi
@@ -178,9 +178,9 @@ echo "***  Installing Amon $VERSION ..."
 
 		# Copy the system daemon
 		if ! file_exists "/etc/init.d/mongodb"; then
-            if [ '$DISTRO' == 'debian' ]; then
+            if [ "$DISTRO" == 'debian' ]; then
 			    sudo cp amon/contrib/mongodb/debian/mongodb /etc/init.d/mongodb
-            elif [ '$DISTRO' == 'rpm' ]; then 
+            elif [ "$DISTRO" == 'rpm' ]; then 
 			    sudo cp amon/contrib/mongodb/rpm/mongodb /etc/init.d/mongodb
             fi
 		fi
@@ -188,9 +188,9 @@ echo "***  Installing Amon $VERSION ..."
 		# Make the mongo daemon executable
 		sudo chmod +x /etc/init.d/mongodb
 
-        if [ '$DISTRO' == 'debian' ]; then
+        if [ "$DISTRO" == 'debian' ]; then
 		    sudo update-rc.d mongodb defaults > /dev/null
-        elif [ '$DISTRO' == 'rpm' ]; then
+        elif [ "$DISTRO" == 'rpm' ]; then
 		    sudo chkconfig --add mongodb > /dev/null
 		    sudo chkconfig mongodb on
         fi
