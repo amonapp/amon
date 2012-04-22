@@ -16,7 +16,7 @@ function die(){
 }
 
 DISTRO=
-VERSION=0.9.0
+VERSION=0.9
 PYTHON=python
 VERBOSE=0
 
