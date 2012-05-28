@@ -1,10 +1,8 @@
 import sys
+import os
 
-if sys.platform == 'darwin':
-    sys.path.insert(0, '/Users/User/amon')
-else:
-    sys.path.insert(0,'/home/martin/amon')
-
+amon_dir = os.sep.join(os.path.abspath( __file__ ).split(os.sep)[:-3])
+sys.path.insert(0, amon_dir)
 
 from amon.web.server import application
 import tornado.ioloop
