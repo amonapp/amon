@@ -14,8 +14,8 @@ import sys
 try:
 	import amon
 except:
-	print 'Amon is not installed'
-	sys.exit()
+	print 'Amon is not installed or was not found in $PYTHONPATH / sys.path'
+	sys.exit(1)
 
 from amon.system.daemon import Daemon
 from amon.web.server import application
