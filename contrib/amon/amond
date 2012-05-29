@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 ### BEGIN INIT INFO
 # Provides:          amond
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Start the Amon system info collector
@@ -13,8 +15,8 @@ import logging
 try:
 	import amon
 except:
-	print 'Amon is not installed'
-	sys.exit()
+	print 'Amon is not installed or was not found in $PYTHONPATH / sys.path'
+	sys.exit(1)
 
 from amon.system.daemon import Daemon
 from amon.core import settings
