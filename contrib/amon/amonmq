@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 ### BEGIN INIT INFO
 # Provides:          amonmq
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Starts the Amon ZeroMQ server
+# Description:       Starts a 0MQ daemon for Amon to talk to.
 ### END INIT INFO
 import sys
 try:
