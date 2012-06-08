@@ -28,8 +28,8 @@ handlers = [
 	(r"/system", SystemView),
 	(r"/processes", ProcessesView),
 	(r"/exceptions", ExceptionsView),
-	(r"/logs", LogsView),
-	(r"^/logs/(?P<page>\d+)$", LogsView),
+	(r"/events", LogsView),
+	(r"^/events/(?P<page>\d+)$", LogsView),
 	(r"^/settings", SettingsView),
 	(r"^/settings/(?P<action>\w+)$", SettingsView),
 	# Auth

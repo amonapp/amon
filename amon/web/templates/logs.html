@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block title %}
-Logs 
+Events
 {% endblock %}
 {% block breadcrumb %}
-Logs 
+Events
 {% endblock %}
 {% block header %}
 	<link rel="stylesheet" href="/media/css/chosen.css" />
 {% endblock %}
 {% block content %}
-<form action="{{ base_url|url('logs') }}" method='get' id='logs_filter_form'>
+<form action="{{ base_url|url('events') }}" method='get' id='logs_filter_form'>
 <ul class='tabs'>
 	{% if all_tags %}
 	<li>

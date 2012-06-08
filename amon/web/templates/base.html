@@ -8,7 +8,6 @@
 	<link rel="stylesheet" href="/media/css/screen.css" />
 	<link rel="stylesheet" href="/media/css/jquery-ui.css" />
 	{% block header %}
-
 	{% endblock %}
 </head>
 <body>
@@ -48,11 +47,11 @@
 					<a class='top {% if current_page=='processes' %}active{% endif %}' href="/processes">Processes</a>
 				</li>
 				<li>
-					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/logs">
+					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/events">
 						{% if app.unread_values.logs and current_page != 'logs' %}
 							<span class="unread">{{ app.unread_values.logs }}</span>
 						{% endif %}
-					Logs</a>
+					Events</a>
 				</li>
 				<li>
 					<a class='top {% if current_page=='exceptions' %}active{% endif %}' href="/exceptions">
@@ -68,10 +67,10 @@
 			</ul>
 	    </div> 
 </div>
-	<script type="text/javascript" src='/media/js/jquery-1.6.2.min.js'></script>
+	<script type="text/javascript" src='/media/js/jquery-1.7.2.min.js'></script>
 	<script type="text/javascript" src='/media/js/date.format.min.js'></script>
 	<script type="text/javascript" src='/media/js/jquery.relative-date.js'></script>
 	{% block js %}
 	{% endblock %}
 </body>
-</html
+</html>

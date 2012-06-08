@@ -24,6 +24,8 @@ VERBOSE=0
 if file_exists /etc/debian_version ; then
     DISTRO='debian'
 # RPM based distros - Tested and supported on : Fedora, CentOS, Amazon Linux AMI
+elif file_exists /etc/redhat-release ; then
+    DISTRO='rpm'
 elif file_exists /etc/system-release ; then
     DISTRO='rpm'
 # Mac OS
