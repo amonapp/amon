@@ -3,6 +3,7 @@ from jinja2 import Environment, FileSystemLoader
 from amon.core import settings
 from amon.web.settings import TEMPLATES_DIR
 from amon.utils.dates import utc_unixtime_to_localtime
+from amon.web.libs.jinja2htmlcompress import SelectiveHTMLCompress
 from datetime import datetime, time
 import pytz
 import re
@@ -298,7 +299,8 @@ def format_float(value):
 
 def render(template, *args, **kwargs):
     
-    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR),
+            extensions=[SelectiveHTMLCompress])
     
     env.globals['base_url'] = base_url()
     env.filters['url'] = url
@@ -324,6 +326,7 @@ def render(template, *args, **kwargs):
     env.filters['is_dict'] = is_dict
     env.filters['is_str'] = is_str
     env.filters['query_dict'] = query_dict
+
 
     try:
         template = env.get_template(template)

@@ -1,15 +1,21 @@
 @import "compass/reset"
 @import "compass/css3"
-$body_width: 800px
+$body_width: 960px
 html
   height: 100%
 body
   font-size: 62.5%
   height: 100%
   font-family: Arial, Helvetica, sans-serif
-  background: url(../images/sidebar.png) repeat-y
+span.breadcrumb
+  float: left
+  font-size: 2em
+  color: black
+  margin: 
+    top: 10px
+    bottom: 10px
 .wrapper
-  width: 100%
+  width: $body_width
   height: 100%
   margin: 0 auto
 .wrapright
@@ -46,25 +52,25 @@ body
       background-position: 0px 0px
       &:hover
         background-position: 0px -34px
-  // Used in charts
-  h2
-    float: left
-    font-size: 3em
-    clear: left
-    margin: 25px
-      bottom: 20px
-    color: #727272 
-  h3
-    @extend h2
-    font-size: 2em
-    color: #858585
-  h4
-    @extend h3
-    font-size: 1.8em
-    margin:
-      left: 0px
-      top: 15px
-      bottom: 5px
+// Used in charts
+h2
+  float: left
+  font-size: 3em
+  clear: left
+  margin: 25px
+    bottom: 20px
+  color: #727272 
+h3
+  @extend h2
+  font-size: 2em
+  color: #858585
+h4
+  @extend h3
+  font-size: 1.8em
+  margin:
+    left: 0px
+    top: 15px
+    bottom: 5px
 .left
   float: left
   width: 159px

@@ -1,0 +1,77 @@
+#header
+  width: 100%
+  height: 100px
+  a.logo
+    float: left
+    width: 242px
+    height: 88px
+    background: url(../images/logo.png) no-repeat
+    margin: 15px
+      left: 0px
+      right: 0px
+  .header_separator
+    float: left
+    width: 100%
+    height: 3px
+    background: #F0F0F0 
+  #menu
+    float: right
+    clear: right
+    margin-top: 30px
+    position: relative
+    z-index: 5
+    li
+      float: left
+      margin-left: 30px
+      position: relative
+      &:hover
+        ul
+          left: 0px
+      a 
+        font-size: 1.8em
+        color: black
+        padding-bottom: 3px
+        text-decoration: none
+        &:hover, &.active
+          border-bottom: 2px solid #FDCB34
+      span.active
+        font-size: 2em
+        color: black
+        padding-bottom: 3px
+        border-bottom: 2px solid #FDCB34
+    ul
+      list-style-type: none
+      position: absolute
+      left: -9999px
+      background: black
+      top: 24px
+      li
+        float: left
+        clear: left
+        margin-left: 10px
+        a
+          float: left
+          font-size: 1.6em
+          display: block
+          outline: none
+          padding:
+            top: 10px
+            bottom: 10px
+          width: 155px
+          color: white
+          &:hover
+            border: 0px
+            color: #FDCB34
+  .logout
+    background: url(../images/logout.png)
+    text-indent: -3000px
+    margin-top: 15px
+    float: right
+    padding: 0px
+    border: 0px
+    width: 26px
+    height: 26px
+    background-position: 0px 0px
+    &:hover
+      background-position: 0px -26px
+

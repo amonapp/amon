@@ -168,13 +168,13 @@
 		-1px -1px 0 rgba(0, 0, 0, 0.8);
 }
 .chart_container {
-        position: relative;
         float: left;
         clear: left;
         padding: 10px
-        margin-bottom: 20px;
-        margin-left: 20px;
+        margin-bottom: 30px;
         display: inline-block;
+        position: relative;
+        height: 300px;
 }
 .chart {
         display: inline-block;

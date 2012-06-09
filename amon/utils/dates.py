@@ -1,29 +1,33 @@
+from __future__ import division
 from amon.core import settings
 from datetime import datetime
 import calendar
 from pytz import timezone
 import pytz
-from time import mktime
+import time
 
 def localtime_utc_timedelta(_timezone=None):
     _timezone = _timezone if _timezone else settings.TIMEZONE
+    _timezone = 'Europe/Sofia' 
+    is_dst = time.localtime().tm_isdst # Daylight saving time
+    is_dst = True if is_dst == 1 else False
+    
     local_timezone = timezone(_timezone)
     local_time = datetime.now(local_timezone)
-    utc_time = datetime.now(pytz.utc)
-
-    timezones_difference =  mktime(utc_time.timetuple()) - mktime(local_time.timetuple())
-
-    timezones_difference = int(timezones_difference)
+    naive_local_time = local_time.replace(tzinfo=None)
     
-    if timezones_difference < 0:
+    # timedelta betweeen the local timezone and UTC
+    td = local_timezone.utcoffset(naive_local_time, is_dst=is_dst)
+    offset = (td.microseconds + (td.seconds + td.days * 24 * 3600)* 10**6 ) / 10.0**6
+    
+    if offset < 0:
         # Negative timedelta is actually an UTC+ timezone
-        timezones_difference = -timezones_difference
-        timezones_difference_list = ('negative', timezones_difference)
+        offset = -offset
+        offset_list = ('negative', int(offset))
     else:
-        timezones_difference_list = ('positive',timezones_difference)
+        offset_list = ('positive', int(offset))
 
-
-    return timezones_difference_list
+    return offset_list
 
 
 # Converts date strings: '31-07-2011-17:46' to an UTC datetime object using the

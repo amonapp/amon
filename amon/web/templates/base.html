@@ -1,42 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<title>Amon -{% block title %} {% endblock %}</title>
-	
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="icon" type="image/png" href="/media/images/favicon.png" />
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="stylesheet" href="/media/css/screen.css" />
+	<link rel="stylesheet" href="/media/css/new_design.css" />
 	<link rel="stylesheet" href="/media/css/jquery-ui.css" />
 	{% block header %}
 	{% endblock %}
 </head>
 <body>
-<div class="wrapper">
-    <div class="wrapright"> 	  
-	    <div class="right">
-			<div class="breadcrumb">
-				<h1>
-				{% block breadcrumb %}
-			
-				{% endblock %}
-				</h1>
-				{% if acl == "True" %}
-					<a href="{{ base_url|url('logout') }}" class='button logout' title='Logout'></a>
-				{% endif %}
-				
-				{% block filter %}
-				
-				{% endblock %}
-			</div>
-			{% block content %}
-			
-			{% endblock %}
-
-	    </div>
-	</div>    
-	    <div class="left">
-			<div class="logo"></div>
-			<ul>
+<div id="header">
+    <div class="wrapper">
+        <a href="/" class="logo"></a>
+	    {% if acl == "True" %}
+			<a href="{{ base_url|url('logout') }}" class='button logout' title='Logout'></a>
+		{% endif %}
+	    <ul id='menu'>
 				<li>
 					<a class='top {% if current_page=='dashboard' %}active{% endif %}' href="/">Dashboard</a>
 				</li>
@@ -65,11 +51,19 @@
 				</li>
 				{% endif %}
 			</ul>
-	    </div> 
-</div>
+    <div class="header_separator"><!-- --></div>
+    </div><!-- wrapper end -->
+</div><!-- header end -->
+<div class="wrapper">
+<span class="breadcrumb">{% block breadcrumb %}{% endblock %}</span>
+{% block filter %}{% endblock %}
+{% block content %}
+{% endblock %}
+</div><!-- wrapper end -->
 	<script type="text/javascript" src='/media/js/jquery-1.7.2.min.js'></script>
 	<script type="text/javascript" src='/media/js/date.format.min.js'></script>
 	<script type="text/javascript" src='/media/js/jquery.relative-date.js'></script>
+	<script type="text/javascript" src='/media/js/moment.min.js'></script>
 	{% block js %}
 	{% endblock %}
 </body>
