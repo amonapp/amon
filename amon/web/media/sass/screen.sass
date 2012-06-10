@@ -55,11 +55,12 @@ span.breadcrumb
 // Used in charts
 h2
   float: left
-  font-size: 3em
+  font-size: 3.2em
   clear: left
   margin: 25px
     bottom: 20px
-  color: #727272 
+    left: 0px
+  color: black
 h3
   @extend h2
   font-size: 2em
@@ -71,63 +72,6 @@ h4
     left: 0px
     top: 15px
     bottom: 5px
-.left
-  float: left
-  width: 159px
-  margin-left: -100%
-  background: url(../images/sidebar.png) repeat-y
-  z-index: 9999
-  height: 100%
-  min-height: 100%
-  .logo
-    float: left
-    width: 113px
-    height: 116px
-    background: url(../images/logo.png) no-repeat
-    margin:
-      top: 18px
-      left: 18px
-  ul
-    float: left
-    margin-top: 25px
-    li
-      float: left
-      clear: left
-      margin-top: 2px
-      a.top
-        outline: none
-        width: 124px
-        padding: 20px
-          top: 9px
-          bottom: 9px
-          right: 10px
-        float: Left
-        text-align: left
-        color:  #000000 
-        font-size: 1.6em
-        text-decoration: none
-        .unread
-          float: right
-          +border-radius(4px)
-          color: black
-          padding:
-            left: 6px
-            right: 7px
-            top: 2px
-            bottom: 2px
-          background: #FDCB34 
-          margin-left: 3px
-          margin-top: -3px
-          border: 2px solid #F1B604 
-        &:hover, &.active
-          font-weight: bold
-          background: #F0F0F0 
-    ul
-      float: left
-      li
-        float: left
-        a
-          color: red
 // Charts
 .chart
   float: left
@@ -193,33 +137,34 @@ ul.tabs_settings
       font-size: 2.8em
       &:hover, &.active
         color: #747474 
-
 // tabs
 ul.tabs
-  margin-left: 20px
-  margin-top: 10px
   float: left
+  background: #F7F7F7 
+  width: 100%
   li
     float: left
-    margin-right: 18px
+    padding-top: 10px
+    padding-bottom: 5px
+    margin-right: 8px
+    margin-left: 12px
     &:last-child
       margin-right: 0px
     &.with_button
-      margin-top: 28px
+      margin-top: 3px
     label
       float: left
       font-size: 1.6em
-      margin-bottom: 8px
+      margin: 15px
+        left: 0px
+        right: 6px
+        top: 12px
 div.input_background
-  background: #FAFAFA 
   padding: 4px
   float: left
-  clear: left
-  +border-radius(6px)
 input[type=text] 
-  clear: both
   float: left
-  width: 200px
+  width: 220px
   height: 25px
   padding: 4px
   font-size: 1.6em
@@ -621,19 +566,20 @@ ul.pagination
         &:hover
           background-position: -32px -32px
 .button
-  border: 0px
   text-decoration: none
   cursor: pointer
-  background: #89BC32
-  color: white
-  border: 2px solid  #639213 
+  background: white
+  color: #89BC32  
+  border: 2px solid #89BC32 
   +border-radius(4px)
   font-weight: bold
   padding: 6px
     left: 10px
     right: 10px
   &:hover
-    color: #4D710F 
+    background: #89BC32 
+    color: white
+    border: 2px solid #639213 
   &.cancel
     background: #F0F0F0 
     border: 2px solid #D8D8D8 

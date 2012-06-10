@@ -28,7 +28,7 @@
 }
 
 .rickshaw_graph .detail .item:before { color: #E0E0E0; }
-
+.rickshaw_graph .detail { background: none; }
 .rickshaw_graph .x_tick {
 	position: absolute;
 	top: 0;
@@ -116,7 +116,7 @@
 	fill: none;
 }
 .rickshaw_graph .y_ticks .tick {
-	stroke: rgba(0, 0, 0, 0.16);
+    stroke: none;
 	shape-rendering: crisp-edges;
 	pointer-events: none;
 }
@@ -170,11 +170,11 @@
 .chart_container {
         float: left;
         clear: left;
-        padding: 10px
+        width: 960px;
         margin-bottom: 30px;
         display: inline-block;
         position: relative;
-        height: 300px;
+        height: 320px;
 }
 .chart {
         display: inline-block;
@@ -182,9 +182,9 @@
 }
 .y_axis {
         position: absolute;
-        top: 0px;
+        top: 30px;
         bottom: 0;
         width: 60px;
         border: 0px;
-        font-size: 1.2em;
+        font-size: 1.1em;
 }

@@ -13,7 +13,6 @@ System
 <form action="{{ base_url|url('system') }}">
 <ul class='tabs'>
 	<li>
-		<label for="">Select charts:</label>
 		<div class="input_background system-charts-dropdown">
 		<select id='charts-select' name='charts' style="width:220px;" tabindex="3" multiple="" data-placeholder="Select charts">
 			<option {% if 'memory' in charts %}selected="selected"{% endif %} value="memory">Memory</option>
@@ -113,8 +112,6 @@ System
 </div>
 {% endif %}
 
-
-
 {% if 'network' in active_checks %}
 
 {% if network_interfaces %}
@@ -178,7 +175,7 @@ $(function ()
     // Common variables and functions
     var width = 900;
     var height = 300;
-    var padding = { top: 0.08, right: 0, bottom: 0.08, left: 0 } 
+    var padding = { top: 0.09, right: 0, bottom: 0.02, left: 0 } 
     function _format_date(date) {
         _date = new Date(date*1000).toUTCString();
 		return '<span class="date">'+ moment.utc(_date).format("DD.MM.YY H:mm:ss") + '</span>';
@@ -231,7 +228,6 @@ var memory_x = new Rickshaw.Graph.Axis.Time({
 
 var memory_y = new Rickshaw.Graph.Axis.Y( {
     graph: memory_graph,
-    orientation: 'left',
     tickFormat: function(y) { return y +'MB'}, 
     element: document.getElementById('memory_y_axis'),
 } );
@@ -296,7 +292,6 @@ var loadavg_x = new Rickshaw.Graph.Axis.Time({
 
 var loadavg_y = new Rickshaw.Graph.Axis.Y( {
     graph: loadavg_graph,
-    orientation: 'left',
     element: document.getElementById('loadavg_y_axis'),
 } );
 
@@ -362,7 +357,6 @@ var cpu_x = new Rickshaw.Graph.Axis.Time({
 
 var cpu_y = new Rickshaw.Graph.Axis.Y( {
     graph: cpu_graph,
-    orientation: 'left',
     tickFormat: function(y) { return y +'%'}, 
     element: document.getElementById('cpu_y_axis'),
 } );
@@ -422,7 +416,6 @@ cpu_x.render();
         var network_{{ interface }}_y = new Rickshaw.Graph.Axis.Y( {
             graph: network_{{ interface }}_graph,
             tickFormat: function(y) { return y +'kb'}, 
-            orientation: 'left',
             element: document.getElementById('network_{{ interface }}_y_axis'),
         } );
 
@@ -483,7 +476,6 @@ cpu_x.render();
         var disk_{{ volume|clean_slashes }}_y = new Rickshaw.Graph.Axis.Y( {
             graph: disk_{{ volume|clean_slashes }}_graph,
             tickFormat: function(y) { return y +'GB'}, 
-            orientation: 'left',
             element: document.getElementById('disk_{{ volume|clean_slashes }}_y_axis'),
         } );
 
