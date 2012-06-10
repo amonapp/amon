@@ -18,41 +18,9 @@ span.breadcrumb
   width: $body_width
   height: 100%
   margin: 0 auto
-.wrapright
-  float: left
-  height: 100%
-  width: 100%
-.right
-  margin-left: 159px
-  background-color: white
-  height: 100%
-  min-height: 100%
-  width: 820px
-  .breadcrumb
-    float: left
-    width: 100%
-    h1
-      float: left
-      font-size: 3.6em
-      font-weight: bold
-      color: #2B3239 
-      padding:
-        top: 20px
-        left: 20px
-        bottom: 20px
-    .logout
-      background: url(../images/logout.png)
-      text-indent: -3000px
-      margin-top: 20px
-      float: right
-      padding: 0px
-      border: 0px
-      width: 34px
-      height: 34px
-      background-position: 0px 0px
-      &:hover
-        background-position: 0px -34px
 // Used in charts
+.noclear
+  clear: none
 h2
   float: left
   font-size: 3.2em
@@ -337,18 +305,21 @@ $log_width: 800px
     padding-top: 3px
     font-size: 1.4em
 // Dashboard
-$small_bar: 158px
-$medium_bar: 245px
-$full_bar: 500px
+.dashboad_left
+  float: left
+  width: 500px
+.dashboard_right
+  float: left
+  width: 460px
+$small_bar: 100px
+$medium_bar: 158px
+$full_bar: 330px
 .timestamp
   float: left
   font-size: 1.4em
   color: #727272
 ul.stats_bars
   float: left
-  clear: left
-  margin-left: 25px
-  margin-bottom: 20px
   .timestamp
     margin-top: 8px
   li
@@ -369,6 +340,7 @@ ul.stats_bars
         top: 6px
         right: 20px
       text-align: right
+      font-size: 1.8em
     ul.network-stats
       float: left
       span.label

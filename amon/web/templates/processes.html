@@ -3,7 +3,6 @@
 Processes check
 {% endblock %}
 {% block breadcrumb %}
-Processes check 
 {% endblock %}
 {% block header %}
 	<link rel="stylesheet" href="/media/css/chosen.css" />
@@ -12,7 +11,6 @@ Processes check
 <form action="{{ base_url|url('processes') }}">
 <ul class='tabs'>
 	<li>
-		<label for="">Select process:</label>
 		<div class="input_background system-charts-dropdown">
 		<select id='process-select' name='processes' style="width:220px;" tabindex="3" multiple="" data-placeholder="Select process">
 			{% for p in all_processes_checks  %}
@@ -68,6 +66,8 @@ Processes check
 	
 	{% for process in process_data  %}
 	{% set sanitized_process = process|clean_slashes %}
+
+
 	var {{ sanitized_process }}_cpu = [ {% for data in process_data[process].clone()  %}
         [{% if zone_difference.0 == 'negative' %}
                 {{ (data.time + zone_difference.1 ) * 1000 }},

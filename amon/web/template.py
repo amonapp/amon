@@ -147,11 +147,11 @@ def clean_slashes(string):
 def progress_width_percent(percent, container_type='full'):
 
     if container_type == 'full': 
-        container_width = 500
+        container_width = 330
     elif container_type == 'medium':
-        container_width = 245
-    else:
         container_width = 158
+    else:
+        container_width = 100
 
     try:
         progress_width = (container_width/100.0)*int(percent)
