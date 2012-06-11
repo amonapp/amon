@@ -5,6 +5,7 @@ from amon.core import settings
 from amon.web.models import unread_model
 from amon.web.libs.session import MongoDBSession
 from amon.web.template import render as jinja_render
+from amon import __version__
 
 class BaseView(tornado.web.RequestHandler):
 
@@ -20,7 +21,8 @@ class BaseView(tornado.web.RequestHandler):
         self.template_vars = {
             "user": self.current_user,
             "unread_values": unread_values,
-            "url": self.request.uri
+            "url": self.request.uri,
+            "version": __version__
         }
 
         super(BaseView, self).initialize()

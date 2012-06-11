@@ -1,6 +1,6 @@
 *.pyc
 _build/
-buid/
+build/
 dist/
 amon.egg-info/
 .sass-cache

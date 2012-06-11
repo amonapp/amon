@@ -57,12 +57,15 @@ System
 	</ul>
 </div>
 
+{% if checks.memory.clone().count() > 0 %}
 <div id="memory" class='chart_container'>
 	<div class='y_axis' id="memory_y_axis"></div>
 	<div id="memory-chart" class='chart'></div>
 </div>
-{% endif %}
-
+{% else %}
+<div class="message">No data</div>
+{% endif %}{# count #}
+{% endif %}{# memory in active_checks #}
 {% if 'loadavg' in active_checks %}
 <h2>Loadavg</h2>
 <div class='legend'>
@@ -81,11 +84,15 @@ System
 		</li>
 	</ul>
 </div>
+{% if checks.loadavg.clone().count() > 0 %}
 <div id="loadavg" class='chart_container'>
 	<div class='y_axis' id="loadavg_y_axis"></div>
 	<div id="loadavg-chart" class='chart'></div>
 </div>
-{% endif %}
+{% else %}
+<div class="message">No data</div>
+{% endif %}{# count #}
+{% endif %}{# loadavg in active_checks #}
 
 {% if 'cpu' in active_checks %}
 <h2>CPU</h2>
@@ -106,11 +113,15 @@ System
 		</ul>
 </div>
 
+{% if checks.cpu.clone().count() > 0 %}
 <div id="cpu" class='chart_container'>
 	<div class='y_axis' id="cpu_y_axis"></div>
 	<div id="cpu-chart" class='chart'></div>
 </div>
-{% endif %}
+{% else %}
+<div class="message">No data</div>
+{% endif %}{# count #}
+{% endif %}{# cpu in active_checks #}
 
 {% if 'network' in active_checks %}
 

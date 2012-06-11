@@ -176,10 +176,14 @@
         position: relative;
         height: 320px;
 }
+.chart_container.processes {
+    height: 220px;
+}
 .chart {
         display: inline-block;
         margin-left: 60px;
 }
+.chart.processes { height: 160px; }
 .y_axis {
         position: absolute;
         top: 30px;

@@ -2,9 +2,6 @@
 {% block title %}
 Events
 {% endblock %}
-{% block breadcrumb %}
-Events
-{% endblock %}
 {% block header %}
 	<link rel="stylesheet" href="/media/css/chosen.css" />
 {% endblock %}
@@ -14,7 +11,7 @@ Events
 	{% if all_tags %}
 	<li>
 		<div class="input_background">
-		<select id='tags-select' name='tags' style="width:320px;" tabindex="3" multiple="" data-placeholder="Select tag">
+		<select id='tags-select' name='tags' style="width:350px;" tabindex="3" multiple="" data-placeholder="Select tag">
 			{% for t in all_tags  %}
 				<option {% if t.tag in tags %}selected="selected"{% endif %} value="{{ t.tag }}">{{ t.tag }}</option>
 			{% endfor %}
@@ -24,7 +21,7 @@ Events
 	{% endif %}
 	<li >
 		<div class="input_background">
-		<input type="text" name="query" id="query" class='logs-search' placeholder="Search" value="{% if query != None %}{{ query }}{% endif %}" />
+		<input type="text" style="width:420px;" name="query" id="query" class='logs-search' placeholder="Search" value="{% if query != None %}{{ query }}{% endif %}" />
 		</div>
 	</li>
 	<li class='logs_update_button'>

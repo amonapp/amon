@@ -4,7 +4,7 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<title>Amon -{% block title %} {% endblock %}</title>
+	<title>Amon - {{ app.version }} {% block title %} {% endblock %}</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="icon" type="image/png" href="/media/images/favicon.png" />
@@ -33,11 +33,11 @@
 					<a class='top {% if current_page=='processes' %}active{% endif %}' href="/processes">Processes</a>
 				</li>
 				<li>
-					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/events">
+					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/logs">
 						{% if app.unread_values.logs and current_page != 'logs' %}
 							<span class="unread">{{ app.unread_values.logs }}</span>
 						{% endif %}
-					Events</a>
+					Logs</a>
 				</li>
 				<li>
 					<a class='top {% if current_page=='exceptions' %}active{% endif %}' href="/exceptions">

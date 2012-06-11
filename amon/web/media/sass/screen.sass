@@ -147,17 +147,15 @@ input[type=text]
   // Logs
 .logs_update_button
   margin-top: 3px
-$log_width: 800px
 .log_list
   float: left
-  margin: 20px
-  width: $log_width
+  width: $body_width
   li
     padding-bottom: 10px
     margin-bottom: 10px
     float: left
     clear: left
-    width: $log_width
+    width: $body_width
     .tag
       float: left
       +border-radius(4px)
@@ -182,7 +180,7 @@ $log_width: 800px
       float: left
       padding-top: 15px
       padding-bottom: 6px
-      width: $log_width
+      width: $body_width
       border-top: 3px solid #F1F1F1 
     span.date
       color: #858585
@@ -195,13 +193,13 @@ $log_width: 800px
       clear: left
       padding: 10px
         left: 0px
-      width: $log_width - 20px
+      width: $body_width - 20px
       display: block
       code
         word-wrap: normal
         white-space: normal
         display: block
-        width: $log_width - 20px
+        width: $body_width - 20px
 .exceptions_list
   @extend .log_list
   li
@@ -228,7 +226,7 @@ $log_width: 800px
       font-weight: bold
     div.exception_info
       float: left
-      width: $log_width - 65px
+      width: $body_width - 65px
     span.exception
       width: 90%
       float: left
@@ -442,22 +440,19 @@ ul.options_list
         color: #5E0000  
 // Messages
 .message
-  background: #FBEFEF
   float: left
   clear: left
-  margin-left: 20px
-  width: $body_width - 20px
+  width: $body_width
   margin-top: 15px
-  border: 5px solid #F5CFCF 
+  border-bottom: 3px solid #9B0000 
   padding: 10px
+    left: 0px
   font-size: 1.4em
   line-height: 1.4em
-  +border-radius(5px)
   a
     color: black
   &.green
-    background: #F0F7E4
-    border: 5px solid  #CEDDB5 
+    border-bottom: 3px solid #89BC32 
 // Reveal plugin
 .reveal-modal-bg  
   position: fixed 
