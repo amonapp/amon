@@ -11,13 +11,14 @@ from amon.core import settings
 from amon.web.views.api import ApiLogs, ApiException
 import os.path
 import tornado.web
+import base64
 
 login_url = "{0}:{1}/login".format(settings.WEB_APP['host'], settings.WEB_APP['port'])\
     if settings.PROXY is None else '/login'
     
 app_settings = {
 	"static_path": os.path.join(PROJECT_ROOT, "media"),
-	"cookie_secret": settings.SECRET_KEY,
+	"cookie_secret": base64.b64encode(settings.SECRET_KEY),
 	"login_url" : login_url,
 	"session": {"duration": 3600, "regeneration_interval": 240, "domain": settings.WEB_APP['host']}
 }

@@ -1,7 +1,7 @@
 from __future__ import with_statement
 import os.path
-import uuid
-import base64
+import random
+import string
 
 # Current directory
 ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -23,8 +23,9 @@ try:
 except:
     config = {}
 
-# Change only the secret key
-config['secret_key'] = base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes)
+# Replace with a new secret key
+if len(config['secret_key']) != 32:
+    config['secret_key'] = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(32))
 
 # Write the config file in the same directory
 generated_config_path =  os.path.join(ROOT, 'amon.conf')

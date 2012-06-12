@@ -18,6 +18,7 @@ function die(){
 DISTRO=
 VERSION=0.9
 PYTHON=python
+MONGO_VERSION=2.0.6
 VERBOSE=0
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
@@ -47,13 +48,13 @@ MACHINE_TYPE=`uname -m`
 if [ "$MACHINE_TYPE" == 'i686' ]; then
 	# 32-bit
 	echo "*** 32-bit architecture detected"
-	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.0.4.tgz"
-	mongo_extract_dir="mongodb-linux-i686-2.0.4"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-i686-$MONGO_VERSION.tgz"
+	mongo_extract_dir="mongodb-linux-i686-$MONGO_VERSION"
 else
 	# 64-bit
 	echo "*** 64-bit architecture detected"
-	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.0.4.tgz"
-	mongo_extract_dir="mongodb-linux-x86_64-2.0.4"
+	mongo_download_url="http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-$MONGO_VERSION.tgz"
+	mongo_extract_dir="mongodb-linux-x86_64-$MONGO_VERSION"
 fi
 
 # Set variables for the installation
@@ -78,8 +79,8 @@ echo "***  Installing Amon $VERSION ..."
     # Cleans up the directory from old amon installations
     rm -rf amon-* # Cleans up old archives from previous installs, that could break the updating process
 
-    wget "http://install.amon.cx/amon-$VERSION.tar.gz" 
-    tar -zxvf "amon-$VERSION.tar.gz" > /dev/null
+    wget "https://github.com/downloads/martinrusev/amon/amon-$VERSION.tar.gz" 
+    tar -zxf "amon-$VERSION.tar.gz" > /dev/null
 
     if [ "$DISTRO" == 'debian' ]; then
     # Ensure that we have the pymongo driver dependecies

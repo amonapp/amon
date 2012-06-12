@@ -4,7 +4,6 @@
 from amon import __version__
 import os
 
-
 def fullsplit(path, result=None):
     """
     Split a pathname into components (the opposite of os.path.join) in a
@@ -37,18 +36,18 @@ for dirpath, dirnames, filenames in os.walk(amon_dir):
     elif filenames:
         data_files.append([dirpath, [os.path.join(dirpath, f) for f in filenames]])
 
-
 sdict = {
     'name' : 'amon',
     'version' : __version__,
-    'description' : 'Developer friendly application and system monitoring tool',
-    'long_description' : read('README.rst'),
+    'description' : 'Elegant server and web application monitoring toolkit',
+    'long_description' : 'Elegant server and web application monitoring toolkit',
     'url': 'https://github.com/martinrusev/amon',
     'author' : 'Martin Rusev',
     'author_email' : 'martinrusev@live.com',
     'keywords' : ['Amon', 'monitoring', 'logging', 'exception handling'],
     'license' : 'GPL',
     'packages' : packages,
+    #'package_data': {'amon': ['web/templates/*.html', '/web/templates/partials/*.html']},
     'data_files' : data_files,
     'install_requires': 
     [
