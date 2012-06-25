@@ -39,6 +39,7 @@ Processes check
 {% for process in processes_checks  %}
 {% set sanitized_process = process|clean_slashes %}
 <h2>{{ process }}</h2>
+{% if process_data[process].clone().count() > 0 %}
 <h3>CPU</h3>
  <div id="{{ sanitized_process }}_cpu" class='chart_container processes'>
     <div class='y_axis' id="cpu_{{ sanitized_process }}_y_axis"></div>
@@ -50,6 +51,9 @@ Processes check
     <div class='y_axis' id="memory_{{ sanitized_process }}_y_axis"></div>
     <div id="memory-chart_{{ sanitized_process }}" class='chart processes'></div>
 </div>
+{% else %}
+<div class='message'>No data</div>
+{% endif %}{# count #}
 {% endfor %}
 
 {% endblock %}
@@ -73,6 +77,7 @@ $(function()  {
 {% for process in process_data  %}
 {% set sanitized_process = process|clean_slashes %}
 
+{% if process_data[process].clone().count() > 0 %}
 var {{ sanitized_process }}_memory_graph = new Rickshaw.Graph({
 	element: document.getElementById("memory-chart_{{ sanitized_process }}"),
 	width: width,
@@ -160,7 +165,7 @@ var {{ sanitized_process }}_cpu_y = new Rickshaw.Graph.Axis.Y({
 {{ sanitized_process }}_cpu_x.render();
 {{ sanitized_process }}_cpu_y.render();
 
-
+{%  endif %}{# count #}
 {% endfor %}{# process #}
 
 var datetime_options = {

@@ -128,6 +128,7 @@ System
 {% if network_interfaces %}
 <h2>Network</h2>
 	{% for interface in network_interfaces %}
+    {% if checks.network.clone().count() > 0 %}
 	{% if interface != 'lo' %}
 		<h3>{{ interface }}</h3>
 		<div class='legend'>
@@ -146,7 +147,10 @@ System
             <div class='y_axis' id="network_{{ interface }}_y_axis"></div>
             <div id="network-chart_{{ interface }}" class='chart'></div>
         </div>
-	{% endif %}
+    {% endif %}{# lo #}
+    {% else %}
+    <div class="message">No data</div>
+    {% endif %}{# count #}
 	{% endfor %}
 	{% endif %}
 {% endif %}
@@ -154,6 +158,7 @@ System
 {% if 'disk' in active_checks %}
 	<h2>Disk</h2>
 	{% for volume in volumes  %}
+    {% if checks.disk.clone().count() > 0 %}
 	<h3>{{ volume }}</h3>
 	<div class='legend'>
 		<ul>
@@ -171,6 +176,9 @@ System
             <div class='y_axis' id="disk_{{ volume|clean_slashes }}_y_axis"></div>
             <div id="disk-chart_{{ volume|clean_slashes }}" class='chart'></div>
     </div>
+    {% else %}
+    <div class="message">No data</div>
+    {% endif %}{# count #}
 	{% endfor %}
 {% endif %}
 
@@ -191,7 +199,8 @@ $(function ()
         _date = new Date(date*1000).toUTCString();
 		return '<span class="date">'+ moment.utc(_date).format("DD.MM.YY H:mm:ss") + '</span>';
     }
-    var colors = ['#00ADFC', '#7AB317', '#8000A9']   
+    var colors = ['#00ADFC', '#7AB317', '#8000A9'];
+    var interpolation = 'linear';
    
 {% if 'memory' in active_checks %}
 var memory_graph = new Rickshaw.Graph( {
@@ -200,6 +209,7 @@ var memory_graph = new Rickshaw.Graph( {
 	height: height,
 	renderer: 'line',
     padding: padding, 
+    interpolation: interpolation,
     {% strip %}
 	series: [
 		{
@@ -256,6 +266,7 @@ var loadavg_graph = new Rickshaw.Graph( {
 	height: height,
 	renderer: 'line',
     padding: padding, 
+    interpolation: interpolation,
     {% strip %}
 	series: [
 		{
@@ -321,6 +332,7 @@ var cpu_graph = new Rickshaw.Graph( {
 	height: height,
 	renderer: 'line',
     padding: padding, 
+    interpolation: interpolation,
     {% strip %}
 	series: [
 		{
@@ -387,6 +399,7 @@ cpu_x.render();
             height: height,
             renderer: 'line',
             padding: padding, 
+            interpolation: interpolation,
             {% strip %}
             series: [
                 {
@@ -447,17 +460,16 @@ cpu_x.render();
 	width: width,
 	height: height,
 	renderer: 'line',
-    padding: padding, 
-    {% strip %}
-	series: [
-		{
+    padding: padding,        
+    interpolation: interpolation,
+	series: [{
             color: colors[0],
             data:  [{% for d in disk %}
             {% if zone_difference.0 == 'negative' %}{x:{{ (d.time-zone_difference.1 ) }},
             {% else %}{x: {{ (d.time+zone_difference.1 ) }}, {% endif %}
             {% if d[volume] %}y:{{ d[volume].total|to_int }} {% else %}y:0{% endif %} },{% endfor %}],
 			name: 'Total'
-		}, {
+		},{
             color: colors[1],
             data: [{% for d in disk %}
                 {% if zone_difference.0 == 'negative' %} {x: {{ (d.time-zone_difference.1 ) }},
@@ -466,8 +478,7 @@ cpu_x.render();
 			name: 'Used'
 		}
     ]
-    {% endstrip %}
-    } );
+    });
 
         disk_{{ volume|clean_slashes }}_graph.render();
 

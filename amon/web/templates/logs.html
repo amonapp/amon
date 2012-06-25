@@ -6,9 +6,13 @@ Events
 	<link rel="stylesheet" href="/media/css/chosen.css" />
 {% endblock %}
 {% block content %}
-<form action="{{ base_url|url('events') }}" method='get' id='logs_filter_form'>
+<form action="{{ base_url|url('logs') }}" method='get' id='logs_filter_form'>
 <ul class='tabs'>
 	{% if all_tags %}
+    <li>
+        <input type="checkbox" name='st' value='or' />
+        <input type="checkbox" name='st' value='and' />
+    </li>
 	<li>
 		<div class="input_background">
 		<select id='tags-select' name='tags' style="width:350px;" tabindex="3" multiple="" data-placeholder="Select tag">
