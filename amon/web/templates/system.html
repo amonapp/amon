@@ -200,6 +200,7 @@ $(function ()
 		return '<span class="date">'+ moment.utc(_date).format("DD.MM.YY H:mm:ss") + '</span>';
     }
     var colors = ['#00ADFC', '#7AB317', '#8000A9'];
+    var colors_transparent = ['#CCEFFE',  '#FFCCFF'];
     var interpolation = 'linear';
    
 {% if 'memory' in active_checks %}
@@ -213,14 +214,14 @@ var memory_graph = new Rickshaw.Graph( {
     {% strip %}
 	series: [
 		{
-			color: colors[0],
+			color: colors[1],
             data:  [{% for m in checks.memory.clone() %}
             {% if zone_difference.0 == 'negative' %}{x:{{ m.time-zone_difference.1 }},
             {% else %}{x: {{ m.time+zone_difference.1 }},
             {% endif %} {% if not m.last %}y: {{ m.memtotal-m.memfree }}{% else %}y: 0 {% endif %}},{% endfor %}],
 			name: 'Memory used'
 		}, {
-			color: colors[1], 
+			color: colors[0], 
             data: [{% for m in checks.memory.clone() %}
                 {% if zone_difference.0 == 'negative' %}{x: {{ m.time-zone_difference.1 }},
                 {% else %}{x: {{ (m.time+zone_difference.1 ) }}, {% endif %}
@@ -333,7 +334,6 @@ var cpu_graph = new Rickshaw.Graph( {
 	renderer: 'line',
     padding: padding, 
     interpolation: interpolation,
-    {% strip %}
 	series: [
 		{
 			color: colors[0],
@@ -342,7 +342,7 @@ var cpu_graph = new Rickshaw.Graph( {
             {% else %}{ x:{{(c.time+zone_difference.1 )}}, {% endif %}
             {% if not c.last %}y:{{ c.idle }}{% else %}y:0{% endif %} },{% endfor %}],
 			name: 'Idle'
-		}, {
+		},  {
 			color: colors[1],
             data: [{% for c in checks.cpu.clone() %}
                 {% if zone_difference.0 == 'negative' %}{x:{{ (c.time-zone_difference.1 ) }},
@@ -353,13 +353,11 @@ var cpu_graph = new Rickshaw.Graph( {
 			color: colors[2],
             data: [{% for c in checks.cpu %}
                 {% if zone_difference.0 == 'negative' %}{x:{{ (c.time-zone_difference.1 ) }},
-                {% else %}{x:{{ (c.time - zone_difference.1 ) }},{% endif %}
+                {% else %}{x:{{ (c.time+zone_difference.1 ) }},{% endif %}
                 {% if not c.last %}y:{{ c.system }} {% else %}y:0{% endif %}},{% endfor %}], 
 			name: 'System'
 		}
-
 	]
-    {% endstrip %}
 } );
 
 cpu_graph.render();
@@ -473,7 +471,7 @@ cpu_x.render();
             color: colors[1],
             data: [{% for d in disk %}
                 {% if zone_difference.0 == 'negative' %} {x: {{ (d.time-zone_difference.1 ) }},
-                {% else %}{x: {{ (d.time - zone_difference.1 ) }}, {% endif %} 
+                {% else %}{x: {{ (d.time+zone_difference.1 ) }}, {% endif %} 
                 {% if d[volume] %}y:{{ d[volume].used|to_int }}{% else %}y:0{% endif %}},{% endfor %}],
 			name: 'Used'
 		}
