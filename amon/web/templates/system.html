@@ -43,6 +43,7 @@ System
 
 {% if 'memory' in active_checks %}
 
+<a name='memory' class='anchor'></a>
 <h2>Memory</h2>
 <div class='legend'>
 	<ul>
@@ -67,6 +68,7 @@ System
 {% endif %}{# count #}
 {% endif %}{# memory in active_checks #}
 {% if 'loadavg' in active_checks %}
+<a name='loadavg' class='anchor'></a>
 <h2>Loadavg</h2>
 <div class='legend'>
 	<ul>
@@ -95,6 +97,7 @@ System
 {% endif %}{# loadavg in active_checks #}
 
 {% if 'cpu' in active_checks %}
+<a name='cpu' class='anchor'></a>
 <h2>CPU</h2>
 <div class='legend'>
 		<ul>
@@ -126,6 +129,7 @@ System
 {% if 'network' in active_checks %}
 
 {% if network_interfaces %}
+<a name='network' class='network'></a>
 <h2>Network</h2>
 	{% for interface in network_interfaces %}
     {% if checks.network.clone().count() > 0 %}
@@ -154,7 +158,7 @@ System
 	{% endfor %}
 	{% endif %}
 {% endif %}
-
+<a name='disk' class='anchor'></a>
 {% if 'disk' in active_checks %}
 	<h2>Disk</h2>
 	{% for volume in volumes  %}
@@ -334,6 +338,7 @@ var cpu_graph = new Rickshaw.Graph( {
 	renderer: 'line',
     padding: padding, 
     interpolation: interpolation,
+    {% strip %}
 	series: [
 		{
 			color: colors[0],
@@ -358,6 +363,7 @@ var cpu_graph = new Rickshaw.Graph( {
 			name: 'System'
 		}
 	]
+    {% endstrip %}
 } );
 
 cpu_graph.render();
@@ -460,6 +466,7 @@ cpu_x.render();
 	renderer: 'line',
     padding: padding,        
     interpolation: interpolation,
+    {% strip %}
 	series: [{
             color: colors[0],
             data:  [{% for d in disk %}
@@ -476,6 +483,7 @@ cpu_x.render();
 			name: 'Used'
 		}
     ]
+    {% endstrip %}
     });
 
         disk_{{ volume|clean_slashes }}_graph.render();

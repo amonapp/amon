@@ -10,10 +10,18 @@ Events
 <ul class='tabs'>
 	{% if all_tags %}
     <li>
-        <input type="checkbox" name='st' value='or' />
-        <input type="checkbox" name='st' value='and' />
+    <ul class='logs-filter'>
+        <li>
+            <input type="radio" name='filter' value='or' {% if filter == 'or' %}checked {% endif %} />
+            <span>Or</span>
+        </li>
+        <li>
+            <input type="radio" name='filter' value='and' {% if filter == 'and' or filter == None %} checked {% endif %} />
+            <span>And</span>
+        </li>
+    </ul>
     </li>
-	<li>
+	<li class='no-margin'>
 		<div class="input_background">
 		<select id='tags-select' name='tags' style="width:350px;" tabindex="3" multiple="" data-placeholder="Select tag">
 			{% for t in all_tags  %}
@@ -25,7 +33,7 @@ Events
 	{% endif %}
 	<li >
 		<div class="input_background">
-		<input type="text" style="width:420px;" name="query" id="query" class='logs-search' placeholder="Search" value="{% if query != None %}{{ query }}{% endif %}" />
+		<input type="text" style="width:370px;" name="query" id="query" class='logs-search' placeholder="Search" value="{% if query != None %}{{ query }}{% endif %}" />
 		</div>
 	</li>
 	<li class='logs_update_button'>
@@ -33,6 +41,9 @@ Events
 	</li>
 </ul>
 </form>
+{% if logs.result.count() == 0 %}
+<div class="message">No data</div>
+{% endif %}
 <ul class='log_list' id="log_list">
 	{% for log in logs.result  %}
 	<li>

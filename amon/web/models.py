@@ -147,12 +147,13 @@ class LogModel(BaseModel):
         self.collection = self.mongo.get_collection('logs') 
         self.tags = self.mongo.get_collection('tags')
 
-    def get_logs(self, tags=None, search=None, page=None):
+    def get_logs(self, tags=None, search=None, page=None, filter='and'):
         params = {}
         
         if tags:
+            filter = "$and" if filter == 'and' else '$or'
             tags_params = [{'tags': x} for x in tags]
-            params = {"$or" : tags_params}
+            params = {filter : tags_params}
 
         if search:
             params['_searchable'] = { "$regex": str(search), "$options": 'i'}

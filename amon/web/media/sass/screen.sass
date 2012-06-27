@@ -120,6 +120,8 @@ ul.tabs
       margin-right: 0px
     &.with_button
       margin-top: 3px
+    &.no-margin
+      margin-left: 0px
     label
       float: left
       font-size: 1.6em
@@ -144,7 +146,23 @@ input[type=text]
   &:focus
     border: 1px solid #7AB317 
     +box-shadow(#DEECC5 0px 0px 4px) 
-  // Logs
+// Logs
+ul.logs-filter
+  float: left
+  margin-top: 1px
+  li
+    padding: 0px
+    margin-left: 0px
+    padding-bottom: 3px
+    float: left
+    clear: left
+    input[type=radio]
+      float: left
+    span
+      float: left
+      margin:
+        top: 5px
+        left: 3px
 .logs_update_button
   margin-top: 3px
 .log_list
@@ -210,23 +228,23 @@ input[type=text]
     height: 100%
     span.occurrences
       float: left
-      height: 12px
-      width: 20px
+      height: 30px
+      width: 30px
       margin-right: 10px
-      background: #F0F0F0
+      background: #F7F7F7
+      border: 3px solid #F0F0F0
       padding: 14px
-        top: 8px
-        bottom: 16px
-      border: 2px solid #DBDBDB 
+        left: 13px
       +border-radius(4px)
       color: #2B3239 
       text-align: center
       line-height: 1.4em
-      font-size: 1.6em
+      font-size: 2.1em
       font-weight: bold
     div.exception_info
       float: left
-      width: $body_width - 65px
+      margin-top: 8px
+      width: $body_width - 73px
     span.exception
       width: 90%
       float: left
@@ -446,6 +464,7 @@ ul.options_list
   margin-top: 15px
   border-bottom: 3px solid #9B0000 
   padding: 10px
+    right: 0px
     left: 0px
   font-size: 1.4em
   line-height: 1.4em

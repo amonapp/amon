@@ -21,6 +21,32 @@
     margin-top: 30px
     position: relative
     z-index: 5
+    &.fixed
+      position: fixed
+      top: -5px
+      text-align: center
+      float: none
+      margin: 0 auto
+      background: white
+      z-index: 11
+      left: 0
+      width: 100%
+      padding-bottom: 9px
+      padding-top: 15px
+      background: white
+      border-bottom: 3px solid #FDCB34
+      a.active, a:hover
+        border-bottom: 3px solid white
+      li
+        display: inline
+        float: none
+      ul
+        top: 20px
+        text-align: left
+        a
+          padding-left: 10px
+        a:hover
+          border-bottom: 0px
     li
       float: left
       margin-left: 30px
@@ -79,4 +105,8 @@
     background-position: 0px 0px
     &:hover
       background-position: 0px -26px
+.anchor
+  float: left
+  height: 2px
+  width: 100%
 
