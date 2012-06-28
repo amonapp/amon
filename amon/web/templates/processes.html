@@ -134,7 +134,7 @@ var {{ sanitized_process }}_cpu_graph = new Rickshaw.Graph({
             data: [{% for data in process_data[process].clone()%}
             {% if zone_difference.0 == 'negative' %}{x:{{ data.time-zone_difference.1 }},
             {% else %}{x: {{ data.time+zone_difference.1 }}, {% endif %} y: {{ data.cpu }} },{% endfor %}],
-			name: 'Memory'
+			name: 'CPU'
 		}]
     {% endstrip %}
 });

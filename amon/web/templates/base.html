@@ -21,6 +21,8 @@
         <a href="/" class="logo"></a>
 	    {% if acl == "True" %}
 			<a href="{{ base_url|url('logout') }}" class='button logout' title='Logout'></a>
+        {% else %}
+        <span class='top-menu-spacer'></span>
 		{% endif %}
 	    <ul id='menu' class='default'>
 				<li>
