@@ -38,10 +38,8 @@ handlers = [
 	(r"/logout", LogoutView),
 	(r"/create_user", CreateUserView),
 	# API
-	(r"/api/log/", ApiLogs),
-	(r"/api/exception/", ApiException),
-	(r"/api/log", ApiLogs),
-	(r"/api/exception", ApiException),
+	(r"/api/log/{0}".format(settings.SECRET_KEY), ApiLogs),
+	(r"/api/exception/{0}".format(settings.SECRET_KEY), ApiException),
 	# Static
 	(r"/media/(.*)", tornado.web.StaticFileHandler, {"path": app_settings['static_path']})
 ]
