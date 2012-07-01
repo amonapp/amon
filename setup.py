@@ -47,12 +47,11 @@ sdict = {
     'keywords' : ['Amon', 'monitoring', 'logging', 'exception handling'],
     'license' : 'GPL',
     'packages' : packages,
-    #'package_data': {'amon': ['web/templates/*.html', '/web/templates/partials/*.html']},
     'data_files' : data_files,
     'install_requires': 
     [
         'pymongo==2.1.1',
-        'tornado==2.2',
+        'tornado==2.3',
         'formencode==1.2.4',
         'Jinja2==2.6',
 		'pip',

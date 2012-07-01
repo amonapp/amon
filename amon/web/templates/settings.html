@@ -10,22 +10,22 @@ Settings
 		{{ message }}
 	</div>
 {% endif %}
-<ul class='options_list'>
-	<li>
-		<span>Delete all exceptions</span>
-		<a href="#" class='button delete' data-reveal-id="delete_exceptions"  data-animation="fade" data-animationspeed="100">Delete</a>
-	</li>
-	<li>
-		<span>Delete all logs</span>
+
+<form action="{{ base_url|url('settings', 'delete-logs')  }}" method="post" >
+<h2>Logs</h2>
+<ul class='settings_block'>
+    <li><span class='label'>Delete logs before: </span></li>
+    <li><input id="" name="" type="text" /></li>
+    <li>
 		<a href="#" class='button delete' data-reveal-id="delete_logs"  data-animation="fade" data-animationspeed="100">Delete</a>
-	</li>
+    </li>
 </ul>
 <div id="delete_logs" class="reveal-modal">
-     <h1>Delete all logs</h1>
-     <p>Are you sure you want to delete all logs?</p>
+     <h1>Delete logs</h1>
+     <p>Are you sure you want to delete these logs?</p>
 	 <ul>
 		<li>
-			<a class='button delete' href="/settings/delete_logs">Delete</a>
+            <input type="submit" value="Delete">
 		</li>
 		<li>
 			<a class='close-reveal-modal button cancel'>Cancel</a>
@@ -33,6 +33,26 @@ Settings
 	 </ul>
      <a class="close-reveal-modal top">&#215;</a>
 </div>
+</form>
+
+<h2>Exceptions</h2>
+<ul class='settings_block'>
+    <li><span class='label'>Delete exceptions before: </span></li>
+    <li><input id="" name="" type="text" /></li>
+    <li>
+		<a href="#" class='button delete' data-reveal-id="delete_exceptions"  data-animation="fade" data-animationspeed="100">Delete</a>
+    </li>
+</ul>
+
+<h2>User</h2>
+<ul class='settings_block'>
+    <li><span class='label'>Change password: </span></li>
+    <li><input id="" name="" type="text" placeholder="New password"/></li>
+    <li>
+		<a href="#" class='button' data-reveal-id="delete_exceptions"  data-animation="fade" data-animationspeed="100">Change</a>
+    </li>
+</ul>
+
 
 <div id="delete_exceptions" class="reveal-modal">
      <h1>Delete all exceptions</h1>

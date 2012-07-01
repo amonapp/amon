@@ -15,9 +15,8 @@ from tornado import autoreload
 #}
 
 if __name__ == "__main__":
-    #http_server = tornado.httpserver.HTTPServer(application, ssl_options=ssl_options)
-    #http_server.listen(int(settings.WEB_APP['port']))
-    application.listen(int(settings.WEB_APP['port']))
+    http_server = tornado.httpserver.HTTPServer(application)
+    http_server.listen(int(settings.WEB_APP['port']))
     ioloop = tornado.ioloop.IOLoop().instance()
     autoreload.start(ioloop)
     ioloop.start()
