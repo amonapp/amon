@@ -137,8 +137,8 @@ class ExceptionModel(BaseModel):
 
         return exceptions
 
-    def delete_all(self):
-        self.collection.remove()
+    def delete_before_date(self, date):
+        self.collection.remove({"last_occurrence": {"$lte": date}})
 
 class LogModel(BaseModel):
     

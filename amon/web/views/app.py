@@ -275,3 +275,40 @@ class SettingsDeleteLogsView(BaseView):
         date = self.get_argument('logs-date')
         date_utc = datestring_to_utc_datetime(date)
         date_unix = datetime_to_unixtime(date_utc)
+
+        log_model.delete_before_date(date_unix)
+
+        self.redirect('/settings')
+
+
+class SettingsDeleteExceptionsView(BaseView):
+
+    def initialize(self):
+        super(SettingsDeleteExceptionsView, self).initialize()
+        self.current_page = 'settings'
+
+    @authenticated
+    def post(self):
+
+        date = self.get_argument('exceptions-date')
+        date_utc = datestring_to_utc_datetime(date)
+        date_unix = datetime_to_unixtime(date_utc)
+
+        exception_model.delete_before_date(date_unix)
+
+        self.redirect('/settings')
+
+
+class SettingsChangePasswordView(BaseView):
+
+    def initialize(self):
+        super(SettingsChangePasswordView, self).initialize()
+        self.current_page = 'settings'
+
+    @authenticated
+    def post(self):
+
+        new_password = self.get_argument('new-password')
+        print self.app['user']
+
+        #self.redirect('/settings')

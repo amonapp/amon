@@ -24,10 +24,10 @@ Settings
 </ul>
 <div id="delete_logs" class="reveal-modal">
      <h1>Delete logs</h1>
-     <p>Are you sure you want to delete these logs?</p>
+     <p>Are you sure you want to delete all log entries before <span id="delete-logs-before">{{ max_date|date }} </span>?</p>
 	 <ul>
 		<li>
-            <input type="submit" value="Delete">
+            <input type="submit"  class="button delete" value="Delete">
 		</li>
 		<li>
 			<a class='close-reveal-modal button cancel'>Cancel</a>
@@ -37,6 +37,7 @@ Settings
 </div>
 </form>
 
+<form action="{{ base_url|url('settings', 'delete-exceptions') }}" method="post" >
 <h2>Exceptions</h2>
 <ul class='settings_block'>
     <li><span class='label'>Delete exceptions before: </span></li>
@@ -46,22 +47,12 @@ Settings
     </li>
 </ul>
 
-<h2>User</h2>
-<ul class='settings_block'>
-    <li><span class='label'>Change password: </span></li>
-    <li><input id="" name="" type="text" placeholder="New password"/></li>
-    <li>
-		<a href="#" class='button' data-reveal-id="delete_exceptions"  data-animation="fade" data-animationspeed="100">Change</a>
-    </li>
-</ul>
-
-
 <div id="delete_exceptions" class="reveal-modal">
-     <h1>Delete all exceptions</h1>
-     <p>Are you sure you want to delete all exceptions?</p>
+     <h1>Delete exceptions</h1>
+     <p>Are you sure you want delete all exceptions before <span id="delete-exceptions-before">{{ max_date|date }} </span> ?</p>
 	 <ul>
 		<li>
-			<a class='button delete' href="/settings/delete_exceptions">Delete</a>
+            <input type="submit" class="button delete" value="Delete">
 		</li>
 		<li>
 			<a class='close-reveal-modal button cancel'>Cancel</a>
@@ -69,11 +60,30 @@ Settings
 	 </ul>
      <a class="close-reveal-modal top">&#215;</a>
 </div>
+</form>
+
+
+<form action="{{ base_url|url('settings', 'change-password') }}" method="post" id="change-password-form">
+<h2>User</h2>
+<ul class='settings_block'>
+    <li>
+        <span class='label'>Change password: </span></li>
+    <li>
+        <input id="password" name="password" type="password" placeholder="New password" required="required"  
+        data-message="Please fill out the password field" minlength="4"  />
+        </li>
+    <li>
+        <input type="submit" name="change-password" class='button' value="Change">
+    </li>
+</ul>
+</form>
+
 {% endblock %}
 {% block js %}
 <script type="text/javascript" src='/media/js/jquery-ui.min.js'></script>
 <script type="text/javascript" src='/media/js/jquery-ui-timepicker-addon.js'></script>
 <script type="text/javascript" src='/media/js/jquery.reveal.js'></script>
+<script type="text/javascript" src='/media/js/jquery.tools.validator.min.js'></script>
 <script type="text/javascript" charset="utf-8">
     
 var datetime_options = {
@@ -84,7 +94,15 @@ var datetime_options = {
 	minuteGrid: 10,
 	maxDate: new Date({{ max_date*1000 }}),
 };
-$('#logs-date').datetimepicker(datetime_options);
-$('#exceptions-date').datetimepicker(datetime_options);
+$('#logs-date').datetimepicker(datetime_options).change(function() {
+      var new_date = $(this).val();
+      $('#delete-logs-before').html(new_date);
+});
+$('#exceptions-date').datetimepicker(datetime_options).change(function() {
+      var new_date = $(this).val();
+      $('#delete-exceptions-before').html(new_date);
+});
+
+$("#change-password-form").validator({messageClass: 'settings-error'});
 </script>
 {% endblock %}

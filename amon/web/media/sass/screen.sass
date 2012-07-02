@@ -109,7 +109,7 @@ ul.tabs
 div.input_background
   padding: 4px
   float: left
-input[type=text] 
+input[type=text], input[type=password]
   float: left
   width: 220px
   height: 25px
@@ -438,7 +438,7 @@ ul.options_list
   clear: left
   width: $body_width
   margin-top: 15px
-  border-bottom: 3px solid #9B0000 
+  border-bottom: 3px solid #BC0000  
   padding: 10px
     right: 0px
     left: 0px
@@ -543,9 +543,16 @@ ul.pagination
     color: white
     border: 2px solid #639213 
   &.cancel
-    background: #F0F0F0 
-    border: 2px solid #D8D8D8 
+    background: white
+    float: left
+    padding: 9px
+      left: 12px
+      right: 12px
+    border: 2px solid #F0F0F0
     color: #7A7A7A 
+    &:hover
+      border: 2px solid #EEE
+      background: #EEE
   &.delete
     background: white 
     color: #BC0000 
