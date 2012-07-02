@@ -11,11 +11,13 @@ Settings
 	</div>
 {% endif %}
 
-<form action="{{ base_url|url('settings', 'delete-logs')  }}" method="post" >
+<form action="{{ base_url|url('settings', 'delete-logs') }}" method="post" >
 <h2>Logs</h2>
 <ul class='settings_block'>
-    <li><span class='label'>Delete logs before: </span></li>
-    <li><input id="" name="" type="text" /></li>
+    <li>
+        <span class='label'>Delete logs before: </span></li>
+    <li>
+        <input id="logs-date" name="logs-date" type="text" value="{{ max_date|date }}"/></li>
     <li>
 		<a href="#" class='button delete' data-reveal-id="delete_logs"  data-animation="fade" data-animationspeed="100">Delete</a>
     </li>
@@ -38,7 +40,7 @@ Settings
 <h2>Exceptions</h2>
 <ul class='settings_block'>
     <li><span class='label'>Delete exceptions before: </span></li>
-    <li><input id="" name="" type="text" /></li>
+    <li><input id="exceptions-date" name="exceptions-date" type="text" value='{{ max_date|date }}' /></li>
     <li>
 		<a href="#" class='button delete' data-reveal-id="delete_exceptions"  data-animation="fade" data-animationspeed="100">Delete</a>
     </li>
@@ -69,5 +71,20 @@ Settings
 </div>
 {% endblock %}
 {% block js %}
+<script type="text/javascript" src='/media/js/jquery-ui.min.js'></script>
+<script type="text/javascript" src='/media/js/jquery-ui-timepicker-addon.js'></script>
 <script type="text/javascript" src='/media/js/jquery.reveal.js'></script>
+<script type="text/javascript" charset="utf-8">
+    
+var datetime_options = {
+	separator: '-',
+	dateFormat: 'dd-mm-yy',  
+	timeFormat: 'hh:mm',
+	hourGrid: 2,
+	minuteGrid: 10,
+	maxDate: new Date({{ max_date*1000 }}),
+};
+$('#logs-date').datetimepicker(datetime_options);
+$('#exceptions-date').datetimepicker(datetime_options);
+</script>
 {% endblock %}

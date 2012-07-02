@@ -169,8 +169,8 @@ class LogModel(BaseModel):
     
         return self.tags.find()
 
-    def delete_all(self):
-        self.collection.remove()
+    def delete_before_date(self, date):
+        self.collection.remove({"time": {"$lte": date}})
 
 
 class UnreadModel(BaseModel):

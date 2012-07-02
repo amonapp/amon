@@ -4,7 +4,8 @@ from amon.web.views.app import(
         ProcessesView,
         ExceptionsView,
         LogsView,
-        SettingsView)
+        SettingsView,
+        SettingsDeleteLogsView)
 from amon.web.views.auth import LoginView, CreateUserView, LogoutView
 from amon.web.settings import PROJECT_ROOT
 from amon.core import settings
@@ -32,7 +33,7 @@ handlers = [
 	(r"/logs", LogsView),
 	(r"^/logs/(?P<page>\d+)$", LogsView),
 	(r"^/settings", SettingsView),
-	(r"^/settings/(?P<action>\w+)$", SettingsView),
+	(r"^/settings/delete-logs$", SettingsDeleteLogsView),
 	# Auth
 	(r"/login", LoginView),
 	(r"/logout", LogoutView),

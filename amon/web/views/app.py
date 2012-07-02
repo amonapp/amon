@@ -253,29 +253,25 @@ class SettingsView(BaseView):
         self.current_page = 'settings'
 
     @authenticated
-    def get(self, action=None):
+    def get(self):
 
-        message = self.session.get('message', '')
+        # Get the max date - utc, converted to localtime
+        max_date = utc_now_to_localtime()
 
-        try:
-            del self.session['message']
-        except:
-            pass
+        self.render('settings.html',
+            max_date=max_date,
+            current_page=self.current_page,
+        )
 
-        if action != None:
-            if action == 'delete_exceptions':
-                exception_model.delete_all()
-                self.session['message'] = 'All Exceptions deleted'
-                self.redirect('/settings')
+class SettingsDeleteLogsView(BaseView):
 
-            if action == 'delete_logs':
-                log_model.delete_all()
-                self.session['message'] = 'All Logs deleted'
-                self.redirect('/settings')
-        else:
-            self.render('settings.html',
-                    current_page=self.current_page,
-                    message=message
-                    )
+    def initialize(self):
+        super(SettingsDeleteLogsView, self).initialize()
+        self.current_page = 'settings'
 
+    @authenticated
+    def post(self):
 
+        date = self.get_argument('logs-date')
+        date_utc = datestring_to_utc_datetime(date)
+        date_unix = datetime_to_unixtime(date_utc)
