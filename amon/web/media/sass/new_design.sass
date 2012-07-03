@@ -36,7 +36,9 @@
       background: white
       border-bottom: 3px solid #FDCB34
       a.active, a:hover
-        border-bottom: 3px solid white
+        border: 3px solid transparent
+        background: #FDCB34 
+        +border-radius(0px)
       li
         display: inline
         float: none
@@ -49,22 +51,40 @@
           border-bottom: 0px
     li
       float: left
-      margin-left: 30px
+      margin-left: 10px
       position: relative
       span.unread
         background: #FDCB34 
         font-size: 0.7em
         padding: 4px
+      ul
+        left: 0px
       &:hover
         ul
           left: 0px
+        a.with-submenu
+          z-index: 1001
+          position: relative
+          padding-bottom: 13px
+          border-bottom: 4px solid white
+          +border-bottom-radius(0px)
       a 
         font-size: 1.8em
+        outline: none
         color: black
-        padding-bottom: 3px
+        padding: 6px
+          left: 10px
+          right: 10px 
+        border: 3px solid transparent
+        z-index: 1001
+        +border-radius(4px)
         text-decoration: none
-        &:hover, &.active
-          border-bottom: 2px solid #FDCB34
+        &.active
+          background: #FDCB34 
+          border: 3px solid #F1B603 
+        &:hover  
+          background: white
+          border: 3px solid #F0F0F0 
       span.active
         font-size: 2em
         color: black
@@ -74,12 +94,15 @@
       list-style-type: none
       position: absolute
       left: -9999px
-      background: black
-      top: 24px
+      background: white
+      border: 3px solid #F0F0F0 
+      +border-radius(4px)
+      top: 34px
+      z-index: 1000
       li
         float: left
+        margin-left: 0px
         clear: left
-        margin-left: 10px
         a
           float: left
           font-size: 1.6em
@@ -88,11 +111,11 @@
           padding:
             top: 10px
             bottom: 10px
+            left: 10px
           width: 155px
-          color: white
           &:hover
             border: 0px
-            color: #FDCB34
+            background: #FDCB34
   .logout
     background: url(../images/logout.png)
     text-indent: -3000px
