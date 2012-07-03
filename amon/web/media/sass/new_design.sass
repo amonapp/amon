@@ -57,16 +57,16 @@
         background: #FDCB34 
         font-size: 0.7em
         padding: 4px
-      ul
-        left: 0px
       &:hover
         ul
           left: 0px
         a.with-submenu
+          background: white
+          border: 3px solid #F0F0F0
           z-index: 1001
           position: relative
-          padding-bottom: 13px
-          border-bottom: 4px solid white
+          padding-bottom: 14px
+          border-bottom: 3px solid white
           +border-bottom-radius(0px)
       a 
         font-size: 1.8em
@@ -80,11 +80,18 @@
         +border-radius(4px)
         text-decoration: none
         &.active
-          background: #FDCB34 
-          border: 3px solid #F1B603 
+          border: 3px solid #FDCB34 
         &:hover  
           background: white
           border: 3px solid #F0F0F0 
+          &.with-submenu
+            background: white
+            border: 3px solid #F0F0F0
+            z-index: 1001
+            position: relative
+            padding-bottom: 14px
+            border-bottom: 3px solid white
+            +border-bottom-radius(0px)
       span.active
         font-size: 2em
         color: black
@@ -114,8 +121,9 @@
             left: 10px
           width: 155px
           &:hover
-            border: 0px
-            background: #FDCB34
+            background: #F0F0F0 
+            border: 3px solid transparent
+            +border-radius(0px)
   .logout
     background: url(../images/logout.png)
     text-indent: -3000px
