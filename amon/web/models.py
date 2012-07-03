@@ -216,6 +216,11 @@ class UserModel(BaseModel):
 
         return result if result else {}
 
+    def update_password(self, userdata, new_password):
+        new_password = sha1(new_password).hexdigest()
+        self.collection.update({"username": userdata['username']},
+                {"$set": {"password": new_password}})
+
     
     def count_users(self):
          return self.collection.count() 

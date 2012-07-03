@@ -187,6 +187,10 @@ class TestLogModel(unittest.TestCase):
         eq_(result['result'].count(), 1)
 
 
+        def test_delete_before_date(self):
+            assert False
+
+
 class TestExceptionModel(unittest.TestCase):
 
 
@@ -205,6 +209,9 @@ class TestExceptionModel(unittest.TestCase):
         eq_(result[0]['last_occurrence'], minute_ago)
         
         self.model.collection.remove()
+
+    def test_delete_before_date(self):
+        assert False
 
 
 class TestDashboardModel(unittest.TestCase):
@@ -286,6 +293,9 @@ class TestUserModel(unittest.TestCase):
 
         result = self.model.username_exists("test")
         eq_(result, 1)
+
+    def test_change_password(self):
+        assert False
 
 class TestPagination(unittest.TestCase):
 

@@ -50,7 +50,7 @@ sdict = {
     'data_files' : data_files,
     'install_requires': 
     [
-        'pymongo==2.1.1',
+        'pymongo==2.2',
         'tornado==2.3',
         'formencode==1.2.4',
         'Jinja2==2.6',

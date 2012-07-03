@@ -62,15 +62,14 @@ Settings
 </div>
 </form>
 
-
 <form action="{{ base_url|url('settings', 'change-password') }}" method="post" id="change-password-form">
 <h2>User</h2>
 <ul class='settings_block'>
     <li>
         <span class='label'>Change password: </span></li>
     <li>
-        <input id="password" name="password" type="password" placeholder="New password" required="required"  
-        data-message="Please fill out the password field" minlength="4"  />
+        <input name="new-password" type="password" placeholder="New password" required="required" 
+        data-message="Please fill out the password field"  />
         </li>
     <li>
         <input type="submit" name="change-password" class='button' value="Change">
@@ -83,7 +82,7 @@ Settings
 <script type="text/javascript" src='/media/js/jquery-ui.min.js'></script>
 <script type="text/javascript" src='/media/js/jquery-ui-timepicker-addon.js'></script>
 <script type="text/javascript" src='/media/js/jquery.reveal.js'></script>
-<script type="text/javascript" src='/media/js/jquery.tools.validator.min.js'></script>
+<script type="text/javascript" src='/media/js/jquery.tools.min.js'></script>
 <script type="text/javascript" charset="utf-8">
     
 var datetime_options = {

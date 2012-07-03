@@ -16,7 +16,8 @@ from amon.web.models import (
         process_model,
         exception_model,
         log_model,
-        unread_model
+        unread_model,
+        user_model
         )
 
 class DashboardView(BaseView):
@@ -309,6 +310,6 @@ class SettingsChangePasswordView(BaseView):
     def post(self):
 
         new_password = self.get_argument('new-password')
-        print self.app['user']
+        user_model.update_password(self.current_user, new_password)
 
-        #self.redirect('/settings')
+        self.redirect('/settings')
