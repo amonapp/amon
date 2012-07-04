@@ -42,18 +42,14 @@
 					<a class='top {% if current_page=='processes' %}active{% endif %}' href="/processes">Processes</a>
 				</li>
 				<li>
-					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/logs">
-						Logs{% if app.unread_values.logs and current_page != 'logs' %}
-							<span class="unread">{{ app.unread_values.logs }}</span>
-						{% endif %}
-                    </a>
+					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/logs">Logs
+                    {% if app.unread_values.logs and current_page != 'logs' %}
+					<span class="unread">{{ app.unread_values.logs }}</span>{% endif %}</a>
 				</li>
 				<li>
-					<a class='top {% if current_page=='exceptions' %}active{% endif %}' href="/exceptions">
-                    Exceptions
+					<a class='top {% if current_page=='exceptions' %}active{% endif %}' href="/exceptions">Exceptions
 					{% if app.unread_values.exceptions and current_page != 'exceptions' %}
-						<span class="unread">{{ app.unread_values.exceptions }}</span>{% endif %}
-					</a>
+					<span class="unread">{{ app.unread_values.exceptions }}</span>{% endif %}</a>
 				</li>
 				{% if acl == "True" and app.user %}
 				<li>
