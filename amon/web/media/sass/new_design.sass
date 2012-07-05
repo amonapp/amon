@@ -38,8 +38,6 @@ $border_color: #E8E8E8
       li
         display: inline
         float: none
-        //&:hover a.with-submenu
-          //padding-bottom: 6px
       ul
         top: 27px
         text-align: left
@@ -50,10 +48,14 @@ $border_color: #E8E8E8
       margin-left: 10px
       position: relative
       span.unread
-        background: #FDCB34 
-        font-size: 0.7em
+        border: 2px solid #E8E8E8 
+        font-size: 0.8em
         padding: 4px
+        +border-radius(4px)
       &:hover
+        span.unread
+          border: 2px solid transparent
+          padding-top: 3px
         ul
           left: 0px
         a.with-submenu
