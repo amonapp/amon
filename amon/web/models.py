@@ -166,7 +166,6 @@ class LogModel(BaseModel):
 
         
     def get_tags(self):
-    
         return self.tags.find()
 
     def delete_before_date(self, date):

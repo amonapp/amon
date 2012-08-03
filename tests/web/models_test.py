@@ -15,8 +15,6 @@ from time import time
 now = int(time())
 minute_ago = (now-60)
 two_minutes_ago = (now-120)
-import os
-os.environ['AMON_ENV'] = 'test' # Switches the database to amon_test.
 
 class TestUnreadModel(unittest.TestCase):
     
@@ -146,11 +144,11 @@ class TestLogModel(unittest.TestCase):
         eq_(result['result'].count(), 1)
 
         
-        result = self.model.get_logs(['info','debug'], None)
+        result = self.model.get_logs(['info','debug'], filter='or')
         eq_(result['result'].count(), 2)
 
 
-        result = self.model.get_logs(['info','debug','warning'], None)
+        result = self.model.get_logs(['info','debug','warning'], filter='or')
         eq_(result['result'].count(), 3)
 
 
@@ -158,7 +156,7 @@ class TestLogModel(unittest.TestCase):
         eq_(result['result'].count(), 1)
 
 
-        result = self.model.get_logs([], 'test')
+        result = self.model.get_logs([], search='test')
         eq_(result['result'].count(), 2)
         
         self.logs.remove()
@@ -183,12 +181,22 @@ class TestLogModel(unittest.TestCase):
 
         result = self.model.get_logs(['python'], None)
         
-
         eq_(result['result'].count(), 1)
 
 
         def test_delete_before_date(self):
-            assert False
+            self.logs.remove()
+
+            self.logs.insert({"message" : "test", "_searchable": "test", "time": now})
+            self.logs.insert({"message" : "test", "_searchable": "test", "time": minute_ago})
+            self.logs.insert({"message" : "test", "_searchable": "test", "time": two_minutes_ago})
+
+            self.model.delete_before_date(minute_ago)
+
+            result = self.model.get_logs()
+            eq_(result['result'].count(), 2)
+
+            self.logs.remove()
 
 
 class TestExceptionModel(unittest.TestCase):
@@ -211,7 +219,18 @@ class TestExceptionModel(unittest.TestCase):
         self.model.collection.remove()
 
     def test_delete_before_date(self):
-        assert False
+        self.model.collection.remove()
+
+        self.model.collection.insert({"exception_class" : "test", "message": "test", "last_occurrence": two_minutes_ago})
+        self.model.collection.insert({"exception_class" : "test", "message": "test", "last_occurrence": minute_ago})
+        self.model.collection.insert({"exception_class" : "test", "message": "test", "last_occurrence": now})
+        
+        self.model.delete_before_date(minute_ago)
+
+        result = self.model.get_exceptions()
+        eq_(result.count(), 2)
+
+        self.model.collection.remove()
 
 
 class TestDashboardModel(unittest.TestCase):
