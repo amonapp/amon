@@ -9,7 +9,7 @@ from amon.web.models import (
     UnreadModel,
     BaseModel
 )
-from nose.tools import eq_
+from nose.tools import eq_, assert_true, assert_false
 from time import time
 
 now = int(time())
@@ -194,7 +194,7 @@ class TestLogModel(unittest.TestCase):
             self.model.delete_before_date(minute_ago)
 
             result = self.model.get_logs()
-            eq_(result['result'].count(), 2)
+            eq_(result['result'].count(), 1)
 
             self.logs.remove()
 
@@ -228,7 +228,7 @@ class TestExceptionModel(unittest.TestCase):
         self.model.delete_before_date(minute_ago)
 
         result = self.model.get_exceptions()
-        eq_(result.count(), 2)
+        eq_(result.count(), 1)
 
         self.model.collection.remove()
 
@@ -314,7 +314,18 @@ class TestUserModel(unittest.TestCase):
         eq_(result, 1)
 
     def test_change_password(self):
-        assert False
+        self.model.collection.remove()
+        user_dict = {"username": "test", "password": "1234"}
+        self.model.create_user(user_dict)
+
+        self.model.update_password({"username": "test"}, '456')
+
+        result = self.model.check_user({'username': 'test', 'password': '456'})
+        assert_true(result)
+
+        result = self.model.check_user({'username': 'test', 'password': '1234'})
+        assert_false(result)
+
 
 class TestPagination(unittest.TestCase):
 
