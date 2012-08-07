@@ -3,6 +3,9 @@
 Exceptions
 {% endblock %}
 {% block content %}
+{% if exceptions.count() == 0 %}
+<div class="message">No data</div>
+{% endif %}
 <ul class="exceptions_list">
 	{% for exc in exceptions  %}
 	<li>

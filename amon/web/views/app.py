@@ -214,6 +214,7 @@ class ExceptionsView(BaseView):
     def get(self):
 
         exceptions = exception_model.get_exceptions()
+    
         unread_model.mark_exceptions_as_read()
 
         self.render('exceptions.html',
