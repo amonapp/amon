@@ -98,13 +98,14 @@ class SystemModel(BaseModel):
     Used in the Javascript calendar - doesn't permit checks for dates before this date
     """
     def get_first_check_date(self):
-        try:
-            row = self.mongo.get_collection('cpu')
-            start_date = row.find_one()
-        except Exception, e:
-            start_date = False
+        row = self.mongo.get_collection('cpu')
+        start_date = row.find_one()
 
-        start_date = start_date.get('time', 0)
+        if start_date != None:
+            start_date = start_date.get('time', 0)
+        else:
+            start_date = 0
+
         return start_date
 
 

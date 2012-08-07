@@ -64,7 +64,12 @@ class AmonMQDaemon(Daemon):
                     except:
                         content = None
 
-                    if content != None:
+                    try:
+                        secret_key = data['secret_key']
+                    except:
+                        secret_key = None
+
+                    if content != None and secret_key == settings.SECRET_KEY:
                         if entry_type == 'log':
                             try:
                                 _log(data['content'])
