@@ -203,6 +203,8 @@ ul.logs-filter
     margin-top: -16px
   div.heading
     height: 100%
+    &.no-top-border
+      border-top: 0px
     span.occurrences
       float: left
       height: 30px
@@ -222,6 +224,11 @@ ul.logs-filter
       float: left
       margin-top: 8px
       width: $body_width - 73px
+    span.last_occurrence
+      float: left
+      color: #858585
+      font-size: 1.4em
+      margin-right: 3px
     span.exception
       width: 90%
       float: left

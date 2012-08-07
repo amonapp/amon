@@ -8,10 +8,11 @@ Exceptions
 {% endif %}
 <ul class="exceptions_list">
 	{% for exc in exceptions  %}
-	<li>
-		<div class="heading">
+	<li >
+		<div class="heading {% if loop.index == 1  %}no-top-border{% endif %}">
 			<span class="occurrences" title='Total occurrences'>{{ exc.total_occurrences }}</span>
 			<div class="exception_info">
+				<span class='last_occurrence'>Last occurrence: </span>
 				<span class="date timestamp" title='{{ exc.last_occurrence|date_local }}'>{{ exc.last_occurrence }}</span>
 					<span class="exception">
 					{% if exc.exception_class  %}
@@ -34,7 +35,9 @@ Exceptions
 			{% if exc.backtrace %}
 			<li>
 				<h4>Backtrace:</h4>
-				<a class='show_full_trace' rel="{{ exc._id }}" href="">Full trace</a>
+				{% if exc.backtrace|length >= 5 %}
+					<a class='show_full_trace' rel="{{ exc._id }}" href="">Full trace</a>
+				{% endif %}
 				<p class='backtrace'>
 				{% for line in exc.backtrace %}
 
@@ -65,7 +68,8 @@ Exceptions
 	{
 		var id = $(this).attr('rel');
 		$('#exception_data-'+id).toggle();
-		$(this).toggleClass('active');
+		var text = $(this).text() == 'Expand' ? 'Collapse' : 'Expand';
+		$(this).text(text).toggleClass('active');
 		
 		e.preventDefault(); 
 	

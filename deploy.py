@@ -2,7 +2,7 @@ from keys import key, secret
 import os
 path = os.path.dirname(os.path.abspath(__file__))
 
-version = "0.9"
+version = "1.0"
 
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
