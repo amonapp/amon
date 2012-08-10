@@ -1,5 +1,5 @@
 ==================================================================
-Amon - Server monitoring, logging and error tracking for web apps
+Amon - Self-hosted server and web app monitoring
 ==================================================================
 
 Introduction
@@ -51,6 +51,6 @@ pymongo >=2.0
 
 Jinja2 >=2.5
 
-tornado >=2.1.1
+tornado >=2.2
 
 MongoDB

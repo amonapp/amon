@@ -16,7 +16,7 @@ function die(){
 }
 
 DISTRO=
-VERSION=0.9
+VERSION=1.0
 PYTHON=python
 MONGO_VERSION=2.0.6
 VERBOSE=0
@@ -79,7 +79,7 @@ echo "***  Installing Amon $VERSION ..."
     # Cleans up the directory from old amon installations
     rm -rf amon-* # Cleans up old archives from previous installs, that could break the updating process
 
-    wget "https://github.com/downloads/martinrusev/amon/amon-$VERSION.tar.gz" 
+    wget --no-check-certificate "https://github.com/downloads/martinrusev/amon/amon-$VERSION.tar.gz" 
     tar -zxf "amon-$VERSION.tar.gz" > /dev/null
 
     if [ "$DISTRO" == 'debian' ]; then

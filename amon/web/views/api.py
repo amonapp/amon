@@ -18,7 +18,7 @@ class ApiLogs(tornado.web.RequestHandler):
                 _log(json_dict)
 
     def get(self):
-        self.write('Only POST requests containing the following json dictionary - {"message": "", "level": ""}')
+        self.write('Only POST requests containing the following json dictionary - {"message": "", "tags": ""}')
         
 
 class ApiException(tornado.web.RequestHandler):
