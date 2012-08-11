@@ -170,11 +170,16 @@
 .chart_container {
         float: left;
         clear: left;
-        width: 960px;
+        width: 920px;
         margin-bottom: 30px;
         display: inline-block;
         position: relative;
         height: 320px;
+        border: 2px solid #F3F3F3;
+    	border-radius: 4px;
+        padding: 30px;
+        padding-left: 5px;
+        padding-bottom: 20px;
 }
 .chart_container.processes {
     height: 220px;
