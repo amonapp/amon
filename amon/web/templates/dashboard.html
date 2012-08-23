@@ -64,10 +64,10 @@
 	</li>
 	<li>
 		<h3>Disks</h3>
-		{% for volume  in last_check.disk %}
+		{% for volume in last_check.disk|sort %}
 		{% if volume != '_id' and volume != 'time' %}
 
-		{% if loop.first %}
+		{% if loop.index == 2 %}
 		<div class="container full with_labels">
 		{% else %}
 		<div class="container full with_labels indent">
