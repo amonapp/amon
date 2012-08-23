@@ -26,28 +26,28 @@
 			<span class="data">{{ cpu|to_int }}%</span>
 		</div>
 	</li>
-	<li class='with_labels'>
+	<li>
 		<h3>Loadavg</h3>
 		{% set loadavg_max = last_check.loadavg.cores|to_int * 1.15 %}
-		<div class="container small">
+		<div class="container small with_labels">
 			<span class="label">1 minute</span>
 			<span class="progress" style='width: {{ last_check.loadavg.minute|progress_width(loadavg_max, 'small') }}'></span>
 			<span class="data">{{ last_check.loadavg.minute }}</span>
 		</div>
-		<div class="container small">
+		<div class="container small with_labels">
 			<span class="label">5 minutes</span>
 			<span class="progress" style='width: {{ last_check.loadavg.five_minutes|progress_width(loadavg_max, 'small') }}'></span>
 			<span class="data">{{ last_check.loadavg.five_minutes }}</span>
 		</div>
-		<div class="container small">
+		<div class="container small with_labels">
 			<span class="label">15 minutes</span>
 			<span class="progress" style='width: {{ last_check.loadavg.fifteen_minutes|progress_width(loadavg_max, 'small') }}'></span>
 			<span class="data">{{ last_check.loadavg.fifteen_minutes }}</span>
 		</div>
 	</li>
-	<li class='with_labels'>
+	<li>
 		<h3>Memory</h3>
-		<div class="container medium">
+		<div class="container medium with_labels">
 			{% set total_ram = last_check.memory.memtotal %}
             {% set used_ram = total_ram - last_check.memory.memfree %}
 			<span class='label'>RAM(used)</span>
@@ -55,26 +55,30 @@
 			</span>
 			<span class="data">{{ used_ram }} of {{ last_check.memory.memtotal }}MB</span>
 		</div>
-		<div class="container medium last">
+		<div class="container medium with_labels last">
 			{% set swap_free = last_check.memory.swaptotal - last_check.memory.swapfree %}
 			<span class='label'>Swap</span>
 			<span class="progress" style='width: {{ swap_free|progress_width(last_check.memory.swaptotal, 'medium') }}'></span>
 			<span class="data">{{ swap_free }} of {{ last_check.memory.swaptotal }}MB</span>
 		</div>
 	</li>
-	<li class='with_labels'>
+	<li>
 		<h3>Disks</h3>
-		{% for volume  in last_check.disk %}
+		{% for volume in last_check.disk|sort %}
 		{% if volume != '_id' and volume != 'time' %}
 
-		<div class="container full">
+		{% if loop.index == 2 %}
+		<div class="container full with_labels">
+		{% else %}
+		<div class="container full with_labels indent">
+		{% endif %}
 			<span class='label'>{{ volume }}(used)</span>
 			<span class="progress" style='width: {{ last_check.disk[volume].percent|progress_width_percent('full') }}'>
 			</span>
 			<span class="data">{{ last_check.disk[volume].used }} of {{ last_check.disk[volume].total }}</span>
 		</div>
 		{% endif %}
-	{% endfor %}
+		{% endfor %}
 	</li>
 	<li>
         <h3>Network</h3>
@@ -111,14 +115,14 @@ No data. Please ensure that amond is running
 	</li>
 {% for process in process_check %}
 	{% if process_check[process] != False %}
-	<li class='with_labels'>
+	<li>
 		<h3>{{ process }}</h3>
-		<div class="container medium">
+		<div class="container medium with_labels">
 			<span class="label">CPU</span>
 			<span class="progress" style='width: {{ process_check[process].cpu|progress_width(100, 'medium') }}'></span>
 			<span class="data">{{ process_check[process].cpu|format_float }}%</span>
 		</div>
-		<div class="container medium last">
+		<div class="container medium last with_labels">
 			<span class="label">Memory</span>
 			<span class="progress" style='width:{{ process_check[process].memory|progress_width(total_ram, 'medium') }}'></span>
 			<span class="data">{{ process_check[process].memory|format_float }} of {{ total_ram }} MB</span>

@@ -326,13 +326,11 @@ ul.stats_bars
     float: left
     clear: left
     margin-bottom: 15px
-    &.with_labels
-      margin-top: 20px
-      div.container
-        .progress
-          top: -15px
-        .data
-          top: -37px
+    div.container
+      .progress
+        top: -15px
+      .data
+        top: -38px
     h3
       float: left
       width: 100px
@@ -385,6 +383,15 @@ ul.stats_bars
           margin-right: 0px
         .data
           width: $small_bar
+      &.with_labels
+        margin-bottom: 5px
+        margin-top: 25px
+        .progress
+          top: -15px
+        .data
+          top: -38px
+      &.indent
+        margin-left: 120px
       .progress
         width: 100px
         display: block
