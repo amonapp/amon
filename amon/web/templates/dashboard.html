@@ -27,7 +27,7 @@
 		</div>
 	</li>
 	<li>
-		<h3>Loadavg</h3>
+		<h3 class='with_margin'>Loadavg</h3>
 		{% set loadavg_max = last_check.loadavg.cores|to_int * 1.15 %}
 		<div class="container small with_labels">
 			<span class="label">1 minute</span>
@@ -46,7 +46,7 @@
 		</div>
 	</li>
 	<li>
-		<h3>Memory</h3>
+		<h3 class='with_margin'>Memory</h3>
 		<div class="container medium with_labels">
 			{% set total_ram = last_check.memory.memtotal %}
             {% set used_ram = total_ram - last_check.memory.memfree %}
@@ -63,7 +63,7 @@
 		</div>
 	</li>
 	<li>
-		<h3>Disks</h3>
+		<h3 class='with_margin'>Disks</h3>
 		{% for volume in last_check.disk|sort %}
 		{% if volume != '_id' and volume != 'time' %}
 
@@ -116,7 +116,7 @@ No data. Please ensure that amond is running
 {% for process in process_check %}
 	{% if process_check[process] != False %}
 	<li>
-		<h3>{{ process }}</h3>
+		<h3 class='with_margin'>{{ process }}</h3>
 		<div class="container medium with_labels">
 			<span class="label">CPU</span>
 			<span class="progress" style='width: {{ process_check[process].cpu|progress_width(100, 'medium') }}'></span>
