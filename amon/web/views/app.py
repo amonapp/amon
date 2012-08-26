@@ -99,6 +99,9 @@ class SystemView(BaseView):
         # Get the max date - utc, converted to localtime
         max_date = utc_now_to_localtime()
 
+        print zone_difference
+        print max_date
+
         if checks != False:
             network = []
             network_interfaces = []

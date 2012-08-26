@@ -8,7 +8,7 @@ import time
 
 def localtime_utc_timedelta(_timezone=None):
     _timezone = _timezone if _timezone else settings.TIMEZONE
-    _timezone = 'Europe/Sofia' 
+    
     is_dst = time.localtime().tm_isdst # Daylight saving time
     is_dst = True if is_dst == 1 else False
     
