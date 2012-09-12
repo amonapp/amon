@@ -29,81 +29,23 @@ $border_color: #fdcb34;
       float: left;
       margin-left: 30px;
       position: relative;
-      &:hover {
-        ul {
-          right: 1px;
-          display: block;
-        }
-        a.with-submenu {
-          z-index: 1001;
-          position: relative;
-          padding-bottom: 4px;
-          &.active {
-            border-bottom: 0px;
+      span.unread {
+        background: #fdcb34;
+        @include border-radius(6px);
+        padding: {
+          left: 6px;
+          right: 6px;
           }
-         
-        }
       }
       a {
         font-size: 1.8em;
         color: black;
         text-decoration: none;
+        padding-bottom: 4px;
         &.active, &:hover {
           border-bottom: 2px solid #fdcb34;
-        }  
-        &.with-submenu {
-          border-bottom: 0px;
-          padding-bottom: 4px;
-          &.active {
-            border-bottom: 2px solid #fdcb34;
-          }
-        }
-      }
-    }
-    ul {
-      list-style-type: none;
-      position: absolute;
-      right: -9999px;
-      display: none;
-      background: white;
-      border: 3px solid #fdcb34;
-      @include border-radius(4px);
-      text-align: center;
-      top: 32px;
-      li {
-        display: inline-block;
-        clear: left;
-        zoom: 1;
-        text-align: left;
-        margin-left: 0px;
-        border-bottom: 2px solid #fdcb34;
-        &.top-element {
-          border: 0px;
-          width: 152px;
-          margin-top: -12px;
-          .arrow {
-            background: url(../images/arrow-top.png) no-repeat;
-            height: 11px;
-            width: 17px; 
-            float: right;
-            display: block;
-            margin-right: 10px;
-          }
-        }
-        &.last {
-          border-bottom: 0px;
-        }
-        a {
-          float: left;
-          font-size: 1.6em;
-          display: block;
-          outline: none;
-          width: 130px;
-          border-bottom: 0px;
-          padding : 12px;
-          &:hover {
-            background: #fdcb34;
-            border-bottom: 0px;
+          .unread {
+            background: white;
           }
         }
       }

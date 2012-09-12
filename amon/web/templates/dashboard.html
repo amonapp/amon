@@ -63,15 +63,25 @@
 		</div>
 	</li>
 	<li>
-		<h3 class='with_margin'>Disks</h3>
+        <h3>Network</h3>
+        <ul class='network-stats'>
+        	{% for interface in last_check.network  %}
+            {% if interface != '_id' and interface != 'time' and interface != 'server_id' %}
+        	<li>
+                <span class='label'>{{ interface }}</span>
+                <span class="received" title='Received'>{{ last_check.network[interface]['kb_received'] }}kb/s</span>
+                <span class="transmitted" title='Transmitted'>{{ last_check.network[interface]['kb_transmitted'] }}kb/s</span>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </li>
+	<li>
+		<h3 class='disk'>Disks</h3>
 		{% for volume in last_check.disk|sort %}
 		{% if volume != '_id' and volume != 'time' %}
 
-		{% if loop.index == 2 %}
-		<div class="container full with_labels">
-		{% else %}
 		<div class="container full with_labels indent">
-		{% endif %}
 			<span class='label'>{{ volume }}(used)</span>
 			<span class="progress" style='width: {{ last_check.disk[volume].percent|progress_width_percent('full') }}'>
 			</span>
@@ -80,20 +90,7 @@
 		{% endif %}
 		{% endfor %}
 	</li>
-	<li>
-        <h3>Network</h3>
-        <ul class='network-stats'>
-        	<li>
-            {% for interface in last_check.network  %}
-            {% if interface != '_id' and interface != 'time' and interface != 'server_id' %}
-                <span class='label'>{{ interface }}</span>
-                <span class="received" title='Received'>{{ last_check.network[interface]['kb_received'] }}kb/s</span>
-                <span class="transmitted" title='Transmitted'>{{ last_check.network[interface]['kb_transmitted'] }}kb/s</span>
-            {% endif %}
-            {% endfor %}
-            </li>
-        </ul>
-    </li>
+	
 </ul>
 </div><!-- dashboad_left end -->
 {% else %}
@@ -108,7 +105,7 @@ No data. Please ensure that amond is running
 	<li>
 		<h3>Last check</h3>
 		{% if process_check_first %}
-		<span class="timestamp" title='{{ process_check[process_check_first].time|date }}'>
+		<span class="timestamp" title='{{ process_check[process_check_first].time|date_local }}'>
 			{{ process_check[process_check_first].time }}
 		</span>
 		{% endif %}

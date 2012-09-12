@@ -2,6 +2,7 @@ from amon.utils.dates import *
 from nose.tools import eq_
 import datetime
 import pytz
+from pytz import timezone
 import unittest
 
 
@@ -49,23 +50,42 @@ class TestDates(unittest.TestCase):
 
 
     def test_localtime_utc_timedelta(self):
-        # +5 ( 0:00 in Mawson is 19:00 UTC )
+        
+        # +5 ( 0:00 in Mawson is 19:00 UTC ) # NO DST changes till 2019
         result = localtime_utc_timedelta(_timezone='Antarctica/Mawson') 
-        eq_(result, ('negative', 18000))
+        eq_(result, ('positive', 18000))
 
-        # +2 ( 0:00 in Sofia is 22:00 UTC )
-        result = localtime_utc_timedelta(_timezone='Europe/Sofia') 
-        eq_(result, ('negative', 7200))
+        _timezone = 'Europe/Sofia'
+        tz_class = timezone(_timezone) # From pytz
+        local_time = datetime.datetime.now(tz_class)
 
-        # -7 ( 0:00 in Edmonton is 07:00 UTC )
-        result = localtime_utc_timedelta(_timezone='America/Edmonton') 
-        eq_(result, ('positive', 25200))
+        if local_time.dst():
+            # +3 ( 01:00 in Sofia is 22:00 UTC ) # DST
+            result = localtime_utc_timedelta(_timezone=_timezone) 
+            eq_(result, ('positive', 10800))
+        else:
+             # +2 ( 00:00 in Sofia is 22:00 UTC )
+            result = localtime_utc_timedelta(_timezone=_timezone) 
+            eq_(result, ('positive', 7200))
+
+
+        _timezone = 'America/Edmonton'
+        tz_class = timezone(_timezone) # From pytz
+        local_time = datetime.datetime.now(tz_class)
+
+        if local_time.dst():
+            # -6 ( 0:00 in Edmonton is 06:00 UTC ) DST
+            result = localtime_utc_timedelta(_timezone=_timezone) 
+            eq_(result, ('negative', 21600))
+        else:
+            # -7 ( 0:00 in Edmonton is 07:00 UTC )
+            result = localtime_utc_timedelta(_timezone=_timezone) 
+            eq_(result, ('negative', 25200))
 
         # UTC
         result = localtime_utc_timedelta(_timezone='UTC')
         eq_(result, ('positive', 0))
 
-        assert False
 
     def test_utc_now_to_localtime(self):
         # +5 ( 0:00 in Mawson is 19:00 UTC )
@@ -73,10 +93,21 @@ class TestDates(unittest.TestCase):
         result = utc_now_to_localtime(_timezone='Antarctica/Mawson')
         eq_(result, utc_now+18000)
 
-        # +2 ( 0:00 in Sofia is 22:00 UTC )
+
+        _timezone = 'Europe/Sofia'
+        tz_class = timezone(_timezone) # From pytz
+        local_time = datetime.datetime.now(tz_class)
+        
         utc_now = unix_utc_now()
-        result = utc_now_to_localtime(_timezone='Europe/Sofia')
-        eq_(result, utc_now+7200)
+        
+        if local_time.dst():
+            # +3 ( 0:00 in Sofia is 22:00 UTC ) # DST
+            result = utc_now_to_localtime(_timezone=_timezone)
+            eq_(result, utc_now+10800)
+        else: 
+            # +2 ( 0:00 in Sofia is 22:00 UTC )
+            result = utc_now_to_localtime(_timezone=_timezone)
+            eq_(result, utc_now+7200)
 
 
     def test_unix_utc_now(self):

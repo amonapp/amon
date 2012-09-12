@@ -9,17 +9,22 @@ import time
 def localtime_utc_timedelta(_timezone=None):
     _timezone = _timezone if _timezone else settings.TIMEZONE
     
-    is_dst = time.localtime().tm_isdst # Daylight saving time
-    is_dst = True if is_dst == 1 else False
-    
     local_timezone = timezone(_timezone)
     local_time = datetime.now(local_timezone)
+
+    is_dst = False # Check the local timezone for Daylight saving time
+    if local_time.dst():
+        is_dst = True
+
     naive_local_time = local_time.replace(tzinfo=None)
-    
+
+    # Return 0 for UTC
+    if _timezone == 'UTC': 
+        return ('positive', 0)
+
     # timedelta betweeen the local timezone and UTC
     td = local_timezone.utcoffset(naive_local_time, is_dst=is_dst)
     offset = (td.microseconds + (td.seconds + td.days * 24 * 3600)* 10**6 ) / 10.0**6
-
 
     if offset < 0:
         # Negative timedelta is actually an UTC+ timezone
