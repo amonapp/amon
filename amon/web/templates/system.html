@@ -69,7 +69,7 @@ System
 {% endif %}{# memory in active_checks #}
 {% if 'loadavg' in active_checks %}
 <a name='loadavg' class='anchor'></a>
-<h2>Loadavg</h2>
+<h2>Load Average</h2>
 <div class='legend'>
 	<ul>
 		<li>
@@ -147,9 +147,9 @@ System
 				</li>
 			</ul>
 		</div>
-        <div id="network_{{ interface }}" class='chart_container'>
-            <div class='y_axis' id="network_{{ interface }}_y_axis"></div>
-            <div id="network-chart_{{ interface }}" class='chart'></div>
+        <div id="network_{{ interface|clean_slashes }}" class='chart_container'>
+            <div class='y_axis' id="network_{{ interface|clean_slashes }}_y_axis"></div>
+            <div id="network-chart_{{ interface|clean_slashes }}" class='chart'></div>
         </div>
     {% endif %}{# lo #}
     {% else %}
@@ -397,8 +397,8 @@ cpu_x.render();
 {% if 'network' in active_checks %}
 	
     {% for interface in network_interfaces  %}
-    var network_{{ interface }}_graph = new Rickshaw.Graph( {
-            element: document.getElementById("network-chart_{{ interface }}"),
+    var network_{{ interface|clean_slashes }}_graph = new Rickshaw.Graph( {
+            element: document.getElementById("network-chart_{{ interface|clean_slashes }}"),
             width: width,
             height: height,
             renderer: 'line',
@@ -426,10 +426,10 @@ cpu_x.render();
             {% endstrip %}
         } );
 
-        network_{{ interface }}_graph.render();
+        network_{{ interface|clean_slashes }}_graph.render();
 
-        var network_{{ interface }}_hover = new Rickshaw.Graph.HoverDetail({
-            graph: network_{{ interface }}_graph,
+        var network_{{ interface|clean_slashes }}_hover = new Rickshaw.Graph.HoverDetail({
+            graph: network_{{ interface|clean_slashes }}_graph,
             formatter: function(series, x, y) {
                 var date = _format_date(x);
                 var content = '<span class="metric">' + series.name + ": " + y + 'kb </span>' + date;
@@ -437,18 +437,18 @@ cpu_x.render();
             }
         });
 
-        var network_{{ interface }}_x = new Rickshaw.Graph.Axis.Time({
-            graph: network_{{ interface }}_graph, 
+        var network_{{ interface |clean_slashes}}_x = new Rickshaw.Graph.Axis.Time({
+            graph: network_{{ interface|clean_slashes }}_graph, 
         });
 
-        var network_{{ interface }}_y = new Rickshaw.Graph.Axis.Y( {
-            graph: network_{{ interface }}_graph,
+        var network_{{ interface|clean_slashes }}_y = new Rickshaw.Graph.Axis.Y( {
+            graph: network_{{ interface|clean_slashes }}_graph,
             tickFormat: function(y) { return y +'kb'}, 
             element: document.getElementById('network_{{ interface }}_y_axis'),
         } );
 
-        network_{{ interface }}_x.render();
-        network_{{ interface }}_y.render();
+        network_{{ interface|clean_slashes }}_x.render();
+        network_{{ interface|clean_slashes }}_y.render();
 
 		{% endfor %}
 
