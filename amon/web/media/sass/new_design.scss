@@ -1,0 +1,158 @@
+@import "compass/css3";
+
+$border_color: #fdcb34;
+
+#header {
+  width: 100%;
+  height: 100px;
+  a.logo {
+    float: left;
+    width: 242px;
+    height: 59px;
+    background: url(../images/logo.png) no-repeat;
+    margin: 20px {
+      left: 0px;
+      bottom: 20px;
+      right: 0px; }; }
+  .header_separator {
+    float: left;
+    width: 100%;
+    height: 3px;
+    background: #e8e8e8; }
+ #menu {
+    float: right;
+    padding-top: 16px;
+    position: relative;
+    clear: right;
+    z-index: 5;
+    li {
+      float: left;
+      margin-left: 30px;
+      position: relative;
+      &:hover {
+        ul {
+          right: 1px;
+          display: block;
+        }
+        a.with-submenu {
+          z-index: 1001;
+          position: relative;
+          padding-bottom: 4px;
+          &.active {
+            border-bottom: 0px;
+          }
+         
+        }
+      }
+      a {
+        font-size: 1.8em;
+        color: black;
+        text-decoration: none;
+        &.active, &:hover {
+          border-bottom: 2px solid #fdcb34;
+        }  
+        &.with-submenu {
+          border-bottom: 0px;
+          padding-bottom: 4px;
+          &.active {
+            border-bottom: 2px solid #fdcb34;
+          }
+        }
+      }
+    }
+    ul {
+      list-style-type: none;
+      position: absolute;
+      right: -9999px;
+      display: none;
+      background: white;
+      border: 3px solid #fdcb34;
+      @include border-radius(4px);
+      text-align: center;
+      top: 32px;
+      li {
+        display: inline-block;
+        clear: left;
+        zoom: 1;
+        text-align: left;
+        margin-left: 0px;
+        border-bottom: 2px solid #fdcb34;
+        &.top-element {
+          border: 0px;
+          width: 152px;
+          margin-top: -12px;
+          .arrow {
+            background: url(../images/arrow-top.png) no-repeat;
+            height: 11px;
+            width: 17px; 
+            float: right;
+            display: block;
+            margin-right: 10px;
+          }
+        }
+        &.last {
+          border-bottom: 0px;
+        }
+        a {
+          float: left;
+          font-size: 1.6em;
+          display: block;
+          outline: none;
+          width: 130px;
+          border-bottom: 0px;
+          padding : 12px;
+          &:hover {
+            background: #fdcb34;
+            border-bottom: 0px;
+          }
+        }
+      }
+    }
+  }
+  .logout {
+    background: url(../images/logout.png);
+    text-indent: -3000px;
+    margin-top: 5px;
+    float: right;
+    padding: 0px;
+    border: 0px;
+    width: 26px;
+    height: 26px;
+    background-position: 0px 0px;
+    &:hover {
+      background-position: 0px -26px; } } }
+
+.anchor {
+  float: left;
+  height: 2px;
+  width: 100%; }
+
+.top-menu-spacer {
+  width: 1px;
+  height: 1px;
+  float: right;
+  margin-bottom: 20px; }
+
+ul.settings_block {
+  float: left;
+  background: #f7f7f7;
+  width: 100%;
+  border-top: 2px solid #f0f0f0;
+  border-bottom: 2px solid #f0f0f0;
+  li {
+    float: left;
+    padding: 8px;
+    span.label {
+      float: left;
+      width: 200px;
+      font-size: 1.6em;
+      padding-top: 8px; }
+    .button {
+      font-size: 1.6em;
+      margin-top: 1px;
+      float: left; } } }
+
+.settings-error {
+  color: #bc0000;
+  font-size: 1.6em;
+  margin-left: 115px; }

@@ -99,7 +99,14 @@ class LinuxSystemCollector(object):
                 if interface not in ['IFACE', 'lo']:
                     # rxkB/s - Total number of kilobytes received per second  
                     # txkB/s - Total number of kilobytes transmitted per second
-                    data[interface] = {"kb_received": elements[4] , "kb_transmitted": elements[5]}
+
+                    kb_received = elements[4].replace(',', '.')
+                    kb_received = format(float(kb_received), ".2f")
+
+                    kb_transmitted = elements[5].replace(',', '.')
+                    kb_transmitted = format(float(kb_transmitted), ".2f")
+
+                    data[interface] = {"kb_received": kb_received , "kb_transmitted": kb_transmitted}
 
         return data
 
