@@ -18,7 +18,7 @@ Monitor the core metrics of your servers - RAM, CPU, Load average, Network traff
 Monitor the CPU and RAM usage. Add new process with 1 line of 
 code. Master/worker aware - perfect for monitoring web servers
 
-**3. Logging **
+**3. Logging**
 
 Log events, user and performance data. Amon allows you to log any datastructure,  
 so you can log dictionaries, hashes, arrays, etc. 
