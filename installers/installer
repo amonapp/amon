@@ -16,9 +16,9 @@ function die(){
 }
 
 DISTRO=
-VERSION=1.0.1
+VERSION=1.0.2
 PYTHON=python
-MONGO_VERSION=2.0.6
+MONGO_VERSION=2.2.0
 VERBOSE=0
 
 # Debian based distros - Tested and supported on : Debian, Ubuntu
@@ -231,7 +231,7 @@ echo "***  Installing Amon $VERSION ..."
 		echo "For troubleshooting instructions, please see the Amon User Guide :"
 		echo "http://amon.cx/guide/"
 		echo
-		echo "To uninstall Amon, \`curl uninstall.amon.cx | sh\`"
+		echo "To uninstall Amon, \`curl uninstall.amon.cx | bash\`"
 	}
 
 # All done!
