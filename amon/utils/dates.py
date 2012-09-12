@@ -19,7 +19,8 @@ def localtime_utc_timedelta(_timezone=None):
     # timedelta betweeen the local timezone and UTC
     td = local_timezone.utcoffset(naive_local_time, is_dst=is_dst)
     offset = (td.microseconds + (td.seconds + td.days * 24 * 3600)* 10**6 ) / 10.0**6
-    
+
+
     if offset < 0:
         # Negative timedelta is actually an UTC+ timezone
         offset = -offset

@@ -62,8 +62,10 @@ class TestDates(unittest.TestCase):
         eq_(result, ('positive', 25200))
 
         # UTC
-        result = localtime_utc_timedelta(_timezone='UTC') 
+        result = localtime_utc_timedelta(_timezone='UTC')
         eq_(result, ('positive', 0))
+
+        assert False
 
     def test_utc_now_to_localtime(self):
         # +5 ( 0:00 in Mawson is 19:00 UTC )
