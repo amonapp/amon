@@ -220,7 +220,8 @@ ul.logs-filter {
 .exceptions_list {
   @extend .log_list;
   li {
-    padding-bottom: 10px; }
+    padding-bottom: 10px;
+     }
   a.collapse {
     margin-top: -16px; }
   div.heading {
@@ -287,11 +288,12 @@ ul.logs-filter {
     padding-top: 0px; }
   ul.exception_data {
     margin-top: 1px;
-    width: $body_width - 40px;
+    width: $body_width - 70px;
     float: left;
     margin-left: 20px;
     li {
       border: 0px;
+      width: $body_width - 50px;
       span.label {
         font-size: 1.6em;
         width: 120px;
@@ -465,20 +467,20 @@ ul.stats_bars {
 }
 
 // Messages
-
 .message {
   float: left;
   clear: left;
-  width: $body_width;
-  margin-top: 15px;
-  border-bottom: 3px solid #bc0000;
+  width: $body_width - 20px;
+  background: #d95353;
   padding: 10px {
     right: 0px;
-    left: 0px; };
+    left: 20px; };
   font-size: 1.4em;
+  color: white;
   line-height: 1.4em;
+  @include text-shadow(#803131 1px 1px 3px);
   a {
-    color: black; }
+    color: white; }
   &.green {
     border-bottom: 3px solid #89bc32; } }
 

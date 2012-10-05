@@ -4,6 +4,10 @@
 {% endblock breadcrumb %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
+<div class="message red">
+	Amon is in read-only mode. Check this <a href='http://amon.cx/guide/running/#modes'>guide</a> 
+    if you want to enable authentication and settings.
+</div>
 {% if acl == "False" %}
 <div class="message red">
 	Amon is in read-only mode. Check this <a href='http://amon.cx/guide/running/#modes'>guide</a> 
