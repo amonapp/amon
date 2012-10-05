@@ -2,6 +2,9 @@
 {% block title %}
 Exceptions
 {% endblock %}
+{% block breadcrumb %}
+<li>Exceptions</li>
+{% endblock breadcrumb %}
 {% block content %}
 {% if exceptions.count() == 0 %}
 <div class="message">No data</div>

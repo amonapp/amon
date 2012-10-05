@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block breadcrumb %}
+<li>Dashboard</li>
+{% endblock breadcrumb %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 {% if acl == "False" %}

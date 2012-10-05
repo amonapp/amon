@@ -1,7 +1,7 @@
 @import "compass/reset";
 @import "compass/css3";
 
-$body_width: 960px;
+$body_width: 980px;
 
 html {
   height: 100%; }
@@ -9,22 +9,23 @@ html {
 body {
   font-size: 62.5%;
   height: 100%;
+  background: url(../images/background.png);
   font-family: Arial, Helvetica, sans-serif; }
-
-span.breadcrumb {
-  float: left;
-  font-size: 2em;
-  color: black;
-  margin: {
-    top: 10px;
-    bottom: 10px; }; }
 
 .wrapper {
   width: $body_width;
   height: 100%;
   margin: 0 auto; }
 
-// Used in charts
+#content {
+  background: white;
+  border: 2px solid #eee;
+  float: left;
+  width: 100%;
+  @include border-radius(6px);
+  margin-bottom: 40px;
+  @include box-shadow(#e8e9ea 0px 2px 10px );
+}
 
 .noclear {
   clear: none; }
@@ -35,12 +36,13 @@ h2 {
   clear: left;
   margin: 25px {
     bottom: 20px;
-    left: 0px; };
+    left: 20px; };
   color: black; }
 
 h3 {
   @extend h2;
   font-size: 2em;
+  margin-top: 10px;
   color: #858585; }
 
 h4 {
@@ -50,16 +52,6 @@ h4 {
     left: 0px;
     top: 15px;
     bottom: 5px; }; }
-
-// Charts
-
-.chart {
-  float: left;
-  width: 800px;
-  height: 250px;
-  margin-left: 25px;
-  margin-bottom: 30px;
-  clear: left; }
 
 #tooltip {
   position: absolute;
@@ -73,6 +65,7 @@ h4 {
 .legend {
   float: right;
   margin-top: 38px;
+  margin-right: 20px;
   ul {
     li {
       float: left;
@@ -170,9 +163,13 @@ ul.logs-filter {
   li {
     padding-bottom: 10px;
     margin-bottom: 10px;
+
     float: left;
     clear: left;
     width: $body_width;
+    &:first-child .heading {
+      border-top: 0px;
+    }
     .tag {
       float: left;
       @include border-radius(4px);
@@ -192,13 +189,15 @@ ul.logs-filter {
       float: right;
       font-size: 1.6em;
       color: black;
+      margin-right: 20px;
       outline: none; }
     .heading {
       float: left;
       padding-top: 15px;
+      padding-left: 20px;
       padding-bottom: 6px;
-      width: $body_width;
-      border-top: 3px solid #f1f1f1; }
+      width: $body_width - 20px;
+      border-top: 2px solid #f1f1f1; }
     span.date {
       color: #858585;
       font-size: 1.4em;
@@ -209,8 +208,8 @@ ul.logs-filter {
       float: left;
       clear: left;
       padding: 10px {
-        left: 0px; };
-      width: $body_width - 20px;
+        left: 20px; };
+      width: $body_width - 30px;
       display: block;
       code {
         word-wrap: normal;
@@ -230,23 +229,23 @@ ul.logs-filter {
       border-top: 0px; }
     span.occurrences {
       float: left;
-      height: 30px;
+      height: 30px; 
       width: 30px;
       margin-right: 10px;
-      background: #f7f7f7;
-      border: 3px solid #f0f0f0;
-      padding: 14px {
-        left: 13px; };
-      @include border-radius(4px);
+      @include border-radius(50%);
+      padding: 14px;
+      background: #fafafa;
+      border: 2px solid #eee;
       color: #2b3239;
       text-align: center;
       line-height: 1.4em;
-      font-size: 2.1em;
-      font-weight: bold; }
+      font-size: 2em;
+      font-weight: bold; 
+    }
     div.exception_info {
       float: left;
       margin-top: 8px;
-      width: $body_width - 73px; }
+      width: $body_width - 100px; }
     span.last_occurrence {
       float: left;
       color: #858585;
@@ -288,7 +287,9 @@ ul.logs-filter {
     padding-top: 0px; }
   ul.exception_data {
     margin-top: 1px;
+    width: $body_width - 40px;
     float: left;
+    margin-left: 20px;
     li {
       border: 0px;
       span.label {
@@ -332,18 +333,21 @@ ul.logs-filter {
 
 .dashboad_left {
   float: left;
-  width: 500px; }
-
+  width: 500px; 
+  h2 {
+    margin-left: 20px;
+  }
+}
 .dashboard_right {
   float: left;
-  width: 460px; }
-
+  width: 460px; 
+  h2 {
+    margin-left: 20px;
+  }
+}
 $small_bar: 100px;
-
 $medium_bar: 158px;
-
 $full_bar: 330px;
-
 .timestamp {
   float: left;
   font-size: 1.4em;
@@ -356,7 +360,7 @@ ul.stats_bars {
   li {
     float: left;
     clear: left;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     div.container {
       .progress {
         top: -15px; }
@@ -369,7 +373,7 @@ ul.stats_bars {
         top: 6px;
         right: 20px; };
       text-align: right;
-      font-size: 1.8em;
+      font-size: 1.6em; 
       &.with_margin {
         margin-top: 28px; } }
     ul.network-stats {
@@ -460,36 +464,6 @@ ul.stats_bars {
     } 
 }
 
-// Settings
-
-ul.options_list {
-  float: left;
-  clear: left;
-  margin-top: 30px;
-  li {
-    float: left;
-    margin-bottom: 30px; }
-  span {
-    font-size: 1.8em;
-    float: left;
-    width: 400px;
-    margin-top: 10px; }
-  a {
-    font-size: 1.4em;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 10px {
-      left: 18px;
-      right: 18px; };
-    float: left;
-    @include border-radius(6px);
-    &.delete {
-      color: white;
-      background: #bc0000;
-      border: 2px solid #8a0000;
-      &:hover {
-        color: #5e0000; } } } }
-
 // Messages
 
 .message {
@@ -561,6 +535,7 @@ ul.options_list {
 ul.pagination {
   float: right;
   margin-bottom: 20px;
+  margin-right: 20px;
   li {
     float: left;
     margin-left: 15px;
@@ -625,3 +600,131 @@ ul.pagination {
       color: white;
       background: #bc0000;
       border: 2px solid #9f0000; } } }
+$border_color: #fdcb34;
+
+#header {
+  width: 100%;
+  height: 100px;
+  a.logo {
+    float: left;
+    width: 230px;
+    height: 59px;
+    background: url(../images/logo.png) no-repeat;
+    margin: 20px {
+      left: 0px;
+      bottom: 20px;
+      right: 0px; }; }
+  .header_separator {
+    float: left;
+    width: 100%;
+    height: 3px;
+    background: #e8e8e8; }
+ #menu {
+    float: right;
+    padding-top: 24px;
+    position: relative;
+    clear: right;
+    z-index: 5;
+    li {
+      float: left;
+      margin-left: 15px;
+      position: relative;
+      a {
+        font-size: 1.6em;
+        outline: 0;
+        color: black;
+        text-decoration: none;
+        padding: 5px;
+        padding-right: 8px;
+        border: 2px solid transparent;
+        padding-left: 8px;
+        &.active, &:hover {
+          background: white;
+          @include border-radius(6px);
+          border: 2px solid #fdcb34;
+        } 
+      }
+    }
+  }
+  .logout {
+    background: url(../images/logout.png);
+    text-indent: -3000px;
+    margin-top: 5px;
+    float: right;
+    padding: 0px;
+    border: 0px;
+    width: 26px;
+    height: 26px;
+    background-position: 0px 0px;
+    &:hover {
+      background-position: 0px -26px; } } }
+
+.anchor {
+  float: left;
+  height: 2px;
+  width: 100%; }
+
+.top-menu-spacer {
+  width: 1px;
+  height: 1px;
+  float: right;
+  margin-bottom: 20px; }
+
+ul.settings_block {
+  float: left;
+  background: #f7f7f7;
+  width: 100%;
+  border-top: 2px solid #f0f0f0;
+  border-bottom: 2px solid #f0f0f0;
+  li {
+    float: left;
+    padding: 8px;
+    &:first-child {
+      padding-left: 20px;
+    }
+    span.label {
+      float: left;
+      width: 200px;
+      font-size: 1.6em;
+      padding-top: 8px; }
+    .button {
+      font-size: 1.6em;
+      margin-top: 1px;
+      float: left; } } }
+
+.settings-error {
+  color: #bc0000;
+  font-size: 1.6em;
+  margin-left: 115px; }
+
+#breadcrumb {
+  float: left;
+  width: $body_width - 30px; 
+  background: #fafafa;
+  padding: 10px;
+  padding-left: 20px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid #f0f0f0;
+  ul {
+    float: left;
+    li {
+      float: left;
+      color: #dfdfdf;
+      font-size: 2em;
+      padding: 10px {
+        top: 5px; };
+      a {
+        color: #dfdfdf; }
+      &.separator {
+        width: 2px;
+        height: 20px;
+        background: #f0f0f0;
+        padding: 0px;
+        border: 0px;
+        margin-top: 6px; }
+      &:first-child {
+        padding-left: 0px; }
+      &:last-child {
+        border-right: 0px;
+         } } } }
+

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block title %}
-Processes check
+Processes
+{% endblock %}
+{% block breadcrumb %}
+<li>Processes</li>
 {% endblock %}
 {% block header %}
 	<link rel="stylesheet" href="/media/css/chosen.css" />
@@ -65,9 +68,9 @@ Processes check
 <script type="text/javascript">
 $(function()  {
     // Common variables and functions
-    var width = 885;
+    var width = 865;
     var height = 200;
-    var padding = { top: 0.09, right: 0, bottom: 0.02, left: 0 } 
+    var padding = { top: 0.09, right: 0, bottom: 0, left: 0 } 
     function _format_date(date) {
         _date = new Date(date*1000).toUTCString();
 		return '<span class="date">'+ moment.utc(_date).format("DD.MM.YY H:mm:ss") + '</span>';

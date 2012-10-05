@@ -10,7 +10,6 @@
 	<link rel="icon" type="image/png" href="/media/images/favicon.png" />
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<link rel="stylesheet" href="/media/css/screen.css" />
-	<link rel="stylesheet" href="/media/css/new_design.css" />
 	<link rel="stylesheet" href="/media/css/jquery-ui.css" />
 	{% block header %}
 	{% endblock %}
@@ -26,23 +25,23 @@
 		{% endif %}
 	    <ul id='menu' class='default'>
 				<li>
-					<a class='top {% if current_page=='dashboard' %}active{% endif %}' href="/">Dashboard</a>
+					<a class='{% if current_page=='dashboard' %}active{% endif %}' href="/">Dashboard</a>
 				</li>
 				<li>
-					<a class='top {% if current_page=='system' %}active{% endif %}' href="/system">System</a>
+					<a class='{% if current_page=='system' %}active{% endif %}' href="/system">System</a>
 				</li>
 				<li>
-					<a class='top {% if current_page=='processes' %}active{% endif %}' href="/processes">Processes</a>
+					<a class='{% if current_page=='processes' %}active{% endif %}' href="/processes">Processes</a>
 				</li>
 				<li>
 					<a class='top {% if current_page=='logs' %}active{% endif %}' href="/logs">Logs
                     {% if app.unread_values.logs and current_page != 'logs' %}
-					<span class="unread">{{ app.unread_values.logs }}</span>{% endif %}</a>
+					<span class="unread">({{ app.unread_values.logs }})</span>{% endif %}</a>
 				</li>
 				<li>
 					<a class='top {% if current_page=='exceptions' %}active{% endif %}' href="/exceptions">Exceptions
 					{% if app.unread_values.exceptions and current_page != 'exceptions' %}
-					<span class="unread">{{ app.unread_values.exceptions }}</span>{% endif %}</a>
+					<span class="unread">({{ app.unread_values.exceptions }})</span>{% endif %}</a>
 				</li>
 				{% if acl == "True" and app.user %}
 				<li>
@@ -50,14 +49,20 @@
 				</li>
 				{% endif %}
 			</ul>
-    <div class="header_separator"><!-- --></div>
     </div><!-- wrapper end -->
 </div><!-- header end -->
 <div class="wrapper">
-{% block breadcrumb %}{% endblock %}
-{% block filter %}{% endblock %}
-{% block content %}
-{% endblock %}
+	<div id="content">
+	<div id="breadcrumb">
+    <ul>
+        {% block breadcrumb %}
+        {% endblock breadcrumb %}
+    </ul>
+    </div>
+	{% block filter %}{% endblock %}
+	{% block content %}
+	{% endblock %}
+	</div><!-- content end -->
 </div><!-- wrapper end -->
 	<script type="text/javascript" src='/media/js/jquery-1.7.2.min.js'></script>
 	<script type="text/javascript" src='/media/js/date.format.min.js'></script>
