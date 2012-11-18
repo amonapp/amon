@@ -1,5 +1,5 @@
 import unittest
-from amon.web.template import *
+from amonlite.web.template import *
 from nose.tools import eq_
 
 class TestTemplateFilters(unittest.TestCase):

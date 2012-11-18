@@ -3,7 +3,7 @@ os.environ['AMON_ENV'] = 'test' # Switches the database to amon_test.
 
 from nose.tools import eq_
 import unittest
-from amon.api import log
+from amonlite.api import log
 
 
 class TestLoggingApi(unittest.TestCase):

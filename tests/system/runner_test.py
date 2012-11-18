@@ -1,4 +1,4 @@
-from amon.system.runner import runner
+from amonlite.system.runner import runner
 import sys
 
 class TestRunner(object):

@@ -1,5 +1,5 @@
 import unittest
-from amon.web.models import (
+from amonlite.web.models import (
     SystemModel,
     ProcessModel,
     LogModel,

@@ -1,4 +1,4 @@
-from amon.utils.dates import *
+from amonlite.utils.dates import *
 from nose.tools import eq_
 import datetime
 import pytz

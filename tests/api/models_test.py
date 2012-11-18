@@ -1,5 +1,5 @@
 import unittest
-from amon.api.models import (
+from amonlite.api.models import (
     LogsAPIModel,
     ExceptionAPIModel,
     CommonAPIModel

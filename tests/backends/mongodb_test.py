@@ -4,8 +4,8 @@ import unittest
 from pymongo import Connection
 from pymongo.collection import Collection
 from pymongo.database import Database
-from amon.backends.mongodb import backend
-from amon.core import settings
+from amonlite.backends.mongodb import backend
+from amonlite.core import settings
 
 class TestMongoBackend(unittest.TestCase):
     

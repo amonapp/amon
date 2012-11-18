@@ -1,7 +1,7 @@
 from nose.tools import eq_
 from tornado.testing import AsyncHTTPTestCase
-from amon.web.server import application
-from amon.core import settings
+from amonlite.web.server import application
+from amonlite.core import settings
 
 if settings.ACL == 'False':
     status_code = 200
