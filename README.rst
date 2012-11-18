@@ -1,5 +1,5 @@
 ==================================================================
-Amon - Self-hosted server and web app monitoring
+Amon - Self-hosted DevOps monitoring toolkit
 ==================================================================
 
 Introduction
@@ -31,7 +31,7 @@ Catch and log Rails, Django, Node.js and PHP exceptions out of the box. Easy ext
 language/framework that supports http and json
 
 
-.. figure:: https://raw.github.com/martinrusev/amon/master/preview/screenshot.png
+.. figure:: https://raw.github.com/martinrusev/amonlite/master/preview/screenshot.png
 
 
 More info
