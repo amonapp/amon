@@ -63,7 +63,7 @@ import datetime
 import os
 import cPickle as pickle
 import time
-from amon.backends.mongodb import MongoBackend
+from amonlite.backends.mongodb import MongoBackend
 
 class BaseSession(collections.MutableMapping):
     """The base class for the session object. Work with the session object

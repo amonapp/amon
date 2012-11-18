@@ -1,6 +1,6 @@
-from amon.system.collector import system_info_collector, process_info_collector
-from amon.core import settings
-from amon.utils.dates import unix_utc_now
+from amonlite.system.collector import system_info_collector, process_info_collector
+from amonlite.core import settings
+from amonlite.utils.dates import unix_utc_now
 import sys
 
 class Runner(object):

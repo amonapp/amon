@@ -1,5 +1,5 @@
 from __future__ import division
-from amon.core import settings
+from amonlite.core import settings
 from datetime import datetime
 import calendar
 from pytz import timezone

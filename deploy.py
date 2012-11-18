@@ -11,60 +11,34 @@ install_bucket = conn.get_bucket('install.amon.cx')
 contrib_bucket = conn.get_bucket('config.amon.cx')
 
 k = Key(uninstall_bucket)
-
-distros = ['macos']
-
-uninstallers = list(distros)
-uninstallers.append('uninstaller')
-
-for u in uninstallers:
-    k.key = u
-    full_path = "{0}/uninstallers/{1}".format(path, u)
-    k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
-    k.make_public()
-
-k = Key(install_bucket)
-
-installers = list(distros)
-installers.append('installer')
-
-for i in installers:
-    k.key = i
-    full_path = "{0}/installers/{1}".format(path, i)
-    k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
-    k.make_public()
-
-
-# Deploy contrib files
-k = Key(contrib_bucket)
-for distro in distros:
-    if distro != 'macos':
-        file = 'mongodb'
-        k.key = "{0}/{1}".format(distro, file)
-        full_path = "{0}/contrib/mongodb/{1}/{2}".format(path, distro, file)
-        k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
-        k.make_public()
-
- # Deploy single files
-k.key = 'mongodb.conf'
-full_path = "{0}/contrib/mongodb/mongodb.conf".format(path)
+k.key = 'uninstaller'
+full_path = "{0}/uninstaller".format(path)
 k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
 k.make_public()
 
 
-k.key = 'amon'
-full_path = "{0}/contrib/amon/amon".format(path)
+k = Key(install_bucket)
+k.key = 'installer'
+full_path = "{0}/installer".format(path)
+k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
+k.make_public()
+
+# Deploy contrib files
+k = Key(contrib_bucket)
+
+k.key = 'amonlite'
+full_path = "{0}/contrib/amonlite".format(path)
 k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
 k.make_public()
 
 
 k.key = 'amond'
-full_path = "{0}/contrib/amon/amond".format(path)
+full_path = "{0}/contrib/amond".format(path)
 k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
 k.make_public()
 
 
-k.key = 'amon.conf'
-full_path = "{0}/config/amon.conf".format(path)
+k.key = 'amonlite.conf'
+full_path = "{0}/config/amonlite.conf".format(path)
 k.set_contents_from_filename(full_path, headers={'Content-Type': 'text/plain'} )
 k.make_public()

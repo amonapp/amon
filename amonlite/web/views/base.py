@@ -1,11 +1,11 @@
 import tornado.web
 from datetime import datetime
 from os import getenv
-from amon.core import settings
-from amon.web.models import unread_model
-from amon.web.libs.session import MongoDBSession
-from amon.web.template import render as jinja_render
-from amon import __version__
+from amonlite.core import settings
+from amonlite.web.models import unread_model
+from amonlite.web.libs.session import MongoDBSession
+from amonlite.web.template import render as jinja_render
+from amonlite import __version__
 
 class BaseView(tornado.web.RequestHandler):
 

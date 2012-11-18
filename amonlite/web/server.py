@@ -1,4 +1,4 @@
-from amon.web.views.app import(
+from amonlite.web.views.app import(
         DashboardView,
         SystemView,
         ProcessesView,
@@ -8,10 +8,10 @@ from amon.web.views.app import(
         SettingsDeleteLogsView,
         SettingsDeleteExceptionsView,
         SettingsChangePasswordView)
-from amon.web.views.auth import LoginView, CreateUserView, LogoutView
-from amon.web.settings import PROJECT_ROOT
-from amon.core import settings
-from amon.web.views.api import ApiLogs, ApiException
+from amonlite.web.views.auth import LoginView, CreateUserView, LogoutView
+from amonlite.web.settings import PROJECT_ROOT
+from amonlite.core import settings
+from amonlite.web.views.api import ApiLogs, ApiException
 import os.path
 import tornado.web
 import base64

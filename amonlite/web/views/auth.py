@@ -1,6 +1,6 @@
-from amon.web.views.base import BaseView
-from amon.web.forms import CreateUserForm
-from amon.web.models import user_model
+from amonlite.web.views.base import BaseView
+from amonlite.web.forms import CreateUserForm
+from amonlite.web.models import user_model
 from formencode.validators import Invalid as InvalidForm
 
 

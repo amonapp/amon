@@ -1,5 +1,5 @@
-from amon.utils.dates import unix_utc_now
-from amon.api.models import LogsAPIModel, CommonAPIModel
+from amonlite.utils.dates import unix_utc_now
+from amonlite.api.models import LogsAPIModel, CommonAPIModel
 
 class Log(object):
 

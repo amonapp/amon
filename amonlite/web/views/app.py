@@ -1,16 +1,16 @@
 from datetime import timedelta
 from tornado.web import authenticated
-from amon.core import settings
-from amon.web.views.base import BaseView
-from amon.utils.dates import (
+from amonlite.core import settings
+from amonlite.web.views.base import BaseView
+from amonlite.utils.dates import (
         datestring_to_utc_datetime,
         datetime_to_unixtime,
         utc_unixtime_to_localtime,
         localtime_utc_timedelta,
         utc_now_to_localtime
         )
-from amon.system.utils import get_disk_volumes, get_network_interfaces
-from amon.web.models import (
+from amonlite.system.utils import get_disk_volumes, get_network_interfaces
+from amonlite.web.models import (
         dashboard_model,        
         system_model,
         process_model,

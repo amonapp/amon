@@ -1,4 +1,4 @@
-from amon import defaults
+from amonlite import defaults
 
 class Settings(object):
 

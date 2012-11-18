@@ -11,19 +11,19 @@ import sys, time
 import logging
 
 try:
-	import amon
+	import amonlite
 except:
-	print 'Amon is not installed'
+	print 'Amon Lite is not installed'
 	sys.exit()
 
-from amon.system.daemon import Daemon
-from amon.core import settings
-from amon.system.runner import runner
-from amon.backends.mongodb import backend
+from amonlite.system.daemon import Daemon
+from amonlite.core import settings
+from amonlite.system.runner import runner
+from amonlite.backends.mongodb import backend
 
 PIDFILE = '/var/run/amond.pid'
 # Keep all log files in one place
-LOGFILE = '/usr/local/amon/amond.log'
+LOGFILE = '/usr/local/amonlite/amond.log'
 
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)

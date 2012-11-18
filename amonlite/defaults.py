@@ -5,7 +5,7 @@ except ImportError:
     import simplejson as json
 
 try:
-    config_file = file('/etc/amon.conf').read()
+    config_file = file('/etc/amonlite.conf').read()
     config = json.loads(config_file)
 except Exception, e:
     print "There was an error in your configuration file (/etc/amon.conf)"

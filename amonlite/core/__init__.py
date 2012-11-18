@@ -1,3 +1,3 @@
-from amon.core.settings import Settings
+from amonlite.core.settings import Settings
 
 settings = Settings()

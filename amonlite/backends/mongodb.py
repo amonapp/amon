@@ -3,8 +3,8 @@ try:
 except ImportError:
     pymongo = None
 
-from amon.core.exceptions import ImproperlyConfigured
-from amon.core import settings
+from amonlite.core.exceptions import ImproperlyConfigured
+from amonlite.core import settings
 
 
 class MongoBackend():

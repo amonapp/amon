@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The one-line installer for Amon
+# The one-line installer for Amon Lite
 # Author: Martin Rusev <martin@amon.cx>
 set -e
 file_exists() {
@@ -18,7 +18,7 @@ function die(){
 ARCH=
 DISTRO=
 UBUNTU=0
-VERSION=1.0.6
+VERSION=1.1
 PYTHON=python
 VERBOSE=0
 
@@ -55,10 +55,10 @@ fi
 #set -e # Exit the installer on error
 mongo_check=$(ps aux | grep -c mongo) # Check if mongo is running
 bash_script_dir="$( cd "$( dirname "$0" )" && pwd )"
-amon_install_dir="/usr/local/amon"
+amon_install_dir="/usr/local/amonlite"
 
 
-echo "***  Installing Amon $VERSION ..."
+echo "***  Installing Amon Lite $VERSION ..."
 
 # Install easy_install if necessary
     if ! command_exists easy_install ; then
@@ -67,21 +67,21 @@ echo "***  Installing Amon $VERSION ..."
         rm -f ez_setup.py
     fi
 
-# Install Amon
+# Install Amon Lite
 
     # Cleans up the directory from old amon installations
-    rm -rf amon-* # Cleans up old archives from previous installs, that could break the updating process
+    rm -rf amonlite-* # Cleans up old archives from previous installs, that could break the updating process
 
-    wget --no-check-certificate "https://github.com/downloads/martinrusev/amon/amon-$VERSION.tar.gz" 
-    tar -zxf "amon-$VERSION.tar.gz" > /dev/null
+    wget --no-check-certificate "https://github.com/downloads/martinrusev/amonlite/amonlite-$VERSION.tar.gz" 
+    tar -zxf "amonlite-$VERSION.tar.gz" > /dev/null
 
     if [ "$DISTRO" == 'debian' ]; then
     # Ensure that we have the pymongo driver dependecies
         # Skip installing python and gcc if they are already installed.
         if dpkg-query -s python-dev gcc sysstat >> /dev/null ; then
-            echo "*** Amon requirements already satisfied"
+            echo "*** Amon Lite requirements already satisfied"
         else
-            echo "** Installing Amon requirements"
+            echo "** Installing Amon Lite requirements"
             sudo apt-get -y install gcc python-dev sysstat
         fi
 
@@ -90,9 +90,9 @@ echo "***  Installing Amon $VERSION ..."
         fi
     elif [ "$DISTRO" == 'rpm' ]; then
         if rpm --quiet -q gcc python-devel sysstat ; then
-            echo "*** Amon requirements already satisfied"
+            echo "*** Amon Lite requirements already satisfied"
         else 
-            echo "** Installing Amon requirements"
+            echo "** Installing Amon Lite requirements"
             sudo yum -t -y install gcc python-devel sysstat 
         fi
 
@@ -101,17 +101,17 @@ echo "***  Installing Amon $VERSION ..."
         fi
     fi
 
-	cd "amon"
+	cd "amonlite"
 	sudo $PYTHON setup.py install # Install Amon and all the dependecies
 	$PYTHON generate_config.py || die # Generate the configuration file
 	
 	
 	# Copy the generated configuration file from the current directory
 	# If Amon was previously installed, the generator will just a secret_key
-	sudo cp amon.conf /etc/amon.conf
+	sudo cp amonlite.conf /etc/amonlite.conf
 
 	# Copy the collector daemon
-	sudo cp contrib/amon/amond /etc/init.d/amond
+	sudo cp contrib/amond /etc/init.d/amond
 	
 	# make the collector daemon executable
 	sudo chmod +x /etc/init.d/amond
@@ -125,13 +125,13 @@ echo "***  Installing Amon $VERSION ..."
     fi
 
 	# Copy the web application daemon
-	sudo cp contrib/amon/amon /etc/init.d/amon
+	sudo cp contrib/amonlite /etc/init.d/amonlite
 	
 	# make the web app daemon executable
-	sudo chmod +x /etc/init.d/amon
+	sudo chmod +x /etc/init.d/amonlite
 
 	# Copy the ZeroMQ daemon
-	sudo cp contrib/amon/amonmq /etc/init.d/amonmq
+	sudo cp contrib/amonmq /etc/init.d/amonmq
 	
 	# make the ZeroMQ daemon executable
 	sudo chmod +x /etc/init.d/amonmq
@@ -244,29 +244,28 @@ EOL
 	}
 
 # All done!
-  
     CHECK_AMOND=$(pgrep amond)
 
     # The amond process doesn't exist
     if [[ -z "$CHECK_AMOND" ]]; then
-	    echo "*** Amon succesfully installed"
+	    echo "*** Amon Lite succesfully installed"
 	    sudo /etc/init.d/amond start
-	    echo "*** Starting Amon "
-	    echo "*** The web application is not running by default, you can start with \`sudo /etc/init.d/amon start\`"
+	    echo "*** Starting Amon Lite "
+	    echo "*** The web application is not running by default, you can start with \`sudo /etc/init.d/amonlite start\`"
     else
-	  echo "*** Amon succesfully updated"
+	  echo "*** Amon Lite succesfully updated"
 	  sudo /etc/init.d/amond restart
     fi
  
   # If the web application is running - restart it 
-  if  pgrep -x amon > /dev/null; then
-	  sudo /etc/init.d/amon restart
+  if  pgrep -x amonlite > /dev/null; then
+	  sudo /etc/init.d/amonlite restart
   fi
 
   # Cleanup
   cd $bash_script_dir  # Go back to the root directory
-  sudo rm -rf amon # Delete the directory with the install files
-  rm amon-$VERSION.tar.gz # Delete the archive
+  sudo rm -rf amonlite # Delete the directory with the install files
+  rm amonlite-$VERSION.tar.gz # Delete the archive
   
   
   print_troubleshooting_instructions

@@ -1,6 +1,6 @@
 import formencode
 from formencode import validators
-from amon.web.models import user_model
+from amonlite.web.models import user_model
 
 class UniqueUsername(formencode.FancyValidator):
 

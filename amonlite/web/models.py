@@ -1,4 +1,4 @@
-from amon.backends.mongodb import MongoBackend
+from amonlite.backends.mongodb import MongoBackend
 from pymongo import DESCENDING, ASCENDING 
 from hashlib import sha1
 from os import getenv

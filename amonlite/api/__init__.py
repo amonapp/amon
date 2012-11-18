@@ -1,5 +1,5 @@
-from amon.api.log import Log
-from amon.api.exception import Exception
+from amonlite.api.log import Log
+from amonlite.api.exception import Exception
 
 log = Log()
 exception = Exception()

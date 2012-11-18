@@ -4,7 +4,7 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<title>Amon {{ app.version }} - {% block title %} {% endblock %}</title>
+	<title>Amon Lite {{ app.version }} - {% block title %} {% endblock %}</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="icon" type="image/png" href="/media/images/favicon.png" />
@@ -18,11 +18,7 @@
 <div id="header">
     <div class="wrapper">
         <a href="/" class="logo"></a>
-	    {% if acl == "True" %}
-			<a href="{{ base_url|url('logout') }}" class='button logout' title='Logout'></a>
-        {% else %}
-        <span class='top-menu-spacer'></span>
-		{% endif %}
+	   
 	    <ul id='menu' class='default'>
 				<li>
 					<a class='{% if current_page=='dashboard' %}active{% endif %}' href="/">Dashboard</a>
@@ -49,6 +45,9 @@
 				</li>
 				{% endif %}
 			</ul>
+			 {% if acl == "True" %}
+				<a href="{{ base_url|url('logout') }}" class='logout' title='Logout'>Logout</a>
+			{% endif %}
     </div><!-- wrapper end -->
 </div><!-- header end -->
 <div class="wrapper">

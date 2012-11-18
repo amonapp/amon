@@ -1,9 +1,9 @@
 from __future__ import division
 from jinja2 import Environment, FileSystemLoader
-from amon.core import settings
-from amon.web.settings import TEMPLATES_DIR
-from amon.utils.dates import utc_unixtime_to_localtime
-from amon.web.libs.jinja2htmlcompress import SelectiveHTMLCompress
+from amonlite.core import settings
+from amonlite.web.settings import TEMPLATES_DIR
+from amonlite.utils.dates import utc_unixtime_to_localtime
+from amonlite.web.libs.jinja2htmlcompress import SelectiveHTMLCompress
 from datetime import datetime, time
 import pytz
 import re

@@ -1,4 +1,4 @@
-from amon.backends.mongodb import MongoBackend
+from amonlite.backends.mongodb import MongoBackend
 from os import getenv
 
 class BaseModel(object):

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The one-line uninstaller for Amon
+# The one-line uninstaller for Amon Lite
 # Author: Martin Rusev <martin@amon.cx>
 
 file_exists() {
@@ -35,10 +35,10 @@ fi
 
 mongo_install_dir="/usr/local/mongodb"
 site_packages=`python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()"`
-amon_dir="/usr/local/amon"
+amon_dir="/usr/local/amonlite"
 
 sudo rm -rf "$site_packages/pymongo*"
-sudo rm -rf "$site_packages/amon*"
+sudo rm -rf "$site_packages/amonlite*"
 sudo rm -rf "$site_packages/tornado*"
 sudo rm -rf "$site_packages/jinja2"
 
@@ -48,13 +48,13 @@ if [ -e /etc/init.d/amond ]; then
 	sudo rm /etc/init.d/amond
 fi 
 
-if [ -e /etc/init.d/amon ]; then
-	sudo /etc/init.d/amon stop
-	sudo rm /etc/init.d/amon
+if [ -e /etc/init.d/amonlite ]; then
+	sudo /etc/init.d/amonlite stop
+	sudo rm /etc/init.d/amonlite
 fi 
 
 # Delete the config file
-sudo rm /etc/amon.conf
+sudo rm /etc/amonlite.conf
 
 # Remove the directory with the Amon log files
 if [ -d "$amon_dir" ]; then
@@ -108,4 +108,4 @@ if [ "$delete_mongo" == 'with-mongo' ]; then
 	echo "*** MongoDB succesfully removed"
 fi 
 
-echo "*** Amon succesfully removed"
+echo "*** Amon Lite succesfully removed"

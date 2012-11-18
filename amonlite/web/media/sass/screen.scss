@@ -24,7 +24,7 @@ body {
   width: 100%;
   @include border-radius(6px);
   margin-bottom: 40px;
-  @include box-shadow(#e8e9ea 0px 2px 10px );
+  @include box-shadow(#e8e9ea 0px 2px 8px );
 }
 
 .noclear {
@@ -606,60 +606,49 @@ $border_color: #fdcb34;
 
 #header {
   width: 100%;
-  height: 100px;
+  height: 60px;
+  background: #1c1b1c;
+  margin-bottom: 20px;
+  border-bottom: 2px solid black;
   a.logo {
     float: left;
-    width: 230px;
-    height: 59px;
+    width: 143px;
+    height: 37px; 
     background: url(../images/logo.png) no-repeat;
-    margin: 20px {
+    margin: 11px {
       left: 0px;
-      bottom: 20px;
-      right: 0px; }; }
-  .header_separator {
-    float: left;
-    width: 100%;
-    height: 3px;
-    background: #e8e8e8; }
+      bottom: 0px;
+      right: 20px; }; 
+  }
  #menu {
-    float: right;
-    padding-top: 24px;
-    position: relative;
-    clear: right;
-    z-index: 5;
+    float: left;
     li {
       float: left;
-      margin-left: 15px;
-      position: relative;
       a {
         font-size: 1.6em;
         outline: 0;
-        color: black;
+        float: left;
+        color: white;
         text-decoration: none;
-        padding: 5px;
-        padding-right: 8px;
-        border: 2px solid transparent;
-        padding-left: 8px;
+        padding: 22px;
         &.active, &:hover {
-          background: white;
-          @include border-radius(6px);
-          border: 2px solid #fdcb34;
+          background: black;
+          color: #fdcb34;
         } 
       }
     }
   }
   .logout {
-    background: url(../images/logout.png);
-    text-indent: -3000px;
-    margin-top: 5px;
+    color: #d95353;
+    padding-top: 20px;
     float: right;
-    padding: 0px;
-    border: 0px;
-    width: 26px;
-    height: 26px;
-    background-position: 0px 0px;
-    &:hover {
-      background-position: 0px -26px; } } }
+     font-size: 1.6em;
+     text-decoration: none;
+     &:hover {
+      color: #ff0000;
+     }
+    } 
+  }
 
 .anchor {
   float: left;

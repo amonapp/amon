@@ -1,5 +1,5 @@
-from amon.api import exception as _exception
-from amon.api import log as _log
+from amonlite.api import exception as _exception
+from amonlite.api import log as _log
 import tornado.web
 
 class ApiLogs(tornado.web.RequestHandler):

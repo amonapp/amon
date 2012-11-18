@@ -1,5 +1,5 @@
-from amon.api.models import ExceptionAPIModel, CommonAPIModel
-from amon.utils.dates import unix_utc_now
+from amonlite.api.models import ExceptionAPIModel, CommonAPIModel
+from amonlite.utils.dates import unix_utc_now
 from hashlib import md5
 
 """

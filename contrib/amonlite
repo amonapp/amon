@@ -1,33 +1,33 @@
 #!/usr/bin/env python
 ### BEGIN INIT INFO
-# Provides:          amond
+# Provides:          amonlite
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start the Amon web interface
-# Description:       Runs the amon web application.
+# Short-Description: Start the Amon Lite web interface
+# Description:       Runs the amon Lite web application.
 ### END INIT INFO
 import logging
 import sys
 
 try:
-	import amon
+	import amonlite
 except:
-	print 'Amon is not installed'
+	print 'Amon Lite is not installed'
 	sys.exit()
 
-from amon.system.daemon import Daemon
-from amon.web.server import application
-from amon.core import settings
+from amonlite.system.daemon import Daemon
+from amonlite.web.server import application
+from amonlite.core import settings
 import tornado.ioloop
 
-PIDFILE = '/var/run/amon.pid'
+PIDFILE = '/var/run/amonlite.pid'
 # Keep all log files in one place
-LOGFILE = '/usr/local/amon/amon.log'
+LOGFILE = '/usr/local/amonlite/amonlite.log'
 
 # Configure logging
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
 
-class AmonWebDaemon(Daemon):
+class AmonLiteWebDaemon(Daemon):
 	
 	def run(self):
 		application.listen(int(settings.WEB_APP['port']))
@@ -35,7 +35,7 @@ class AmonWebDaemon(Daemon):
 		
 if __name__ == "__main__":
 
-	daemon = AmonWebDaemon(PIDFILE)
+	daemon = AmonLiteWebDaemon(PIDFILE)
 	
 	if len(sys.argv) == 2:
 		if 'start' == sys.argv[1]:
@@ -44,10 +44,10 @@ if __name__ == "__main__":
 			except:
 				pass
 		elif 'stop' == sys.argv[1]:
-			print "Stopping Amon ..."
+			print "Stopping Amon Lite ..."
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
-			print "Restaring Amon ..."
+			print "Restaring Amon Lite ..."
 			daemon.restart()
 		elif 'status' == sys.argv[1]:
 			try:
@@ -60,11 +60,11 @@ if __name__ == "__main__":
 				pid = None
 
 			if pid:
-				print 'Amon {0} running as pid {1}'.format(amon.__version__, pid)
+				print 'Amon Lite {0} running as pid {1}'.format(amon.__version__, pid)
 				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
 						settings.WEB_APP['port'])
 			else:
-				print 'Amon {0} is not running.'.format(amon.__version__)
+				print 'Amon Lite {0} is not running.'.format(amon.__version__)
 		
 		else:
 			print "Unknown command"
