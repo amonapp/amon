@@ -1,35 +1,35 @@
 #!/usr/bin/env python
 ### BEGIN INIT INFO
-# Provides:          amonmq
+# Provides:          amonlitemq
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Starts the Amon ZeroMQ server
 ### END INIT INFO
 import sys
 try:
-    import amon
+    import amonlite
 except:
-    print 'Amon is not installed'
+    print 'Amon Lite is not installed'
     sys.exit()
 
 import logging
 import json
 import zmq
-from amon.api import log as _log
-from amon.api import exception as _exception
-from amon.system.daemon import Daemon
-from amon.core import settings
+from amonlite.api import log as _log
+from amonlite.api import exception as _exception
+from amonlite.system.daemon import Daemon
+from amonlite.core import settings
 
-PIDFILE = '/var/run/amonmq.pid'
+PIDFILE = '/var/run/amonlitemq.pid'
 # Keep all log files in one place
-LOGFILE = '/usr/local/amon/amonmq.log'
+LOGFILE = '/usr/local/amonlite/amonlitemq.log'
 
 # Configure logger
 FORMAT = '%(asctime)-15s %(message)s'
 logging.basicConfig(filename=LOGFILE,level=logging.DEBUG, format=FORMAT) 
-logger = logging.getLogger('amonmq')
+logger = logging.getLogger('amonlitemq')
 
-class AmonMQDaemon(Daemon):
+class AmonLiteMQDaemon(Daemon):
 
     def run(self):
         context = zmq.Context()
@@ -87,7 +87,7 @@ class AmonMQDaemon(Daemon):
 
 if __name__ == "__main__":
 
-    daemon = AmonMQDaemon(PIDFILE)
+    daemon = AmonLiteMQDaemon(PIDFILE)
 
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
