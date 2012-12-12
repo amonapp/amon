@@ -60,11 +60,11 @@ if __name__ == "__main__":
 				pid = None
 
 			if pid:
-				print 'Amon Lite {0} running as pid {1}'.format(amon.__version__, pid)
+				print 'Amon Lite {0} running as pid {1}'.format(amonlite.__version__, pid)
 				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
 						settings.WEB_APP['port'])
 			else:
-				print 'Amon Lite {0} is not running.'.format(amon.__version__)
+				print 'Amon Lite {0} is not running.'.format(amonlite.__version__)
 		
 		else:
 			print "Unknown command"
