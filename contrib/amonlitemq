@@ -112,10 +112,10 @@ if __name__ == "__main__":
                 pid = None
 
             if pid:
-                print 'AmonMQ {0} running as pid {1} at {2}'.format(amon.__version__, 
+                print 'AmonMQ {0} running as pid {1} at {2}'.format(amonlite.__version__, 
                         pid, settings.ZEROMQ)
             else:
-                print 'AmonMQ {0} is not running.'.format(amon.__version__)
+                print 'AmonMQ {0} is not running.'.format(amonlite.__version__)
 
         else:
             print "Unknown command"
