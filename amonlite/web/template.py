@@ -282,6 +282,7 @@ def query_dict(url, params_dict, page=None):
     return query_string
 
 def base_url():
+
     if settings.PROXY is None:
         host = settings.WEB_APP['host']
         port = settings.WEB_APP['port']
