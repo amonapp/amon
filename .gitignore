@@ -1,5 +1,8 @@
 *.pyc
 _build/
+build/
+dist/
+amon.egg-info/
 .sass-cache
 keys.py
 .DS_Store

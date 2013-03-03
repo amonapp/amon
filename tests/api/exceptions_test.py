@@ -1,6 +1,6 @@
 from nose.tools import eq_
 import unittest
-from amon.api import exception
+from amonlite.api import exception
 from hashlib import md5
 
 class TestExceptionApi(unittest.TestCase):

@@ -1,4 +1,4 @@
-from amon.system.collector import system_info_collector, process_info_collector
+from amonlite.system.collector import system_info_collector, process_info_collector
 from nose.tools import eq_, assert_not_equal
 import sys
 

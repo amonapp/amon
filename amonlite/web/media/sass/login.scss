@@ -1,0 +1,116 @@
+@import "compass/reset";
+@import "compass/css3";
+
+html {
+  height: 100%;
+}
+
+body {
+  font-size: 62.5%;
+  height: 100%;
+  background: #161516;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+div.center {
+  margin: 0 auto;
+  width: 450px;
+  height: 100px;
+  margin-top: 25px;
+  .error {
+    float: left;
+    background: #bc0000;
+    margin-top: 4px;
+    font-size: 1.4em;
+    padding: 8px {
+      top: 5px;
+      bottom: 5px;
+    };
+    color: white;
+    @include border-radius(4px);
+  }
+  .message {
+    background: #fbefef;
+    margin-top: 15px;
+    border: 5px solid #f5cfcf;
+    padding: 10px;
+    font-size: 1.4em;
+    line-height: 1.4em;
+    @include border-radius(5px);
+    &.green {
+      background: #f0f7e4;
+      border: 5px solid #ceddb5;
+    }
+  }
+  .logo {
+    margin: 0 auto;
+    margin-bottom: 8px;
+    text-align: center;
+    display: block;
+  }
+
+  input[type=text], input[type=password] {
+    width: 370px;
+    height: 40px; 
+    padding-left: 45px;
+    border: 1px solid #d2d2d2;
+    @include border-radius(6px);
+  }
+  .button {
+    float: right;
+    border: 0px;
+    cursor: pointer;
+    background: #89bc32;
+    color: white;
+    border: 2px solid #639213;
+    @include border-radius(4px);
+    font-weight: bold;
+    padding: 6px {
+      left: 10px;
+      right: 10px;
+    };
+    &:hover {
+      color: #4d710f;
+    }
+  }
+  ul {
+    float: left;
+    margin-top: 15px;
+    li {
+      float: left;
+      width: 417px;
+      clear: left;
+      margin: 18px {
+        bottom: 10px;
+        top: 14px;
+        right: 13px;
+      };
+    }
+  }
+}
+
+div.login_box {
+  background: white;
+  margin-top: 15px;
+  border: 2px solid black;
+  float: left;
+  width: 100%;
+  @include border-radius(6px);
+  margin-bottom: 40px;
+  float: left;
+  padding-bottom: 10px;
+  .background-label {
+    width: 41px;
+    height: 44px;
+    float: left;
+    margin-bottom: -46px;
+    position: relative;
+    z-index: 100;
+    &.username {
+      background: url(../images/user.png);
+    }
+    &.password {
+      background: url(../images/password.png);
+    }
+  }
+}

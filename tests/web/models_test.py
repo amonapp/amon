@@ -1,5 +1,5 @@
 import unittest
-from amon.web.models import (
+from amonlite.web.models import (
     SystemModel,
     ProcessModel,
     LogModel,
@@ -9,14 +9,12 @@ from amon.web.models import (
     UnreadModel,
     BaseModel
 )
-from nose.tools import eq_
+from nose.tools import eq_, assert_true, assert_false
 from time import time
 
 now = int(time())
 minute_ago = (now-60)
 two_minutes_ago = (now-120)
-import os
-os.environ['AMON_ENV'] = 'test' # Switches the database to amon_test.
 
 class TestUnreadModel(unittest.TestCase):
     
@@ -146,11 +144,11 @@ class TestLogModel(unittest.TestCase):
         eq_(result['result'].count(), 1)
 
         
-        result = self.model.get_logs(['info','debug'], None)
+        result = self.model.get_logs(['info','debug'], filter='or')
         eq_(result['result'].count(), 2)
 
 
-        result = self.model.get_logs(['info','debug','warning'], None)
+        result = self.model.get_logs(['info','debug','warning'], filter='or')
         eq_(result['result'].count(), 3)
 
 
@@ -158,7 +156,7 @@ class TestLogModel(unittest.TestCase):
         eq_(result['result'].count(), 1)
 
 
-        result = self.model.get_logs([], 'test')
+        result = self.model.get_logs([], search='test')
         eq_(result['result'].count(), 2)
         
         self.logs.remove()
@@ -183,8 +181,22 @@ class TestLogModel(unittest.TestCase):
 
         result = self.model.get_logs(['python'], None)
         
-
         eq_(result['result'].count(), 1)
+
+
+        def test_delete_before_date(self):
+            self.logs.remove()
+
+            self.logs.insert({"message" : "test", "_searchable": "test", "time": now})
+            self.logs.insert({"message" : "test", "_searchable": "test", "time": minute_ago})
+            self.logs.insert({"message" : "test", "_searchable": "test", "time": two_minutes_ago})
+
+            self.model.delete_before_date(minute_ago)
+
+            result = self.model.get_logs()
+            eq_(result['result'].count(), 1)
+
+            self.logs.remove()
 
 
 class TestExceptionModel(unittest.TestCase):
@@ -204,6 +216,20 @@ class TestExceptionModel(unittest.TestCase):
         
         eq_(result[0]['last_occurrence'], minute_ago)
         
+        self.model.collection.remove()
+
+    def test_delete_before_date(self):
+        self.model.collection.remove()
+
+        self.model.collection.insert({"exception_class" : "test", "message": "test", "last_occurrence": two_minutes_ago})
+        self.model.collection.insert({"exception_class" : "test", "message": "test", "last_occurrence": minute_ago})
+        self.model.collection.insert({"exception_class" : "test", "message": "test", "last_occurrence": now})
+        
+        self.model.delete_before_date(minute_ago)
+
+        result = self.model.get_exceptions()
+        eq_(result.count(), 1)
+
         self.model.collection.remove()
 
 
@@ -286,6 +312,20 @@ class TestUserModel(unittest.TestCase):
 
         result = self.model.username_exists("test")
         eq_(result, 1)
+
+    def test_change_password(self):
+        self.model.collection.remove()
+        user_dict = {"username": "test", "password": "1234"}
+        self.model.create_user(user_dict)
+
+        self.model.update_password({"username": "test"}, '456')
+
+        result = self.model.check_user({'username': 'test', 'password': '456'})
+        assert_true(result)
+
+        result = self.model.check_user({'username': 'test', 'password': '1234'})
+        assert_false(result)
+
 
 class TestPagination(unittest.TestCase):
 

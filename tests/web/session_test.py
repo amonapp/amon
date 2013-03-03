@@ -1,9 +1,9 @@
 #import unittest
-#from amon.web.views.base import BaseView
-#from amon.web.server import application
+#from amonlite.web.views.base import BaseView
+#from amonlite.web.server import application
 #from tornado.httpclient import HTTPRequest 
 #from nose.tools import eq_
-#from amon.backends.mongodb import MongoBackend
+#from amonlite.backends.mongodb import MongoBackend
 
 #mongo = MongoBackend()
 #mongo.database = 'amon'

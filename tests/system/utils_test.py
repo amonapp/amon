@@ -1,4 +1,4 @@
-from amon.system.utils import *
+from amonlite.system.utils import *
 from nose.plugins.skip import SkipTest
 import sys
 

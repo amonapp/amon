@@ -1,9 +1,8 @@
 # References 
 # http://code.djangoproject.com/browser/django/trunk/setup.py 
 #!/usr/bin/env python
-from amon import __version__
+from amonlite import __version__
 import os
-
 
 def fullsplit(path, result=None):
     """
@@ -26,7 +25,7 @@ packages, data_files = [], []
 root_dir = os.path.dirname(__file__)
 if root_dir != '':
     os.chdir(root_dir)
-amon_dir = 'amon'
+amon_dir = 'amonlite'
 
 for dirpath, dirnames, filenames in os.walk(amon_dir):
     # Ignore dirnames that start with '.'
@@ -37,13 +36,12 @@ for dirpath, dirnames, filenames in os.walk(amon_dir):
     elif filenames:
         data_files.append([dirpath, [os.path.join(dirpath, f) for f in filenames]])
 
-
 sdict = {
-    'name' : 'amon',
+    'name' : 'amonlite',
     'version' : __version__,
-    'description' : 'Developer friendly application and system monitoring tool',
-    'long_description' : read('README.rst'),
-    'url': 'https://github.com/martinrusev/amon',
+    'description' : 'Elegant server and web application monitoring toolkit',
+    'long_description' : 'Elegant server and web application monitoring toolkit',
+    'url': 'https://github.com/martinrusev/amonlite',
     'author' : 'Martin Rusev',
     'author_email' : 'martinrusev@live.com',
     'keywords' : ['Amon', 'monitoring', 'logging', 'exception handling'],
@@ -52,20 +50,13 @@ sdict = {
     'data_files' : data_files,
     'install_requires': 
     [
-        'pymongo>=2.0',
-        'tornado>=2.0',
+        'pymongo==2.3',
+        'tornado==2.4',
         'formencode==1.2.4',
-        'Jinja2>=2.4',
+        'Jinja2==2.6',
 		'pip',
         'pytz'
-    ],
-    'classifiers' : [
-    'Development Status :: 3 - Alpha',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python'],
+    ]
 }
 
 try:

@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+### BEGIN INIT INFO
+# Provides:          amonlite
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the Amon Lite web interface
+# Description:       Runs the amon Lite web application.
+### END INIT INFO
+import logging
+import sys
+
+try:
+	import amonlite
+except:
+	print 'Amon Lite is not installed'
+	sys.exit()
+
+from amonlite.system.daemon import Daemon
+from amonlite.web.server import application
+from amonlite.core import settings
+import tornado.ioloop
+
+PIDFILE = '/var/run/amonlite.pid'
+# Keep all log files in one place
+LOGFILE = '/usr/local/amonlite/amonlite.log'
+
+# Configure logging
+logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
+
+class AmonLiteWebDaemon(Daemon):
+	
+	def run(self):
+		application.listen(int(settings.WEB_APP['port']))
+		tornado.ioloop.IOLoop.instance().start()
+		
+if __name__ == "__main__":
+
+	daemon = AmonLiteWebDaemon(PIDFILE)
+	
+	if len(sys.argv) == 2:
+		if 'start' == sys.argv[1]:
+			try:
+				daemon.start()
+			except:
+				pass
+		elif 'stop' == sys.argv[1]:
+			print "Stopping Amon Lite ..."
+			daemon.stop()
+		elif 'restart' == sys.argv[1]:
+			print "Restaring Amon Lite ..."
+			daemon.restart()
+		elif 'status' == sys.argv[1]:
+			try:
+				pf = file(PIDFILE,'r')
+				pid = int(pf.read().strip())
+				pf.close()
+			except IOError:
+				pid = None
+			except SystemExit:
+				pid = None
+
+			if pid:
+				print 'Amon Lite {0} running as pid {1}'.format(amonlite.__version__, pid)
+				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
+						settings.WEB_APP['port'])
+			else:
+				print 'Amon Lite {0} is not running.'.format(amonlite.__version__)
+		
+		else:
+			print "Unknown command"
+			sys.exit(2)
+			sys.exit(0)
+	else:
+		print "usage: %s start|stop|restart|status" % sys.argv[0]
+		sys.exit(2)
+

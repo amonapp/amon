@@ -1,16 +1,16 @@
 from __future__ import with_statement
 import os.path
-import uuid
-import base64
+import random
+import string
 
 # Current directory
 ROOT = os.path.abspath(os.path.dirname(__file__))
 
-# Check if Amon is already installed 
-if os.path.exists('/etc/amon.conf'):
-    config_path = '/etc/amon.conf'  
+# Check if Amon Lite is already installed 
+if os.path.exists('/etc/amonlite.conf'):
+    config_path = '/etc/amonlite.conf'  
 else:
-    config_path =  os.path.join(ROOT, 'config', 'amon.conf')
+    config_path =  os.path.join(ROOT, 'config', 'amonlite.conf')
 
 try:
     import json
@@ -23,11 +23,12 @@ try:
 except:
     config = {}
 
-# Change only the secret key
-config['secret_key'] = base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes)
+# Replace with a new secret key
+if len(config['secret_key']) != 32:
+    config['secret_key'] = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(32))
 
 # Write the config file in the same directory
-generated_config_path =  os.path.join(ROOT, 'amon.conf')
+generated_config_path =  os.path.join(ROOT, 'amonlite.conf')
 
 with open(generated_config_path,'w+') as f:
     config_contents = json.dumps(config, indent=4)

@@ -1,7 +1,7 @@
 # TODO Change this file every time there is a change in amond
-from amon.core import settings
-from amon.system.runner import runner
-from amon.backends.mongodb import backend
+from amonlite.core import settings
+from amonlite.system.runner import runner
+from amonlite.backends.mongodb import backend
 import unittest
 from nose.tools import eq_
 import sys

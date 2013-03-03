@@ -1,0 +1,126 @@
+#!/usr/bin/env python
+### BEGIN INIT INFO
+# Provides:          amonlitemq
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts the Amon ZeroMQ server
+### END INIT INFO
+import sys
+try:
+    import amonlite
+except:
+    print 'Amon Lite is not installed'
+    sys.exit()
+
+import logging
+import json
+import zmq
+from amonlite.api import log as _log
+from amonlite.api import exception as _exception
+from amonlite.system.daemon import Daemon
+from amonlite.core import settings
+
+PIDFILE = '/var/run/amonlitemq.pid'
+# Keep all log files in one place
+LOGFILE = '/usr/local/amonlite/amonlitemq.log'
+
+# Configure logger
+FORMAT = '%(asctime)-15s %(message)s'
+logging.basicConfig(filename=LOGFILE,level=logging.DEBUG, format=FORMAT) 
+logger = logging.getLogger('amonlitemq')
+
+class AmonLiteMQDaemon(Daemon):
+
+    def run(self):
+        context = zmq.Context()
+        router = context.socket(zmq.ROUTER)
+
+        try:
+            router.bind('tcp://{0}'.format(settings.ZEROMQ))
+        except Exception, e:
+            logger.exception(e)
+
+        while True:
+            poll = zmq.Poller()
+            poll.register(router, zmq.POLLIN)
+            sockets = dict(poll.poll())
+            if router in sockets:
+                if sockets[router] == zmq.POLLIN:
+                    _id = router.recv() # Internal id, not relevant for this case
+                    msg = router.recv(copy=True)
+
+                    try:
+                        data = json.loads(msg)
+                    except:
+                        data = None # Invalid entry
+
+                    try:
+                        entry_type = data['type']
+                    except:
+                        entry_type = None
+
+                    try:
+                        content = data['content']
+                    except:
+                        content = None
+
+                    try:
+                        secret_key = data['secret_key']
+                    except:
+                        secret_key = None
+
+                    if content != None and secret_key == settings.SECRET_KEY:
+                        if entry_type == 'log':
+                            try:
+                                _log(data['content'])
+                            except Exception, e:
+                                logger.exception(e)
+
+                        elif entry_type == 'exception':
+                            try:
+                                _exception(data['content'])
+                            except Exception, e:
+                                logger.exception(e)
+
+        router.close()
+        context.term()
+
+if __name__ == "__main__":
+
+    daemon = AmonLiteMQDaemon(PIDFILE)
+
+    if len(sys.argv) == 2:
+        if 'start' == sys.argv[1]:
+            try:
+                daemon.start()
+            except:
+                pass
+        elif 'stop' == sys.argv[1]:
+            print "Stopping AmonMQ ..."
+            daemon.stop()
+        elif 'restart' == sys.argv[1]:
+            print "Restaring AmonMQ ..."
+            daemon.restart()
+        elif 'status' == sys.argv[1]:
+            try:
+                pf = file(PIDFILE,'r')
+                pid = int(pf.read().strip())
+                pf.close()
+            except IOError:
+                pid = None
+            except SystemExit:
+                pid = None
+
+            if pid:
+                print 'AmonMQ {0} running as pid {1} at {2}'.format(amonlite.__version__, 
+                        pid, settings.ZEROMQ)
+            else:
+                print 'AmonMQ {0} is not running.'.format(amonlite.__version__)
+
+        else:
+            print "Unknown command"
+            sys.exit(2)
+            sys.exit(0)
+    else:
+        print "usage: %s start|stop|restart|status" % sys.argv[0]
+        sys.exit(2)
