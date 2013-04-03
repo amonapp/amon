@@ -1,11 +1,11 @@
 ==================================================================
-Amon - Self-hosted DevOps monitoring toolkit
+Amon Lite - Self-hosted DevOps monitoring toolkit
 ==================================================================
 
 Introduction
 =============
 
-Amon was designed with one goal in mind - to help you completely monitor
+Amon Lite was designed with one goal in mind - to help you completely monitor
 your web applications. 
 
 
@@ -37,9 +37,8 @@ language/framework that supports http and json
 More info
 ================
 
-Amon user guide -> http://amon.cx/guide
+Amon Lite user guide -> https://github.com/martinrusev/amonlite/wiki
 
-Amon blog -> http://amon.cx/blog
 
 
 Requirements
