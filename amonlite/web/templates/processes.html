@@ -54,6 +54,11 @@ Processes
     <div class='y_axis' id="memory_{{ sanitized_process }}_y_axis"></div>
     <div id="memory-chart_{{ sanitized_process }}" class='chart processes'></div>
 </div>
+<h3>Count</h3>
+ <div id="{{ sanitized_process }}_count" class='chart_container processes'>
+    <div class='y_axis' id="count_{{ sanitized_process }}_y_axis"></div>
+    <div id="count-chart_{{ sanitized_process }}" class='chart processes'></div>
+</div>
 {% else %}
 <div class='message'>No data</div>
 {% endif %}{# count #}
@@ -123,6 +128,54 @@ var {{ sanitized_process }}_memory_y = new Rickshaw.Graph.Axis.Y({
 
 {{ sanitized_process }}_memory_x.render();
 {{ sanitized_process }}_memory_y.render();
+
+{% if process_data[process][0].count  %}
+// Count
+var {{ sanitized_process }}_count_graph = new Rickshaw.Graph({
+	element: document.getElementById("count-chart_{{ sanitized_process }}"),
+	width: width,
+	height: height,
+	renderer: 'line',
+    padding: padding, 
+    {% strip %}
+	series: [
+		{   color: colors[0],
+            data: [{% for data in process_data[process].clone()%}
+            {% if zone_difference.0 == 'negative' %}{x:{{ data.time-zone_difference.1 }},
+            {% else %}{x: {{ data.time+zone_difference.1 }}, {% endif %} y: {{ data.count + 0 }} },{% endfor %}],
+			name: 'Count'
+		}]
+    {% endstrip %}
+});
+
+{{ sanitized_process }}_count_graph.render();
+
+var count_hover = new Rickshaw.Graph.HoverDetail({
+    graph: {{ sanitized_process }}_count_graph,
+    formatter: function(series, x, y) {
+		var date = _format_date(x);
+		var content = '<span class="metric">' + series.name + ": " + parseInt(y) + 'Processes </span>' + date;
+		return content;
+    }
+});
+
+
+var {{ sanitized_process }}_count_x = new Rickshaw.Graph.Axis.Time({
+    graph: {{ sanitized_process }}_count_graph, 
+});
+
+
+var {{ sanitized_process }}_count_y = new Rickshaw.Graph.Axis.Y({
+    graph: {{ sanitized_process }}_count_graph, 
+    tickFormat: function(y) { return y +''}, 
+    element: document.getElementById('count_{{ sanitized_process }}_y_axis'),
+});
+
+{{ sanitized_process }}_count_x.render();
+{{ sanitized_process }}_count_y.render();
+
+{%  endif %}{# has count #}
+
 
 // CPU
 var {{ sanitized_process }}_cpu_graph = new Rickshaw.Graph({

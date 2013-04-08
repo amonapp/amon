@@ -26,18 +26,21 @@ class ProcessInfoCollector(object):
         stdout=subprocess.PIPE, close_fds=True).communicate()[0]    
 
         lines = [0,0]
-        for line in awk.splitlines():
+		procs = awk.splitlines()
+		for line in procs:
             cpu_memory = line.split(',')
             cpu_memory = map(lambda x:  float(x), cpu_memory)
             lines[0] = lines[0]+cpu_memory[0]
             lines[1] = lines[1]+cpu_memory[1]
+
         lines  = map(lambda x:  "{0:.2f}".format(x), lines)
         
         cpu, memory = lines[0], lines[1]
 
         process_memory_mb = float(self.total_memory/100) * float(memory) # Convert the % in MB
         memory = "{0:.3}".format(process_memory_mb)
-        process_info = {'cpu': cpu, 'memory': memory}
+		process_info = {'cpu': cpu, 'memory': memory, 'count': len(procs)}
+    
         
         return process_info
     
