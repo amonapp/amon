@@ -2,7 +2,7 @@
 _build/
 build/
 dist/
-amon.egg-info/
+amonone.egg-info/
 .sass-cache
 keys.py
 .DS_Store
