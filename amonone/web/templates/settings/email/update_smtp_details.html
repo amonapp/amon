@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class='first'>Settings</li>
+<li class='separator'></li>
+<li ><a href="{{ base_url|url('settings','email') }}">Email</a></li>
+<li class='separator'></li>
+<li class='last'>Update details</li>
+{% endblock %}
+{% block content_class %}class="email-settings"{% endblock content_class %}
+{% block title %}
+Settings - Email
+{% endblock %}
+{% block header %}
+	<link rel="stylesheet" href="/media/css/select2.css" />
+{% endblock %}
+{% block content %}
+<div class="settings_content">
+<form action="{{ base_url|url('settings','email','edit') }}" id="update-form" method='post'>
+<h3>SMTP server details</h3>
+<ul class='settings-list-horizontal'>
+	<li>
+		<span class="label">Template</span>
+		<select name="smtp-template" id="smtp-template" style="width:200px;">
+			<option value="">---</option>
+			<option value="gmail">Gmail</option>
+			<option value="sendgrid">Sendgrid</option>
+			<option value="mandrill">Mandrill</option>
+		</select>
+	</li>
+	<li>
+		<span class="label">Addresss</span>
+		<input type="text" id="address" name='address' value='{% if form_data.address %}{{ form_data.address }}{% else %}{{ server_details.address }}{% endif %}'/>
+		 {% if errors.address %}
+			<span class="error">
+			{{ errors.address }}
+			</span>
+		{% endif %}
+	</li>
+	<li>
+		<span class="label">Port</span>
+		<input type="text" id="port" name='port' value='{% if form_data.port %}{{ form_data.port }}{% else %}{{ server_details.port }}{% endif %}' />
+		 {% if errors.port %}
+			<span class="error">
+			{{ errors.port }}
+			</span>
+		{% endif %}
+	</li>
+	<li>
+		<span class="label">Username</span>
+		<input type="text" name='username' value='{% strip %}
+		{% if form_data.username and form_data.username != 'None' %}{{ form_data.username }}{% else %}
+		{% if server_details.username != 'None' %}{{ server_details.username }}{% endif %}
+		{% endif %}{% endstrip %}' />
+	</li>
+	<li>
+		<span class="label">Password</span>
+		<input type="password" name='password' value='{% strip %}
+		{% if form_data.password and form_data.password !='None' %}{{ form_data.password }}{% else %}
+		{% if server_details.password != 'None' %}{{ server_details.password }}{% endif %}
+		{% endif %}{% endstrip %}'/>
+	</li>
+	<li>
+		<span class="label">From</span>
+		<input type="text" name='from' value='{% if form_data.from_ %}{{ form_data.from_ }}{% else %}{{ server_details.from_ }}{% endif %}' />
+		 {% if errors.from_ %}
+			<span class="error">
+			{{ errors.from_ }}
+			</span>
+		{% endif %}
+	</li>
+	<li>
+		<span class="label checkbox">Security</span>
+		<ul class='no-clear	'>
+			<li>
+				<span>None</span>
+				<input type="radio" name="security" id="security-none" value="None" {% if server_details.security == None %}checked{% endif %}>
+			</li>
+			<li>
+				<span>SSL</span> 
+				<input type="radio" name="security" id="security-ssl" value="SSL" {% if server_details.security == 'ssl' %}checked{% endif %}>
+			</li>
+			<li>
+				 <span>TLS</span>
+				<input type="radio" name="security" id="security-tls" value="TLS" {% if server_details.security == 'tls' %}checked{% endif %}>
+			</li>
+			<li>
+				 <span>STARTTLS</span>
+				<input type="radio" name="security" id="security-starttls" value="STARTTLS" {% if server_details.security == 'starttls' %}checked{% endif %}>
+			</li>
+
+			
+		</ul>
+	</li>
+
+	<li class='buttons'>
+		{{ app.xsrf }}
+		<input type="submit" class='button' value='Update' /> 
+	</li>
+</ul>
+</form>
+</div> <!-- settings_content end -->
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/libs/backbone-min.js'></script>
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/javascript" src='/media/js/settings.email.update_smtp.js'></script>
+{% endblock %}

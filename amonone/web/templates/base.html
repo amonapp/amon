@@ -1,0 +1,92 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<title>AmonOne {{ version }} - {% block title %} {% endblock %}</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<link rel="icon" type="image/png" href="/media/images/favicon.png" />
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<link rel="stylesheet" href="/media/css/menu.css" />   
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" type="text/css" href="/media/css/ie/ie.css" />
+	<![endif]-->
+	<link rel="stylesheet" href="/media/css/screen.css" />
+	<link rel="stylesheet" href="/media/css/jquery-ui.css" />
+	<link rel="stylesheet" href="/media/css/select2.css" />
+	{% block header %}{% endblock %}
+</head>
+<body>
+<div id="header">
+	<div class="wrapper">
+		 <a href="/" class='logo'>
+			<img src="/media/images/logo.png" alt="">      
+		 </a>
+	<div class="menu"><!-- BEGIN MENU -->
+		<ul ><!-- BEGIN WHOLE WIDTH CONTAINER -->
+			<li class="nodrop {% if app.current_page|get_active_page(0) =='dashboard' %}active{% endif %}">
+				<a href="/">Dashboard</a>
+			</li>
+			<li class="{% if app.current_page|get_active_page(0) == 'system' %}active{% endif %}">
+			  <a href="{{ base_url|url('system') }}">
+				System</a>  
+
+			</li>
+			<li class="{% if app.current_page|get_active_page(0) == 'processes' %}active{% endif %}" >
+				<a href="{{ base_url|url('processes') }}">
+				Processes</a>
+				 
+			</li>
+			<li class="{% if app.current_page|get_active_page(0) == 'alerts' %}active{% endif %}">
+				<a href="{{ base_url|url('alerts') }}">Alerts</a>
+			</li>
+			<li class="{% if app.current_page|get_active_page(0) == 'settings' %}active {% endif %}settings">
+				<a href="#">Notifications</a>
+				<div class="dropdown_1column">
+					<div class="col_1 firstcolumn">
+						<ul>
+						   <li>
+								<a href="{{ base_url|url('settings', 'email') }}">Email</a>
+							</li>
+						   <li>
+								<a href="{{ base_url|url('settings', 'sms') }}">SMS</a>
+							</li>
+						</ul> 
+					</div>
+				</div>
+			</li>
+			<li class="right">
+				 <a title="Logout" href="{{ base_url|url('logout') }}" data-icon="&#xF069;" class='batch logout'></a>    
+			</li>
+			
+		</ul>
+	</div><!-- END MENU -->         
+</div><!-- wrapper end -->
+</div><!-- header end -->
+<div id="breadcrumb">
+	<div class="wrapper">
+		<ul>
+			{% block breadcrumb %}
+			{% endblock breadcrumb %}
+		</ul>
+	</div>
+	</div>
+<div class="wrapper">
+
+	<div id="content" {% block content_class %}{% endblock content_class %} >
+	
+	{% block content %}{% endblock %}
+	</div><!-- content END --> 
+</div><!-- wrapper END -->
+<script type="text/javascript" src='/media/js/libs/jquery-1.9.1.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/date.format.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/jquery.relative-date.js'></script>
+<script type="text/javascript" src='/media/js/libs/moment.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/tooltip.min.js'></script>
+<script type="text/javascript" src='/media/js/global.js'></script>
+{% block js %}
+{% endblock %}
+</body>
+</html>

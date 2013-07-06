@@ -1,0 +1,128 @@
+@mixin input-placeholder($color) {
+	&.placeholder {
+		color: $color; 
+		}
+	&:-moz-placeholder {
+		color: $color; 
+		}
+	&::-webkit-input-placeholder {
+		color: $color; 
+		} 
+}
+
+$green: #89BC32;
+
+$grey: #ccc;
+$light_grey: #b7b7b7;
+
+$yellow: #fdcb34;
+
+$red: #CE0A31;
+$dark_red: #9b0000;
+
+$light_black: #404040;
+
+$border_color: #e8e8e8;
+$border_color_active: $yellow;
+$border_active: 2px solid $green;
+$border: 2px solid #eee;
+$body_width: 980px; 
+$body_wide: 1150px;
+
+
+
+@mixin input-default { 
+	border: 2px solid #F0F0F0;
+	@include border-radius(4px);
+	background: white;
+	color: #2B3239;
+}
+@mixin input-active {
+	@include input-default;
+	border: $border_active;
+}
+@font-face{
+	font-family: "Batch";
+	src:url("../fonts/batch.eot");
+	src:url("../fonts/batch.eot?#iefix") format("embedded-opentype"),
+	  url("../fonts/batch.woff") format("woff"),
+	  url("../fonts/batch.ttf") format("truetype"),
+	  url("../fonts/batch.svg#batchregular") format("svg");
+	font-weight:normal;
+	font-style:normal;
+}
+
+.batch {
+	font-family:"Batch";
+	font-size:24px;
+	line-height:1;
+	display:inline-block;
+}
+.batch:before {
+	content:attr(data-icon);
+}
+html {
+	height: 100%; 
+}
+.clear {
+	clear: both;
+	float: left;
+	width: 1px;
+	height: 1px;
+}
+body {
+	font-size: 62.5%;
+	height: 100%;
+	font-family: Arial, Helvetica, sans-serif;
+	background: #f8f8f8;
+}
+.button {
+	border: 0px;
+	text-decoration: none;
+	cursor: pointer; 
+	color: white;
+	background: $green;
+	border: 2px solid $green; 	
+	outline: none;
+	@include border-radius(4px);
+	font-weight: bold;
+	padding: 8px {
+		left: 12px;
+		right: 12px; 
+	}
+	&:hover, &.active {
+		color: $green;
+		background: white;
+	}
+	&.cancel {
+		border: 2px solid $grey;
+		color: $grey;
+		background: white;
+		&:hover {
+			background: $grey;
+			color: white;
+			border: 2px solid $light_grey; 
+		} 
+	}
+	&.delete, &.red {
+		border: 2px solid $red;
+		background: $red;
+		color: white;
+		&:hover {
+			background: white;
+			border: 2px solid $red;
+			color: $red; 
+		} 
+	}
+}
+.tooltip {
+	display:none;
+	background: black;
+	padding:15px;
+	color: white;
+	@include border-radius(4px);
+}
+.action-tooltip {
+	@extend .tooltip;
+	font-size: 1.4em;
+}

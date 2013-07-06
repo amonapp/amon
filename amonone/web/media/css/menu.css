@@ -1,0 +1,126 @@
+.menu li {
+  float: left;
+  text-align: center;
+  position: relative;
+  border: none; }
+.menu li.last a {
+  -moz-border-radius-bottomleft: 6px;
+  -webkit-border-bottom-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  -moz-border-radius-bottomright: 6px;
+  -webkit-border-bottom-right-radius: 6px;
+  border-bottom-right-radius: 6px; }
+.menu li a {
+  color: #eee;
+  font-size: 1.5em;
+  padding: 25px;
+  outline: 0;
+  text-decoration: none;
+  display: block; }
+
+.menu li:hover a, .menu li.active a {
+  text-shadow: none;
+  position: relative;
+  background: black;
+  padding: 25px;
+  color: #fdcb34;
+  z-index: 11; }
+
+/* Right aligned menu item */
+.menu li.right {
+  float: right;
+  right: 0;
+  margin-right: 0; }
+.menu li.right:hover {
+  margin-right: 0px; }
+.menu li.right a.logout {
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 0px;
+  margin-top: 9px;
+  font-size: 2.4em;
+  color: white; }
+.menu li.right a.logout:hover {
+  background: none;
+  color: #CE0A31; }
+
+/* Left & right aligned common styles */
+.menu .dropdown_1column {
+  margin: 4px auto;
+  left: -999em;
+  position: absolute;
+  text-align: left; }
+
+/* Drop Downs Sizes */
+.menu .dropdown_1column {
+  width: 150px; }
+
+/* Showing Drop Down on Mouse Hover - Left aligned */
+.menu li:hover .dropdown_1column {
+  left: 0px;
+  top: 55px; }
+
+/* Showing Drop Down on Mouse Hover - Right aligned */
+.menu li:hover .align_right {
+  left: auto;
+  right: -1px;
+  top: 25px; }
+
+/* Columns Sizes */
+.menu .col_1 {
+  float: left;
+  width: 145px; }
+
+/* Use the firstcolumn class for the items that stick to the left edge of the dropdown */
+.menu .firstcolumn {
+  margin-left: 0;
+  /* Clearing margin & left */
+  clear: left; }
+
+.menu ul, .menu li {
+  text-align: left; }
+
+/* Submenu elements */
+.menu li:hover div a {
+  display: inline;
+  color: white;
+  text-decoration: none;
+  text-shadow: none;
+  border: none;
+  float: left;
+  padding: 10px;
+  padding-left: 20px;
+  width: 180px;
+  padding-top: 15px;
+  padding-bottom: 15px; }
+
+.menu li.settings:hover div a {
+  width: 140px; }
+
+.menu li:hover div a:hover {
+  color: #fdcb34; }
+.menu li:hover div a:hover span.unread {
+  color: white; }
+
+/* Standard lists styles */
+.menu li ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0px 0; }
+
+.menu li ul li {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  float: left;
+  text-align: left;
+  width: 145px; }
+
+.menu li ul li a {
+  padding: 0; }
+
+.menu li ul li:hover {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0; }

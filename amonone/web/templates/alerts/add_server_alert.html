@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li><a href="{{ base_url|url('alerts') }}">Alerts	</a></li>
+<li class='separator'></li>
+<li>System alert</li>
+{% endblock %}
+{% block content_class %}class="alert-settings"{% endblock content_class %}
+{% block title %}
+Alerts - Add System alert
+{% endblock %}
+{% block content %}
+
+<div class="settings_content">
+<form action="{{ base_url|url('alerts','system','add') }}" method='post'>
+
+	<ul class="settings-list-horizontal">
+		<li class='title'>
+			<h3>Add System alert</h3>
+	<li>
+		<span class="label">Metric</span>
+		 <select class="metric_select medium_dropdown" name="metric" tabindex="3" data-placeholder="Select metric">
+			<option value=""></option>
+			{% for key, metric in server_metrics.iteritems() %}
+				<option {% if form_data.metric==metric|string %}selected="selected"{% endif %} value="{{ metric }}">
+				{{ metric }}
+				</option>
+			{% endfor %} 
+			</select>
+		 {% if errors.metric %}
+			<span class="error">
+			{{ errors.metric }}
+			</span>
+		{% endif %}
+
+	</li>
+	<li class='metric_options_list'>
+		<span class="label">Select metric</span>
+		<div class="input_background">
+		<select id="metric_options" name="metric_options" class='medium_dropdown'>
+			<option value=""></option>
+		</select>
+		</div>
+	</li>
+	<li class='small-dropdown'>
+		<span class="label">Is</span>
+		<select class="small_dropdown" id="above_below" name="above_below" tabindex="3">
+			<option value='above'>Above</option>
+			<option value='below'>Below</option>
+		</select>
+		<input type="text" id="metric_value" class='required' name="metric_value" {% if form_data.metric_value %}
+		value="{{ form_data.metric_value }}" {% endif %} />
+
+		 <select class="small_dropdown" id="metric_type" name="metric_type" tabindex="3">
+			{% for metric in common_metrics %}
+			 <option value='{{ metric }}'>{{ metric }}</option>
+			{% endfor %}
+		</select>
+		{% if errors.metric_value %}
+			<span class="error">
+			{{ errors.metric_value }}
+			</span>
+		{% endif %}
+
+	</li>
+	<li>
+		<span class="label">Notify after</span>
+		<input type="input" value="1" name="threshold" id="threshold">
+		<div class="slider" id="threshold-slider"></div>
+		<span class='occurences'>occurrences</span>
+	</li>
+	<li class='title'>
+			<h4>Send alert to</h4>
+	</li>
+	<li class='alert-recepients-dropdown'>
+		<span class="label">Email</span>
+		<select id='email-select' name='email' multiple="" data-placeholder="Select recepients">
+			{% for email in email_recepients  %}
+				<option value="{{ email._id }}">{{ email.name }}({{ email.email }})</option>
+			{% endfor %}
+		</select>
+	</li>
+	 <li class='alert-recepients-dropdown'>
+		<span class="label">SMS</span>
+		<select id='sms-select' name='sms' multiple="" data-placeholder="Select recepients">
+			{% for sms in sms_recepients  %}
+				<option value="{{ sms._id }}">{{ sms.name }}({{ sms.phone }})</option>
+			{% endfor %}
+		</select>
+	</li>
+	 <li class='buttons-alerts'>
+		{{ app.xsrf }}
+		<input type="submit" class='button' value="Add" />
+	</li>
+	</ul>
+	</form> 
+</div> <!-- settings_content end -->
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/libs/jquery-ui-1.9.2.custom.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/backbone-min.js'></script>
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/html" id="options_template">
+<% _.each(elements, function(name) { %>
+	<option value='<%= name %>'><%= name %></option>
+<% }); %>
+</script>
+<script type="text/html" id="options_dict_template">
+<% _.each(elements, function(key, value) { %>
+	<option value='<%= value %>'><%= key %></option>
+<% }); %>
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+	 _.templateSettings = window.undescore_settings;
+	var volumes = [{% for volume in server.volumes %}"{{ volume }}",{% endfor %}];
+
+	function set_metric_options(array_with_values, option)
+	{
+
+		var template = $('#options_template').text();
+		// Check if the value is array ['a','b'] or json {'a': 1, 'b':1}
+		if(!$.isArray(array_with_values))
+		{
+			var template = $('#options_dict_template').text();
+		}
+
+		$('.metric_options_list')
+		.show()
+		.find('.label').html(option);
+
+		metric_options = _.template(template, {elements : array_with_values});
+		$('#metric_options')
+		.show()
+		.attr('data-placeholder',option)
+		.empty()
+		.html(metric_options)
+		.select2({width: "200", minimumResultsForSearch: 100});
+
+		// Hide the dropdown if there are no options
+		if(_.isEmpty(array_with_values))
+		{	
+			$('.metric_options_list').hide();
+		}
+
+	}
+
+	function clear_metric_options()
+	{
+		$('#metric_options')
+		.empty()
+		.hide();
+		$('#metric_options_chzn').remove();
+		$('.metric_options_list').hide();
+
+	}
+	
+
+	function set_metric_type(value)
+	{
+			clear_metric_options();
+			_elements = ['%','MB','GB']
+
+			if(value == 'CPU'){ 
+				_elements = ['%']
+			}
+			if(value == 'Memory'){ 
+				_elements = ['%','MB']
+			}
+			if(value == 'Disk'){ 
+				_elements = ['%','MB', 'GB'],
+				set_metric_options(volumes,'Volume')
+
+			}
+			if(value == 'Loadavg'){ 
+				_elements = []
+					loadavg = {"minute": "1 minute",
+							   "five_minutes": "5 minutes",
+							   "fifteen_minutes": "15 minutes"
+					}
+
+					set_metric_options(loadavg, 'Period');
+			}
+			
+			metric_type = _.template($('#options_template').text(), {elements : _elements});
+			$('#metric_type').html(metric_type).trigger("change");
+
+			if(_.isEmpty(_elements)) {
+				 $("#metric_type").select2('disable');
+			}
+			else {
+				 $("#metric_type").select2('enable');
+			}
+
+	}
+
+
+	 $('#metric_type').select2({width: "108", minimumResultsForSearch: 100});
+	 $('#above_below').select2({width: "200", minimumResultsForSearch: 100});
+	 $('#email-select').select2({width: "395", minimumResultsForSearch: 100});
+	 $('#sms-select').select2({width: "395", minimumResultsForSearch: 100}); 
+
+
+	 $(".metric_select").select2({width: "200", minimumResultsForSearch: 100}).change(function(){
+			var value = $(this).val();
+			set_metric_type(value);
+	});
+	 $('.metric_options_list').hide();
+
+	 $("#threshold-slider").slider({
+			range: "min",
+			value: 1,
+			min: 1,
+			max: 100,
+			slide: function(event, ui) {
+				$(".threshold-value").html(ui.value);
+				$("#threshold").val(ui.value);
+			}
+	});
+
+});
+</script>
+
+{% endblock %}

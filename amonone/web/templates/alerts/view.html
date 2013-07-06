@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class='first {% if servers %}with-filter{% endif %}'>Alerts</li>
+<li class='with-button add-alert'>
+	<a class='button' href="{{ base_url|url('alerts','process', 'add') }}">Add process alert</a>
+</li>
+<li class='with-button add-alert'>
+	<a class='button' href="{{ base_url|url('alerts','system', 'add') }}">Add system alert</a>
+</li>
+{% if servers %}
+<li class="last filter server-filter add-alert-filter">
+	<select id='server-select' data-placeholder="Server filter">
+		<option value=""></option>
+		<option value="all">All</option>
+		{% for s in servers %}
+		{% set server_dict = s.server %}
+			<option value="{{ server_dict._id }}">{{ server_dict.name }}</option>
+		{% endfor %}
+	</select>
+</li>
+{% endif %}
+{% endblock %}
+{% block content_class %}class="data-rows"{% endblock content_class %}
+{% block header %}
+{% endblock %}
+{% block title %}
+Alerts
+{% endblock %}
+{% block content %}
+
+<div class="settings_content no-margin">
+	<h3>System alerts</h3>
+	{% if system_alerts %}
+	<table>
+	<thead>
+		<tr>
+			<td width="5px"></td>
+			<td>Alert</td>
+			<td>History</td>
+			<td width="40px">After <strong>n</strong> <br>occurences</td>
+			<td>Send email to</td>
+			<td>Send SMS to</td>
+			<td class='action'></td>
+		</tr>
+	</thead>
+	{% for rule in system_alerts %}
+	<tr id="row-{{ rule._id }}">
+		<td>
+			<a title="{% if rule.mute == True %}Unmute to enable Email and SMS notifications{% else %}Mute to disable Email and SMS notifications{% endif %}" class="mute batch {% if rule.mute == True %}active{% endif %}" data-icon="&#xF16C;"   href="{{ base_url|url('alerts', 'mute') }}/{{ rule._id }}"></a>
+		</td>
+		<td>{{ rule.metric }} {% if rule.metric_options %} / {{ rule.metric_options }} {% endif %} 
+		{{ rule.metric_type|dehumanize }} 
+		{% if rule.above_below == 'above' %}>{% else %}<{% endif %}
+		{{ rule.metric_value }} {% if rule.metric_type %}{{ rule.metric_type }}{% endif %}
+		</td>
+		<td>
+		{% if rule.history %}
+		<a href="{{ base_url|url('alerts','history') }}/{{ rule._id }}" class="history">{{ rule.history|length }}</a>
+		<div class="tooltip">
+		<ul>	
+			<li>.............</li>
+			{% for occurence in rule.history[-5:]|sort(reverse=True ,attribute='time')  %}
+				{% if occurence.value %}
+					<li>{{ occurence.value }}{% strip %}
+					{% if rule.metric_type != None %}
+						{% if occurence.metric_type %}
+							{{ occurence.metric_type }}
+						{% else %}
+							{{ rule.metric_type }}
+						{% endif %}
+					{% endif %} 
+					{% endstrip %}
+					on {{ occurence.time|date_local }}</li>
+					{% endif %}
+			{% endfor %}
+		</ul>
+		</div>
+		{% endif %}
+		</td>
+		<td>{{ rule.threshold }} 
+		
+		</td>
+		<td>{{ rule.email_recepients|join('<br>', attribute='email') }}</td>
+		<td>{{ rule.sms_recepients|join('<br>', attribute='phone') }}</td>
+		<td class='action'>
+			<a href="#" data-rowid="{{ rule._id }}" title="Delete" data-icon="&#xF14E;"  class='delete batch delete_row'></a>
+			<a class='edit batch' title="Edit" data-icon="&#xF13E;" href="{{ base_url|url('alerts','edit', 'server') }}/{{ rule._id }}"></a>
+		</td>
+	</tr>
+	<div class="delete-row" id="delete-row-{{ rule._id }}">
+			<p>
+				Are you sure you want to delete this alert ?
+			</p>
+			<ul>
+				<li>
+					<a href="{{ base_url|url('alerts','system','delete') }}/{{ rule._id }}" class="button delete">Delete</a>
+				</li>
+				<li>
+					<a data-rowid="{{ rule._id }}" href="" class="button cancel cancel_delete">Cancel</a>
+				</li>
+			</ul>
+	</div>
+	{% endfor %}
+	</table>
+	{% endif %}{# system_alerts #}
+
+	<h3>Process alerts</h3>
+	{% if process_alerts %}
+	
+	<table>
+	<thead>
+		<tr>
+			<td width="5px"></td>
+			<td>Process</td>
+			<td>Alert</td>
+			<td>History</td>
+			<td width="40px">After <strong>n</strong> <br>occurences</td>
+			<td>Send email to</td>
+			<td>Send SMS to</td>
+			<td class='action'></td>
+		</tr>
+	</thead>
+	{% for rule in process_alerts %}
+	<tr id="row-{{ rule._id }}">
+		<td>
+			<a title="{% if rule.mute == True %}Unmute to enable Email and SMS notifications{% else %}Mute to disable Email and SMS notifications{% endif %}" class="mute {% if rule.mute == True %}active{% endif %} batch" data-icon="&#xF16C;" href="{{ base_url|url('alerts', 'mute') }}/{{ rule._id }}"></a>
+		</td>
+		<td>{{ rule.process }}</td>
+		<td>{{ rule.process_metric }} {{ rule.check }} 
+			{% if rule.above_below == 'above' %}>{% else %}<{% endif %}
+			{{ rule.metric_value }} {{ rule.metric_type }} 
+		</td>
+		<td>
+		{% if rule.history %}
+		<a href="{{ base_url|url('alerts','history') }}/{{ rule._id }}" class="history">{{ rule.history|length }}</a>
+		<div class="tooltip">
+		<ul>
+			<li>.............</li>
+			{% for occurence in rule.history[-5:]|sort(reverse=True ,attribute='time') %}
+				<li>{{ occurence.value }}{% strip %}
+					{% if rule.metric_type != None %}
+						{% if occurence.metric_type %}
+							{{ occurence.metric_type }}
+						{% else %}
+							{{ rule.metric_type }}
+						{% endif %}
+					{% endif %} {% endstrip %}
+					on {{ occurence.time|date_local }}</li>
+			{% endfor %}
+		</ul>
+		</div>
+		{% endif %}	
+		</td>
+		<td>{{ rule.threshold }}
+		 
+		</td>
+		<td>{{ rule.email_recepients|join('<br>', attribute='email') }}</td>
+		<td>{{ rule.sms_recepients|join('<br>', attribute='phone') }}</td>
+		<td class='action'>
+			<a href="#" data-rowid="{{ rule._id }}" title="Delete" data-icon="&#xF14E;" class='delete delete_row batch'></a>
+			<a class='edit batch' title="Edit" data-icon="&#xF13E;" href="{{ base_url|url('alerts','edit', 'process') }}/{{ rule._id }}"></a>
+		</td>
+	</tr>
+	<div class="delete-row" id="delete-row-{{ rule._id }}">
+			<p>
+				Are you sure you want to delete this alert ?
+			</p>
+			<ul>
+				<li>
+				<a href="{{ base_url|url('alerts','process','delete') }}/{{ rule._id }}" class="button delete">Delete</a>
+				</li>
+				<li>
+					<a data-rowid="{{ rule._id }}" href="" class="button cancel cancel_delete">Cancel</a>
+			</li>
+			</ul>
+	</div>
+	{% endfor %}
+	</table>
+	{% endif %}{# process_alerts #}
+
+	</div>{# server_div #}
+
+
+</div> <!-- settings_content end -->
+
+{% endblock %}
+{% block js %}
+
+<script type="text/javascript" src='/media/js/libs/backbone-min.js'></script>
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/javascript" src='/media/js/delete.row.js'></script>
+{% endblock %}

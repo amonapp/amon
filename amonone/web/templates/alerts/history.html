@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class='first'><a href="{{ base_url|url('alerts') }}">Alerts</a></li>
+<li class="separator"></li>
+<li class='last'>History</li>
+<li class='with-button'>
+	<a class='button delete' href="{{ base_url|url('alerts','clear_history') }}/{{ alert._id }}">
+		Clear history
+	</a>
+</li>
+{% endblock %}
+{% block title %}
+Alerts - History
+{% endblock %}
+{% block content %}
+<div class="settings_content">
+<h3>
+	{% if alert.rule_type == 'process' %}
+	{{ alert.process }}/{{ alert.check }}
+	{% else %}
+	{{ alert.metric }}{% if alert.metric_options %} / {{ alert.metric_options }} {% endif %} 
+	{% endif %}
+	{{ alert.metric_type|dehumanize }} 
+	{% if alert.above_below == 'above' %}>{% else %}<{% endif %}
+	{{ alert.metric_value }} {% if alert.metric_type %}{{ alert.metric_type }}{% endif %}
+</h3>
+
+<table>
+	<thead>
+	    <tr>
+	    <th></th>
+		<th>Time</th>
+		<th>Value</th>
+	    <th width="220px">Email/SMS Notification</th>
+	    </tr>
+	</thead>
+	<tbody>
+	{% if history %}
+	{% for element in history.result|sort(reverse=True ,attribute='time')  %}
+	<tr class='{% if element.trigger == True %}odd{% endif %}'>
+		<td>{{ loop.index }}</td>
+		<td>
+			{{ element.time|date_local }}
+		</td>
+		<td>{{ element.value }}{% if element.metric_type %}{{ element.metric_type }}{% endif %}</td>
+		<td>{% if element.trigger == True %}
+			Sent
+		{% endif %}
+		</td>
+	</tr>
+	{% endfor %}
+	{% endif %}
+	</tbody>
+</table>
+{% if history.pages > 1 %}
+<ul class='pagination'>
+	<li>
+		<select name="page" id="pages-dropdown" data-type="system" data-url="{{ base_url|url('alerts','history') }}/{{ alert._id }}">
+			{% for i in range(1, history.pages+1) %}
+				<option {% if i == history.current_page %}selected="selected"{% endif %} value="{{ i }}">{{ i }}</option>
+			{% endfor %}
+		</select>
+		<span class="total_pages">/ {{ history.pages }}</span>
+	</li>
+</ul>
+{% endif %}
+
+</div>
+
+{% endblock content %}
+{% block js %}
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/backbone-min.js'></script>
+<script type="text/javascript" src='/media/js/pagination.js'></script>
+{% endblock js %}

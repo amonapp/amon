@@ -1,0 +1,7 @@
+pymongo==2.5.2
+tornado==3.1
+formencode==1.2.6
+Jinja2==2.7
+mailtools==2.1
+pytz
+twilio

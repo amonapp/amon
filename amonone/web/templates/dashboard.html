@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block breadcrumb %}
+<li class='first {% if all_servers %}with-filter{% endif %}'>Dashboard</li>
+{% if all_servers %}
+<form action="{{ base_url }}" id='snapshot-form'>
+<li class="snapshot">
+	<span data-icon="&#xF17C;" class='batch'></span>
+	<input type="text" name="snapshot" id="snapshot" value="{% if snapshot %}{{ snapshot }}{% endif %}"  placeholder="Snapshot"/>
+</li>
+
+</form>
+{% endif %}
+{% endblock %}
+{% block content %}
+<div id="dashboard">
+{% set system = system_check %}
+{% set processes = process_check %}
+
+{% if system %}
+<div class='server_wrapper'>
+<ul class="heading">
+	<li>
+		<h1>Last check</h1>
+	</li>
+	<li class="last">
+		<span> {{ system.time|date_local  }}</span>  
+	</li>
+</ul>
+<table class='dashboard-server'>
+	<thead>
+		<tr>
+			{% if system.cpu.system %}
+				{% set cpu = system.cpu.system + system.cpu.user %}
+				{% set cpu = cpu|to_int %}
+				<td>CPU</td>
+			{% endif %}
+			<td>Memory</td>
+			<td>Load average</td>
+			<td>Disks</td>
+			<td>Network</td>
+			<td>Processes</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			{% if system.cpu.system %}
+			<td>
+				<div class="container">
+					<span class="progress" data-value="{{ cpu }}"></span>
+					<span class="data">{{ cpu }}%</span>
+				</div>
+			</td>
+			{% endif %}
+			<td>
+				<span class='label'>RAM(used)</span>
+				<div class="container">
+					<span class="progress" data-value="{{ system["memory"]["memory:used:%"] }}" data-total="100"></span>
+					<span class="data">{{ system["memory"]["memory:used:mb"] }}/{{ system["memory"]["memory:total:mb"] }}MB</span>
+				</div>
+				
+				<span class='label margin-top'>Swap(used)</span>
+				<div class="container">
+					<span class="progress" data-value="{{ system["memory"]["swap:free:%"] }}" data-total="100"></span>
+					<span class="data">{{ system["memory"]["swap:used:mb"] }}/{{ system["memory"]["swap:total:mb"] }}MB</span>	
+				</div>
+			</td>
+			<td>
+				{% set loadavg_max = system.loadavg.cores * 1.15 %}
+				
+				<span class="label">1 minute</span>
+				<div class="container">
+					<span class="progress" data-value="{{ system.loadavg.minute }}" data-total="{{ loadavg_max }}"></span>
+					<span class="data">{{ system.loadavg.minute }}</span>
+				</div>
+
+				<span class="label margin-top">5 minutes</span>
+				<div class="container">
+					<span class="progress" data-value="{{ system.loadavg.five_minutes }}" data-total="{{ loadavg_max }}"></span>
+					<span class="data">{{ system.loadavg.five_minutes }}</span>
+				</div>
+				
+				<span class="label margin-top">15 minutes</span>
+				<div class="container">
+					<span class="progress" data-value="{{ system.loadavg.fifteen_minutes }}" data-total="{{ loadavg_max }}"></span>
+					<span class="data">{{ system.loadavg.fifteen_minutes }}</span>
+				</div>
+			</td>
+			<td>
+				{% for volume in system.disk %}
+					{% if volume != '_id' and volume != 'time' and volume != 'server_id' %}
+					<span class="label {% if loop.index > 1 %}margin-top {% endif %}">{{ volume }}(used)</span>
+					<div class="container">
+						<span class="progress" data-value="{{ system.disk[volume].percent }}" data-total="100"></span>
+						<span class="data">{{ system.disk[volume].used }}/{{ system.disk[volume].total }}</span>
+					</div>
+					{% endif %}
+				{% endfor %}
+			</td>
+			<td>
+				{% for interface in system.network  %}
+					<span class="label {% if loop.index > 1 %}margin-top {% endif %}">{{ interface }}</span>
+					<div class="network">
+						<span class='batch icon' data-icon="&#xF149;"></span>
+						<span class='value' >{{ system.network[interface]['kb_received'] }}kb/s</span>
+					</div>
+
+					<div class="network margin-top">
+						<span class='batch icon' data-icon="&#xF148;"></span>
+						<span class='value' >{{ system.network[interface]['kb_transmitted'] }}kb/s</span>
+					</div>
+				{% endfor %}
+			</td>
+			{% if processes %}
+			<td>
+				<span class="label">CPU</span>
+				<div class="container">
+					<span class="progress" data-value="{{ processes.total_cpu_usage }}" data-total="100"></span>
+					<span class="data">{{ processes.total_cpu_usage }}%</span>
+				</div>
+
+				<span class="label margin-top">Memory</span>
+				<div class="container ">
+					<span class="progress" data-value="{{ processes.total_memory_usage }}" data-total="{{ system["memory"]["memory:total:mb"] }}"></span>
+					<span class="data">{{ processes.total_memory_usage }}/{{ system["memory"]["memory:total:mb"] }}MB</span>
+				</div>
+				<a href="" class="toggle-table" data-table="table-processes">Details</a>
+			</td>
+			{% endif %}
+		</tr>
+	</tbody>
+</table>
+
+{% if processes %}
+<div class="sorted_table_wrapper" id="table-processes">
+<table class="sorted_table">
+	<thead>
+		<tr>
+			<th>Process</th>
+			<th>CPU</th>
+			<th>Memory(used)</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% strip %}
+	{% for process, values in processes['details'].items() %}
+		{% if process != '_id' and process != 'time'  %}
+		{% set process_cpu = values["cpu:%"] %}
+		{% set process_memory = values["memory:mb"] %}
+		<tr>
+			<td><a href="{{ base_url|url('processes') }}?process={{ process }}{% if snapshot %}&date_from={{ snapshot }}{% endif %}">
+				{{ process }}</a></td>
+			<td>{{ process_cpu }}% </td>
+			<td>{{ process_memory|int }}MB</td>
+		</tr>
+		{% endif %}
+	{% endfor %}
+	{% endstrip %}
+	</tbody>
+</table>
+</div>
+{% endif %}{# process #}
+</div>{# server_div #}
+
+{% else %}
+<div class='server_wrapper'>
+<ul class="heading">
+	<li class="last">
+		<span>No data</span> 
+	</li>
+</ul>
+</div>
+{% endif %}{# system == False #}
+
+</div><!-- dashboard end -->
+{% endblock %}
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='/media/js/libs/jquery.datatable.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/backbone-min.js'></script>
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/jquery-ui-1.9.2.custom.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/jquery-ui-timepicker-addon.js'></script>
+<script type="text/javascript" src='/media/js/dashboard.js'></script>
+<script language="javascript" type="text/javascript">
+$(function () 
+{
+	$('.timestamp').relativeDate();
+	$(".sorted_table").dataTable({
+		"bPaginate": false,
+		"bLengthChange": false,
+		"bFilter": true,
+		"bSort": true,
+		"bInfo": false,
+		"bAutoWidth": false,
+		 "oLanguage": {
+			"sSearch": ""
+		},
+		 "aaSorting": [ [2,'desc'],],
+		 "aoColumns": [null, {"sType": 'percent'}, {"sType": 'file-size'}]
+	});
+  $('.dataTables_filter input').attr('placeholder', 'Filter processes')
+  $('.toggle-table').on('click', function(event){
+	event.preventDefault();
+	table_id = $(this).data('table');
+	$('#'+table_id).toggle();
+	$(this).toggleClass('active');
+  });
+
+  var datetime_options = {
+	separator: '-',
+	dateFormat: 'dd-mm-yy',  
+	timeFormat: 'HH:mm',
+	maxDate: new Date({{ max_date*1000 }}),
+	onClose: function(date, ui) {
+		if(date){
+			$('#snapshot-form').submit();
+		}
+	}
+
+};
+  $('#snapshot').datetimepicker(datetime_options);
+
+
+});
+</script>
+{% endblock js %}

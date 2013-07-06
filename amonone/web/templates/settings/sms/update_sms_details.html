@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class='first'>Settings</li>
+<li class='separator'></li>
+<li ><a href="{{ base_url|url('settings','sms') }}">SMS</a></li>
+<li class='separator'></li>
+<li class='last'>Update details</li>
+{% endblock %}
+{% block title %}
+Settings > Data
+{% endblock %}
+{% block content %}
+{% if message %}
+<div class="message red">
+	{{ message }}
+</div>
+{% endif %}
+<div class="settings_content">
+<form action="{{ base_url|url('settings','sms','edit') }}" method='post'>
+<h3>Twilio details</h3>
+<ul class='settings-list-horizontal'>
+	<li>
+		<span class="label">Account SID</span>
+		<input type="text" name='account' value='{% if form_data.account %}{{ form_data.account }}{% else %}{{ details.account }}{% endif %}'/>
+		 {% if errors.account %}
+			<span class="error">
+			{{ errors.account }}
+			</span>
+		{% endif %}
+	</li>
+	<li>
+		<span class="label">Auth Token</span>
+		<input type="text" name='token' value='{% if form_data.token %}{{ form_data.token }}{% else %}{{ details.token }}{% endif %}' />
+		 {% if errors.token %}
+			<span class="error">
+			{{ errors.token }}
+			</span>
+		{% endif %}
+	</li>
+	  <li>
+		<span class="label">From</span>
+		<input type="text" name='from' value='{% if form_data.from_ %}{{ form_data.from_ }}{% else %}{{ details.from_ }}{% endif %}' />
+		 {% if errors.from_ %}
+			<span class="error">
+			{{ errors.from_ }}
+			</span>
+		{% endif %}
+	</li>
+	<li class='buttons'>
+		{{ app.xsrf }}
+		<input type="submit" class='button' value='Update' /> 
+	</li>
+</ul>
+</form>
+</div> <!-- settings_content end -->
+
+{% endblock %}

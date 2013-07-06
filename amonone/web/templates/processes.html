@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% block title %}
+Processes
+{% endblock %}
+{% block breadcrumb %}
+<li class='first'>Processes</li>
+{% endblock %}
+{% block header %}
+	<link rel="stylesheet" href="/media/css/rickshaw.css" />
+	<link rel="stylesheet" href="/media/css/chart.css" />
+{% endblock %}
+{% block content %}
+<form action="{{ base_url|url('processes') }}" id="filter-form">
+<ul class='heading'>
+	<li>
+		<label for="">Select processes</label>
+		<select id='process-select' name='process' style="width:320px;" tabindex="3" multiple="" data-placeholder="All">
+			{% for process in server.processes|sort  %}
+				<option {% if process in processes %}selected="selected"{% endif %} value="{{ process }}">{{ process }}</option>
+			{% endfor %}
+		</select>
+	</li>
+	<li>
+		
+		<label for="daterange">Date Range</label>
+		<select id='daterange-select' name="daterange" style="width:150px;" tabindex="3" >
+			<option {% if daterange=='day' %}selected{% endif %} value="day">Last 24 hours</option>
+			<option {% if daterange=='week' %}selected{% endif %} value="week">Last 7 days</option>
+			<option {% if daterange=='month' %}selected{% endif %} value="month">Last 30 days</option>
+			<option {% if daterange=='custom' %}selected{% endif %} value="custom">Custom Range</option>
+		</select>
+	</li>
+
+	<li>
+		<label for="">From</label>
+		<input type="text" name='date_from' id="date_from" {% if daterange!='custom' %}disabled{% endif %} value="{{ date_from|date }}" />
+	</li>
+	<li>
+		<label for="">To</label>
+		<input type="text" name='date_to' id="date_to"  {% if daterange!='custom' %}disabled{% endif %} value="{{ date_to|date }}" />
+	</li>
+	<li class='with_button'>
+        <input type="submit" class='button update' value="Update" />
+	</li>
+</ul>
+</form>
+{% if not process_data %}
+	<div class="message">Select a process from the dropdown menu</div>
+{% endif %}
+
+{% for process in process_data  %}
+{% set sanitized_process = process|clean_slashes %}
+<ul class="heading inner {% if loop.index == 1 %}no-top-border{% endif %}">
+	<li>
+		<h1>{{ process }}</h1>
+	</li>
+</ul>
+
+{% if process_data[process]|length > 0 %}
+
+<h3>Memory</h3>
+ <div id="{{ sanitized_process }}_memory" class='chart_container'>
+    <div class='y_axis' id="memory_{{ sanitized_process }}_y_axis"></div>
+    <div id="memory-chart_{{ sanitized_process }}" class='chart'></div>
+</div>
+
+<h3>CPU</h3>
+ <div id="{{ sanitized_process }}_cpu" class='chart_container'>
+    <div class='y_axis' id="cpu_{{ sanitized_process }}_y_axis"></div>
+    <div id="cpu-chart_{{ sanitized_process }}" class='chart'></div>
+</div>
+{% endif %}
+{% endfor %}
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='/media/js/libs/charts.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/jquery-ui-1.9.2.custom.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/jquery-ui-timepicker-addon.js'></script>
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/javascript">	
+$(function () 
+{
+ // Common variables and functions
+  	var width = 865;
+    var height = 300;
+    var padding = { top: 0.09, right: 0, bottom: 0.02, left: 0 } 
+    function _format_date(date) {
+        _date = new Date(date*1000).toUTCString();
+		return '<span class="date">'+ moment.utc(_date).format("DD.MM.YY H:mm:ss") + '</span>';
+    }
+    var colors = ['#00ADFC', '#7AB317', '#8000A9'] 
+	var palette = new Rickshaw.Color.Palette( { scheme: 'colorwheel' } );
+
+	{% for process in process_data  %}
+	{% if process_data[process]|length > 0 %}
+	{% set sanitized_process = process|clean_slashes %}
+
+		// MEMORY --- START 
+		var {{ sanitized_process }}_memory_graph = new Rickshaw.Graph({
+			element: document.getElementById("memory-chart_{{ sanitized_process }}"),
+			width: width,
+			height: height,
+			renderer: 'line',
+		    padding: padding, 
+		    interpolation: 'linear',
+		    {% strip %}
+			series: [{
+					color: palette.color(),
+		            data:  [{% for time, memory in process_data[process].memory.items()|sort %}
+		            {% if zone_difference.0 == 'negative' %}{x:{{ time-zone_difference.1 }},
+		            {% else %}{x: {{ time+zone_difference.1 }},
+		            {% endif %}y: {{ memory|int }} },{% endfor %}],
+					name: "{{ process }}"
+				},]
+			{% endstrip %}
+		});
+
+		{{ sanitized_process }}_memory_graph.render();
+
+		var {{ sanitized_process }}_memory_hover = new Rickshaw.Graph.HoverDetail({
+		    graph: {{ sanitized_process }}_memory_graph,
+		    formatter: function(series, x, y) {
+				var date = _format_date(x);
+				var content = '<span class="metric">' + series.name + ": " + parseInt(y) + 'MB</span>' + date ;
+				return content;
+		    }
+		});
+
+		var {{ sanitized_process }}_memory_x = new Rickshaw.Graph.Axis.Time({
+		    graph: {{ sanitized_process }}_memory_graph, 
+		});
+
+		var {{ sanitized_process }}_memory_y = new Rickshaw.Graph.Axis.Y({
+		    graph: {{ sanitized_process }}_memory_graph, 
+		    tickFormat: function(y) { return y +'MB'}, 
+		    element: document.getElementById('memory_{{ sanitized_process }}_y_axis'),
+		});
+
+		{{ sanitized_process }}_memory_x.render();
+		{{ sanitized_process }}_memory_y.render();
+		// MEMORY --- END 
+
+		// CPU --- START
+		var {{ sanitized_process }}_cpu_graph = new Rickshaw.Graph({
+			element: document.getElementById("cpu-chart_{{ sanitized_process }}"),
+			width: width,
+			height: height,
+			renderer: 'line',
+		    padding: padding, 
+		    interpolation: 'linear',
+		    {% strip %}
+			series: [{
+					color: palette.color(),
+		            data:  [{% for time, cpu in process_data[process].cpu.items()|sort %}
+		            {% if zone_difference.0 == 'negative' %}{x:{{ time-zone_difference.1 }},
+		            {% else %}{x: {{ time+zone_difference.1 }},
+		            {% endif %}y: {{ cpu|int }} },{% endfor %}],
+					name: "{{ process }}"
+				},]
+			{% endstrip %}
+		});
+
+		{{ sanitized_process }}_cpu_graph.render();
+
+		var {{ sanitized_process }}_cpu_hover = new Rickshaw.Graph.HoverDetail({
+		    graph: {{ sanitized_process }}_cpu_graph,
+		    formatter: function(series, x, y) {
+				var date = _format_date(x);
+				var content = '<span class="metric">' + series.name + ": " + parseInt(y) + '%</span>' + date;
+				return content;
+		    }
+		});
+
+		var {{ sanitized_process }}_cpu_x = new Rickshaw.Graph.Axis.Time({
+		    graph: {{ sanitized_process }}_cpu_graph, 
+		});
+
+		var {{ sanitized_process }}_cpu_y = new Rickshaw.Graph.Axis.Y({
+		    graph: {{ sanitized_process }}_cpu_graph, 
+		    tickFormat: function(y) { return y +'%'}, 
+		    element: document.getElementById('cpu_{{ sanitized_process }}_y_axis'),
+		});
+
+		{{ sanitized_process }}_cpu_x.render();
+		{{ sanitized_process }}_cpu_y.render(); 
+		// CPU --- END 
+
+
+	{% endif %}{# check process_data length #}
+	{% endfor %}{# end process_data #}
+	
+	
+var datetime_options = {
+	separator: '-',
+	dateFormat: 'dd-mm-yy',  
+	timeFormat: 'HH:mm',
+	maxDate: new Date({{ max_date*1000 }})
+
+};
+// Date variables
+var day_from = "{{ default_from|date }}"
+var day_to = "{{ default_to|date }}"
+
+var week = "{{ default_to|extract_days_from_unixdate(7)|date }}"
+var month = "{{ default_to|extract_days_from_unixdate(30)|date }}"
+
+function disable_dates(){
+	$("#date_from").prop('disabled', true);
+		$("#date_to").prop('disabled', true);
+}
+
+$('#date_from').datetimepicker(datetime_options);
+$('#date_to').datetimepicker(datetime_options);
+$("#process-select").select2({width: "275"}); 
+$("#daterange-select").select2({width: "200", minimumResultsForSearch: 100}).change(function(){
+	current_value = $(this).val();
+
+	
+	if(current_value == 'day') {
+		$("#date_to").val(day_to);
+		$("#date_from").val(day_from);
+		disable_dates();
+	}
+	if(current_value == 'week') {
+		$("#date_from").val(week);
+		disable_dates();
+	}
+	if(current_value == 'month') {
+		$("#date_from").val(month);
+		disable_dates();
+	}
+	if(current_value == 'custom') {
+		$("#date_from").prop('disabled', false);
+		$("#date_to").prop('disabled', false);
+	}
+});
+
+	$("#filter-form").on("submit", function(e){
+		$("#date_to").removeAttr('disabled');
+		$("#date_from").removeAttr('disabled');
+
+	});
+});
+</script>
+
+{% endblock %}

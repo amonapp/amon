@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class='first'>Settings</li>
+<li class='separator'></li>
+<li ><a href="{{ base_url|url('settings','email') }}">Email</a></li>
+{% endblock %}
+{% block content_class %}class="data-emailtest"{% endblock content_class %}
+{% block title %}
+Settings / Email / Test
+{% endblock %}
+{% block content %}
+{% if message %}
+	<span class="message">{{ message }}</span>
+{% endif %}
+
+<div class="settings_content">
+<form action="{{ base_url|url('settings','email','test') }}" method='post'>
+<h3>Send Test Email</h3>
+<ul class="settings-list-horizontal">
+	<li class='width-auto medium-dropdown'>
+		<span class="label">Select recepient</span>
+		<select id='recepient-select' name='recepient'  style="width:300px;" tabindex="3" >
+			{% for recepient in recepients  %}
+				<option value="{{ recepient._id }}">{{ recepient.name }} ({{ recepient.email }})</option>
+			{% endfor %}
+		</select>
+	</li>
+	 <li class='no-clear'>
+		{{ app.xsrf }}
+        <input type="submit" class='button send-test-email' value="Send" />
+    </li>
+    </ul>
+</form>
+</div> <!-- settings_content end -->
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/javascript">	
+$(function () 
+{
+	$("#recepient-select").select2({width: "350", minimumResultsForSearch: 100}); 	
+});
+</script>
+{% endblock js %}

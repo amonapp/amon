@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li><a href="{{ base_url|url('alerts') }}">Alerts</a></li>
+<li class='separator'></li>
+<li >Edit Process alert</li>
+{% endblock %}
+{% block content_class %}class="alert-settings"{% endblock content_class %}
+{% block header %}
+{% endblock %}
+{% block title %}
+Alerts - Edit Process alert
+{% endblock %}
+{% block content %}
+<form action="{{ base_url|url('alerts','edit', 'process') }}/{{ alert._id }}" method='post'>
+<div class="settings_content">
+	<ul class="settings-list-horizontal">
+	<li class='title'>
+		<h3>Edit Process alert</h3>
+	</li>
+	<li id="process-element">
+		<span class="label">Process</span>
+		<span class="text">{{ alert.process }}</span>
+	</li>
+	<li>
+		<span class="label">Check</span>
+		 <select name="check" id="check" class='medium_dropdown' tabindex="3" >
+			{% for key, metric in process_metrics.iteritems() %}
+				<option {% if alert.check==metric %}selected="selected"{% endif %} value="{{ metric }}">{{ metric }}</option>
+			{% endfor %} 
+		 </select>
+	</li>
+	<li>
+		 <span class="label">Is</span>
+		<select class="small_dropdown" id="above_below" name="above_below" tabindex="3">
+				<option {% if alert.above_below=='above' %}selected="selected"{% endif %} value='above'>Above</option>
+				<option  {% if alert.above_below=='below' %}selected="selected"{% endif %} value='Below'>Below</option>
+		</select>
+		<input type="text" id="metric_value" class='required' name="metric_value" {% if alert.metric_value %}
+		value="{{ alert.metric_value }}" {% endif %} />
+
+		 <select class="small_dropdown" id="metric_type" name="metric_type" >
+				{% for metric in common_metrics %}
+				 <option {% if alert.metric_type==metric %}selected="selected"{% endif %} value='{{ metric }}'>{{ metric }}</option>
+				{% endfor %}
+		</select>
+		{% if errors.metric_value %}<span class="error">{{ errors.metric_value }}</span>{% endif %}
+	 </li>
+	 <li>
+			<span class="label">Notify after</span>
+			<input type="input" value="{{ alert.threshold }}" name="threshold" id="threshold">
+			<div class="slider" id="threshold-slider"></div>
+			<span class='occurences'>occurrences</span>
+	</li>
+	<li class='title'>
+		<h4>Send alert to</h4>
+	</li>
+	<li class='alert-recepients-dropdown'>
+		<span class="label">Email</span>
+		<input type="hidden" id="email-select" name="email">
+	</li>
+	 <li class='alert-recepients-dropdown'>
+		<span class="label">SMS</span>
+		<input type="hidden" id="sms-select" name="sms">
+	</li>
+		<li class='buttons-alerts'>
+			{{ app.xsrf }}
+			<input type="submit" class='button' value="Update" />
+		</li>
+		</ul>
+		
+</div> <!-- settings_content end -->
+</form> 
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/libs/jquery-ui-1.9.2.custom.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/backbone-min.js'></script>
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/html" id="list_option">
+<% _.each(elements, function(name) { %>
+		<option value='<%= name %>'><%= name %></option>
+<% }); %>
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+		 _.templateSettings = window.undescore_settings;
+		function set_metric_type(value)
+		{
+			if(value == 'CPU'){ 
+					_elements = ['%']
+			}
+			if(value == 'Memory'){ 
+					_elements = ['%','MB']
+			}
+
+			metric_type = _.template($('#list_option').text(), {elements : _elements});
+			$('#metric_type').html(metric_type).trigger("change");
+
+		}
+
+		$('#check').select2({width: "200", minimumResultsForSearch: 100});
+		$('#check').select2('disable');
+
+
+		$('#metric_type').select2({width: "108", minimumResultsForSearch: 100});
+		$('#above_below').select2({width: "200", minimumResultsForSearch: 100});
+		
+		$("#email-select").select2({
+		 	placeholder: 'Select recepients',
+		 	width: "395", 
+		 	minimumResultsForSearch: 100,
+			tags: [
+				{% for r in email_recepients %}
+				{'id': '{{ r._id }}', 'text':'{{ r.name }}({{ r.email }})'}, 
+				{% endfor %}
+			]
+		})
+		.select2("val", [{% for r in alert.email_recepients %}"{{ r }}", {% endfor %}]);
+
+	 	$("#sms-select").select2({
+		 	placeholder: 'Select recepients',
+		 	width: "395", 
+		 	minimumResultsForSearch: 100,
+			tags: [
+				{% for r in sms_recepients %}
+				{'id': '{{ r._id }}', 'text':'{{ r.name }}({{ r.phone }})'}, 
+				{% endfor %}
+		]
+		})
+		.select2("val", [{% for r in alert.sms_recepients %}"{{ r }}", {% endfor %}]);
+		 
+		 var check_select = $('#check').val();
+		 set_metric_type(check_select);
+		 $('#metric_type').select2('val', "{{ alert.metric_type }}");
+
+		$("#threshold-slider" ).slider({
+			range: "min",
+			value: {{ alert.threshold }},
+			min: 1,
+			max: 100,
+			slide: function(event, ui) {
+					$(".threshold-value").html(ui.value);
+					$("#threshold").val(ui.value);
+			}
+		});
+
+});
+</script>
+
+{% endblock %}

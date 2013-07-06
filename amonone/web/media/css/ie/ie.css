@@ -1,0 +1,15 @@
+.menu li div a {
+	*display:inline;
+}
+/* IE6 Specific Styling */
+body {
+	_behavior: url("css/ie/csshover3.htc");
+}
+.menu li.nodrop:hover {
+	_padding: 0;
+}
+.menu li:hover .align_right {
+	_right:-2px;
+}
+
+

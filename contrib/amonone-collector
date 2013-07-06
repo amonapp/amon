@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+### BEGIN INIT INFO
+# Provides:          amonone-collector
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start the AmonOne system info collector
+# Description:       AmonOne daemon that collects system and process information.
+### END INIT INFO
+
+import sys, time
+import logging
+
+try:
+	import amonone
+except:
+	print 'AmonOne is not installed'
+	sys.exit()
+
+from amonone.web.libs.daemon import Daemon
+from amonone.core import settings
+from amonone.core.collector.runner import runner
+from amonone.web.apps.api.models import api_model
+
+PIDFILE = '/var/run/amonone-collector.pid'
+# Keep all log files in one place
+LOGFILE = '/var/log/amonone/amonone-collector.log'
+
+# Configure logging
+logging.basicConfig(filename=LOGFILE,level=logging.DEBUG)
+log = logging.getLogger('amonone-collector')
+
+class AmonOneCollectorDaemon(Daemon):
+	
+	def run(self):
+		
+		while True:
+
+			system_info = runner.system()
+			process_info = runner.processes()
+
+
+			try:			
+				api_model.store_system_entries(system_info)
+			except Exception, e:			
+				log.exception('Saving system info failed')
+			
+
+			try:
+				api_model.store_process_entries(process_info)
+			except Exception, e:			
+				log.exception('Saving process info failed')
+
+			# Checks the system every 60 seconds
+			time.sleep(settings.SYSTEM_CHECK_PERIOD)
+
+if __name__ == "__main__":
+
+	daemon = AmonOneCollectorDaemon(PIDFILE)
+	
+	if len(sys.argv) == 2:
+		if 'start' == sys.argv[1]:
+			try:
+				daemon.start()
+			except Exception, e:
+				log.exception("AmonOne Collector can't be started")
+		elif 'stop' == sys.argv[1]:
+			print "Stopping AmonOne Collector ..."
+			daemon.stop()
+		elif 'restart' == sys.argv[1]:
+			print "Restaring AmonOne Collector ..."
+			daemon.restart()
+		elif 'status' == sys.argv[1]:
+			try:
+				pf = file(PIDFILE,'r')
+				pid = int(pf.read().strip())
+				pf.close()
+			except IOError:
+				pid = None
+			except SystemExit:
+				pid = None
+
+			if pid:
+				print 'AmonOne Collector is running as pid %s' % pid
+			else:
+				print 'AmonOne Collector is not running.'
+		
+		else:
+			print "Unknown command"
+			sys.exit(2)
+			sys.exit(0)
+	else:
+		print "usage: %s start|stop|restart|status" % sys.argv[0]
+		sys.exit(2)

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class='first'>Settings</li>
+<li class='separator'></li>
+<li ><a href="{{ base_url|url('settings','email') }}">Email</a></li>
+{% endblock %}
+{% block title %}
+Settings - Email
+{% endblock %}
+{% block content %}
+<div class="settings_content">
+<form action="{{ base_url|url('settings','email','add_recepient') }}" method='post'>
+<h3>Add new recepient</h3>
+<ul class='settings-list-horizontal'>
+ <li>
+        <span class="label">Name</span>
+        <input type="text" id="name" name='name' value='{% if form_data.name %}{{ form_data.name }}{% endif %}'/>
+         {% if errors.name %}
+        	<span class="error">
+			{{ errors.name }}
+			</span>
+        {% endif %}
+    </li>
+    <li>
+        <span class="label">Email</span>
+        <input type="text" id="email" name='email' value='{% if form_data.email %}{{ form_data.email }}{% endif %}' />
+         {% if errors.email %}
+        	<span class="error">
+			{{ errors.email }}
+			</span>
+        {% endif %}
+    </li>
+<li class='buttons'>
+		{{ app.xsrf }}
+		<input type="submit" class='button' value='Add' /> 
+	</li>
+</ul>
+</form>
+</div> <!-- settings_content end -->
+{% endblock %}

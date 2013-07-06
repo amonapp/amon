@@ -1,8 +1,9 @@
 # References 
 # http://code.djangoproject.com/browser/django/trunk/setup.py 
 #!/usr/bin/env python
-from amonlite import __version__
+from amonone import __version__
 import os
+
 
 def fullsplit(path, result=None):
     """
@@ -25,7 +26,7 @@ packages, data_files = [], []
 root_dir = os.path.dirname(__file__)
 if root_dir != '':
     os.chdir(root_dir)
-amon_dir = 'amonlite'
+amon_dir = 'amon'
 
 for dirpath, dirnames, filenames in os.walk(amon_dir):
     # Ignore dirnames that start with '.'
@@ -36,32 +37,31 @@ for dirpath, dirnames, filenames in os.walk(amon_dir):
     elif filenames:
         data_files.append([dirpath, [os.path.join(dirpath, f) for f in filenames]])
 
+
 sdict = {
-    'name' : 'amonlite',
+    'name' : 'amonone',
     'version' : __version__,
-    'description' : 'Elegant server and web application monitoring toolkit',
-    'long_description' : 'Elegant server and web application monitoring toolkit',
-    'url': 'https://github.com/martinrusev/amonlite',
+    'long_description' : read('README.rst'),
     'author' : 'Martin Rusev',
-    'author_email' : 'martinrusev@live.com',
-    'keywords' : ['Amon', 'monitoring', 'logging', 'exception handling'],
-    'license' : 'GPL',
+    'author_email' : 'martin@amon.cx',
     'packages' : packages,
-    'data_files' : data_files,
-    'install_requires': 
-    [
-        'pymongo==2.3',
-        'tornado==2.4',
-        'formencode==1.2.4',
-        'Jinja2==2.6',
+	'data_files' : data_files,
+	'install_requires': 
+	[
+        'pymongo',
+		'tornado',
+		'formencode==1.2.6',
+        'Jinja2',
+        'mailtools==2.1',
+        'pytz',
 		'pip',
-        'pytz'
-    ]
-}
+        'twilio'
+    ],
+   }
 
 try:
-    from setuptools import setup
+	from setuptools import setup
 except ImportError:
-    from distutils.core import setup
+	from distutils.core import setup
 
 setup(**sdict)

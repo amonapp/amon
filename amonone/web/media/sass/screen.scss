@@ -1,0 +1,1029 @@
+@import "compass/reset";
+@import "compass/css3";
+@import "_variables";
+@import "compass/utilities/general/clearfix";
+
+.wrapper {
+	width: $body_width;
+	height: 100%;
+	margin: 0 auto;
+}
+#content {
+	background: white;
+	border: 3px solid #ececec;
+	float: left;
+	width: 100%;
+	@include border-radius(6px);
+	margin-bottom: 40px;
+	@include box-shadow(#e8e9ea 0px 3px 14px );	
+}
+
+h1 {
+	float: left;
+	font-size: 3.6em;
+	font-weight: bold;
+	color: black;
+	width: $body_width;
+	padding: {
+		top: 20px;
+		bottom: 20px; 
+		}
+	}
+
+h2 {
+	float: left;
+	font-size: 3em;
+	clear: left;
+	margin: 25px { 
+		left: 20px;
+		bottom: 20px; };
+	color: black; }
+
+h3 {
+	@extend h2;
+	font-size: 2.6em;
+	font-weight: bold;
+	color: #858585; }
+
+h4 {
+	@extend h3;
+	font-size: 1.8em;
+	margin: {
+		left: 0px;
+		top: 15px;
+		bottom: 5px; }; }
+
+// Charts
+.chart {
+	float: left;
+	width: 800px;
+	height: 250px;
+	margin-left: 25px;
+	margin-bottom: 30px;
+	clear: left; }
+.legend {
+	float: right;
+	margin-top: 38px;
+	margin-right: 20px;
+	ul {
+		li {
+			float: left;
+			span.color {
+				width: 12px;
+				@include border-radius(25px);
+				height: 12px;
+				margin-bottom: -1px;
+				margin-right: 6px;
+				&.one {
+					background: #00adfc; }
+				&.two {
+					background: #7ab317; }
+				&.three {
+					background: #8000a9; } }
+			span {
+				text-align: left;
+				font-size: 1.3em;
+				display: inline-block;
+				margin-right: 30px;
+				color: #858585;
+				&.last {
+					margin-right: 0px; } } 
+		} 
+	} 
+}
+
+ul.heading {
+	float: left; 
+	background: #fcfcfc;
+	border-bottom: 2px solid #eee;
+	width: 100%;
+
+	&.alerts {
+		// Used in Alerts 
+		li {
+			padding-bottom: 0px;
+		}
+	}
+	&.inner {
+		background: #fafafa;
+		border-bottom: 2px solid #f0f0f0;
+		border-top: 2px solid #f0f0f0;
+		&.no-top-border{
+			border-top: 0px;
+		}
+		h1{
+			color: black;
+			font-size: 2.8em;
+		}
+		
+	}
+	li {
+		float: left;
+		padding-top: 4px;
+		padding-bottom: 3px;
+		margin: {
+			top: 10px;
+			bottom: 12px;
+			right: 8px;
+			left: 11px;
+		}
+		&.action {
+			float: left;
+			a {
+				color: black;
+				float: left;
+				margin-right: 12px;
+				text-decoration: none;
+				&.delete {
+					color: $red;
+				}
+			}
+			&.right {
+				margin-right: 20px;
+				float: right;
+				a {
+					margin-right: 0px;
+					margin-left: 12px;
+				}
+			}
+		}
+		&:first-child {
+			margin-left: 20px;
+			border-top: 0px;
+		}
+		&:last-child {
+			margin-right: 0px; 
+		}
+		&.with_button {
+			margin-top: 31px; 
+		}
+		&.no-margin {
+			margin-left: 0px; }
+		&.last {
+			float: right;
+			margin-right: 20px;
+			// Dashboard - last check
+			span {
+				float: left;
+				font-size: 1.8em;
+				padding-top: 4px;
+				color: #464646;
+			}
+		}  
+		label {
+			float: left;
+			font-size: 1.6em;
+			margin: {
+				bottom: 5px;
+				left: 0px;
+				right: 2px; 
+				}; 
+			} 
+		h1 {
+			margin: 0px;
+			padding: 0px;
+			width: auto;
+			color: #464646;
+			font-size: 2.4em;
+		}
+
+	} 
+}
+input[type=text], input[type=password] {
+	float: left;
+	width: 220px;
+	height: 26px;
+	padding: 4px;
+	padding-top: 5px;
+	font-size: 1.6em;
+	border: $border;
+	@include border-radius(6px);
+	background: #fefefe;
+	color: #727272;
+	@include input-placeholder(#ccc); 
+	&.logs-search {
+		clear: left;
+		width: 265px; 
+	}
+	&:focus {
+		@include input-active;
+
+	} 
+	&:disabled {
+		background: #F0F0F0;
+	}
+	&.hasDatepicker {
+			clear: left;
+			width: 140px;
+		}
+	}
+// Messages
+.message {
+	float: left;
+	clear: left;
+	width: $body_width - 20px;
+	background: #f5f6f9;
+	padding: 15px {
+		right: 0px;
+		left: 20px; };
+	font-size: 1.6em;
+	color: black;
+	line-height: 1.5em;
+	a {
+		color: black; }
+	&.green {
+		background: #8abd56; 
+		@include text-shadow(#6ca636 1px 1px 3px);
+	} 
+}
+
+ul.settings-list { 
+	float: left;
+	clear: left;
+	padding-left: 20px;
+	h3 {
+		padding-left: 0px;
+	}
+	li {
+		float: left;
+		clear: left;
+		width: 500px;
+		margin-bottom: 10px;
+		&.alert-recepients-dropdown {
+			ul {
+				clear: none;
+				float: none;
+			}
+		}
+		ul {
+			float: left;
+			margin-top: 8px;
+			clear: left;
+			li {
+				float: left;
+				clear: none;
+				margin-right: 20px;
+				width: auto;
+				margin-bottom: 0px;
+				span {
+					float: left;
+					margin: {
+						top: 3px;
+						left: 4px; };
+					font-size: 1.4em; }
+				input {
+					float: left; }
+				input[type=checkbox] {
+					margin-top: 4px; } } }
+		&.width-auto {
+			width: auto;
+			span.error {
+				clear: both; } }
+		&.no-clear {
+			clear: none;
+			width: auto;
+			margin-left: 10px;
+		}
+		&.buttons {
+			width: 450px; } 
+	}
+	input[type=text],input[type=password] {
+		width: 350px;
+		clear: none; 
+	}
+	input[type=checkbox] {
+		margin: {
+			top: 8px;
+			float: left; }; }
+	.button {
+		float: right;
+		font-size: 1.4em;
+		&.inline {
+			float: left;
+			clear: left; } }
+	span.checkbox {
+		margin-top: 2px;
+		margin-right: 4px; }
+	span.text {
+		margin-left: 8px;
+		margin-top: 9px;
+		font-weight: bold;
+		float: left;
+		font-size: 1.4em; }
+	span.label {
+		float: left;
+		clear: left;
+		width: 90px;
+		margin: {
+			top: 10px;
+			right: 10px; };
+		font-size: 1.4em; }
+	span.error {
+		float: left; 
+		color: white;
+		font-size: 1.4em;
+		@include border-radius(4px);
+		padding: 5px; 
+		margin-left: 4px;
+		margin-top: 6px;
+		background: #bc0000; } 
+}
+// Used in settings, alerts
+ul.settings-list-horizontal {
+	@extend .settings-list;
+	&.compact {
+		li {
+			margin-bottom: 10px;
+		}
+	}
+	#threshold {
+		width: 60px;
+		float: left;
+		border: 2px solid #EEEEEE;
+		 @include border-radius(6px);
+		 height: 25px;
+		 padding: 4px;
+	}
+	#threshold-slider {
+		margin-left: 20px;
+	}
+	.occurences {
+		font-size: 1.4em;
+		float: left;
+		padding: 7px;
+	}
+	li {
+		width: 800px;
+		margin-bottom: 20px;
+		&.buttons {
+			width: 512px;
+		}
+		&.buttons-alerts {
+			width: 545px;
+		}
+	}
+	span.label {
+		clear: none;
+		width: 140px;
+	}
+	.chzn-container {
+		clear: none;
+	}
+	ul.no-clear {
+		clear:none;
+	}
+	#servers-list {
+		li {
+			float: left;
+			width: 250px;
+			padding-bottom: 15px;
+		}
+	}
+	ul.checkbox-list {
+		span {
+			margin-left: 8px;
+			margin-top: 1px;
+		}
+	}
+	ul.radio-list {
+		span {
+			margin-left: 8px;
+			margin-top: 1px;
+		}
+	}
+	textarea {
+		border: 2px solid #EEEEEE;
+		width: 355px;
+		color: #727272;
+		height: 100px;
+		font-size: 1.8em;
+		@include border-radius(6px);
+	}
+	span.textarea-help {
+		background: #eee;
+		float: left;
+		margin-left: 150px;
+		width: 339px;
+		font-size: 1.2em;
+		padding: 10px;
+		margin-top: -5px;
+	}
+}
+// Alert metrics specifics -- START
+#metric_value {
+	margin: {
+		left: 12px; 
+		right: 12px;
+	}
+	width: 140px;
+}
+#threshold-slider {
+	float: left;
+	width: 305px;
+	margin-top: 10px;
+}
+.threshold-value {
+	float: left;
+	font-size: 1.6em;
+	margin: {
+		right: 20px;
+		top: 7x;
+	}
+	text-align: center;
+	padding: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border: 2px solid #ECECFB;
+	@include border-radius(4px);
+}
+a.mute {
+	float: left;
+	display: block;
+	text-decoration: none;
+	color: $grey;
+	cursor: pointer;
+	&:hover, &.active {
+		color: $green;
+	}
+}
+// Alert metrics specifics -- END 
+ul.buttons_list {
+	float: left;
+	clear: both;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	li {
+		float: left;
+		margin-right: 25px;
+		clear: none;
+		width: auto;
+		a.button {
+			font-size: 1.4em; } } }
+
+ul.form-horizontal {
+	float: left;
+	clear: left;
+	margin-top: 20px;
+	li {
+		float: left;
+		margin-right: 35px;
+		&.buttons {
+			margin-top: 3px; } }
+	span.label {
+		float: left;
+		font-size: 1.6em;
+		margin: {
+			top: 12px;
+			right: 8px; }; }
+	span.error {
+		clear: left;
+		float: left;
+		color: white;
+		font-size: 1.4em;
+		padding: 5px;
+		margin-top: 6px;
+		margin-left: 5px;
+		background: #bc0000;
+		@include border-radius(4px); }
+	input {
+		float: left; }
+	.input_background {
+		clear: none;
+		border: 2px solid #f0f0f0;
+		&.no-border {
+			border: none; } } 
+}
+
+.settings_content {
+	float: left;
+	//margin-bottom: 20px;
+	width: $body_width;
+	clear: left;
+	
+	&.no-margin {
+		margin-bottom: 0px;
+	}
+	a.history {
+		&:hover {
+			cursor: pointer; } }
+	.tooltip {
+		ul {
+			float: left;
+			li {
+				float: left;
+				clear: left;
+				padding: {
+					bottom: 5px;
+					top: 5px; 
+				}
+			} 
+		} 
+	}
+	h3 {
+		margin-left: 0px;
+		color: #464646;
+		padding-left: 20px;
+		margin-bottom: 15px; 
+		font-size: 2.6em;
+		a {
+			color: black;
+		}
+	}
+	ul.float_right_list {
+		float: right;
+		margin-top: 20px;
+		margin-right: 20px;
+		margin-bottom: 15px;
+		clear: right;
+		li {
+			float: left;
+			margin-left: 15px; }
+		a {
+			float: left;
+			font-size: 1.4em; } }
+}
+
+#dashboard {
+	float: left;
+	width: 100%;
+
+	h2 {
+		margin-top: 10px;
+	}
+	h3 {
+		font-size: 1.6em; 
+		margin-bottom: 12px;
+		@include pie-clearfix;
+	}
+	.stats {
+		float: left;
+		clear: both;
+		width: 100%;
+	}
+	.no-data {
+		float: right;
+		color: #bc0000;
+		font-size: 1.4em;
+		margin: {
+			top: 12px; }; }
+	.processes-heading {
+		margin: 0px;
+		margin-left: 20px;
+	}
+	.sorted_table_wrapper {
+		display: none;
+		table.sorted_table {
+			thead th:hover {
+				outline: none;
+				cursor: pointer;
+			}
+			
+			th.sorting_asc {
+				border-bottom: 2px solid $green;
+			}
+		}
+	}
+	.dataTables_filter {
+		float: left;
+		width: 100%;
+		padding-top: 20px;
+		padding-bottom: 20px;
+		background: #f8f8f8;
+		label {
+			float: left;
+			margin-left: 20px;
+		}
+		input {
+			float: left;
+			width: 400px;
+		}
+	}
+
+
+}
+.timestamp {
+	float: left;
+	font-size: 1.4em;
+	color: #727272; }
+
+// NEW DESIGN
+#header {
+	background: #282728;
+	float: left; 
+	width: 100%;
+	border-bottom: 2px solid black;
+	a.logo {
+		float: left;
+		width: 132px;
+		display: block;
+		height: 37px;
+		margin-right: 20px;
+		padding:  {
+			top: 15px;
+			bottom: 13px;
+			left: 0px;
+			right: 30px; }; 
+		}
+}
+ul.settings_block {
+	float: left;
+	background: #f7f7f7;
+	width: 100%;
+	border-top: 2px solid #f0f0f0;
+	border-bottom: 2px solid #f0f0f0;
+	li {
+		float: left;
+		padding: 8px;
+		span.label {
+			float: left;
+			width: 200px;
+			font-size: 1.6em;
+			padding-top: 8px; }
+		.button {
+			font-size: 1.6em;
+			margin-top: 1px;
+			float: left; } } }
+
+.settings-error {
+	color: #bc0000;
+	font-size: 1.6em;
+	margin-left: 115px; }
+
+#breadcrumb {
+	float: left;
+	width: 100%;
+	padding-top: 8px;
+	margin-bottom: 10px;
+	padding-bottom: 5px;
+	ul {
+		float: left;
+		margin-top: 10px;
+		width: 100%;
+		li {
+			float: left;
+			color: #464646;
+			font-size: 2.4em;
+			padding: 10px {
+				top: 5px; 
+			}
+			&.with-button {
+				float: right;
+				padding-right: 0px;
+				padding-top: 10px;
+				font-size: 1.4em;
+				.button {
+					color: white;
+					&:hover {
+						color: $green;
+					}
+					&.delete:hover{
+						color: $red;
+					}
+				}
+			}
+			&.add-alert {
+				padding-top: 17px;
+				margin-left: 10px;
+			}
+
+			&.help-li {
+				float: right;
+				font-size: 1em;
+				padding-bottom: 5px;
+				padding-right: 10px;
+				padding-top: 8px;
+				a.help {
+					font-size: 2em;
+					text-decoration: none;
+					&:hover, &.active {
+						color: #0072bc;
+					}
+				}
+			}
+			a {
+				color: #dfdfdf;
+			}
+			&.separator {
+				width: 2px;
+				height: 20px;
+				background: #ccc;
+				padding: 0px;
+				border: 0px;
+				margin-top: 6px; }
+			&.first {
+				padding-left: 0px; }
+			&.last {
+				border-right: 0px;
+				padding-right: 0px;
+				} 
+			&.with-filter {
+				padding-top: 15px;
+			}
+			&.filter {
+				float: right;
+				padding-top: 0px;
+				margin-bottom: 0px;
+				.select2-container {
+					font-size: 0.8em;
+					margin-top: 5px;
+					span {
+						color: black;
+						font-size: 0.7em;
+					}
+					
+				}
+				&.add-alert-filter {
+					margin-right: 20px;
+				
+				}
+				
+			}
+			&.snapshot {
+				float: right;
+				padding-right: 0px;
+				padding-left: 0px;
+				color: black;
+				span.batch{
+					float: left;
+					color: $grey;
+					top: 8px;
+					left: 33px; 
+					z-index: 10;
+					position: relative;
+				}
+				input {
+					float: left;
+					position: relative;
+					clear: none;
+					color: black;
+					padding-left: 37px;
+					font-size: 0.7em;
+					width: 200px;
+					
+				}
+				}
+			} 
+		}
+
+}
+
+// HELP PANEL //
+.help-block {
+	float: left;
+	width: 100%;
+	display: none;
+	background: #f4f4f4;
+	border-bottom: 2px solid #F0F0F0;
+	padding-bottom: 10px;
+	h3 {
+		padding: 15px;
+		padding-bottom: 5px;
+		margin: 0px;
+	}
+	a {
+		color: #858585;
+	}
+	p {
+		font-size: 1.4em;
+		line-height: 1.6em;
+		padding: 15px;
+		clear: left;
+		float: left;
+	}
+	span.code {
+		background: white;
+		 @include border-radius(6px);
+		border: 2px solid #f0f0f0;
+		padding: 4px;
+	}
+	strong {
+		font-weight: bold;
+	}
+	ul {
+		float: left;
+		margin-bottom: 0px;
+		clear: left;
+		margin-left: 15px;
+		li {
+			float: left;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			clear: left;
+			font-size: 1.4em;
+		}
+	}
+	pre {
+		clear: left;
+		background: white;
+		margin: 15px;
+		width: auto;
+		float: left;
+		 line-height: 1.6em;
+		padding: 0px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		@include border-radius(6px);
+		border: 2px solid #f0f0f0;
+		code {
+			float: left;
+			padding: 10px;
+			font-size: 1.4em;
+		}
+	}
+}
+
+table {
+		float: left;
+		clear: left;
+		width: $body_width;
+		// Used in settings -> servers
+		tr.odd {
+			background: #f8f8f8;
+		}
+		tr.details {
+			background: #fafafa;
+			td {
+			 padding: 10px;
+			 padding-left: 20px;
+				border-bottom: 2px solid #eee; 
+			}
+			ul {
+				float: left;
+
+				li {
+					float: left;
+					clear: left;
+					padding-bottom: 10px;
+					span {
+						font-weight: bold;
+					}
+					&:last-child {
+						padding-bottom: 0px;
+					}
+				}
+			}
+		}
+		tr.default {
+			td {
+				border-top: 2px solid #f0f0f0;
+				border-bottom: 2px solid #f0f0f0; } 
+			}
+		thead {
+			border-bottom: 2px solid #f0f0f0;
+			td, th {
+				font-size: 1.6em;
+				color: #b2b2b2; } 
+		}
+		td, th {
+			padding: 15px {  
+				left: 20px; };
+			border-bottom: 1px solid #f0f0f0;
+			font-size: 1.4em;
+			a {
+				color: black;
+			}
+			&.action {
+				text-align: right;
+				margin-right: 0px;
+				padding-right: 20px;
+				a {
+					float: right;
+					text-decoration: none;
+					margin-left: 15px; 
+					&.edit {
+						color: black;
+						&:hover {
+							color: $yellow;
+						}
+					}
+					&.delete { 	
+						color: $red;
+						text-decoration: none;
+						&:hover {
+							color: $yellow;
+							text-decoration: none;
+						}
+					}
+				} 
+				}
+			strong {
+				font-weight: bold; } } 
+		} 
+// Settings 
+.delete-row {
+	background: #faf1f3;
+	display: none;
+	position: absolute;
+	border-bottom: 1px solid #fad9e1;
+	border-top: 1px solid #fad9e1;
+	strong {
+		font-weight: bold;
+	}
+	p {
+		font-size: 1.4em;
+		float: left;
+		padding: 22px;
+		padding-left: 22px;
+	}
+	ul {
+		float: right;
+		margin-right: 4px;
+		margin-top: 20px;
+		li {
+			float: left;
+			margin-right: 15px;
+			a  {
+				font-size: 1.4em;
+			}
+		}
+	}
+}
+ul.pagination {
+	float: right;
+	margin-right: 20px;
+	margin-top: 15px;
+	li {
+		float: left;
+		display: block;
+		padding: 5px;
+		span.total_pages{
+			font-size: 1.6em;
+			padding-top: 10px;
+			float: left;
+			padding-left: 10px;
+		}
+	}
+}
+$container_width: 125px; 
+table.dashboard-server {
+	div.container {
+		float: left;
+		width: $container_width;
+		height: 28px;
+		background: #e8edf0;
+		@include border-radius(4px);
+	}
+	.progress {
+		width: 0px;
+		display: block;
+		position: relative;
+		height: 27px;
+		background: $green;
+		@include border-radius(4px); 
+	}
+	.data {
+		position: relative;
+		width: $container_width;
+		text-align: center;
+		top: -20px;
+		display: block;
+		font-weight: bold;
+		@include text-shadow(rgba(white, 0.2) 1px 1px 0, rgba(white, 0.2) 1px 1px 0, rgba(white, 0.2) 1px 1px 0);
+		color: #2b3239; 
+	}
+	.label {
+		float: left;
+		position: relative;
+		top: -8px;
+		left: 0px;
+		color: #797979; 
+		&.margin-top {
+			margin-top: 20px;
+			float: left;
+			clear: left;
+		}
+	}
+
+	div.network {
+		float: left;
+		clear: left;
+		&.margin-top {
+			margin-top: 8px;
+		}
+		span.icon {
+			font-size: 1.2em;
+			
+			float: left;
+			clear: left;
+		}  
+		span.value {
+			float: left;
+			padding-left: 5px;
+			padding-top: 1px;
+		}
+	}
+	a.toggle-table {
+		float: left;
+		clear: left;
+		margin-top: 10px;
+	}
+	td {
+		vertical-align: top;
+		width: 130px;
+		border: 0px;
+		
+	}
+	tbody {
+		border-bottom: 2px solid #eee;
+	}
+}

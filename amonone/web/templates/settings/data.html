@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class='first'>Settings</li>
+<li class='separator'></li>
+<li class='last'> Data</li>
+{% endblock %}
+{% block content_class %}class="data-rows"{% endblock content_class %}
+{% block title %}
+Settings - Data
+{% endblock %}
+{% block content %}
+<ul class="heading no-top-borders">
+	<li>
+		<h1>Database</h1>
+	</li>	
+</ul>
+<div class="settings_content">
+<table>
+	<thead>
+		<td>Collections</td>
+		<td>Entries</td>
+        <td>Data size</td>
+        <td>Storage size (data+indexes)</td>
+	</thead>
+<tr>
+	<td>{{ database_info.collections }}</td>
+	<td>{{ database_info.objects }}</td>
+	<td>{{ database_info.dataSize|to_mb }}</td>
+	<td>{{ database_info.fileSize|to_mb }}</td>
+</tr>
+</table>
+{% for server in server_data  %}
+{% set system_info = server_data[server].system_info %}
+{% set process_info = server_data[server].process_info %}
+{% set server_id = server_data[server]['server_id'] %}
+<ul class="heading no-top-borders">
+	<li>
+		<h1>Server: {{ server }}</h1>
+	</li>	
+</ul>
+<table>
+	<thead>
+	    <tr>
+		<th>Collection</th>
+		<th>Entries</th>
+	    <th>Data size</th>
+	    <th>Storage size (data+indexes)</th>
+		<th class='action'>
+	    </th>
+	    </tr>
+	</thead>
+	<tbody>
+		{% if system_info %}
+		<tr id="row-{{ server_id }}-system" class='system-row'>
+			<td title="{{ system_info.ns }}">System</td>
+			<td>{{ system_info.count }}</td>
+			<td>{{ system_info.size|to_mb }}</td>
+			<td>{{ system_info.storageSize|to_mb }}</td>
+			<td class='action'>
+				<a href="#" data-rowid="{{ server_id }}-system" data-type="system" title="Delete" data-icon="&#xF14E;"  class='delete batch delete_row'></a>		
+				<a data-icon="&#xF0D9;" title="Cleanup" class='batch edit' href="{{ base_url|url('settings','data','cleanup','system') }}/{{ server_id }}">
+			</a>
+    		</td>
+		</tr>
+		<div class="delete-row" id="delete-row-{{ server_id }}-system">
+			<p>
+				Are you sure you want to delete this collection ?
+			</p>
+			<ul>
+				<li>
+				<a href="{{ base_url|url('settings','data','delete','system') }}/{{ server_id }}" class="button delete">Delete</a>
+				</li>
+				<li><a data-rowid="{{ server_id }}-system" href="" class="button cancel">Cancel</a></li>
+			</ul>
+		</div>
+		{% endif %}{# endif system_info #}
+		{% if process_info %}	
+		<tr id="row-{{ server_id }}-process" class='system-row'>
+			<td title="{{ process_info.ns }}">Processes</td>
+			<td>{{ process_info.count }}</td>
+			<td>{{ process_info.size|to_mb }}</td>
+			<td>{{ process_info.storageSize|to_mb }}</td>
+			<td class='action'>
+				<a href="#" data-rowid="{{ server_id }}-process" data-type="system" title="Delete" data-icon="&#xF14E;"  class='delete batch delete_row'></a>		
+				<a data-icon="&#xF0D9;" title="Cleanup" class='batch edit' href="{{ base_url|url('settings','data','cleanup','process') }}/{{ server_id }}">
+    		</td>
+		</tr>
+		<div class="delete-row" id="delete-row-{{ server_id }}-process">
+			<p>
+				Are you sure you want to delete this collection ?
+			</p>
+			<ul>
+				<li>
+				<a href="{{ base_url|url('settings','data','delete','process') }}/{{ server_id }}" class="button delete">Delete</a>
+				</li>
+				<li>
+					<a data-rowid="{{ server_id }}-process" href="" class="button cancel">Cancel</a>
+			</li>
+			</ul>
+		</div>
+		{% endif %}{# endif process_info #}
+	</tbody>
+</table>
+{% endfor %}
+
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/libs/backbone-min.js'></script>
+<script type="text/javascript" src='/media/js/delete.row.js'></script>
+{% endblock %}

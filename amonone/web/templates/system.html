@@ -1,0 +1,547 @@
+{% extends "base.html" %}
+{% block title %}
+System check
+{% endblock %}
+{% block breadcrumb %}
+<li class='first'>System</li>
+{% endblock %}
+{% block header %}
+	<link rel="stylesheet" href="/media/css/rickshaw.css" />
+	<link rel="stylesheet" href="/media/css/chart.css" />
+{% endblock %}
+
+{% block content %}
+
+{% if first_check_date %}
+<form action="{{ base_url|url('system') }}" id="filter-form">
+<ul class='heading'>
+	<li>
+		<label for="daterange">Select charts</label>
+		<select id='charts-select' name='charts' style="width:265px;" multiple="" data-placeholder="All">
+			<option {% if 'memory' in charts %}selected="selected"{% endif %} value="memory">Memory</option>
+			<option {% if 'cpu' in charts %}selected='selected' {% endif %} value="cpu">CPU</option>
+			<option {% if 'loadavg' in charts %}selected='selected' {% endif %} value="loadavg">Load Average</option>
+			<option {% if 'network' in charts %}selected='selected' {% endif %} value="network">Network</option>
+			<option {% if 'disk' in charts %}selected='selected' {% endif %} value="disk">Disk</option>
+		</select>
+	</li>
+	<li>
+		<label for="daterange">Date Range</label>
+		<select id='daterange-select' name="daterange" style="width:200px;" >
+			<option {% if daterange=='day' %}selected{% endif %} value="day">Last 24 hours</option>
+			<option {% if daterange=='week' %}selected{% endif %} value="week">Last 7 days</option>
+			<option {% if daterange=='month' %}selected{% endif %} value="month">Last 30 days</option>
+			<option {% if daterange=='custom' %}selected{% endif %} value="custom">Custom Range</option>
+		</select>
+	</li>
+	<li id="from-element">
+		<label for="">From</label>
+		<input type="text" name="date_from" id="date_from" {% if daterange!='custom' %}disabled{% endif %} value="{{ date_from|date }}" />
+	</li>
+	<li id="to-element">
+		<label for="">To</label>
+		<input type="text" name="date_to" id="date_to" {% if daterange!='custom' %}disabled{% endif %} value='{{ date_to|date }}' />
+	</li>
+	<li class='with_button'>
+		<input type="submit" class="button update" value="Update" />
+	</li>
+</ul>
+</form>
+
+{% if 'memory' in active_charts %}
+<h2>Memory</h2>
+<div class='legend'>
+	<ul>
+		<li>
+			<span class="color one"></span>
+			<span>Total memory</span>
+		</li>
+		<li>
+		<span class="color two"><!-- --></span>
+			<span class='last'>Used memory</span>
+		</li>
+	</ul>
+</div>
+<div id="memory" class='chart_container'>
+	<div class='y_axis' id="memory_y_axis"></div>
+	<div id="memory-chart" class='chart'></div>
+</div>
+{% endif %}{# active_charts memory #}
+
+{% if 'loadavg' in active_charts %}
+<h2>Load average</h2>
+<div class='legend'>
+	<ul>
+		<li>
+			<span class="color one"></span>
+			<span>1 minute</span>
+		</li>
+		<li>
+		<span class="color two"><!-- --></span>
+			<span>5 minutes</span>
+		</li>
+		<li>
+			<span class="color three"><!-- --></span>
+			<span class='last'>15 minutes</span>
+		</li>
+	</ul>
+</div>
+<div id="loadavg" class='chart_container'>
+	<div class='y_axis' id="loadavg_y_axis"></div>
+	<div id="loadavg-chart" class='chart'></div>
+</div>
+{% endif %}{# active_charts loadavg #}
+
+{% if 'cpu' in active_charts %}
+<h2>CPU</h2>
+<div class='legend'>
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>Idle</span>
+			</li>
+			<li>
+			<span class="color two"><!-- --></span>
+				<span>System</span>
+			</li>
+			<li>
+				<span class="color three"><!-- --></span>
+				<span class='last'>User</span>
+			</li>
+		</ul>
+</div>
+<div id="cpu" class='chart_container'>
+	<div class='y_axis' id="cpu_y_axis"></div>
+	<div id="cpu-chart" class='chart'></div>
+</div>
+{% endif %}{# active_charts cpu #}
+
+{% if 'network' in active_charts %}
+<h2>Network</h2>
+{% if server.network_interfaces %}
+	{% for interface in server.network_interfaces %}
+	{% if interface != 'lo' %}
+		<h3>{{ interface }}</h3>
+		<div class='legend'>
+			<ul>
+				<li>
+					<span class="color one"></span>
+					<span>Recieved</span>
+				</li>
+				<li>
+				<span class="color two"><!-- --></span>
+					<span class='last'>Transfered</span>
+				</li>
+			</ul>
+		</div>
+	    <div id="network_{{ interface|clean_slashes }}" class='chart_container'>
+	        <div class='y_axis' id="network_{{ interface|clean_slashes }}_y_axis"></div>
+	        <div id="network-chart_{{ interface|clean_slashes }}" class='chart'></div>
+	    </div>
+	{% endif %}{# lo #}
+	{% endfor %}
+{% else %}
+	<div class="message">No data</div>
+{% endif %}
+{% endif %}{# charts network #}
+
+{% if 'disk' in active_charts %}
+<h2>Disk</h2>
+	{% for volume in server.volumes  %}
+	<h3>{{ volume }}</h3>
+	<div class='legend'>
+		<ul>
+			<li>
+				<span class="color one"></span>
+				<span>Total</span>
+			</li>
+			<li>
+			<span class="color two"><!-- --></span>
+				<span class='last'>Used</span>
+			</li>
+		</ul>
+	</div>
+    <div id="disk_{{ volume|clean_slashes }}" class='chart_container'>
+            <div class='y_axis' id="disk_{{ volume|clean_slashes }}_y_axis"></div>
+            <div id="disk-chart_{{ volume|clean_slashes }}" class='chart'></div>
+    </div>
+	{% endfor %}
+{% endif %}
+{% endif %}{# active_charts disk #}
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='/media/js/libs/charts.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/jquery-ui-1.9.2.custom.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/jquery-ui-timepicker-addon.js'></script>
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script language="javascript" type="text/javascript">
+$(function () 
+{
+	 // Common variables and functions
+    var width = 865;
+    var height = 300;
+    var padding = { top: 0.09, right: 0, bottom: 0.02, left: 0 }
+    function _format_date(date) {
+        _date = new Date(date*1000).toUTCString();
+		return '<span class="date">'+ moment.utc(_date).format("DD.MM.YY H:mm:ss") + '</span>';
+    }
+    var colors = ['#00ADFC', '#7AB317', '#8000A9'];
+    
+    var colors_transparent = ['#CCEFFE',  '#FFCCFF'];
+    var interpolation = 'linear';
+   
+   {% if 'memory' in active_charts %}
+	var memory_graph = new Rickshaw.Graph( {
+		element: document.getElementById("memory-chart"),
+		width: width,
+		height: height,
+		renderer: 'line',
+	    padding: padding, 
+	    interpolation: interpolation,
+	    {% strip %}
+		series: [
+			{
+				color: colors[1],
+	            data:  [{% for m in checks.memory %}
+	            {% if zone_difference.0 == 'negative' %}{x:{{ m.time-zone_difference.1 }},
+	            {% else %}{x: {{ m.time+zone_difference.1 }},
+	            {% endif %}y: {{ m["memory:used:mb"]|int }} },{% endfor %}],
+				name: 'Memory used'
+			}, {
+				color: colors[0], 
+	            data: [{% for m in checks.memory %}
+	                {% if zone_difference.0 == 'negative' %}{x: {{ m.time-zone_difference.1 }},
+	                {% else %}{x: {{ (m.time+zone_difference.1 ) }}, {% endif %}
+	                y: {{ m["memory:total:mb"]|int }} },{% endfor %}], 
+				name: 'Memory total'
+			}
+		]
+	{% endstrip %}
+		
+	});
+
+	memory_graph.render();
+
+	var memory_hover = new Rickshaw.Graph.HoverDetail({
+	    graph: memory_graph,
+	    formatter: function(series, x, y) {
+			var date = _format_date(x);
+			var content = '<span class="metric">' + series.name + ": " + parseInt(y) + 'MB</span>' + date;
+			return content;
+	    }
+	});
+
+
+	var memory_x = new Rickshaw.Graph.Axis.Time({
+	    graph: memory_graph, 
+	});
+
+	var memory_y = new Rickshaw.Graph.Axis.Y( {
+	    graph: memory_graph,
+	    tickFormat: function(y) { return y +'MB'}, 
+	    element: document.getElementById('memory_y_axis'),
+	} );
+
+	memory_x.render();
+	memory_y.render();
+	{% endif %}{# memory in active_charts #}
+
+
+	{% if 'loadavg' in active_charts %}
+	var loadavg_graph = new Rickshaw.Graph({
+	element: document.getElementById("loadavg-chart"),
+	width: width,
+	height: height,
+	renderer: 'line',
+    padding: padding, 
+    interpolation: interpolation,
+    {% strip %}
+	series: [
+		{
+			color: colors[0],
+            data:  [{% for l in checks.loadavg %}
+            {% if zone_difference.0 == 'negative' %}{x:{{ (l.time-zone_difference.1) }},
+            {% else %} {x:{{ (l.time+zone_difference.1 ) }},{% endif %}
+            y: {{ l.minute }} },{% endfor %}],
+			name: '1 minute'
+		}, {
+			color: colors[1],
+            data: [{% for l in checks.loadavg %}
+                {% if zone_difference.0 == 'negative' %}{x:{{ (l.time-zone_difference.1 ) }},
+                {% else %}{x:{{(l.time+zone_difference.1 )}},{% endif %}
+                y:{{ l.five_minutes }} },{% endfor %}], 
+			name: '5 minutes'
+		}, {
+			color: colors[2],
+            data: [{% for l in checks.loadavg %}
+                {% if zone_difference.0 == 'negative' %}{x:{{ (l.time-zone_difference.1)}},
+                {% else %}{x:{{ (l.time+zone_difference.1) }},{% endif %}
+                y: {{ l.fifteen_minutes }} },{% endfor %}], 
+			name: '15 minutes'
+		}
+	]
+    {% endstrip %}
+});
+
+	loadavg_graph.render();
+
+	var loadavg_hover = new Rickshaw.Graph.HoverDetail({
+	    graph: loadavg_graph,
+	    formatter: function(series, x, y) {
+			var date = _format_date(x);
+			var content = '<span class="metric">' + series.name + ": " + y + '</span>' + date;
+			return content;
+	    }
+	});
+
+
+	var loadavg_x = new Rickshaw.Graph.Axis.Time({
+	    graph: loadavg_graph, 
+	});
+
+	var loadavg_y = new Rickshaw.Graph.Axis.Y( {
+	    graph: loadavg_graph,
+	    element: document.getElementById('loadavg_y_axis'),
+	} );
+
+	loadavg_y.render();
+	loadavg_x.render();
+	{% endif %}{# loadavg in active_charts #}
+
+	{% if 'cpu' in active_charts %}
+	var cpu_graph = new Rickshaw.Graph({
+		element: document.getElementById("cpu-chart"),
+		width: width,
+		height: height,
+		renderer: 'line',
+	    padding: padding, 
+	    interpolation: interpolation,
+	    {% strip %}
+		series: [
+			{
+				color: colors[0],
+	            data:  [{% for c in checks.cpu%}
+	            {% if zone_difference.0 == 'negative' %}{x:{{ (c.time-zone_difference.1 ) }},
+	            {% else %}{ x:{{(c.time+zone_difference.1 )}}, {% endif %}
+	            y:{{ c.idle }} },{% endfor %}],
+				name: 'Idle'
+			},  {
+				color: colors[1],
+	            data: [{% for c in checks.cpu %}
+	                {% if zone_difference.0 == 'negative' %}{x:{{ (c.time-zone_difference.1 ) }},
+	                {% else %}{ x:{{ (c.time+zone_difference.1 ) }},{% endif %} 
+	                y:{{ c.user }} },{% endfor %}], 
+				name: 'User'
+			}, {
+				color: colors[2],
+	            data: [{% for c in checks.cpu %}
+	                {% if zone_difference.0 == 'negative' %}{x:{{ (c.time-zone_difference.1 ) }},
+	                {% else %}{x:{{ (c.time+zone_difference.1 ) }},{% endif %}
+	                y:{{ c.system }} },{% endfor %}], 
+				name: 'System'
+			}
+		]
+	    {% endstrip %}
+	});
+
+	cpu_graph.render();
+
+	var cpu_hover = new Rickshaw.Graph.HoverDetail({
+	    graph: cpu_graph,
+	    formatter: function(series, x, y) {
+			var date = _format_date(x);
+			var content = '<span class="metric">' + series.name + ": " + y + '% </span>' + date;
+			return content;
+	    }
+	});
+
+
+	var cpu_x = new Rickshaw.Graph.Axis.Time({
+	    graph: cpu_graph, 
+	});
+
+	var cpu_y = new Rickshaw.Graph.Axis.Y( {
+	    graph: cpu_graph,
+	    tickFormat: function(y) { return y +'%'}, 
+	    element: document.getElementById('cpu_y_axis'),
+	} );
+
+	cpu_y.render();
+	cpu_x.render();
+	{% endif %}{# cpu in active_charts #}
+
+	{% if 'network' in active_charts %}
+    {% for interface in server.network_interfaces  %}
+    var network_{{ interface|clean_slashes }}_graph = new Rickshaw.Graph({
+            element: document.getElementById("network-chart_{{ interface|clean_slashes }}"),
+            width: width,
+            height: height,
+            renderer: 'line',
+            padding: padding, 
+            interpolation: interpolation,
+            {% strip %}
+            series: [
+                {
+                    color: colors[0],
+                    data:  [{% for c in checks.network %}
+                    {% if zone_difference.0 == 'negative' %}{x:{{ (c.time-zone_difference.1 ) }},
+                    {% else %}{x: {{ (c.time+zone_difference.1 ) }},{% endif %}
+                    {% if c[interface] %}y:{{ c[interface].kb_received }}{% else %}y:0{% endif %} },{% endfor %}],
+                    name: 'Received'
+                },{
+                    color: colors[1],
+                    data: [{% for c in checks.network %}
+                        {% if zone_difference.0 == 'negative' %}{x: {{ (c.time-zone_difference.1 ) }},
+                        {% else %}{x: {{ (c.time+zone_difference.1 ) }},{% endif %}
+                        {% if c[interface] %}y:{{ c[interface].kb_transmitted }}{% else %}y:0{% endif %}},{% endfor %}], 
+                    name: 'Transmitted'
+                }
+
+            ]
+            {% endstrip %}
+        });
+
+        network_{{ interface|clean_slashes }}_graph.render();
+
+        var network_{{ interface|clean_slashes }}_hover = new Rickshaw.Graph.HoverDetail({
+            graph: network_{{ interface|clean_slashes }}_graph,
+            formatter: function(series, x, y) {
+                var date = _format_date(x);
+                var content = '<span class="metric">' + series.name + ": " + y + 'kb </span>' + date;
+                return content;
+            }
+        });
+
+        var network_{{ interface|clean_slashes }}_x = new Rickshaw.Graph.Axis.Time({
+            graph: network_{{ interface|clean_slashes }}_graph, 
+        });
+
+        var network_{{ interface|clean_slashes }}_y = new Rickshaw.Graph.Axis.Y( {
+            graph: network_{{ interface|clean_slashes }}_graph,
+            tickFormat: function(y) { return y +'kb'}, 
+            element: document.getElementById('network_{{ interface|clean_slashes }}_y_axis'),
+        } );
+
+        network_{{ interface|clean_slashes }}_x.render();
+        network_{{ interface|clean_slashes }}_y.render();
+		{% endfor %}
+		{% endif %}{# network in charts #}
+
+	{% if 'disk' in active_charts %}
+	{% for volume in server.volumes  %}
+
+    var disk_{{ volume|clean_slashes }}_graph = new Rickshaw.Graph({
+    element: document.getElementById("disk-chart_{{ volume|clean_slashes }}"),
+	width: width,
+	height: height,
+	renderer: 'line',
+    padding: padding,        
+    interpolation: interpolation,
+    {% strip %}
+	series: [{
+            color: colors[0],
+            data:  [{% for d in checks.disk %}
+            {% if zone_difference.0 == 'negative' %}{x:{{ (d.time-zone_difference.1 ) }},
+            {% else %}{x: {{ (d.time+zone_difference.1 ) }}, {% endif %}
+            {% if d[volume] %}y:{{ d[volume].total|to_int }} {% else %}y:0{% endif %} },{% endfor %}],
+			name: 'Total'
+		},{
+            color: colors[1],
+            data: [{% for d in checks.disk %}
+                {% if zone_difference.0 == 'negative' %} {x: {{ (d.time-zone_difference.1 ) }},
+                {% else %}{x: {{ (d.time+zone_difference.1 ) }}, {% endif %} 
+                {% if d[volume] %}y:{{ d[volume].used|to_int }}{% else %}y:0{% endif %}},{% endfor %}],
+			name: 'Used'
+		}
+    ]
+    {% endstrip %}
+    });
+
+        disk_{{ volume|clean_slashes }}_graph.render();
+
+        var disk_{{ volume|clean_slashes }}_hover = new Rickshaw.Graph.HoverDetail({
+            graph: disk_{{ volume|clean_slashes }}_graph,
+            formatter: function(series, x, y) {
+                var date = _format_date(x);
+                var content = '<span class="metric">' + series.name + ": " + y + 'GB </span>' + date;
+                return content;
+            }
+        });
+
+        var disk_{{ volume|clean_slashes }}_x = new Rickshaw.Graph.Axis.Time({
+            graph: disk_{{ volume|clean_slashes }}_graph, 
+        });
+
+        var disk_{{ volume|clean_slashes }}_y = new Rickshaw.Graph.Axis.Y({
+            graph: disk_{{ volume|clean_slashes }}_graph,
+            tickFormat: function(y) { return y +'GB'}, 
+            element: document.getElementById('disk_{{ volume|clean_slashes }}_y_axis'),
+        });
+
+        disk_{{ volume|clean_slashes }}_y.render();
+        disk_{{ volume|clean_slashes }}_x.render();
+
+	{% endfor %}
+	{% endif %}{# disk in active_charts #}
+
+
+});
+
+var datetime_options = {
+	separator: '-',
+	dateFormat: 'dd-mm-yy',  
+	timeFormat: 'HH:mm',
+	
+	maxDate: new Date({{ max_date*1000 }}),
+	{% if first_check_date %}
+    minDate: new Date({{ first_check_date*1000 }})
+    {% endif %}
+};
+// Date variables
+var day_from = "{{ default_from|date }}"
+var day_to = "{{ default_to|date }}"
+
+var week = "{{ default_to|extract_days_from_unixdate(7)|date }}"
+var month = "{{ default_to|extract_days_from_unixdate(30)|date }}"
+
+function disable_dates(){
+	$("#date_from").prop('disabled', true);
+		$("#date_to").prop('disabled', true);
+}
+$('#date_from').datetimepicker(datetime_options);
+$('#date_to').datetimepicker(datetime_options);
+$("#charts-select").select2({width: "275"}); 	
+$("#daterange-select").select2({width: "200", minimumResultsForSearch: 100}).change(function(){
+	current_value = $(this).val();
+
+	
+	if(current_value == 'day') {
+		$("#date_to").val(day_to);
+		$("#date_from").val(day_from);
+		disable_dates();
+	}
+	if(current_value == 'week') {
+		$("#date_from").val(week);
+		disable_dates();
+	}
+	if(current_value == 'month') {
+		$("#date_from").val(month);
+		disable_dates();
+	}
+	if(current_value == 'custom') {
+		$("#date_from").prop('disabled', false);
+		$("#date_to").prop('disabled', false);
+	}
+});
+
+$("#filter-form").on("submit", function(e){
+	$("#date_to").removeAttr('disabled');
+	$("#date_from").removeAttr('disabled');
+
+});
+
+</script>
+{% endblock %}
+
+

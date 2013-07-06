@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li class='first'>Settings</li>
+<li class='separator'></li>
+<li ><a href="{{ base_url|url('settings','data') }}">Data</a></li>
+<li class='separator'></li>
+<li class='last'>System</li>
+{% endblock %}
+{% block title %}
+Settings - Data - Processes
+{% endblock %}
+{% block content %}
+<div class="settings_content">
+<ul class="heading inner no-top-border">
+    <li>
+        <h1>Server: {{ server.name }}</h1>
+    </li>
+</ul>
+<form action="{{ base_url|url('settings','data','cleanup','process') }}/{{ server._id }}" method='post'>
+<ul class="settings-list">
+    <li>
+        <h3>Delete process entries before</h3>
+    </li>
+    <li class='width-auto'>
+		<input type="text" name='date' id="date" value="" />
+        {% if errors.date %}
+           <span class="error"> {{ errors.date }}</span>
+        {% endif %}
+        <span class="date-icon"></span>
+    </li>
+    <li class='no-clear'>
+		{{ app.xsrf }}
+        <input type="submit" class='button delete' value="Delete" />
+    </li>
+</ul>
+</form>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/libs/jquery-ui-1.9.2.custom.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/jquery-ui-timepicker-addon.js'></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var datetime_options = {
+        separator: '-',
+        dateFormat: 'dd-mm-yy',  
+        timeFormat: 'hh:mm',
+        maxDate: new Date({{ max_date*1000 }}),
+    };
+    $('#date').datetimepicker(datetime_options);
+
+});
+</script>
+{% endblock %}

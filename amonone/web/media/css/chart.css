@@ -1,0 +1,200 @@
+/* graph */
+
+.rickshaw_graph {
+	position: relative;
+}
+.rickshaw_graph svg {
+	display: block;	
+	overflow: hidden;
+}
+/* White date hover on the top of the graph */
+.rickshaw_graph .detail .x_label { display: none }
+/* ticks */
+
+.rickshaw_graph .detail .item.active
+{
+    background: #F8F8F8; 
+    border: 2px solid #E0E0E0; 
+    color: #858585;
+    padding: 7px;
+    padding-bottom: 0px;
+    
+}
+.rickshaw_graph .detail .item.active span
+{
+    float: left;
+    clear: left;
+    margin-bottom: 10px;
+}
+
+.rickshaw_graph .detail .item:before { color: #E0E0E0; }
+.rickshaw_graph .detail { background: none; }
+.rickshaw_graph .x_tick {
+	position: absolute;
+	top: 0;
+	bottom: -70px;
+	width: 0px;
+	pointer-events: none;
+    border: 0px;
+}
+.rickshaw_graph .x_tick .title {
+	position: absolute;
+	font-size: 10px;
+	font-family: Arial, sans-serif;
+	opacity: 0.5;
+	white-space: nowrap;
+	margin-left: 3px;
+	bottom: 1px;
+}
+
+/* annotations */
+
+.rickshaw_annotation_timeline {
+	height: 1px;
+	border-top: 1px solid #e0e0e0;
+	margin-top: 10px;
+	position: relative;
+}
+.rickshaw_annotation_timeline .annotation {
+	position: absolute;
+	height: 6px;
+	width: 6px;
+	margin-left: -2px;
+	top: -3px;
+	background-color: rgba(0, 0, 0, 0.25);
+}
+.rickshaw_graph .annotation_line {
+	position: absolute;
+	top: 0;
+	bottom: -6px;
+	width: 0px;
+	display: none;
+}
+.rickshaw_graph .annotation_line.active {
+	display: block;
+}
+.rickshaw_annotation_timeline .annotation .content {
+	background: white;
+	color: black;
+	opacity: 0.9;
+	padding: 5px 5px;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+	border-radius: 3px;
+	position: relative;
+	z-index: 20;
+	font-size: 12px;
+	padding: 6px 8px 8px;
+	top: 18px;
+	left: -11px;
+	width: 160px;
+	display: none;
+	cursor: pointer;
+}
+.rickshaw_annotation_timeline .annotation .content:before {
+	content: "\25b2";
+	position: absolute;
+	top: -11px;
+	color: white;
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+}
+.rickshaw_annotation_timeline .annotation.active,
+.rickshaw_annotation_timeline .annotation:hover {
+	background-color: rgba(0, 0, 0, 0.8);
+	cursor: none;
+}
+.rickshaw_annotation_timeline .annotation .content:hover {
+	z-index: 50;
+}
+.rickshaw_annotation_timeline .annotation.active .content {
+	display: block;
+}
+.rickshaw_annotation_timeline .annotation:hover .content {
+	display: block;
+	z-index: 50;
+}
+.rickshaw_graph .y_axis {
+	fill: none;
+}
+.rickshaw_graph .y_ticks .tick {
+    stroke: none;
+	shape-rendering: crisp-edges;
+	pointer-events: none;
+}
+.rickshaw_graph .y_grid .tick {
+	z-index: -1;
+	stroke: rgba(0, 0, 0, 0.20);
+	stroke-width: 1px;
+	stroke-dasharray: 1 1;
+}
+.rickshaw_graph .y_grid path {
+	fill: none;
+	stroke: none;
+}
+.rickshaw_graph .y_ticks path {
+	fill: none;
+	stroke: none;
+}
+.rickshaw_graph .y_ticks text {
+	opacity: 0.5;
+	font-size: 10px;
+	pointer-events: none;
+}
+.rickshaw_graph .x_tick.glow .title,
+.rickshaw_graph .y_ticks.glow text {
+	fill: black;
+	color: black;
+	text-shadow: 
+		-1px 1px 0 rgba(255, 255, 255, 0.1),
+		1px -1px 0 rgba(255, 255, 255, 0.1),
+		1px 1px 0 rgba(255, 255, 255, 0.1),
+		0px 1px 0 rgba(255, 255, 255, 0.1),
+		0px -1px 0 rgba(255, 255, 255, 0.1),
+		1px 0px 0 rgba(255, 255, 255, 0.1),
+		-1px 0px 0 rgba(255, 255, 255, 0.1),
+		-1px -1px 0 rgba(255, 255, 255, 0.1);
+}
+.rickshaw_graph .x_tick.inverse .title,
+.rickshaw_graph .y_ticks.inverse text {
+	fill: white;
+	color: white;
+	text-shadow: 
+		-1px 1px 0 rgba(0, 0, 0, 0.8),
+		1px -1px 0 rgba(0, 0, 0, 0.8),
+		1px 1px 0 rgba(0, 0, 0, 0.8),
+		0px 1px 0 rgba(0, 0, 0, 0.8),
+		0px -1px 0 rgba(0, 0, 0, 0.8),
+		1px 0px 0 rgba(0, 0, 0, 0.8),
+		-1px 0px 0 rgba(0, 0, 0, 0.8),
+		-1px -1px 0 rgba(0, 0, 0, 0.8);
+}
+.chart_container {
+        float: left;
+        clear: left;
+        width: 900px;
+        margin-bottom: 30px;
+        margin-left: 20px;
+        display: inline-block;
+        position: relative;
+        height: 320px;
+        border: 2px solid #F3F3F3;
+    	border-radius: 4px;
+        padding: 30px;
+        padding-left: 5px;
+        padding-bottom: 20px;
+}
+.chart_container.processes {
+    height: 220px;
+}
+.chart {
+        display: inline-block;
+        margin-left: 60px;
+}
+.chart.processes { height: 160px; }
+.y_axis {
+        position: absolute;
+        top: 30px;
+        bottom: 0;
+        width: 60px;
+        border: 0px;
+        font-size: 1.1em;
+}

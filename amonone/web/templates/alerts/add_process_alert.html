@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<li><a href="{{ base_url|url('alerts') }}">Alerts</a></li>
+<li class='separator'></li>
+<li >Add Process alert</li>
+{% endblock %}
+{% block content_class %}class="alert-settings"{% endblock content_class %}
+{% block header %}
+{% endblock %}
+{% block title %}
+Alerts - Add Process alert
+{% endblock %}
+{% block content %}
+<form action="{{ base_url|url('alerts','process', 'add') }}" method='post'>
+<div class="settings_content">
+	<ul class="settings-list-horizontal">
+	<li class='title'>
+		<h3>Add Process alert</h3>
+	</li>
+	<li id="process-element">
+		<span class="label">Process</span>
+		 <select name="process" id="process_select" class='medium_dropdown' data-placeholder="Select process">
+		 	<option value=""></option>
+		 	{% for processs in server.processes %}
+					<option value="{{ processs }}">{{ processs }}</option>
+			{% endfor %} 
+		 </select>
+		 </select>
+	</li>
+	<li>
+		<span class="label">Check</span>
+		 <select name="check" id="check" class='medium_dropdown' tabindex="3" >
+			{% for key, metric in process_metrics.iteritems() %}
+					<option value="{{ metric }}">{{ metric }}</option>
+			{% endfor %} 
+		 </select>
+	</li>
+	<li>
+		 <span class="label">Is</span>
+		<select class="small_dropdown" id="above_below" name="above_below" tabindex="3">
+				<option value='above'>Above</option>
+				<option value='Below'>Below</option>
+		</select>
+		<input type="text" id="metric_value" class='required' name="metric_value" {% if form_data.metric_value %}
+		value="{{ form_data.metric_value }}" {% endif %} />
+
+		 <select class="small_dropdown" id="metric_type" name="metric_type" tabindex="3">
+				{% for metric in common_metrics %}
+				 <option value='{{ metric }}'>{{ metric }}</option>
+				{% endfor %}
+		</select>
+		{% if errors.metric_value %}<span class="error">{{ errors.metric_value }}</span>{% endif %}
+	 </li>
+	 <li>
+				<span class="label">Notify after</span>
+				<input type="input" value="1" name="threshold" id="threshold">
+				<div class="slider" id="threshold-slider"></div>
+				<span class='occurences'>occurrences</span>
+		</li>
+		<li class='title'>
+						<h4>Send alert to</h4>
+		</li>
+		<li class='alert-recepients-dropdown'>
+				<span class="label">Email</span>
+				<select id='email-select' name='email' tabindex="3" multiple="" data-placeholder="Select recepients">
+						{% for email in email_recepients  %}
+								<option value="{{ email._id }}">{{ email.name }}({{ email.email }})</option>
+						{% endfor %}
+				</select>
+		</li>
+		 <li class='alert-recepients-dropdown'>
+				<span class="label">SMS</span>
+				<select id='sms-select' name='sms' tabindex="3" multiple="" data-placeholder="Select recepients">
+						{% for sms in sms_recepients  %}
+								<option value="{{ sms._id }}">{{ sms.name }}({{ sms.phone }})</option>
+						{% endfor %}
+				</select>
+		</li>
+		<li class='buttons-alerts'>
+			{{ app.xsrf }}
+			<input type="submit" class='button' value="Add" />
+		</li>
+		</ul>
+		
+</div> <!-- settings_content end -->
+</form> 
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src='/media/js/libs/jquery-ui-1.9.2.custom.min.js'></script>
+<script type="text/javascript" src='/media/js/libs/backbone-min.js'></script>
+<script type="text/javascript" src='/media/js/libs/select2/select2.min.js'></script>
+<script type="text/html" id="list_option">
+<% _.each(elements, function(name) { %>
+		<option value='<%= name %>'><%= name %></option>
+<% }); %>
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+		 _.templateSettings = window.undescore_settings;
+		
+		
+		function set_metric_type(value)
+		{
+			if(value == 'CPU'){ 
+					_elements = ['%']
+			}
+			if(value == 'Memory'){ 
+					_elements = ['%','MB']
+			}
+
+			metric_type = _.template($('#list_option').text(), {elements : _elements});
+			$('#metric_type').html(metric_type).trigger("change");
+
+		}
+
+
+		$('#check').select2({width: "200", minimumResultsForSearch: 100}).change(function(){
+			var value = $(this).val();
+			 set_metric_type(value);
+		});
+
+		$('#process_select').select2({width: "200"});
+		$('#metric_type').select2({width: "108", minimumResultsForSearch: 100});
+		$('#above_below').select2({width: "200", minimumResultsForSearch: 100});
+		$('#email-select').select2({width: "395", minimumResultsForSearch: 100});
+		$('#sms-select').select2({width: "395", minimumResultsForSearch: 100});
+
+		 
+		 var check_select = $('#check').val();
+		 set_metric_type(check_select);
+
+		$("#threshold-slider" ).slider({
+			range: "min",
+			value: 1,
+			min: 1,
+			max: 100,
+			slide: function(event, ui) {
+					$(".threshold-value").html(ui.value);
+					$("#threshold").val(ui.value);
+			}
+		});
+
+});
+</script>
+
+{% endblock %}

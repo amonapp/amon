@@ -1,16 +1,15 @@
-from __future__ import with_statement
 import os.path
-import random
-import string
+import uuid
+import base64
 
 # Current directory
 ROOT = os.path.abspath(os.path.dirname(__file__))
 
-# Check if Amon Lite is already installed 
-if os.path.exists('/etc/amonlite.conf'):
-    config_path = '/etc/amonlite.conf'  
+# Check if AmonOne is already installed 
+if os.path.exists('/etc/amonone.conf'):
+	config_path = '/etc/amonone.conf'	
 else:
-    config_path =  os.path.join(ROOT, 'config', 'amonlite.conf')
+	config_path =  os.path.join(ROOT, 'amonone.conf')
 
 try:
     import json
@@ -18,19 +17,18 @@ except ImportError:
     import simplejson as json
 
 try:
-    config_file = file(config_path).read()
-    config = json.loads(config_file)
+	config_file = file(config_path).read()
+	config = json.loads(config_file)
 except:
-    config = {}
+	config = {}
 
-# Replace with a new secret key
-if len(config['secret_key']) != 32:
-    config['secret_key'] = ''.join(random.choice(string.ascii_lowercase + string.digits) for x in range(32))
+# Change only the secret key
+config['secret_key'] = base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes)
 
 # Write the config file in the same directory
-generated_config_path =  os.path.join(ROOT, 'amonlite.conf')
+generated_config_path =  os.path.join(ROOT, 'amonone.conf')
 
 with open(generated_config_path,'w+') as f:
-    config_contents = json.dumps(config, indent=4)
-    f.write(config_contents)
+	config_contents = json.dumps(config, indent=4)
+	f.write(config_contents)
 

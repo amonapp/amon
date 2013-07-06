@@ -1,0 +1,60 @@
+<html>  
+<head>  
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
+    <title>Process alert</title>  
+</head>
+<style>
+	table {
+		border:1px solid #eee;
+		border-collapse:collapse;
+		width: 700px;
+	}
+	table tr {
+		padding: 0px;
+	}
+	table td {
+		padding: 10px;
+		vertical-align: top;
+		border:1px solid #eee;
+	}
+	table thead {
+		background:#f4f4f4;
+	}
+</style>
+<body>
+<table cellspacing="0" cellpadding="0" align="left">
+	<thead>
+		<tr>
+			<td width="80">Process</td>
+			<td width="100">Rule</td>
+			<td width="100">Alert triggered after</td>
+			<td>History</td>
+		</tr>
+	</thead>
+	<tbody> 
+		<tr>
+			<td>{{ template_data.process }}</td>
+			<td>{{ template_data.check }}
+	   			{% if template_data.above_below == 'above' %} &gt; {% else %} &lt;{% endif %}
+				{{ template_data.metric_value|default('') }}  {{ template_data.metric_type|default('') }} 
+			</td>
+			<td>
+				{% if template_data.threshold %}
+				<b>{{ template_data.threshold }}</b> occurences
+				{% endif %}
+			</td>
+			<td>
+				{% if template_data.history|length > 1 %}
+					{% for occurence in template_data.history %}
+						{% if loop.index < 10 %}
+						{{ occurence.value }}{% if template_data.metric_type %} {{ template_data.metric_type }} {% endif %} on {{ occurence.time|date_local }} 
+						<br />
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			</td>
+		</tr>
+	</tbody>
+</table>
+</body>
+</html>
