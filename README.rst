@@ -1,11 +1,6 @@
-=============================================================
-AmonOne - Modern self-hosted  server monitoring
-=============================================================
-
-Introduction
-=============
 
 AmonOne - Modern self-hosted  server monitoring
+===============================================
 
 **1. System monitoring**
 

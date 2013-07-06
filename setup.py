@@ -26,9 +26,9 @@ packages, data_files = [], []
 root_dir = os.path.dirname(__file__)
 if root_dir != '':
     os.chdir(root_dir)
-amon_dir = 'amon'
+amonone_dir = 'amonone'
 
-for dirpath, dirnames, filenames in os.walk(amon_dir):
+for dirpath, dirnames, filenames in os.walk(amonone_dir):
     # Ignore dirnames that start with '.'
     for i, dirname in enumerate(dirnames):
         if dirname.startswith('.'): del dirnames[i]
@@ -48,8 +48,8 @@ sdict = {
 	'data_files' : data_files,
 	'install_requires': 
 	[
-        'pymongo',
-		'tornado',
+        'pymongo>=2.5.2',
+		'tornado>=3.1',
 		'formencode==1.2.6',
         'Jinja2',
         'mailtools==2.1',
