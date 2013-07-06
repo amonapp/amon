@@ -1,13 +1,11 @@
 =============================================================
-AmonOne - Self-hosted monitoring toolkit
+AmonOne - Modern self-hosted  server monitoring
 =============================================================
 
 Introduction
 =============
 
-AmonOne was designed with one goal in mind - to help you completely monitor
-your web applications. 
-
+AmonOne - Modern self-hosted  server monitoring
 
 **1. System monitoring**
 
@@ -15,9 +13,11 @@ Monitor the core metrics of your servers - RAM, CPU, Load average, Network traff
 
 **2. Process monitoring**
 
-Monitor the CPU and RAM usage. Add new process with 1 line of 
-code. Master/worker aware - perfect for monitoring web servers
+Monitor the CPU and RAM usage of all the processes running on your server.
 
+**3. Email & SMS Notifications**
+
+When something goes wrong, receive real time notifications via Email or SMS
 
 .. figure:: https://raw.github.com/martinrusev/amonone/master/preview/screenshot.png
 
@@ -27,11 +27,3 @@ More info
 
 AmonOne user guide -> https://github.com/martinrusev/amonone/wiki
 
-Requirements
-=============
-
-Python 2.5+
-pymongo >=2.4.2
-Jinja2 >=2.6
-tornado >=2.4.1
-MongoDB
