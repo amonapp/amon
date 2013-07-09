@@ -36,6 +36,8 @@ else:
 # Always 
 ACL = 'True'
 
+SYSTEM_CHECK_PERIOD = config.get('system_check_period', 60)
+
 TIMEZONE = config.get('timezone','UTC')
 
 PROXY = config.get('proxy', None) # Relative baseurl if true

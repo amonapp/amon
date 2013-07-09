@@ -586,8 +586,8 @@
   margin-bottom: 5px; }
 
 .ui-slider-horizontal .ui-slider-handle {
-  top: -0.3em;
-  margin-left: -0.6em; }
+  top: -.3em;
+  margin-left: -.6em; }
 
 .ui-slider-horizontal .ui-slider-range {
   top: 0;
@@ -604,9 +604,9 @@
   height: 100px; }
 
 .ui-slider-vertical .ui-slider-handle {
-  left: -0.3em;
+  left: -.3em;
   margin-left: 0;
-  margin-bottom: -0.6em; }
+  margin-bottom: -.6em; }
 
 .ui-slider-vertical .ui-slider-range {
   left: 0;
@@ -729,9 +729,9 @@
   margin-top: 40px; }
 
 .ui-datepicker .ui-datepicker-buttonpane button {
-  background: #89BC32;
+  background: #89bc32;
   color: white;
-  border: 1px solid #75A22B;
+  border: 1px solid #75a22b;
   float: right;
   margin: .5em .2em .4em;
   cursor: pointer;
