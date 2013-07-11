@@ -1,4 +1,3 @@
-
 AmonOne - Modern self-hosted  server monitoring
 ===============================================
 
@@ -17,8 +16,4 @@ When something goes wrong, receive real time notifications via Email or SMS
 .. figure:: https://raw.github.com/martinrusev/amonone/master/preview/screenshot.png
 
 
-More info
-================
-
-AmonOne user guide -> https://github.com/martinrusev/amonone/wiki
 
