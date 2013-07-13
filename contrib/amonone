@@ -59,21 +59,12 @@ if __name__ == "__main__":
 				pid = None
 
 			if pid:
-<<<<<<< HEAD:contrib/amonone
 				print 'AmonOne {0} running as pid {1}'.format(amon.__version__, pid)
 				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
 						settings.WEB_APP['port'])
 			else:
 				print 'AmonOne is not running.'
 
-=======
-				print 'Amon Lite {0} running as pid {1}'.format(amonlite.__version__, pid)
-				print 'You can check it out at {0}:{1}'.format(settings.WEB_APP['host'],
-						settings.WEB_APP['port'])
-			else:
-				print 'Amon Lite {0} is not running.'.format(amonlite.__version__)
-		
->>>>>>> 24757da81d7200522518f1179071877d99c68097:contrib/amonlite
 		else:
 			print "Unknown command"
 			sys.exit(2)
