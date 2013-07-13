@@ -105,15 +105,23 @@ hash git >/dev/null && /usr/bin/env git clone https://github.com/martinrusev/amo
 
 	# Copy the daemon
 	sudo cp contrib/amonone /etc/init.d/amonone
+	
+	# Copy the collector daemon
+	sudo cp contrib/amonone /etc/init.d/amonone-collector
 
 	# make the web app daemon executable
 	sudo chmod +x /etc/init.d/amonone
+	
+	# make the collector daemon executable
+	sudo chmod +x /etc/init.d/amonone-collector
 
-	# Add the daemon to the startup list
+	# Add the daemons to the startup list
 	if [ "$DISTRO" == 'debian' ]; then
 		sudo update-rc.d amonone defaults > /dev/null
+		sudo update-rc.d amonone-collector defaults > /dev/null
 	elif [ "$DISTRO" == 'rpm' ]; then
 		sudo chkconfig --add amonone > /dev/null
+		sudo chkconfig --add amonone-collector > /dev/null
 	fi
 
 	# Create a directory for the log files
@@ -227,9 +235,11 @@ restart_amonone() {
   if  pgrep -x amon > /dev/null; then
 	  echo "*** AmonOne succesfully updated"
 	  sudo /etc/init.d/amonone restart
+	  sudo /etc/init.d/amonone-collector restart
   else
 	  echo "*** AmonOne succesfully installed"
 	  sudo /etc/init.d/amonone start
+	  sudo /etc/init.d/amonone-collector start
 	  echo "*** Starting AmonOne "
   fi
 
