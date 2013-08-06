@@ -95,7 +95,7 @@ hash git >/dev/null && /usr/bin/env git clone https://github.com/martinrusev/amo
   echo "git not installed"
   exit
 }
-	cd "~/amonone"
+	cd ~/amonone
 
 	sudo python setup.py install # Install Amon and all the dependecies
 	python generate_config.py # Generate the configuration file
