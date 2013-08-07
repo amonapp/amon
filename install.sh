@@ -107,7 +107,7 @@ hash git >/dev/null && /usr/bin/env git clone https://github.com/martinrusev/amo
 	sudo cp contrib/amonone /etc/init.d/amonone
 	
 	# Copy the collector daemon
-	sudo cp contrib/amonone /etc/init.d/amonone-collector
+	sudo cp contrib/amonone-collector /etc/init.d/amonone-collector
 
 	# make the web app daemon executable
 	sudo chmod +x /etc/init.d/amonone
