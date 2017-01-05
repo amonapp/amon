@@ -1,0 +1,17 @@
+{
+  "name": "amon-gulp",
+  "version": "1.0.1",
+  "description": "Amon Gulp Dependencies",
+  "scripts": {
+      "gulp": "gulp",
+      "postinstall": "npm rebuild gulp-sass node-sass;" 
+  },
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.0.4",
+    "gulp-notify": "^2.2.0",
+    "gulp-uglify": "^1.4.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-ng-annotate": "^1.1.0"
+  }
+}

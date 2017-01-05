@@ -1,0 +1,3 @@
+include setup.py 
+recursive-include amon/templates *
+recursive-include amon/static *
