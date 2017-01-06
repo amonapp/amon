@@ -150,9 +150,91 @@ API_RESULTS = {
 
 
 LOGIN_URL = '/account/login'
+
+SERVER_METRICS = {
+    "": "",
+    "1": "CPU",
+    "2": "Memory",
+    "3": "Loadavg",
+    "5": "Disk"
+}
+
+PROCESS_METRICS = {"1": "CPU", "2": "Memory", "3": "Down"}
+COMMON_METRICS = ["MB", "GB", "%"]
+
+EMAIL_BACKEND = 'amon.apps.notifications.mail.backends.AmonEmailBackend'
+
+###########################
+#
+#     LOCAL SETTINGS
+#
+###########################
 LOGFILE = '/var/log/amon/amonapp.log'
 LOGFILE_REQUESTS = '/var/log/amon/amon_requests.log'
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/etc/opt/amon/amon.sqlite',
+    }
+}
+
+config_path = "/etc/opt/amon/amon.yml"
+
+# Overwrite for the test suite
+if TESTING:
+
+    logging.disable(logging.CRITICAL)
+
+    DATABASES = {
+        'default': {
+            'NAME': os.path.join(PROJECT_ROOT, 'amon_testing.sqlite'),
+            'ENGINE': 'django.db.backends.sqlite3',
+        },
+    }
+
+    config_path = os.path.join(PROJECT_ROOT, 'amon.yml')
+
+    LOGFILE = os.path.join(PROJECT_ROOT, 'amoapp.log')
+    LOGFILE_REQUESTS = os.path.join(PROJECT_ROOT, 'amoapp_requests.log')
+
+
+try:
+    with open(config_path, 'r') as f:
+        config = yaml.load(f)
+except yaml.YAMLError as exc:
+    print(exc)
+if config is None:
+    config = {}  # Don't trigger exceptions if the config file is empty
+
+MONGO_URL = config.get('mongo_uri', 'mongodb://localhost:27017')
+
+HOST = config.get('host', '127.0.0.1')
+STATIC_URL = config.get('static_url', None)
+
+host_struct = parsehost(HOST)
+
+ALLOWED_HOSTS = [host_struct.hostname]
+HOST = host_struct.host
+HOSTNAME = host_struct.hostname
+
+
+if STATIC_URL is None:
+    STATIC_URL = '{0}/static/'.format(HOST)
+
+SSL = config.get('ssl', None)
+
+#  Global retention period in days, overwrites settings set from the web interface
+KEEP_DATA = config.get('keep_data', None)
+
+
+# SMTP Settings - optionally store these in a config file
+SMTP = config.get('smtp', False)
+
+if SSL or host_struct.scheme == 'https':
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 logging.getLogger("requests").setLevel(logging.WARNING)
 
@@ -161,8 +243,8 @@ LOGGING = {
     "disable_existing_loggers": True,
     "formatters": {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
         },
         "simple": {
             "format": "%(levelname)s %(message)s"
@@ -210,85 +292,6 @@ LOGGING = {
     }
 }
 
-
-SERVER_METRICS = {
-    "": "",
-    "1": "CPU",
-    "2": "Memory",
-    "3": "Loadavg",
-    "5": "Disk"
-}
-
-PROCESS_METRICS = {"1": "CPU", "2": "Memory", "3": "Down"}
-COMMON_METRICS = ["MB", "GB", "%"]
-
-EMAIL_BACKEND = 'amon.apps.notifications.mail.backends.AmonEmailBackend'
-
-###########################
-#
-#     LOCAL SETTINGS
-#
-###########################
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/etc/opt/amon/amon.sqlite',
-    }
-}
-
-config_path = "/etc/opt/amon/amon.yml"
-
-# Overwrite for the test suite
-if TESTING:
-
-    logging.disable(logging.CRITICAL)
-
-    DATABASES = {
-        'default': {
-            'NAME': os.path.join(PROJECT_ROOT, 'amon_testing.sqlite'),
-            'ENGINE': 'django.db.backends.sqlite3',
-        },
-    }
-
-    config_path = os.path.join(PROJECT_ROOT, 'amon.yml')
-
-
-try:
-    with open(config_path, 'r') as f:
-        config = yaml.load(f)
-except yaml.YAMLError as exc:
-    print(exc)
-if config is None:
-    config = {}  # Don't trigger exceptions if the config file is empty
-
-MONGO_URL = config.get('mongo_uri', 'mongodb://localhost:27017')
-
-HOST = config.get('host', '127.0.0.1')
-STATIC_URL = config.get('static_url', None)
-
-host_struct = parsehost(HOST)
-
-ALLOWED_HOSTS = [host_struct.hostname]
-HOST = host_struct.host
-HOSTNAME = host_struct.hostname
-
-
-if STATIC_URL is None:
-    STATIC_URL = '{0}/static/'.format(HOST)
-
-SSL = config.get('ssl', None)
-
-#  Global retention period in days, overwrites settings set from the web interface
-KEEP_DATA = config.get('keep_data', None)
-
-
-# SMTP Settings - optionally store these in a config file
-SMTP = config.get('smtp', False)
-
-if SSL or host_struct.scheme == 'https':
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
 
 
 # Overwrite all settings with dev

@@ -20,3 +20,4 @@ remotefiles/
 .pyc
 *.sqlite
 dev_settings.py
+*.log
