@@ -5,7 +5,7 @@ python:
 install: "pip install -r requirements.txt"
 # command to run tests
 before_install:
-    mkdir -p /etc/opt/amon
+  mkdir -p /etc/opt/amon
 script: python manage.py test
 services:
   - mongodb
