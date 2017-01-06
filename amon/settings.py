@@ -11,6 +11,7 @@ from amon.utils.parsehost import parsehost
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))  # dirname, dirname - climbs one dir higher
 
 TESTING = True if 'test' in sys.argv else False
+TRAVIS = True if os.getenv('TRAVIS') else False
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -263,11 +264,10 @@ if TESTING:
 
     DATABASES = {
         'default': {
-            'NAME': '/etc/opt/amon/amon_testing.sqlite',
+            'NAME': os.path.join(PROJECT_ROOT, 'amon_testing.sqlite'),
             'ENGINE': 'django.db.backends.sqlite3',
         },
     }
-
 
 SSL = config.get('ssl', None)
 
