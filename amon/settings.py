@@ -124,6 +124,7 @@ NOSE_ARGS = [
     '--with-timer',
     '--stop',
     '--exclude-dir=amon/apps/cloudservers',
+    '--exclude-dir-file=amon/apps/api/tests/cloudservers_test.py',
     '--with-coverage',
     '--cover-inclusive',
     '-x'
