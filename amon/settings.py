@@ -8,7 +8,10 @@ import hashlib
 import yaml
 from amon.utils.parsehost import parsehost
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))  # dirname, dirname - climbs one dir higher
+# dirname, dirname - climbs one dir higher
+APPS_ROOT = os.path.abspath(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(APPS_ROOT)
+
 
 TESTING = True if 'test' in sys.argv else False
 TRAVIS = True if os.getenv('TRAVIS') else False
@@ -41,9 +44,9 @@ SECRET_KEY = hashlib.md5(SECRET_KEY_UNIQUE).hexdigest()
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [
-        PROJECT_ROOT + '/templates',
-        PROJECT_ROOT + '/templates/notifications/_alerts/emails',
-        PROJECT_ROOT + '/templates/notifications/_alerts/thirdparty',
+        APPS_ROOT + '/templates',
+        APPS_ROOT + '/templates/notifications/_alerts/emails',
+        APPS_ROOT + '/templates/notifications/_alerts/thirdparty',
     ],
     'APP_DIRS': True,
     'OPTIONS': {
@@ -226,9 +229,32 @@ EMAIL_BACKEND = 'amon.apps.notifications.mail.backends.AmonEmailBackend'
 #     LOCAL SETTINGS
 #
 ###########################
-default_config_path = "/etc/opt/amon/amon.yml"
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/etc/opt/amon/amon.sqlite',
+    }
+}
+
+config_path = "/etc/opt/amon/amon.yml"
+
+# Overwrite for the test suite
+if TESTING:
+
+    logging.disable(logging.CRITICAL)
+
+    DATABASES = {
+        'default': {
+            'NAME': os.path.join(PROJECT_ROOT, 'amon_testing.sqlite'),
+            'ENGINE': 'django.db.backends.sqlite3',
+        },
+    }
+
+    config_path = os.path.join(PROJECT_ROOT, 'amon.yml')
+
+
 try:
-    with open(default_config_path, 'r') as f:
+    with open(config_path, 'r') as f:
         config = yaml.load(f)
 except yaml.YAMLError as exc:
     print(exc)
@@ -249,25 +275,6 @@ HOSTNAME = host_struct.hostname
 
 if STATIC_URL is None:
     STATIC_URL = '{0}/static/'.format(HOST)
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/etc/opt/amon/amon.sqlite',
-    }
-}
-
-if TESTING:
-
-    logging.disable(logging.CRITICAL)
-
-    DATABASES = {
-        'default': {
-            'NAME': os.path.join(PROJECT_ROOT, 'amon_testing.sqlite'),
-            'ENGINE': 'django.db.backends.sqlite3',
-        },
-    }
 
 SSL = config.get('ssl', None)
 
