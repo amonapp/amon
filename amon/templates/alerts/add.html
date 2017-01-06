@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block ngapp %}AlertsAddApp{% endblock ngapp %}
+{% block breadcrumb %}
+    <ul id='breadcrumb-list'>
+    <li><a href="{% url 'alerts' %}">Alerts</a></li>
+    <li class='separator'></li>
+    <li class='last'>Add alert</li>
+    </ul>
+{% endblock %}
+{% block content_class %}class="alert-settings"{% endblock content_class %}
+{% block title %}Alerts - Add{% endblock %}
+{% block content %}
+
+<form action="{% url 'add_alert' %}" method='post' data-ng-controller="AlertsCtrl" name='form'>
+    <ul class='inner-heading'>
+        <li><h1>Add alert</h1></li>
+    </ul>
+    <ul class="settings-list-form">    
+    <li>
+        <span class="label">Servers</span>
+        {{ form.server }}
+        {{ form.server.errors }}
+    </li>
+    
+    <li data-ng-show="show_tags">
+        <span class="label">Tags</span>
+         <select id="tags" name="tags" select2-dropdown data-placeholder="Select tags" multiple="">
+
+        {% for tag in tags  %}
+            <option value="{{ tag|mongo_id }}">{% if tag.group.name %}{{tag.group.name }}:{% endif %}{{ tag.name }}</option>
+        {% endfor %}
+        </select>
+    </li>
+
+    <li data-ng-show="show_metrics">
+        <span class="label">Metric</span>
+         <select id="metric" name="metric" metric-dropdown data-placeholder="Select metric">
+         <option value=""></option>
+        {% verbatim  %}
+            <option ng-repeat="m in server_metrics" data-type="{{ m.metric }}" value="{{m.value}}">{{m.name}}</option>
+        {% endverbatim %}
+        </select>
+        {{ form.metric.errors }}
+    </li>
+
+    
+    
+    <li class='small-dropdown' data-ng-show="show_is">
+        <span class="label">Is</span>
+        {{ form.above_below }}
+        {{ form.metric_value }}
+        {% verbatim  %}
+         <select id="metric_type" name="metric_type"  data-size="90" select2-dropdown data-ng-show="show_metric_types" >
+                <option data-ng-repeat="mt in metric_types" value="{{ mt }}">{{ mt }}</option>
+        </select>
+        {% endverbatim %}
+    </li>
+    <li data-ng-show="show_for">
+        <span class="label">For</span>
+        {{ form.period }}
+    </li>
+
+    
+    </ul>
+    
+    
+
+    <ul class='inner-heading'>
+        <li><h1>Send notification to</h1></li>
+    </ul>
+    <ul class="settings-list-form">        
+    <li class='alert-recepients-dropdown'>
+        <span class="label">Notify</span>
+        <select id='notifications-select' name='notifications' multiple="" data-placeholder="Select Recipients" notifications-dropdown>
+            {% for n in notifications %}
+                <option value="{{n.provider_id}}:{{ n|mongo_id }}" data-image="{{STATIC_URL}}images/integrations/{{n.provider_id}}.png">
+                {{n.provider_id}}: {% if n.provider_id == 'email' %}{{n.email}} {% else %}{{n.name}}{%  endif %}
+                </option>
+            {% endfor %}
+        </select>
+    </li>
+
+     <li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value="Add" />
+    </li>
+    </ul>
+    </form> 
+    
+{% endblock %}
+{% block js %}
+{% if request.devmode %}
+<script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.alerts.add.js'></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block ngapp %}BaseModule{% endblock ngapp %}
+{% block breadcrumb %}
+<ul id='breadcrumb-list'>
+<li class='first'>Settings</li>
+<li class='separator'></li>
+<li ><a href="{% url 'notifications_webhooks' %}">Webhooks</a></li>
+<li class='separator'></li>
+<li >Edit</li>
+</ul>
+{% endblock %}
+{% block title %}
+Settings - Webhooks
+{% endblock %}
+{% block content %}
+<div class="settings_content">
+<form action="{% url 'edit_webhook' webhook_id=webhook|mongo_id %}" method='post'>
+<ul class='inner-heading'>
+    <li><h1 >Edit Webhook</h1></li>
+</ul>
+<ul class='settings-list-form'>
+
+    {{form.as_ul }}
+<li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value='Update' /> 
+    </li>
+</ul>
+</form>
+</div> <!-- settings_content end -->
+{% endblock %}

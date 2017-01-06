@@ -1,0 +1,347 @@
+@import "_variables";
+
+rickshaw-chart {
+    float: left;
+    // display: none;
+    position: relative;
+    // padding: 20px;
+    border-left: 2px solid white;
+    margin-bottom: 45px;
+    box-sizing: border-box;
+
+}
+
+.rickshaw_graph {
+    position: relative;
+    margin-top: 10px;
+}
+
+.rickshaw_graph svg {
+    display: block;    
+    overflow: hidden;
+}
+
+.rickshaw_graph svg path.path {
+    position: relative;
+    z-index: 2;
+}
+
+.rickshaw_graph svg g.y_grid g {
+    position: relative;
+    z-index: 1;    
+} 
+
+
+.rickshaw_graph .detail {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.1);
+    bottom: 0;
+    width: 1px;
+    transition: opacity 0.25s linear;
+    -moz-transition: opacity 0.25s linear;
+    -o-transition: opacity 0.25s linear;
+    -webkit-transition: opacity 0.25s linear;
+}
+.rickshaw_graph .detail.inactive {
+    opacity: 0;
+}
+.rickshaw_graph .detail .item.active {
+    opacity: 1;
+}
+.rickshaw_graph .detail .x_label {
+    font-family: Arial, sans-serif;
+    border-radius: 3px;
+    padding: 6px;
+    opacity: 0.5;
+    border: 1px solid #e0e0e0;
+    font-size: 12px;
+    position: absolute;
+    background: white;
+    white-space: nowrap;
+}
+.rickshaw_graph .detail .item {
+    position: absolute;
+    z-index: 2;
+    border-radius: 3px;
+    padding: 0.25em;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    margin-left: 1em;
+    margin-top: -1em;
+    white-space: nowrap;
+}
+
+
+
+/* ticks */
+
+.rickshaw_graph .x_tick {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0px;
+    border-left: 1px dotted rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+}
+.rickshaw_graph .x_tick .title {
+    position: absolute;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    opacity: 0.5;
+    white-space: nowrap;
+    margin-left: 3px;
+    bottom: 1px;
+}
+
+
+
+
+
+
+
+/* White date hover on the top of the graph */
+.rickshaw_graph .detail .x_label { display: none }
+/* ticks */
+
+.rickshaw_graph .detail .item.active
+{
+    background: $breadcrumb;  
+    border: 2px solid $header; 
+    color: white;
+    padding: 10px;
+    padding-bottom: 0px;
+    
+}
+.rickshaw_graph .detail .item.active span
+{
+    float: left;
+    clear: left;
+    margin-bottom: 10px;
+}
+.rickshaw_graph .detail .dot {
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-top: -4px;
+    border-radius: 5px;
+    position: absolute;
+    background: white;
+    border-width: 2px;
+    border-style: solid;
+    display: none;
+    background-clip: padding-box;
+}
+.rickshaw_graph .detail .dot.active {
+    display: block;
+}
+.rickshaw_graph .detail .item:before {
+    content: "\25c2";
+    position: absolute;
+    left: -0.6em;
+    top: 3px;
+    color: rgba(0, 0, 0, 0.7);
+    width: 0;
+}
+.rickshaw_graph .detail .item:before { color: $header; }
+
+.rickshaw_graph .detail .item.left-sided { right: 20px; }
+.rickshaw_graph .detail .item.left-sided:before {
+    left: auto;
+    right: -0.5em; 
+    @include rotate(180deg);
+}
+
+.rickshaw_graph .detail { background: $heading; height:300px; }
+.rickshaw_graph .x_tick {
+    position: absolute;
+    top: 0;
+    bottom: -30px;
+    width: 0px;
+    pointer-events: none;
+    border: 0px;
+}
+.rickshaw_graph .x_tick .title {
+    position: absolute;
+    font-size: 10px;
+    font-family: Arial, sans-serif;
+    opacity: 0.5;
+    white-space: nowrap;
+    margin-left: 3px;
+    bottom: 1px;
+}
+
+rickshaw-chart .y_axis {
+    position: absolute;
+    top: 25px; 
+    bottom: 0;
+    width: 60px;
+    border: 0px;
+    font-size: 1em;
+}
+rickshaw-chart .y_ticks .tick {
+    stroke: rgba(0, 0, 0, 0.16);
+    stroke-width: 2px;
+    shape-rendering: crisp-edges;
+    pointer-events: none;
+}
+
+rickshaw-chart .y_grid path {
+    fill: none;
+    stroke: none;
+}
+rickshaw-chart .y_ticks path {
+    fill: none;
+    //stroke: #808080;
+}
+rickshaw-chart .y_ticks text {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+
+rickshaw-chart .y_ticks .tick {
+    stroke: none;
+    shape-rendering: crisp-edges;
+    pointer-events: none;
+}
+rickshaw-chart .y_grid .tick {
+    z-index: -1;
+    stroke: $chart_line;
+    stroke-width: 1px;
+    
+}
+rickshaw-chart .y_grid path {
+    fill: none;
+    stroke: none;
+}
+rickshaw-chart .y_ticks path {
+    fill: none;
+    stroke: none;
+}
+rickshaw-chart .y_ticks text {
+    opacity: 0.4;
+    font-size: 1.1em;
+    pointer-events: none;
+}
+.chart_container.processes {
+    height: 220px;
+}
+.chart {
+    display: inline-block;
+    margin-left: 60px;
+}
+.chart.processes { height: 160px; }
+
+
+rickshaw-chart .chart-slider {
+    float: left;
+    clear: both;
+    margin-left: 63px;
+    margin-top: 40px;
+}
+.chart-timeline {
+    float: left;
+    clear: both;
+    width: 900px;
+    margin-left: 22px;
+    margin-bottom: 10px;
+}
+.chart_container {
+    &#history {
+        margin-top: 20px;
+        margin-left: 0px;
+    }
+}
+.uptime-history #history.chart_container {
+    margin-top: 0px;
+}
+div#legend {
+    position: fixed;
+    left: 0px;
+    display: none;
+    bottom: 0px;
+    min-height: 60px;
+    width: 100%;
+    z-index: 100;
+    background: $tooltip;
+    opacity: 0.9;
+    ul#legend_list {
+        float: left;
+        
+        padding: 20px;
+        padding-bottom: 10px;
+        li {
+            margin-bottom: 15px;
+            float: left;
+            
+            margin-right: 30px;
+            font-size: 1.4em;
+            color: white;
+            span.color {
+                float: left;
+                width: 16px;
+                height: 16px;
+                background: red;
+                margin-right: 10px;
+                display: block;
+            }
+        }
+    }
+    a.snapshot {
+        float: right;
+        font-size: 1.6em;
+        color: white;
+        
+        position: relative;
+        padding: 20px;
+        
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+        &:before {
+            font-family: "amon";
+            position: absolute;
+            content: attr(data-icon);
+            width: 20px;
+            height: 20px;
+
+            top: 18px;
+            left: -10px;
+            text-align: center;
+            font-size: 1.4em;
+            
+            
+        }
+    }
+    span#legend_timestamp {
+        font-size: 1.6em;
+        float: left;
+        color: white;
+        padding: 20px;
+        padding-top: 21px;
+        padding-bottom: 0px;
+    }
+}
+ul.charts-nodata {
+    // padding: 20px;
+    float: left;
+    width: 100%;
+    clear: left;
+    li {
+        @include default-text;
+        background: $heading;
+        padding: 10px;
+        margin-bottom: 10px;
+        span.right {
+            float: right;
+        }
+    }
+}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+
+{% block content_class %}class="integrations data-rows"{% endblock content_class %}
+{% block title %}Cloud Servers{% endblock %}
+{% block breadcrumb_class %}empty_alerts_header{% endblock breadcrumb_class %}
+{% block breadcrumb %}
+    {% include "settings/_topbar.html" %}
+{% endblock breadcrumb %}
+{% block main_content_class %}center{% endblock main_content_class %}
+
+{% block content %}
+    {% include "notifications/_left.html" %}
+    <div class="right">
+        {% if provider_id %}
+            
+            {% if provider_data %}
+                {% include "notifications/edit.html" %}
+                
+            {% else %}
+                {% include "notifications/add.html" %}
+            {% endif %}
+        {% endif %}
+
+        
+    
+    {% if provider_id and all_for_provider.clone.count > 0 %}
+    <table class='settings-table'>
+        <thead>
+            <td>Name</td>
+            <td></td>
+        </thead>
+        {% for r in all_for_provider %}
+        <tr id="row-{{ r|mongo_id }}">
+            
+            <td>
+            <a target='_blank' href="{% url 'notifications_edit' provider_id=provider_id notification_id=r|mongo_id %}">
+            {% if r.provider_id == 'email' %}{{r.email}} {% else %}{{r.name}}{%  endif %}</a></td>
+            <td class='settings-column'>
+                <a href="#" class='settings amon' data-dropdown="settings-menu-{{ r|mongo_id }}" data-options="is_hover:true">d</a>
+                <ul id='settings-menu-{{ r|mongo_id }}' class="f-dropdown tiny settings-menu" data-dropdown-content>
+                    <li><a  href="{% url 'notifications_edit' provider_id=provider_id notification_id=r|mongo_id %}" data-icon="e">Edit</a></li>
+                    <li><a data-rowid="{{ r|mongo_id }}" class='delete_row' data-icon="b" href="#">Delete</a></li>    
+                    <li><a  href="{% url 'notifications_test' provider_id=provider_id notification_id=r|mongo_id %}" data-icon="z">Test</a></li>
+                </ul>
+
+
+            </td>
+        </tr>
+        <div class="delete-row" id="delete-row-{{ r|mongo_id }}">
+                <p>
+                    Are you sure?
+                </p>
+                <ul>
+                    <li>
+                        <a href="{% url 'notifications_delete' provider_id=provider_id notification_id=r|mongo_id %}" class="button delete">Delete</a>
+                    </li>
+                    <li>
+                        <a data-rowid="{{ r|mongo_id }}" href="" class="cancel">Cancel</a>
+                    </li>
+                </ul>
+            </div>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    </div> <!-- right end -->
+{% endblock content %}
+{% block js %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/delete.row.js'></script>
+{% endblock js %}
+    

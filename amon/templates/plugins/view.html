@@ -1,0 +1,81 @@
+{% extends "charts/base.html" %}
+{% block title %}Plugins{% endblock %}
+{% block ngapp %}RickshawApp{% endblock ngapp %}
+{% block header %}
+       {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jscrollpane.css">
+{% endblock %}
+{% block content %}
+
+{% include "charts/rickshaw-chart.html" %}
+
+
+{% for key, values in custom_metrics.items  %}
+{% if values.data|length > 0 %}
+<h3 class='plugins__header'>{{key|format_plugin_header }}</h3>
+<table class='plugins-table'>
+        <thead>
+            <tr>
+                {% for column_header in values.header  %}
+                <th class="{{column_header}}">
+                    {{column_header}}
+                </th>    
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in values.data  %}
+            <tr>
+                {% for h in values.header  %}
+                    <td data-order="{{row|get_key:h}}">{{ row|get_key:h|format_plugin_value:h|truncatechars:100 }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+{% endif %}
+{% endfor %}
+
+
+
+{% for key, value in counters.items  %}
+    {% if key != 't' %}
+    {% for k,v in value.items %}
+        <div class="plugins-counter">
+            <span class="title">{{key}}</span>
+            <span class="metric">{{k}}</span>
+            <span class="value">{{v|counter_to_int}}</span>
+        </div>
+    {% endfor %}
+    {% endif %}
+
+{% endfor %}
+{% endblock content %}
+{% block js %}
+{{ block.super }}
+<script type="text/javascript" charset="utf-8" src='{{ STATIC_URL }}js/libs/jquery.datatables.beta.min.js'></script>
+<script language="javascript" type="text/javascript">
+$(function () 
+{    
+
+    var plugins_table = $('.plugins-table').DataTable({
+        "bPaginate": true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bFilter": false,
+        "bAutoWidth": true,
+        "bSort": true,
+        "dom": 'pft',
+        "searching": true,
+            "fixedColumns": true,
+        "oLanguage": {
+         "sSearch": ""
+       }
+        
+    });
+
+    $('.dataTables_filter input,.dataTables_length select').addClass('plugins-filter-input');
+
+});
+</script>
+{% endblock %}

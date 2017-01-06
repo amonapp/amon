@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Dashboards{% endblock title %}
+{% block ngapp %}DashboardReorderApp{% endblock ngapp %}
+{% block breadcrumb %}
+<ul></ul>
+{% endblock breadcrumb %}
+{% block content_class %}class="edit__dashboard reorder__dashboard"{% endblock content_class %}
+{% block header %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/libs/dragula.css">
+{% endblock %}
+{% block content %}
+<div class="settings_content" data-ng-cloak ng-controller="DashboardReorderCtrl"
+data-geturl="{% url 'ajax_dashboard_get_all_metrics' dashboard_id=dashboard|mongo_id %}" 
+data-orderurl="{% url 'ajax_dashboard_reorder_metrics' dashboard_id=dashboard|mongo_id %}">
+
+
+<ul class="settings-list-form edit__dashboard--form">
+    <li>
+        <h3>Reorder Metrics for Dashboard: <a class='reorder__dashboard--heading-link' href="{% url 'view_dashboard' dashboard_id=dashboard|mongo_id %}">{{dashboard.name}}</a></h3> 
+    </li>
+    
+
+    <li class='right'>
+        <a class='button' href="{% url 'edit_dashboard' dashboard_id=dashboard|mongo_id %}">Back to Edit</a>
+    </li>
+</ul>
+
+    
+
+    {% verbatim %}
+    <h5>Checks</h5>    
+    <ul class="reorder__dashboard--list" dragula='"checks-list"' dragula-model="checks">
+        <li data-ng-repeat="s in checks" data-ng-if="s.type == 'healthcheck'">
+            <span class='name'>{{s.healthcheck.command}} {{s.healthcheck.filename}}</span>
+        </li>
+        
+    </ul>
+
+    <h5>Charts</h5>
+    
+    <ul class="reorder__dashboard--list" dragula='"charts-list"' dragula-model="charts">
+        <li data-ng-repeat="s in charts" data-ng-if="s.type != 'counter' && s.type != 'healthcheck'">
+            <span class='name'>{{ s.name }}</span>
+            <span class='tag' data-ng-repeat='tag in s.tags'>{{tag.full_name}}</span>
+        </li>
+    </ul>
+    
+{% endverbatim %}
+
+</div> <!-- DashboardMetricsCtrl  -->
+
+{% endblock content %}
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='{{ STATIC_URL }}js/libs/dragula.min.js'></script>
+
+{% if request.devmode %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.dashboard.reorder.js'></script>
+{% endif %}
+
+
+{% endblock %}

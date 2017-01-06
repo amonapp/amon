@@ -1,0 +1,8 @@
+<ul class='tags--topmenu'>
+
+    {% url 'tags' as tags_url %}
+    {% url 'tag_groups' as groups_url %}
+    
+    <li><a {% if request.get_full_path == tags_url %}class="active"{% endif %} href="{{tags_url}}">Tags</a></li>
+    <li><a {% if request.get_full_path == groups_url %}class="active"{% endif %} href="{{groups_url}}">Tag Groups</a></li>
+</ul>

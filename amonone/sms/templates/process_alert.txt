@@ -1,2 +1,0 @@
-Amon alert: {{ alert.name }}
-{{ alert.process }}/{{ alert.check }}{% if alert.above_below == 'above' %} >{% else %} <{% endif %}{{ alert.metric_value|default('') }}{{ alert.metric_type|default('') }} 

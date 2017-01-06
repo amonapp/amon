@@ -1,0 +1,276 @@
+
+@import "_variables";
+@import "_amon";  
+.menu {
+    margin-left: 20px;
+}
+.menu li {
+    float:left;
+    text-align:center;
+    position:relative;
+    border:none;
+    
+    &.last {
+        a {
+            @include border-bottom-radius(6px); 
+        }
+         
+    } 
+    a { 
+        color: $heading_font_color;
+        font-size: 1.4em;
+        padding: 26px;
+        outline:0;
+        text-decoration:none;
+        display:block;
+        padding-left: 55px;
+        &:before {
+            font-family: "amon";
+            position: absolute;
+            content: attr(data-icon);
+            width: 20px;
+            height: 20px;
+            top: 21px;
+            left: 0px;
+            padding-left: 20px;
+            text-align: center;
+            font-size: 1.6em;
+            color: $heading_font_color;
+        }
+        span.detected {
+            margin-left: 10px;
+            background: $orange;
+            padding: 6px;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-radius: 6px; 
+        }
+    }
+    &:hover a,
+    &.active a {
+        text-shadow: none;
+        position:relative;
+        background: $menu_hover;
+        padding: 26px;
+        padding-left: 55px;
+        color: white;
+        z-index:11;
+        &:before { 
+            color: white;
+        }
+    }
+}
+
+
+.menu ul,
+.menu li {
+    text-align:left;
+}
+// Account dropdown menu 
+a.account-dropdown-trigger {
+    position: relative;
+    float: right;
+    font-size: 1.4em;
+    text-decoration: none;
+    color: $heading_font_color;
+    margin: {
+        top: 25px;
+        right: 40px;
+    }
+    &:after {
+        font-family: "amon";
+        position: absolute;
+        content: attr(data-arrow);
+        width: 20px;
+        height: 20px;
+        top: 0px;
+        right: -20px;
+        text-align: center;
+        font-size: 1em;
+        color: $heading_font_color;
+    }
+}
+#account-dropdown {
+    a:before {
+        position: relative;
+        margin-right: 8px;
+        top: 3px;
+    }
+}
+
+
+/* Foundation Dropdowns */
+.f-dropdown {
+  position: absolute;
+  top: -9999px;
+  list-style: none;
+  margin-left: 0;
+  width: 100%;
+  max-height: none;
+  height: auto;
+  background: white;
+  border: solid 2px $heading;
+  @include border-bottom-radius(6px);
+  font-size: 1.8em;
+  z-index: 50000;
+  margin-top: 10px;
+  max-width: 200px; 
+}
+  .f-dropdown > *:first-child {
+    margin-top: 0; }
+  .f-dropdown > *:last-child {
+    margin-bottom: 0; }
+  .f-dropdown:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border: inset 6px;
+    border-color: transparent transparent white transparent;
+    border-bottom-style: solid;
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    z-index: 99; }
+  .f-dropdown:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border: inset 7px;
+    border-color: transparent transparent #cccccc transparent;
+    border-bottom-style: solid;
+    position: absolute;
+    top: -14px;
+    left: 9px;
+    z-index: 98; }
+  .f-dropdown.right:before {
+    left: auto;
+    right: 10px; }
+  .f-dropdown.right:after {
+    left: auto;
+    right: 9px; }
+  .f-dropdown li {
+    font-size: 0.875rem;
+    cursor: pointer;
+    line-height: 1.125rem;
+    margin: 0; }
+    .f-dropdown li:hover, .f-dropdown li:focus {
+      background: $orange;
+      a {
+        color: white;
+
+      }
+    }
+    .f-dropdown li a {
+      display: block;
+      padding: 10px;
+        text-decoration: none;
+      color: $header; }
+  .f-dropdown.tiny {
+    max-width: 200px; }
+  .f-dropdown.small {
+    max-width: 300px; }
+
+.reveal-modal-bg {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: black;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 99;
+    display: none;
+    top: 0;
+    left: 0; 
+}
+
+dialog, .reveal-modal {
+    visibility: hidden;
+    display: none;
+    position: absolute;
+    z-index: 100;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background-color: white;
+    padding :20px;
+    border: solid 4px $heading;
+    @include border-radius(6px);
+    
+}
+@media only screen and (max-width: 40em) {
+dialog, .reveal-modal {
+  min-height: 100vh; } }
+@media only screen and (min-width: 40.063em) {
+dialog, .reveal-modal {
+  left: 50%; } }
+dialog .column,
+dialog .columns, .reveal-modal .column,
+.reveal-modal .columns {
+min-width: 0; }
+dialog > :first-child, .reveal-modal > :first-child {
+margin-top: 0; }
+dialog > :last-child, .reveal-modal > :last-child {
+margin-bottom: 0; }
+@media only screen and (min-width: 40.063em) {
+dialog, .reveal-modal {
+  margin-left: -40%;
+  width: 80%; } }
+@media only screen and (min-width: 40.063em) {
+dialog, .reveal-modal {
+  top: 6.25rem; } }
+dialog .close-reveal-modal, .reveal-modal .close-reveal-modal {
+    font-size: 2.5rem;
+    line-height: 1;
+    position: absolute;
+    top: -0.5rem;
+    right: 0.5rem;
+    color: $breadcrumb;
+    font-weight: bold;
+    cursor: pointer; 
+}
+
+dialog[open] 
+{
+    display: block;
+    visibility: visible; 
+}
+.reveal-modal {
+    h4 {
+        font-size: 2.2em;
+        float: left;
+        margin-bottom: 20px;
+    }
+    p {
+        font-size: 1.6em;
+        line-height: 1.5em;
+        float: left;
+        clear: left;
+    }
+    a.button {
+        float: left;
+        clear: left;
+        font-size: 1.6em;
+        margin-top: 20px;
+    }
+}
+@media only screen and (min-width: 40.063em) {
+dialog.full, .reveal-modal.full {
+top: 0;
+left: 0;
+height: 100vh;
+min-height: 100vh;
+margin-left: 0 !important; } }
+@media only screen and (min-width: 40.063em) and (min-width: 40.063em) {
+dialog.tiny, .reveal-modal.tiny {
+  margin-left: -15%;
+  width: 30%; } }
+@media only screen and (min-width: 40.063em) and (min-width: 40.063em) {
+dialog.small, .reveal-modal.small {
+  margin-left: -20%;
+  width: 40%; } }
+@media only screen and (min-width: 40.063em) and (min-width: 40.063em) {
+dialog.medium, .reveal-modal.medium {
+  margin-left: -30%;
+  width: 60%; } }
+

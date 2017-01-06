@@ -1,0 +1,74 @@
+<div class="left">
+    <ul> 
+        <li {% if provider_id == 'pushover' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='pushover' %}">
+            <img src="{{ STATIC_URL }}images/integrations/pushover.png" alt="Pushover">
+            <h4>Pushover</h4>
+            <p>Send push notifications to your mobile devices.</p>
+            </a>
+        </li>
+
+
+        <li {% if provider_id == 'email' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='email' %}">
+            <img src="{{ STATIC_URL }}images/integrations/email.png" alt="Email">
+            <h4>Email</h4>
+            <p>Send alert notifications via email.</p>
+            </a>
+        </li>
+
+
+        <li {% if provider_id == 'webhook' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='webhook' %}">
+            <img src="{{ STATIC_URL }}images/integrations/webhook.png" alt="Webhook">
+            <h4>Webhook</h4>
+            <p>Configure simple event-notifications via HTTP POST.</p>
+            </a>
+        </li>
+
+
+        <li {% if provider_id == 'pagerduty' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='pagerduty' %}">
+            <img src="{{ STATIC_URL }}images/integrations/pagerduty.png" alt="PagerDuty">
+            <h4>PagerDuty</h4>
+            <p>Send your Amon alerts to PagerDuty.</p>
+            </a>
+        </li>
+
+
+        <li {% if provider_id == 'victorops' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='victorops' %}">
+            <img src="{{ STATIC_URL }}images/integrations/victorops.png" alt="VictorOps">
+            <h4>VictorOps</h4>
+            <p>Send your Amon alerts to VictorOps.</p>
+            </a>
+        </li>
+
+
+        <li {% if provider_id == 'opsgenie' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='opsgenie' %}">
+            <img src="{{ STATIC_URL }}images/integrations/opsgenie.png" alt="OpsGenie">
+            <h4>OpsGenie</h4>
+            <p>Send your Amon alerts to OpsGenie.</p>
+            </a>
+        </li>
+
+
+        <li {% if provider_id == 'slack' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='slack' %}">
+            <img src="{{ STATIC_URL }}images/integrations/slack.png" alt="Slack">
+            <h4>Slack</h4>
+            <p>Send your Amon alerts to a Slack channel.</p>
+            </a>
+        </li>
+
+        <li {% if provider_id == 'hipchat' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='hipchat' %}">
+            <img src="{{ STATIC_URL }}images/integrations/hipchat.png" alt="HipChat">
+            <h4>HipChat</h4>
+            <p>Send your Amon alerts to a HipChat room.</p>
+            </a>
+        </li>
+        
+    </ul>
+</div>

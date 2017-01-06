@@ -1,0 +1,923 @@
+@import "bourbon/bourbon";
+@import "_normalize";
+
+@mixin input-placeholder($color) {
+    &.placeholder {
+        color: $color;
+    }
+    &:-moz-placeholder {
+        color: $color;
+    }
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+}
+
+@mixin font-size($sizeValue: 1.6) {
+  font-size: ($sizeValue * 10) + px;
+  font-size: $sizeValue + rem;
+}
+
+
+@mixin rem($property, $values) {
+    // Create a couple of empty lists as output buffers.
+    $base-font-size: 16px;
+    $font-size: $base-font-size;
+    $px-values: ();
+    $rem-values: ();
+
+    // Loop through the $values list
+    @each $value in $values {
+        // For each property value, if it's in rem or px, derive both rem and
+        // px values for it and add those to the end of the appropriate buffer.
+        // Ensure all pixel values are rounded to the nearest pixel.
+        @if $value == 0 or $value == 0px {
+            // 0 -- use it without a unit
+            $px-values: join($px-values, 0);
+            $rem-values: join($rem-values, 0);
+        } @else if type-of($value) == number and not unitless($value) and (unit($value) == px) {
+            // px value given - calculate rem value from font-size
+            $new-rem-value: $value / $font-size;
+            $px-values: join($px-values, round($value));
+            $rem-values: join($rem-values, #{$new-rem-value}rem);
+        } @else if type-of($value) == number and not unitless($value) and (unit($value) == "%") {
+            // % value given - don't add px or rem
+            $px-values: join($px-values, #{$value});
+            $rem-values: join($rem-values, #{$value});
+        } @else if $value == auto {
+            // auto - don't add px or rem
+            $px-values: join($px-values, auto);
+            $rem-values: join($rem-values, auto);
+        } @else {
+            // unitless value - use those directly as rem and calculate the px-fallback
+            $px-values: join($px-values, round($value * $font-size));
+            $rem-values: join($rem-values, #{$value}rem);
+        }
+    }
+
+    // output the converted rules
+    #{$property}: $px-values;
+    #{$property}: $rem-values;
+}
+
+@mixin breakpoint($point) {
+        @if $point == mobile {
+         /*320px and up*/
+         @media (max-width: 40em) { @content; }
+        } @elseif $point == medium {
+                @media (min-width: 30em) { @content; } /*480px and up*/
+        } @elseif $point == medium-big-down {
+                @media (max-width: 41.188em) { @content; } /*659px and down*/
+        } @elseif $point == medium-big {
+                @media (min-width: 41.250em) { @content; } /*660px and up*/
+        } @elseif $point == tablet-down {
+        /*767px and down*/        @media (max-width: 47.938em) { @content; }
+        } @elseif $point == tablet {
+                @media (min-width: 48.000em) { @content; } /*768px and up*/
+        } @elseif $point == desktop-down {
+                @media (max-width: 56.188em) { @content; } /*899px and down*/
+        } @elseif $point == desktop {
+                @media (min-width: 56.250em) { @content; } /*900px and up*/
+        } @elseif $point == desktop-big {
+                /*1110px and up*/
+                @media (min-width: 69.375em) { @content; }
+        } @elseif $point == retina {
+                @media
+                        only screen and (-webkit-min-device-pixel-ratio: 2),
+                        only screen and (   min--moz-device-pixel-ratio: 2),
+                        only screen and (     -o-min-device-pixel-ratio: 2/1),
+                        only screen and (        min-device-pixel-ratio: 2),
+                        only screen and (                min-resolution: 192dpi),
+                        only screen and (                min-resolution: 2dppx) {
+                                @content;
+                }
+        }
+}
+
+$green: #5ccc5c;
+$blue: #c7e9f5;
+$dark_blue: #29A2D5;
+$blue_chart: #40bef4;
+$purple: #a489d8;
+$dark_green: #79a64c;
+$light_green: #f5ffe5;
+//$orange: #F2832A;
+
+// beige
+// $odd: #F1F1ED;
+// $odd_dark: #E4E4E2;
+
+$odd: #f5f2f9;
+$odd_dark: #dcd9e0;
+
+$orange: #e34b30;
+
+$grey: #ccc;
+$light_grey: #b7b7b7;
+
+$yellow: #fdcb34;
+
+$red: #F56151;
+$dark_red: #c50022;
+$red_dark: $dark_red;
+
+$light_black: #aba3a6;
+$label_color:  #aba3a6;
+$dark_grey: #858585;
+$pink: #ffe0e1;
+
+$border_color: $odd_dark;
+$border_color_active: $yellow;
+$border_active: 2px solid $green;
+$border: 2px solid #eee;
+
+
+$menu_hover: #363c43;
+$header: #393939;
+$breadcrumb: #464646;
+$dark_label: #edf4f6;
+$dark_input: #586776;
+$table_th: #B2B2B2;
+
+
+
+
+
+$font_color_white: #ffffff;
+$font_color_light: #aba3a6;
+$font_color_gray: #7d8183;
+$font_color_grayer: #363c43;
+$font_color_dark: #393939;
+$font_color_brown: #aba3a6;
+$font_color_light_brown: #aba3a6;
+
+// Earth theme
+
+
+$heading: $odd_dark;
+$heading_font_color: white;
+$breadcrumb_font_color: white;
+$inner-heading: $heading;
+$inner_heading_font_color: $breadcrumb;
+$input_border: #e1e1e1;
+$placeholder: #d2d2d2;
+
+
+$background_breadcrumb: #464646;
+
+
+$heading_border: #d9d5cd;
+$menu_hover: $breadcrumb;
+$border_color: $heading;
+$tr_hover: #f8f8f8;
+
+$slider_background: #f8f8f8;
+$slider_border: 2px solid #eee;
+$chart_line: #eee;
+
+$tooltip: #3c3a3b;
+$message: #fcfcfc;
+$message_border: #e5e5e5;
+
+
+// Providers:
+$digitalocean: #1b8ecd;
+$amazon: #fe9800;
+$rackspace: #c50022;
+$linode: #1fb25a;
+
+.base00-background { background-color: #1d1f21; }
+.base01-background { background-color: #282a2e; }
+.base02-background { background-color: #373b41; }
+.base03-background { background-color: #969896; }
+.base04-background { background-color: #b4b7b4; }
+.base05-background { background-color: #c5c8c6; }
+.base06-background { background-color: #e0e0e0; }
+.base07-background { background-color: #ffffff; }
+.base08-background { background-color: #cc6666; }
+.base09-background { background-color: #de935f; }
+.base0A-background { background-color: #f0c674; }
+.base0B-background { background-color: #b5bd68; }
+.base0C-background { background-color: #8abeb7; }
+.base0D-background { background-color: #81a2be; }
+.base0E-background { background-color: #b294bb; }
+.base0F-background { background-color: #a3685a; }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+@mixin input-default {
+    border: 2px solid $border_color;
+    border-radius:6px;
+    background: white;
+    color: #2B3239;
+    @include placeholder {
+        color: $odd_dark;
+  }
+}
+@mixin input-active {
+    @include input-default;
+    outline: none;
+    border: $border_active;
+}
+
+@mixin calc($property, $expression) {
+  #{$property}: -moz-calc(#{$expression});
+  #{$property}: -webkit-calc(#{$expression});
+  #{$property}: calc(#{$expression});
+}
+
+// used in health checks and host map
+@mixin button-color($color) {
+    border: 2px solid $color;
+    color:$color;
+    span {
+        color: $color;
+    }
+    &:hover, &.active {
+        background: $color;
+        border: 2px solid $color;
+        span{
+            color: white;
+        }
+    }
+}
+
+
+// @mixin placeholder {
+//   &.placeholder { @content; }
+//   &:-moz-placeholder { @content; }
+//   &::-moz-placeholder { @content; }
+//   &::-webkit-input-placeholder { @content; }
+// }
+
+// // @mixin default-text {
+// //   font-size: 1.6em;
+// //   line-height: 1.5em;
+
+// // }
+
+@mixin default-text {
+    @include rem (font-size, 1.2);
+    @include rem (line-height, 1.2);
+
+    @include breakpoint(desktop){
+        @include rem (font-size, 0.9);
+        @include rem (line-height, 1);
+    }
+
+    @include breakpoint(desktop-big){
+        @include rem (font-size, 0.9);
+        @include rem (line-height, 1.2);
+    }
+
+    letter-spacing: .01rem;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    color: $breadcrumb;
+}
+
+
+@mixin monospace {
+    font-family: "Lucida Console", Monaco, monospace;
+    @include rem (font-size, 1.8);
+    @include rem (line-height, 1.8);
+
+    @include breakpoint(desktop){
+        @include rem (font-size, 1.1);
+        @include rem (line-height, 1);
+    }
+
+    @include breakpoint(desktop-big){
+        @include rem (font-size, 0.9);
+        @include rem (line-height, 1.2);
+    }
+
+    letter-spacing: .01rem;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    color: $breadcrumb;
+}
+@mixin small-text {
+    @include default-text;
+    @include rem (font-size, 1);
+    @include rem (line-height, 1);
+
+    @include breakpoint(desktop-big){
+        @include rem (font-size, 0.9);
+        @include rem (line-height, 1);
+    }
+}
+
+table, input, label {
+    @include default_text;
+}
+
+@mixin default-link {
+    // color: $orange;
+    // text-decoration: underline;
+    @include rem (font-size, 0.9);
+    @include rem (line-height, 0.9);
+    font-weight: normal;
+    &::before, &::after {
+        pointer-events: none;
+        backface-visibility: hidden;
+    }
+    &:hover {
+        // background: $orange;
+        // color: white;
+        text-decoration: none;
+    }
+}
+
+@mixin clear{
+    float: left;
+    width: 100%;
+    clear: both;
+}
+@mixin large_icons {
+    @include rem (font-size, 4);
+    @include rem (line-height, 2);
+    font-weight: bold;
+    letter-spacing: .01rem;
+    -webkit-font-smoothing: antialiased;
+    color: rgba(0,0,0,0.75);
+    @include breakpoint(desktop){
+        @include rem (font-size, 6);
+        @include rem (line-height, 2.6);
+    }
+    &.clear {
+        @include clear;
+    }
+}
+h1 {
+    @include rem (font-size, 1.8);
+    @include rem (line-height, 2);
+    font-weight: bold;
+    letter-spacing: .01rem;
+    -webkit-font-smoothing: antialiased;
+    color: rgba(0,0,0,0.75);
+    @include breakpoint(desktop){
+        @include rem (font-size, 3);
+        @include rem (line-height, 2.6);
+    }
+    &.clear {
+        @include clear;
+    }
+}
+h2 {
+    @extend h1;
+    @include rem (font-size, 1.6);
+    @include rem (line-height, 2.4);
+    @include breakpoint(desktop){
+        @include rem (font-size, 2.6);
+        @include rem (line-height, 2);
+    }
+}
+h3 {
+    @extend h1;
+    @include rem (font-size, 1.2);
+    @include rem (line-height, 2);
+    @include breakpoint(desktop){
+        @include rem (font-size, 1.2);
+        @include rem (line-height, 1);
+    }
+    @include breakpoint(desktop-big){
+        @include rem (font-size, 1.4);
+        @include rem (line-height, 1);
+    }
+}
+h4 {
+    @extend h1;
+    @include rem (font-size, 1.3);
+    @include rem (line-height, 2.4);
+    @include breakpoint(desktop){
+        @include rem (font-size, 1.4);
+        @include rem (line-height, 1);
+    }
+}
+
+h5 {
+    @extend h1;
+    @include rem (font-size, 1.2);
+    @include rem (line-height, 2.4);
+    @include breakpoint(desktop){
+        @include rem (font-size, 1.2);
+        @include rem (line-height, 1);
+    }
+}
+@mixin large-text {
+    @extend h1;
+    @include rem (font-size, 1.4);
+    @include rem (line-height, 2.4);
+    @include breakpoint(desktop){
+        @include rem (font-size, 1.6);
+        @include rem (line-height, 1);
+    }
+}
+@mixin default-border-radius {
+    border-radius:8px;
+}
+@mixin default-border {
+    border-radius:8px;
+}
+strong {
+    font-weight: bold;
+}
+
+p {
+    @include default_text;
+}
+a {
+    @include default_link;
+}
+span {
+    @include small-text;
+}
+
+@mixin info{
+    background: $blue;
+    padding: 10px;
+    margin-top: 15px;
+    @include default-border;
+    float: left;
+}
+@mixin border-radius($property){
+    border-radius: $property;
+}
+@mixin opacity($property){
+    opacity: $property;
+}
+
+@mixin rotate(
+  $rotate:      $default-rotate,
+  $perspective: false,
+  $only3d:      false
+) {
+  $trans: rotate($rotate);
+  @if $perspective { $trans: perspective($perspective) $trans; }
+  @include transform($trans);
+}
+
+html {
+    height: 100%;
+}
+html{min-height:100%;position:relative}
+.clear {
+    clear: both;
+    float: left;
+    width: 1px;
+    height: 1px;
+}
+body {
+    font-size: 62.5%;
+    height: 100%;
+    font-family: Helvetica, Arial, 'Arimo';
+    background: white;
+}
+a {
+    outline: none;
+}
+.button, button {
+    border: 0px;
+    text-decoration: none;
+    cursor: pointer;
+    @include default_text;
+    border: 2px solid $green;
+    outline: none;
+    border-radius:6px;
+    font-weight: bold;
+    padding: 10px {
+        left: 20px;
+        right: 20px;
+    }
+    color: white;
+        background: $green;
+    @include transition-duration(0.2s);
+    &:hover, &.active {
+        color: $green;
+        background: white;
+    }
+    &.cancel {
+        border: 2px solid $grey;
+        color: $grey;
+        background: white;
+        &:hover {
+            background: $grey;
+            color: white;
+            border: 2px solid $light_grey;
+        }
+    }
+    &.reverse {
+        background: white;
+        color: $green;
+        &:hover {
+            background: $green;
+            color: white;
+        }
+    }
+    &.delete, &.red {
+            background: white;
+            border: 2px solid $red;
+            color: $red;
+            border: 2px solid $red;
+        &:hover {
+            border: 2px solid $red;
+            background: $red;
+            color: white;
+        }
+    }
+    &.blue {
+        border: 2px solid $dark_blue;
+        color: white;
+            background: $dark_blue;
+
+        &:hover {
+            background: white;
+            color: $dark_blue;
+        }
+    }
+    &.orange {
+        border: 2px solid $orange;
+        color: white;
+        background: $orange;
+        &:hover {
+            background: white;
+            color: $orange;
+        }
+    }
+    &.yellow {
+        border: 2px solid $yellow;
+        color: white;
+        background: $yellow;
+        &:hover {
+            background: white;
+            color: $yellow;
+        }
+    }
+    &.with-icon {
+        padding-left: 5px;
+        &:before {
+            position: relative;
+            top: 3px;
+            margin-right: 5px;
+            left: 0px;
+        }
+    }
+}
+.tooltip {
+    display:none;
+    background: $header;
+    padding:15px;
+    color: white;
+    z-index: 100;
+    border-radius:4px;
+}
+.action-tooltip {
+    @extend .tooltip;
+    font-size: 1.4em;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+span.spinner {
+    float: left;
+}
+
+
+.tabs {
+    float: left;
+    width: 100%;
+    clear: left;
+    margin-bottom: 20px;
+    border-bottom: 2px solid $odd;
+    li {
+        float: left;
+
+        a {
+            @include default-link;
+            display: block;
+            float: left;
+            padding: 10px;
+            text-decoration: none;
+            padding-left: 30px;
+            padding-right: 30px;
+
+            border-radius:0px;
+            color: $font_color_dark;
+            &.active {
+                border-top: 2px solid $orange;
+                border-left: 2px solid $odd;
+                border-right: 2px solid $odd;
+                border-bottom: 2px solid white;
+                margin-bottom: -2px;
+            }
+            &:hover {
+                color: $orange;
+            }
+
+
+        }
+    }
+
+} // sidebar end
+span.tag{
+    padding: 8px;
+    @include default_border;
+    background: $odd;
+    &.yellow {
+        background: $yellow;
+    }
+    &.green {
+        background: $green;
+        color: white;
+    }
+    &.purple {
+        background: $purple;
+        color: white;
+    }
+    &.red {
+        background: $red;
+        color: white;
+    }
+}
+
+ul.default_dropdown {
+    float: left;
+    position: relative;
+
+    margin-left: 35px;
+    > li {
+        float: left;
+        &:first-child {
+            a {
+                @include border-left-radius(6px);
+            }
+        }
+        &:last-child {
+            a {
+                @include border-right-radius(6px);
+            }
+        }
+        > a {
+            outline: none;
+            position: relative;
+            text-decoration: none;
+            padding: 20px;
+            padding-bottom:10px;
+            padding-right: 35px;
+            padding-top: 10px;
+            background: $odd_dark;
+            color: $font_color_dark;
+            float: left;
+            &.active, &:hover {
+                background: $orange;
+                color: $breadcrumb_font_color;
+                &:after {
+                    color: white;
+                }
+                span {
+                    color: white;
+                }
+            }
+            &:after {
+                font-family: "amon";
+                position: absolute;
+                content: attr(data-arrow);
+                width: 20px;
+                top: 9px;
+                right: 6px;
+                height: 20px;
+                text-align: center;
+
+                color: $font_color_dark;
+            }
+
+        }
+    }
+}
+
+@keyframes slideInUp {
+  0% {
+    transform: translateY(100%);
+    visibility: visible;
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.slideInUp {
+  animation-name: slideInUp;
+}
+
+@keyframes slideOutDown {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    visibility: hidden;
+    transform: translateY(100%);
+  }
+}
+
+.slideOutDown {
+  animation-name: slideOutDown;
+}
+
+
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 30px;
+  padding-top: 15px;
+  cursor: pointer;
+}
+
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before,
+[type="checkbox"]:not(:checked) ~ label:before,
+[type="checkbox"]:checked ~ label:before {
+  content: '';
+  position: absolute;
+  left:0; top: 12px;
+  width: 22px; height: 22px;
+
+  background: white;
+  border-radius:2px;
+  border: 2px solid $odd_dark;
+}
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after,
+[type="checkbox"]:not(:checked) ~ label:after,
+[type="checkbox"]:checked ~ label:after {
+  content: 'w';
+  font-family: 'Amon';
+  position: absolute;
+  top: 11px; left: 1px;
+  padding: 3px;
+  padding-bottom: 4px;
+  background: $green;
+  font-size: 1em;
+  color: white;
+}
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:not(:checked) ~ label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+/* disabled checkbox */
+[type="checkbox"]:disabled:not(:checked) + label:before,
+[type="checkbox"]:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+[type="checkbox"]:disabled:checked + label:after {
+  color: #999;
+}
+[type="checkbox"]:disabled + label {
+  color: #aaa;
+}
+/* accessibility */
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before {
+  // border: 1px dotted blue;
+}
+
+/* hover style just for information */
+label:hover:before {
+  border: 1px solid $green;
+}
+
+.loader {
+float: left;
+  width: 70px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.loader > div {
+  width: 12px;
+  height: 12px;
+  background-color: $font_color_dark;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.loader .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.loader .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+
+
+$labelWidth: 100px;
+
+.switch {
+  position: relative;
+  // margin: 20px auto;
+  height: 32px;
+  width: $labelWidth * 2 + 4px;
+  background: $odd_dark;
+}
+
+.switch-label {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: $labelWidth;
+  @include default_text;
+  font-size: 1.4em;
+  color: $font_color_brown;
+  text-align: center;
+  cursor: pointer;
+
+  &:active { font-weight: bold; }
+}
+
+.switch-label-off { padding-left: 2px; padding-top: 6px;}
+.switch-label-on { padding-right: 2px; padding-top: 6px;}
+
+/*
+ * Note: using adjacent or general sibling selectors combined with
+ *       pseudo classes doesn't work in Safari 5.0 and Chrome 12.
+ *       See this article for more info and a potential fix:
+ *       http://css-tricks.com/webkit-sibling-bug/
+ */
+
+.switch-input {
+  display: none;
+
+  &:checked + .switch-label {
+    font-weight: bold;
+    color: white;
+    @include transition(.15s ease-out);
+  }
+
+  &:checked + .switch-label-on ~ .switch-selection {
+    left: $labelWidth + 3px; /* Note: left: 50% doesn't transition in WebKit */
+  }
+}
+
+.switch-selection {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  left: 2px;
+  width: $labelWidth;
+  height: 32px;
+  background: $green;
+  @include transition(left .15s ease-out);
+
+
+}
+meta.foundation-data-attribute-namespace {
+  font-family: false; }

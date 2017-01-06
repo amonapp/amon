@@ -1,0 +1,31 @@
+{% for chart in selected_charts %}
+<rickshaw-chart data-duration="{{ duration }}" data-enddate="{% if enddate %}{{enddate}}{% endif %}" id="{{ chart.id }}" data-yaxis="{% if chart.unit %}{{chart|yaxis}}{% else %}{{ chart.check|yaxis }}{% endif %}" data-timestamp="{{now}}"
+data-url='{{ chart.url }}{% if chart.check %}&check={{ chart.check }}{% endif %}' data-name="{{ chart.name }}" data-type="line"><!-- area, line -->
+    <ul class='inner-heading charts'>
+        <li><h3>{{ chart.name }}</h3>
+        <span class='loading' id="{{ chart.id }}-loading"></span>
+        </li>
+        {% if chart.tags %}
+        <li class='right'>
+            {% for t in chart.tags %}
+                <span class="tag">{{t.full_name}}</span>
+            {% endfor %}
+        </li>
+        {% endif %}
+        
+    </ul>
+    <div class='y_axis' id="{{ chart.id }}-yaxis"></div>
+    <div id="{{ chart.id }}-chart" data-id="{{ chart.id }}" class='chart' data-yaxis='{% if chart.unit %}{{chart|yaxis}}{% else %}{{ chart.check|yaxis }}{% endif %}'></div>
+    <div id="{{ chart.id }}-slider" class='chart-slider'></div>
+</rickshaw-chart>
+{% endfor %}
+
+<div data-ng-controller="RickshawTimer" data-daterange="{% if enddate %}custom{% endif %}">
+    <input type="hidden" id="rickshaw-timer-daterange" value="{% if enddate %}custom{% endif %}">
+</div> <!-- RickshawTime -->
+
+<ul class="charts-nodata" data-ng-controller="RickshawChartNoData">
+    {% verbatim %}
+        <li ng-repeat="chart in empty_charts">{{chart.name }} <span class="right">No data for the selected period</span></li>
+    {% endverbatim %}
+</ul>

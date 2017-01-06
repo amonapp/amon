@@ -1,0 +1,75 @@
+{
+    "system": {
+        "cpu": {
+            "user": 0,
+            "idle": 100,
+            "nice": 0,
+            "steal": 0,
+            "system": 0,
+            "iowait": 0
+        },
+        "network": [{
+            "inbound": 0,
+            "outbound": 0,
+            "name": "eth0"
+        }],
+        "disk": [{
+            "name": "sda1",
+            "path": "/",
+            "fstype": "ext2/ext3",
+            "total": 9395,
+            "free": 6639,
+            "used": 2756,
+            "percent": 29.33
+        }],
+        "loadavg": {
+            "minute": 0,
+            "five_minutes": 0.01,
+            "fifteen_minutes": 0.05,
+            "cores": 1
+        },
+        "uptime": "1 days 11 hours 30 minutes",
+        "memory": {
+            "used_percent": 42,
+            "used_mb": 483,
+            "total_mb": 494,
+            "free_mb": 11,
+            "swap_used_mb": 0,
+            "swap_free_mb": 1230,
+            "swap_total_mb": 1230,
+            "swap_used_percent": 0
+        }
+    },
+    "processes": [{
+        "cpu": 0.02,
+        "memory_mb": 48.12,
+        "kb_read": 0.08,
+        "kb_write": 0,
+        "name": "salt-minion"
+    }, {
+        "cpu": 0.06,
+        "memory_mb": 27.17,
+        "kb_read": 0.06,
+        "kb_write": 1.81,
+        "name": "python"
+    },{
+        "cpu": 0,
+        "memory_mb": 8.6,
+        "kb_read": 0,
+        "kb_write": 0,
+        "name": "amonagent"
+    }],
+    "host": {
+        "host": "debian-jessie",
+        "machineid": "25e1f5e7b26240109d199892e468d529",
+        "server_key": "",
+        "distro": {
+            "version": "8.2",
+            "name": "debian"
+        },
+        "ip_address": "10.0.2.15",
+        "instance_id": ""
+    },
+    "plugins":{"custom":{"custom.connections":{"gauges":{"connections.active":183,"connections.error":16}}}},
+    "checks":[{"exit_code":0,"output":"CheckDisk OK: All disk usage under 80% and inode usage under 85%\n","command":"check-disk-usage.rb -w 80 -c 90"}]
+}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block ngapp %}BaseModule{% endblock ngapp %}
+{% block title %}
+Servers - Health Checks
+{% endblock %}
+{% block breadcrumb_class %}health_checks--breadcrumb{% endblock breadcrumb_class %}
+{% block breadcrumb %}
+
+    <ul class='health_checks--filter'>
+        <li><span class='title'>Filter:</span></li>
+        {% for status, count in count_statuses.items %}
+            {% if count > 0 %}
+            <li>
+                <a class='button cancel {{status}} {% if filter_by == status %}active{% endif %}'
+                href="{% url 'healthchecks_view' %}?filter_by={{status}}{% if sort_by %}&sort_by={{sort_by}}{%endif%}">
+                <span class="status">{{status|upper}}:</span> <span class="counter">{{count}}</span></a></li>
+            {% endif %}
+        {% endfor %}
+        <li><a class='button cancel all {% if not filter_by %}active{% endif %}'
+        href="{% url 'healthchecks_view' %}{% if sort_by %}?sort_by={{sort_by}}{%endif%}">
+            <span class="status">ALL:</span> <span class="counter">{{flat_list|length}}</span></a></li></li>
+
+    </ul>
+{% endblock %}
+{% block content %}
+{% if sorted_result|length == 0 %}
+
+
+{# default - checks with all details #}
+{% if all_checks|length > 0 %}
+    {% include "healthchecks/result_table_partial.html" with result=all_checks %}
+{% else %}
+    <div class="welcome">
+        <div class="center">
+            <span class="icon" data-icon="V"></span>
+            <p>
+                Health checks are commands executed by the Amon agent which monitor a condition (e.g. is Nginx running, SSL expiring, Port(s) open, etc)
+                or collect measurements (e.g. how much disk space do I have left?). 
+                <br><br>
+                You can create your own health checks with a couple of <a href="https://www.amon.cx/docs/healthchecks/">lines of code</a>
+                or use any <a href="https://www.amon.cx/docs/healthchecks/#nagios">Nagios</a> or <a href="https://www.amon.cx/docs/healthchecks/#sensu">Sensu</a> check.
+                <br><br>
+                Once you setup your checks, the data you will see on this page will look like this:
+                <br><br>
+                </p>
+                <div class="image_wrapper">
+                    <img src="{{STATIC_URL}}images/healthchecks_preview.png" alt="Tagged Dashboard Metrics">
+                </div>
+            
+        </div>
+    </div>
+
+{% endif %} {# check length #}
+        
+{% endif %}
+
+
+{% if sorted_result|length > 0 %}
+    {% include "healthchecks/result_table_partial.html" with result=sorted_result %}
+{% endif %}
+
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='{{ STATIC_URL }}js/libs/jquery.datatables.beta.min.js'></script>
+<script>
+    $(".healthchecks-table").dataTable({
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bSort": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+         "oLanguage": {
+            "sSearch": "",
+        },
+        "sDom": '<"healthchecks_filter_header"f>rt', 
+        "aaSorting": [ [0,'asc'],],
+    })
+    $('.healthchecks_filter_header input').attr("placeholder", "Filter Health Checks");
+</script>
+{% endblock %}

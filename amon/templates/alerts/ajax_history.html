@@ -1,0 +1,20 @@
+<ul>
+{% for n in notifications  %}
+<li>
+{% if rule.rule_type == 'global' or rule.rule_type == 'process_global' or rule.rule_type == 'plugin_global' or rule.rule_type == 'health_check' %}
+{{ n.server }} - {% endif %} 
+({{ n.period_from|time_local:request.timezone }} - {{ n.period_to|time_local:request.timezone }}) / 
+{{ n.volume_data.name }} 
+{{n.interface_data.name}}
+{% if rule.metric|lower != 'down' and rule.metric|lower != 'notsendingdata' and rule.rule_type != 'health_check' %}{{ n.average_value|floatformat:"2" }}{% endif %}
+{% if rule.metric %}{{ rule.metric_type|metric_type_value:rule.metric|empty_if_none }}{% endif %}
+
+{% if rule.rule_type == 'health_check' %}
+    {{n.health_check.params|empty_if_none}}
+    {{n.health_check_data.output }}
+{% endif %}
+
+
+</li>
+{% endfor %}
+</ul>                

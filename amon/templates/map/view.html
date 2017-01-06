@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block ngapp %}ServersMapApp{% endblock ngapp %}
+{% block main_content_class %}nopadding{% endblock main_content_class %}
+{% block breadcrumb_class %}hostmap{% endblock breadcrumb_class %}
+{% block breadcrumb %}
+
+<ul class='hostmap--sort'>
+    <li><span class='title'>Sort by:</span></li>
+    <li>
+        <select id="sort_by" select2-dropdown data-size='250' with-redirect placeholder='Sort By'>
+            <optgroup label='Sytem Metrics'>
+         {% for t in all_sort_fields  %}
+            <option {% if sort_by == t.0 %}selected{% endif %}
+                value="{% url 'servers_map' %}?sort_by={{t.0}}{% if group_id %}&group_id={{group_id}}{%endif%}">
+            {{t.1}}</option>
+        {% endfor %}
+            </optgroup>
+        </select>
+    </li>
+</ul>
+
+{% if tag_groups.clone.count > 0 %}
+    <ul class='hostmap--sort'>
+    <li><span class='title'>Group by:</span></li>
+    <li>
+         <select id="group_by" select2-dropdown data-size='250' with-redirect placeholder='Group By'>
+             <option value="{% url 'servers_map' %}{% if sort_by %}?sort_by={{sort_by}}{%endif%}">Don't Group</option>
+         {% for t in tag_groups  %}
+        {% if t|mongo_id in active_tag_groups %}
+            <option {% if group_id == t|mongo_id %}selected{% endif %} 
+                value="{% url 'servers_map' %}?group_id={{t|mongo_id}}{% if sort_by %}&sort_by={{sort_by}}{%endif%}">
+            {{t.name}}</option>
+         {% endif %}
+        {% endfor %}
+        </select>
+       
+    </li>
+
+    {% for t in tag_groups  %}
+    {% if t|mongo_id in active_tag_groups %}
+    <li>
+        <a class="button cancel sort {% if group_id == t|mongo_id %}active{% endif %}" 
+        href="{% url 'servers_map' %}?group_id={{t|mongo_id}}{% if sort_by %}&sort_by={{sort_by}}{%endif%}">
+        {{t.name}}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+
+
+{% endif %}
+{% endblock breadcrumb %}
+{% block title %}
+Servers - Map
+{% endblock %}
+{% block content %}
+
+
+{% if grouped_servers|length > 0 %}
+    {% for group, servers in grouped_servers.items  %}
+        {% if servers.sorted_data|length > 0 %}
+        <div class="hostmap__group--heading">
+            <h3>{% if group == 'not_in_group' %}Not in group
+            {% else %}    
+                {{group}}
+            {% endif %}
+            / {{servers.sorted_data|length}} 
+            {% if servers.sorted_data|length == 1 %}server{% else %}servers{% endif %}
+            </h3>
+        </div>
+        <ul class="hostmap">
+
+            {% include "map/_map_list.html" with data=servers %}
+        </ul>
+        {% endif %}
+    {% endfor %}
+
+{% else %}
+<ul class="hostmap">
+    {% include "map/_map_list.html" with data=servers_data %}
+</ul>
+{% endif %}
+
+
+
+
+{% endblock %}
+{% block js %}
+{% if request.devmode == True %}
+    <script src="{{STATIC_URL}}js/apps/angular.servers.map.js"></script>
+{% endif %}
+
+{% endblock js %}

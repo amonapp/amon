@@ -1,0 +1,28 @@
+<h3>Edit {{ provider_id|title }} Credentials</h3>
+<form action="{% url 'cloudservers_edit' provider_id=provider_id credentials_id=credentials_id %}" method='post'>
+<ul class='notifications-form'>
+    {% if provider_data.last_sync %}
+    <li class='last_sync'>
+        <label for="">Last sync:</label>
+        <span title="{{ provider_data.last_sync|datetime_local:request.timezone }}" time-ago>{{ provider_data.last_sync }}</span>
+    </li>
+    {% endif %}
+    {% if provider_data.error %}
+        <li class="error">{{ provider_data.error }}</li>    
+    {% endif %}
+
+    {% for field in form %}
+       <li >
+       {{ field.label_tag }}
+       {{ field }}
+       {{ field.errors }}
+      </li>
+    {% endfor %}
+    <li class='buttons'>
+        {% csrf_token %}
+
+        <a class='delete button' href="{% url 'cloudservers_delete' provider_id=provider_id credentials_id=credentials_id %}">Delete credentials</a>
+        <input type="submit" class='button' value='Save & Sync' /> 
+        </li>
+    </ul>
+</form>

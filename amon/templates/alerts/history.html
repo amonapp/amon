@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block title %}
+    Alerts - History
+{% endblock title %}
+{% block header %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/libs/prism.css" />
+    {% endblock %}
+{% block breadcrumb %}
+{% set type = alert.rule_type %}
+
+    <ul id='breadcrumb-list'>
+    <li><a href="{% url 'alerts' %}">Alerts</a></li>
+    <li class='separator'></li>
+    <li>
+        {% if server %}{{ server.name }} - {% endif %}{{ alert.metric }}
+        {% if type == 'process' %}
+            <strong>{{ alert.process.name }}</strong> /{{ alert.process_metric }} {{ alert.check }}
+        {% endif %} 
+
+        {% if type == 'process_global' %}
+            / <strong>{{alert.process}}</strong>
+        {% endif %}
+
+        {% if type == 'plugin_global' %}
+            <strong>{{ alert.plugin }}.{{alert.gauge}}.{{alert.key}}</strong>
+        {% endif %}
+
+        {% if type == 'plugin' %}
+            <strong>{{ alert.plugin.name }}.{{alert.gauge.name}}.{{alert.key}}</strong>
+        {% endif %} 
+
+        {% if type == 'custom_metric_gauge' %}
+            <strong>{{ data.custom_metric.name }}.{{alert.key}}</strong>
+        {% endif %} 
+
+        {% if type == 'health_check' %}
+            <strong>Status is {{alert.status}}</strong>
+        {% endif %} 
+
+        {% if alert.metric_options %} / {{ alert.metric_options }} {% endif %} 
+        {{ alert.metric_type|dehumanize }} 
+        {% if alert.above_below %}
+            {% if alert.above_below == 'above' %}>{% else %}<{% endif %}
+        {% endif %}
+        
+        {{ alert.metric_value }} {% if alert.metric_type %}{{ alert.metric_type }}{% endif %}
+        <span class="period">{{ alert.period }}</span>
+    </li>
+    <li class='separator'></li>
+    <li>
+        
+        <ul>
+            <li><span>Notify:</span></li>
+            {% if alert.notifications|length > 0 %}
+                {% for n in alert.notifications  %}
+                    <li class='notifications-service'>
+                        <img class='icon' src="{{STATIC_URL}}images/integrations/{{n.provider_id}}.png" alt=""> 
+                        <span class="service">{% if n.provider_id == 'email' %}{{n.email}} {% else %}{{n.name}}{%  endif %}</span></li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </li>
+    </ul>
+        
+{% endblock breadcrumb %}
+{% block content %}
+{% set type = alert.rule_type %}
+
+<div id="alerts-history" class="datatables_block">
+<table class="alerts-history-table">
+    <thead>
+        {% if type == 'global' or type == 'process_global' or type == 'plugin_global' or type == 'health_check' %}
+            <th class='server-row'><span data-asc="d" data-desc="a" class='label'>Server</span></th>
+        {% endif %}
+        <th><span data-asc="d" data-desc="a" class='label'>Average value</span></th>
+        <th><span data-asc="d" data-desc="a" class='label'>Trigger</span></th>
+        <th></th>
+    </thead>
+    <tbody>
+        {% for n in  notifications %}
+        <tr id="row-{{n.id}}">
+            {% if type == 'global' or type == 'process_global' or type == 'plugin_global' or type == 'health_check' %}
+                <td>{{ n.server }}</td>
+            {% endif %}
+
+            <td> {% if n.volume_data %}{{ n.volume_data.name }}- {% endif %} 
+                {% if n.interface_data %}{{ n.interface_data.name }}- {% endif %} 
+            {% if alert.metric|lower != 'down' and alert.metric|lower != 'notsendingdata' and type != 'health_check'  %}
+                    {{ n.average_value }}
+            {% endif %}
+            {% if n.health_check_data %}
+                {{n.health_check.command}}{{n.health_check.params|empty_if_none}} {{n.health_check_data.output}}
+            {% endif %}
+            {% if alert.metric_type %}{{ alert.metric_type|metric_type_value:alert.metric|empty_if_none }}{% endif %}
+            {% if alert.metric|lower == 'notsendingdata' %}Last check: {{n.last_check|datetime_local:request.timezone}}{% endif %}
+            </td>
+            <td data-order="{{n.period_to}}"> 
+                <span title="{{ n.period_from|datetime_local:request.timezone }} - {{ n.period_to|time_local:request.timezone }}" time-ago>{{ n.period_to }}</span>
+            </td>
+            <td >
+            {% if type == 'process' %}
+                <a href="{% url 'view_process' server_id=server|mongo_id %}?duration={{ alert.period|sum_int:60 }}&enddate={{ n.period_to }}&process={{ alert.process|mongo_id }}">View  chart</a>
+            {% elif type == 'plugin' %}
+                <a href="{% url 'view_plugins' server_id=server|mongo_id %}?duration={{ alert.period|sum_int:60 }}&enddate={{ n.period_to }}&plugin={{ alert.plugin|mongo_id }}">View  chart</a>
+            {% elif type == 'custom_metric_gauge' %}
+                <a href="{% url 'view_metric' metric_id=alert.custom_metric_id %}?duration={{ alert.period|sum_int:60 }}&enddate={{ n.period_to }}">View  chart</a>
+            {% elif type == 'system' or type == 'global' %}
+                <a href="{% url 'server_system' server_id=n.server_id %}?duration={{ alert.period|sum_int:60 }}&enddate={{ n.period_to }}&charts={{ alert.metric|lower }}">View chart</a>
+            {% endif %}
+            
+                
+            </td>    
+
+        
+        </tr>
+    {% endfor %}
+    </tbody>
+    
+</table>
+
+</div><!-- alerts_history END -->
+
+{% url 'global_alert_history' alert_id=alert|mongo_id as global_alert_history %}
+{% url 'system_alert_history' alert_id=alert|mongo_id as system_alert_history %}
+{% if type == 'global'  or type == 'custom_metric_gauge' %}
+    {% set history_url = global_alert_history %}
+{% endif %}
+{% if type == 'system' or type == 'process' or type == 'plugin' or type == 'global' or type == 'uptime' or type == 'process_global' or type == 'plugin_global' %}
+    {% set history_url = system_alert_history %}
+{% endif %}
+{% if total_pages|length > 1 %}
+<ul class='pagination'>
+    {% for i in total_pages %}
+
+     <li><a {% if page == forloop.counter %}class='active'{% endif %} href="{{history_url}}?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endblock content %}
+
+
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='{{ STATIC_URL }}js/libs/jquery.datatables.beta.min.js'></script>
+<script>
+$(function () 
+{
+     
+    var table_options = {
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bInfo" : false, 
+        "bSort": true,
+        "bStateSave": true,
+        "bAutoWidth": false,
+        "oLanguage": {"sSearch": "",},
+        "aaSorting": [ [2,'desc'],],     
+   }
+
+   var alert_history_table = $(".alerts-history-table").DataTable(table_options);
+
+
+   function open_details_row(id, html) {
+        var current_row_object = $('#row-'+id);
+        row = alert_history_table.row(current_row_object);
+        
+        console.log(row)
+        // Opens a row with more details
+        function _show_row() {
+            row.child(html).show(); 
+        
+        }
+
+        if (row.child.isShown()) {
+            row.child.hide();    
+        }
+        else {
+            // Open this row
+            _show_row()
+        }
+        
+    
+    }
+
+    $(document).on('click', 'a.toggle-output-table', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+
+        var table_html = $("#output-"+id).html();
+        open_details_row(id, table_html);
+    });
+
+   $.each($('.timeago'), function( index, value ) {
+        unix_timestamp = $(this).html();
+        moment_obj = moment.unix(unix_timestamp).fromNow();
+        $(this).html(moment_obj)
+        
+ });
+
+ $.each($('.period'), function( index, value ) {
+        seconds = parseInt($(this).html());
+        convert_to = 'seconds'
+        if(seconds > 30 && seconds <= 3600) {
+            convert_to = 'minutes'
+        } 
+        else if (seconds > 3600) {
+            convert_to = 'hours'
+        }
+        
+        moment_obj = moment.duration(seconds, 'seconds').as(convert_to);
+        
+        $(this).html(" for "+moment_obj+" "+convert_to)
+        
+    });
+
+});
+
+</script>
+{% endblock js %}

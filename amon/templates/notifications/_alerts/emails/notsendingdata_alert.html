@@ -1,0 +1,29 @@
+{% extends "notifications/_alerts/emails/base.html" %}
+{% block content %}
+<table cellspacing="0" cellpadding="0" align="left">
+<tbody>
+    <tr>
+        <h3>Alert details</h3>
+        <br><br>
+        <strong>Server: </strong>{{ server.name }} {% if server.ip_address %}({{ server.ip_address}}) {% endif %}
+        stopped sending data to Amon since {{notification.server.last_check|datetime_local:timezone}}
+    </tr>
+    </tbody>
+</table>
+
+<div align="left" class="article-content">
+    <multiline label="Description">
+This notification was sent for alert - Server: {{ server.name }}, Not sending data for
+{% if alert.period > 60 %}
+     {{ alert.period|seconds_to_minutes }} minutes
+{% else %}
+    {{alert.period}} seconds
+{% endif %}
+<br><br>
+If you want to stop receiving these notifications, you can 
+<a target="_blank" href="{% base_url 'mute_alert' alert_id=alert|mongo_id %}">mute</a> or 
+    <a target="_blank" href="{% base_url 'edit_alert' alert_id=alert|mongo_id %}">edit</a> this alert
+ </multiline>
+</div>
+
+{% endblock content %}

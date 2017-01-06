@@ -1,0 +1,29 @@
+{% for s in data.sorted_data  %}
+{% if s.value %}
+<li>
+    <a class='server__name' title="{{ s.server.name }}" href="{% url 'server_system' server_id=s.server|mongo_id  %}">{{ s.server.name}}</a>
+    <span class="last_check timeago">{{s.last_check}}</span>
+    <div class="qtip-tooltip">
+        {{ s.last_check|datetime_local:request.timezone }}
+    </div>
+    
+        <div class="container" >
+            <span class="background" style="opacity:{{s.value|percentage_of:data.max_value|percent_to_opacity}}"></span>
+            <span class="data" >{{ s.value|floatformat:2 }}{{s.unit}}</span>
+        </div>
+    
+</li>
+{% else %}
+    <li>
+        <h4 title="{{s.server.name}}">{{s.server.name }}</h4>
+        <span class="last_check timeago">{{s.last_check}}</span>
+        <div class="qtip-tooltip">
+            {{ s.last_check|datetime_local:request.timezone }}
+        </div>
+        <div class="container" >
+            <span class="background" style="opacity:0"></span>
+            <span class="no-data" >No data</span>
+        </div>
+     </li>
+{% endif %} {# if system #}
+{% endfor %}

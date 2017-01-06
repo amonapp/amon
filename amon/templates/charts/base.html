@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/libs/pickadate.css">
+{% endblock %}
+
+{% block breadcrumb_class %}servers{% endblock breadcrumb_class %}
+{% block breadcrumb %}
+    {{ block.super }}
+{% url 'server_system' server_id=server|mongo_id as system_url %}
+{% url 'view_process' server_id=server|mongo_id as view_process %}
+{% url 'view_plugins' server_id=server|mongo_id as view_plugins %}
+{% url 'view_container' server_id=server|mongo_id as view_containers %}
+<span class="server-meta  {{ server.distro|get_distro }}"></span>
+<div class="qtip-tooltip distro-tooltip">
+    <ul class='servers--meta-list'>
+        {% include "servers/_meta_tooltip.html" with server=server %}
+    </ul>
+</div> <!-- tooltip -->
+<h3 {% if all_servers|length > 1 %}data-arrow="d" data-dropdown="server-dropdown" data-options="is_hover:true" {% endif %} class='server_name'>{{ server.name }}</h3>
+{% if all_servers|length > 1 %}
+<ul id="server-dropdown" class="f-dropdown medium" data-dropdown-content>
+{% for s in all_servers|dictsort:"name" %}
+    {% if s|mongo_id != server|mongo_id %}
+
+        <li class='server-tooltip'><a href="{% if s.last_check %} {% url 'server_system' server_id=s|mongo_id %}
+        {% else %}{% url 'servers' %}#{{ s|mongo_id }} {% endif %}" class='{{ provider }}'>{{ s.name }}
+        {% if not s.last_check %}
+        <span class="nodata">No data</span>
+        {% else %}
+        <span class="nodata">{{s.last_check|datetime_local:request.timezone|empty_if_none}}</span>
+         {% endif %}
+     </a>
+        </li>
+        {% endif %} {# server != s #}
+
+{% endfor %}
+</ul>
+{% endif %}{# server count #}
+<ul class="tabs-dropdown">
+    <li><a {% if request.path == system_url %} class="active"{% endif %}  data-arrow="d"
+        data-dropdown="system-dropdown" data-options="is_hover:true" href="{{ system_url }}">System
+        <span class="tabs-dropdown--counter">/ {{ charts|title }}</span></a>
+        <ul id="system-dropdown" class="f-dropdown tiny" data-dropdown-content>
+            {% for d, label in system_charts_form.fields.charts.choices %}
+                <li><a href="{{ system_url }}?charts={{ d }}{% if duration %}&duration={{ duration }}{% endif %}">{{ label }}</a></li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% if all_processes.clone.count > 0 %}
+    <li><a {% if request.path == view_process %} class="active"{% endif %} href="{{ view_process }}" data-arrow="d"
+            data-dropdown="process-dropdown" data-options="is_hover:true">
+            Processes{% if process %}.{{ process.name }}{% endif %} <span class="tabs-dropdown--counter">{{all_processes.clone.count}}</span> </a>
+    <ul id="process-dropdown" class="f-dropdown medium" data-dropdown-content>
+    {% for p in all_processes.clone|dictsort:"name" %}
+        <li><a href="{{ view_process }}?process={{ p|mongo_id }}{% if duration %}&duration={{ duration }}{% endif %}">{{ p.name }}</a></li>
+    {% endfor %}
+    </ul>
+    </li>
+    {% endif %}
+
+    {% if all_plugins.clone.count > 0 %}
+    <li><a {% if request.path == view_plugins %} class="active"{% endif %} href="{{ view_plugins }}" data-arrow="d"
+            data-dropdown="plugins-dropdown" data-options="is_hover:true">
+        Plugins{% if plugin %}.{{ plugin.name }}{% endif %} <span class="tabs-dropdown--counter">{{all_plugins.clone.count}}</span> </a>
+        <ul id="plugins-dropdown" class="f-dropdown medium" data-dropdown-content>
+         {% for p in all_plugins|dictsort:"name"  %}
+             <li><a href="{{ view_plugins }}?plugin={{ p|mongo_id }}{% if duration %}&duration={{ duration }}{% endif %}">{{ p.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </li>
+    {% endif %}
+
+
+</ul>
+<ul class='filter'>
+    <li class='daterange-element'>
+    <a data-arrow="d" data-dropdown="duration-dropdown" data-options="is_hover:true" href="">
+    {{ date_from|datetimecharts_local:request.timezone }} - <span id="dropdown_now_local">{{ date_to|datetimecharts_local:request.timezone  }}</span>
+    </a>
+    <ul id="duration-dropdown" class="f-dropdown tiny" data-dropdown-content>
+        {% for d, label in duration_form.fields.duration.choices %}
+
+            <li>
+            <a {% if d == duration and not enddate %}class='active'{% endif %} href="{{ breadcrumb_url }}&duration={{ d }}" >
+            {{ label }}</a></li>
+        {% endfor %}
+        <li><a  {% if enddate %}class='active'{% endif %} data-url="{{ breadcrumb_url }}" id="custom-range" href="">Custom range</a></li>
+    </ul>
+    </li>
+</ul>
+
+<ul class="chart-sizes" data-ng-controller="RickshawSizer" data-ng-init="init({{ selected_charts|length }})" >
+    {% verbatim %}
+    <li data-ng-repeat="s in sizes">
+        <a data-ng-class="set_class(s)" href="" data-ng-click='set_size(s)'>{{s}}</a>
+    </li>
+    {% endverbatim %}
+</ul>
+
+
+<div id="overlay">
+    <form id='update_daterange' action="{{ breadcrumb_url }}" method="post">
+    <div class="timepicker">
+        <ul>
+            <li>
+                <label for="">From:</label>
+                <input type="text" class='date_from' name='date_from' value="{{ date_from|day_local:request.timezone }}"><span>@</span>
+                <input type="text" class='time_from' name='time_from' value="{% if date_from %}{{ date_from|time_local:request.timezone }}{% else %}00:00{% endif %}">
+            </li>
+            <li>
+                <label for="">To:</label>
+                <input type="text" class='date_to' name='date_to' value="{{ date_to|day_local:request.timezone }}"><span>@</span>
+                <input type="text" class='time_to' name='time_to' value="{% if date_to %}{{ date_to|time_local:request.timezone }}{% else %}00:00{% endif %}">
+            </li>
+            <li class='buttons'>
+                <button class='button' type="submit">Update</button>
+                <button id='close-timepicker' class='button delete'>Cancel</button>
+            </li>
+        </ul>
+    </div>
+</form>
+</div><!-- overlay end -->
+
+
+<div id="legend">
+    <span id="legend_timestamp"></span>
+    <ul id="legend_list"></ul>
+</div> <!-- legend end -->
+<input type="hidden" id="first_check_date" value="{{ first_check_date|datetimecharts_local:request.timezone }}">
+<input type="hidden" id="now_local" value="{{ now|datetimecharts_local:request.timezone }}">
+<input type="hidden" id="timezone_url" value="{% url 'localtime_to_unix' %}">
+{% endblock breadcrumb %}
+
+
+{% block content %}
+{% endblock content %}
+
+
+
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='{{ STATIC_URL }}js/libs/charts.min.js'></script>
+<script type="text/javascript" src='{{ STATIC_URL }}js/libs/rickshaw/Rickshaw.Graph.HoverDetail.js'></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/timepicker.js"></script>
+{% if request.devmode %}
+<script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.charts.js'></script>
+{% endif %}
+{% endblock js %}

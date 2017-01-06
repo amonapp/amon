@@ -1,0 +1,5 @@
+{% spaceless %}
+{% autoescape off %}
+{{notification.server.name }} has not sent data to Amon since {{notification.server.last_check|datetime_local:notification.timezone }}
+{% endautoescape %}
+{% endspaceless %}

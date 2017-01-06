@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<ul id='breadcrumb-list'>
+<li ><a href="{% url 'notifications_email' %}">Email recepients</a></li>
+<li class='separator'></li>
+<li >Add</li>
+</ul>
+{% endblock %}
+{% block title %}
+Notifications - Email
+{% endblock %}
+{% block content %}
+<div class="settings_content">
+<form action="{% url 'add_email' %}" method='post'>
+<ul class='inner-heading'>
+    <li><h1 >Add new recepient</h1></li>
+</ul>
+<ul class='settings-list-form'>
+ 
+    <li>
+        <span class="label">Email</span>
+        {{ form.email }}
+        {{ form.email.errors }}
+
+    </li>
+<li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value='Add' /> 
+    </li>
+</ul>
+</form>
+</div> <!-- settings_content end -->
+{% endblock %}

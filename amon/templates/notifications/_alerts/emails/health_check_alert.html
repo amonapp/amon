@@ -1,0 +1,36 @@
+{% extends "notifications/_alerts/emails/base.html" %}
+{% block content %}
+<table cellspacing="0" cellpadding="0" align="left">
+<tbody>
+    <tr>
+        <h3>Alert details</h3>
+        <br><br>
+        <strong>Server: </strong>{{ server.name }} {% if server.ip_address %}({{ server.ip_address}}) {% endif %}
+        <br><br>
+        <strong>Period: </strong> {{ trigger.from|day_local:timezone }} - between {{ trigger.from|time_local:timezone }} and {{ trigger.time|time_local:timezone }}
+        <br><br>
+        <strong>Command: </strong>{{alert.command}}{{param}} status is {{alert.status|upper}}
+        <br><br>
+        <strong>Output:</strong>
+        {{notification.health_check_result.output}}
+        <br><br>
+    </tr>
+    </tbody>
+</table>
+
+<div align="left" class="article-content">
+    <multiline label="Description">
+This notification was sent for alert - Server: {{ server.name }} {{alert.command}}{{alert.param}} is {{alert.status}}
+{% if alert.period > 60 %}
+     {{ alert.period|seconds_to_minutes }} minutes
+{% else %}
+    {{alert.period}} seconds
+{% endif %}
+<br><br>
+If you want to stop receiving these notifications, you can 
+<a target="_blank" href="{% base_url 'mute_alert' alert_id=alert|mongo_id %}">mute</a> or 
+    <a target="_blank" href="{% base_url 'edit_alert' alert_id=alert|mongo_id %}">edit</a> this alert
+ </multiline>
+</div>
+
+{% endblock content %}

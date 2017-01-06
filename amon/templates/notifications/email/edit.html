@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+<ul id='breadcrumb-list'>
+<li class='first'>Notifications</li>
+<li class='separator'></li>
+<li ><a href="{% url 'notifications_email' %}">Email</a></li>
+<li class='separator'></li>
+<li >Edit recipient</li>
+</ul>
+{% endblock %}
+{% block title %}
+Notifications - Email
+{% endblock %}
+{% block content %}
+<div class="settings_content">
+<form action="{% url 'edit_email' email_id=email|mongo_id %}" method='post'>
+<ul class='inner-heading'>
+    <li><h1 >Edit recepient</h1></li>
+</ul>
+<ul class='settings-list-form'>
+
+    <li>
+        <span class="label">Email</span>
+        {{ form.email }}
+        {{ form.email.errors }}
+    </li>
+<li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value='Save' /> 
+    </li>
+</ul>
+</form>
+</div> <!-- settings_content end -->
+{% endblock %}

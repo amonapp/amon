@@ -1,0 +1,63 @@
+{% extends "account/authbase.html" %}
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="message info">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="{% url 'login' %}" method='post'>
+    <ul>
+        <li><h3>Login to your Account</h3></li>
+        {% if form.errors %}
+            <li class='error'>Invalid login details</li>
+        {% endif %}
+        <li class="label"><label for="">Email</label></li>
+        <li>
+            {{ form.email }}
+        </li>
+        <li class="label"><label for="">Password</label></li>
+        <li>
+            {{ form.password }}
+            <a href="" class="amon-icon" id="show_hide" data-show="w">Show</a> 
+        </li>
+        <li class='remember_me'>
+            {{ form.remember_me }} 
+            <label for="id_remember_me">Remember Me</label>
+            <a href="{% url 'forgotten_password' %}">Forgotten Password</a>
+        </li>
+        <li class='last'>
+            {% csrf_token %}
+            <input type="submit" value="Login" class='button green' />
+        </li>
+    
+            
+        
+    </ul>
+</form>
+
+{% endblock content %}
+{% block js %}
+<script>
+$(function() {
+
+    // show password
+    $('#show_hide').click(function(e){
+        e.preventDefault();
+        if ($(this).prev().attr("type") == "password") {
+            $(this).prev().attr("type", "text");
+            $(this).addClass('show');
+        } else {
+            $(this).prev().attr("type", "password");
+            $(this).removeClass('show');
+        };
+    });
+    // show password end
+
+});
+</script>
+{% endblock js %}

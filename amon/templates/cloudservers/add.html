@@ -1,0 +1,20 @@
+<h3>Add {{ provider_id|title }} Credentials</h3>
+<form action="{% url 'cloudservers_add' provider_id=provider_id %}" method='post'>
+<ul class='notifications-form'>
+    {% for field in form %}
+      <li>
+          {{ field.label_tag }}
+
+          {{ field }}
+           {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+          {{ field.errors }}
+      </li>
+    {% endfor %}
+    <li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value='Sync' /> 
+        </li>
+    </ul>
+</form>

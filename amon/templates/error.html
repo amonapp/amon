@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Error {{ status_code }}{% endblock %}
+{% block header %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/error.css" />
+{% endblock %}
+
+{% block breadcrumb %}
+<ul class="error">
+    <li class='first'>Error {{ status_code }}</li>
+</ul>
+{% endblock %}
+{% block content %}
+<p>
+    {{ error_trace }}
+</p>
+{% endblock %}

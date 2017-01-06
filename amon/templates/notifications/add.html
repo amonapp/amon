@@ -1,0 +1,17 @@
+<h3>{{ provider_id|title }}</h3>
+<form action="{% url 'notifications_add' provider_id=provider_id %}" method='post'>
+<ul class='notifications-form'>
+    
+    {% for field in form %}
+       <li >
+       {{ field.label_tag }}
+       {{ field }}
+       {{ field.errors }}
+      </li>
+    {% endfor %}
+    <li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value='Add' /> 
+        </li>
+    </ul>
+</form>

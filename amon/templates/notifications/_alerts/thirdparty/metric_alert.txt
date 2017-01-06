@@ -1,0 +1,6 @@
+{% spaceless %}
+{% autoescape off %}
+Metric:{{ notification.custom_metric.name }}.{{ notification.alert.key }}{% if notification.alert.above_below == 'above' %} >{% else %} <{% endif %} {{ notification.alert.metric_value|empty_if_none }} for {% if notification.alert.period > 60 %}{{notification.alert.period|seconds_to_minutes }} minutes {% else %}{{notification.alert.period}} seconds{% endif %} {% if notification.trigger.average_value  %}(Current value: {{notification.trigger.average_value}})
+{% endif %}
+{% endautoescape %}
+{% endspaceless %}

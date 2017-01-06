@@ -1,0 +1,166 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Amon {{ request.version }} - {% block title %} {% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/favicon.png" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" type="text/css" href="{{ staTic_url }}css/ie/ie.css" />
+    <![endif]-->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/libs.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/chart.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/menu.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/screen.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/select2main.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/select2.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+    
+    
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/animatecss(animate.min.css),qtip2(jquery.qtip.min.css)"> -->
+
+    {% block header %}{% endblock %}
+</head>    
+<body data-ng-app="{% block ngapp %}BaseModule{% endblock ngapp %}" >
+    <nav class="topbar">
+        <a href="{% url 'servers' %}" class='logo'>
+            <img src="{{ STATIC_URL }}images/logonotext.png" alt="Amon logo" title='Amon'>
+         </a>
+
+         <ul class='topbar__left'>
+            
+            <li >
+                <a data-dropdown="nav-servers" data-options="is_hover:true"
+                 {% if 'server' in request.path %}class='active'{% endif %}
+                 title='Servers' href="{% url 'servers' %}">
+                    <span class='icon' data-icon="A"></span>
+                    <span class="label">Servers </span>
+                    <span class='amon arrow' data-icon="d"></span>
+                </a>
+                <ul id="nav-servers" class="f-dropdown tiny" data-dropdown-content>
+                    <li><a data-icon="6" href="{% url 'servers' %}">All Servers</a></li>
+                    {% for b in request.bookmarks.clone  %}
+                        {% if b.type == 'server' %}
+                            <li><a data-icon="4" class='bookmark' href="{% url 'servers' %}?tags={{b.tags}}&bookmark_id={{b|mongo_id}}">{{b.name}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li><a data-icon="0" href="{% url 'servers_map' %}">Host map</a></li>
+                    <li><a data-icon="J" href="{% url 'cloudservers' %}">Cloud servers</a></li>
+                    <li><a data-icon="u" href="{% url 'add_server' %}">Add server</a></li>
+                    
+                </ul>
+            </li>
+            <li>
+                <a
+                {% if 'checks' in request.path %}class='active'{% endif %} data-dropdown="nav-healthchecks" data-options="is_hover:true"
+                 title='Health Checks' href="{% url 'healthchecks_view' %}">
+                    <span class='icon' data-icon="V"></span>
+                    <span class="label">Health Checks</span>
+                    <span class='amon arrow' data-icon="d"></span>
+                </a>
+
+                <ul id="nav-healthchecks" class="f-dropdown tiny" data-dropdown-content>
+                    <li><a  data-icon="6" href="{% url 'healthchecks_view' %}">All Checks</a></li>
+                    <li><a  data-icon="9" href="{% url 'healthchecks_view' %}?filter_by=critical">Critical</a></li>
+                </ul>
+            </li>
+            
+            <li >
+                <a
+                {% if 'dashboard' in request.path %}class='active'{% endif %} data-dropdown="nav-dashboards" data-options="is_hover:true"
+                 title='Dashboards' href="{% url 'dashboards' %}">
+                    <span class='icon' data-icon="B"></span>
+                    <span class="label">Dashboards</span>
+                    <span class='amon arrow' data-icon="d"></span>
+                </a>
+                    <ul id="nav-dashboards" class="f-dropdown tiny" data-dropdown-content>
+                        <li><a data-icon='6' href="{% url 'dashboards' %}">All Dashboards</a></li>
+                        {% for d in request.dashboards  %}
+                            <li><a href="{% url 'view_dashboard' dashboard_id=d|mongo_id %}">
+                             {% if d.name|length > 0 %}{{d.name}}{% else %}Untitled Dashboard{% endif %}</a></li>
+                        {% endfor %}
+                        <li><a data-icon='u' href="{% url 'create_dashboard' %}">New Dashboard</a></li>
+                    </ul>
+                
+            </li>    
+            
+
+            
+            <li>
+                <a {% if 'alerts' in request.path  %}class='active'{% endif %} data-dropdown="nav-alerts" data-options="is_hover:true"
+                     title='Alerts'  href="{% url 'alerts' %}">
+                    <span  class='icon' data-icon="p"></span>
+                    <span class="label">Alerts</span>
+                    <span class='amon arrow' data-icon="d"></span>
+                </a>
+                <ul id="nav-alerts" class="f-dropdown tiny" data-dropdown-content>
+                    <li><a  data-icon="6" href="{% url 'alerts' %}">All Alerts</a></li>
+                    <li><a data-icon='A' href="{% url 'add_alert' %}">Add System alert</a></li>
+                    <li><a data-icon='V' href="{% url 'add_healthcheck_alert' %}">Add HealthCheck alert</a></li>
+                    <li><a  data-icon="k" href="{% url 'alerts_mute_servers' %}">Pause Alerts</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class='topbar__right'>
+                <li>
+                    <a data-dropdown="nav-settings" data-options="is_hover:true" href="{% url 'view_profile' %}">
+                    <span  class='icon' data-icon="O"></span>
+                    <span class="label">Settings</span>
+                    <span class='amon arrow' data-icon="d"></span>
+                </a>
+                <ul id="nav-settings" class="f-dropdown tiny" data-dropdown-content>
+                    {% include "settings/_settings_li.html" %}
+                </ul>
+                </li>
+            
+                <li><a title="Logout" class='icon logout' data-icon="c" href="{% url 'logout' %}"></a></li>
+            </ul>
+    </nav>
+
+<div id="content__wrapper">
+    <main class="content {% block main_content_class %}{% endblock main_content_class %}" {% block ngcontroller %}{% endblock ngcontroller %}>
+        <div id="breadcrumb" class="{% block breadcrumb_class %}{% endblock breadcrumb_class %}" >        
+            {% block breadcrumb %}
+            {% endblock breadcrumb %}
+        </div>
+        <div id="content" {% block content_class %}{% endblock content_class %} >
+                {% block content %}{% endblock %}
+        </div><!-- content END --> 
+    </main>
+</div>
+
+{% if messages %}
+<div class="message-popup animated">
+    <div class="message-popup--inner">
+        <span class="icon" data-icon='i'></span>
+        <p>{% for message in messages %} {{ message | safe }} {% endfor %}</p>
+        <a href="#" class="message-popup--close">X</a>
+    </div>
+</div>
+{% endif %}
+
+
+{% include "_templates.html" %}
+<script src="{{ STATIC_URL }}js/libs/libs.min.js"></script>
+<script type="text/javascript" src='{{ STATIC_URL }}js/global.js'></script>
+{% if request.devmode == True %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.global.js'></script>
+{% else %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/app.min.js'></script>
+{% endif %}
+
+{% block js %}
+{% endblock %}
+<script>
+$(function(){ 
+    $(document).foundation({dropdown: {is_hover:true},reveal:{animation:'fade', animation_speed:100}  }); 
+});
+</script>
+
+</body>
+</html>

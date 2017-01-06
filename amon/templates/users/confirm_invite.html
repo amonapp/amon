@@ -1,0 +1,49 @@
+{% extends "account/authbase.html" %}
+{% block title %}Confirm Invitation{% endblock title %}
+
+{% block content %}
+
+<form action="{% url 'users_confirm_invite' invitation_code=invite.invitation_code %}" method='post'>
+    <ul>
+        <li><p> Please set a password for {{ invite.email }} to login</p></li>
+        <li class="label"><label for="">Password</label></li>
+        <li>
+            {{ form.password }}
+            
+            <a href="" class="amon-icon" id="show_hide" data-show="w">Show</a> 
+            
+        </li>
+        <li>{{ form.password.errors }}</li>
+        <li class='last'>
+            {% csrf_token %}
+            <input type="submit" value="Confirm" class='button green' />
+        </li>
+    
+        
+        
+    </ul>
+</form>
+
+
+
+{% endblock content %}
+{% block js %}
+<script>
+$(function() {
+
+    // show password
+    $('#show_hide').click(function(e){
+        e.preventDefault();
+        if ($(this).prev().attr("type") == "password") {
+            $(this).prev().attr("type", "text");
+            $(this).addClass('show');
+        } else {
+            $(this).prev().attr("type", "password");
+            $(this).removeClass('show');
+        };
+    });
+    // show password end
+
+});
+</script>
+{% endblock js %}

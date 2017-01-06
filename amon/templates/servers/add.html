@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block ngapp %}BaseModule{% endblock ngapp %}
+{% block breadcrumb %}
+<ul id='breadcrumb-list'>
+<li ><a href="{% url 'servers' %}">Servers</a></li>
+<li class='separator'></li>
+<li class='last'>Add</li>
+</ul>
+{% endblock breadcrumb %}
+{% block title %}
+Servers - Add
+{% endblock %}
+{% block content %}
+    <form action="{% url 'add_server' %}" method='post'>
+    <ul class='settings-list-form'>
+        <li>
+            <label for="">{{ form.name.label }}</label>
+            {{ form.name }}
+            {{ form.name.errors }}
+        </li>
+        <li>
+            <label for="">{{ form.keep_data.label }}</label>
+            {{ form.keep_data }}
+        </li>
+        <li>
+            <label for="">{{ form.check_every.label }}</label>
+            {{ form.check_every }}
+        </li>
+        <li>
+            <label for="">{{ form.tags.label }}</label>
+            {{ form.tags }}
+
+        </li>
+        <li class='buttons'>
+            {% csrf_token %}
+            <input type="submit" class='button' value='Add' />
+        </li>
+
+        <li>
+            <span class="info">You need to add a server only if you wish to install the <strong>legacy python agent</strong> or the <strong>Windows agent</strong>. The new agent is installed with an API key and all these details are filled automatically.</span>
+        </li>
+    </ul>
+
+
+
+    </form>
+{% endblock %}
+{% block js %}
+
+{% endblock js %}

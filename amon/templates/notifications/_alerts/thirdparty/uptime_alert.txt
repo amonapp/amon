@@ -1,0 +1,5 @@
+{% spaceless %}
+{% autoescape off %}
+{{ notification.process.name }} on {{notification.server.name }} is {{ notification.alert.metric }}
+{% endautoescape %}
+{% endspaceless %}

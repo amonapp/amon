@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block ngapp %}BaseModule{% endblock ngapp %}
+{% block breadcrumb %}
+<ul id='breadcrumb-list'>
+<li ><a href="{% url 'servers' %}">Servers</a></li>
+<li class='separator'></li>
+<li class='last'>Edit</li>
+</ul>
+{% endblock breadcrumb %}
+{% block title %}
+Servers - Edit
+{% endblock %}
+{% block content %}
+<div class="settings_content">
+<ul class="inner-heading">
+    <li>
+        <h1>Edit server</h1>
+    </li>
+</ul>
+<form action="{% url 'edit_server' server_id=server|mongo_id  %}" method='post'>
+<ul class='settings-list-form'>
+    <li>
+        <span class="label">Key</span>
+        <span class="text">{{ server.key }}</span>
+    </li>
+    <li>
+        <span class="label">Name</span>
+            {{ form.name }}
+            {% if form.name.errors %}
+                {{ form.name.errors }}
+            {% endif %}
+    </li>
+    <li>
+        <label for="">{{ form.keep_data.label }}</label>
+        {{ form.keep_data }}
+    </li>
+    <li>
+        <label for="">{{ form.check_every.label }}</label>
+        {{ form.check_every }}
+    </li>
+    <li>
+        <label for="">{{ form.tags.label }}</label>
+        {{ form.tags }}
+    </li>
+    <li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value='Update' />
+    </li>
+</ul>
+</form>
+<ul class="inner-heading">
+    <li>
+        <h1>Cleanup Plugin Data</h1>
+    </li>
+</ul>
+<ul class='settings-list-form'>
+    <li>
+    <table class='settingsapikeys-table'>
+        <thead>
+            <tr>
+                <th >Plugin</th>
+                <th>Last Data</th>
+                <th class='settings'></th>
+            </tr>
+        </thead>
+        {% for p in plugins  %}
+        <tr >
+            <td>{{p.name}} </td>
+            <td>{{p.last_check|datetime_local:request.timezone|empty_if_none }}</td>
+            <td class='settings-column'><a href="{% url 'delete_plugin' plugin_id=p|mongo_id server_id=server|mongo_id  %}" class="button delete">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</li>
+</ul>
+</div>
+{% endblock %}
+{% block js %}
+
+{% endblock js %}

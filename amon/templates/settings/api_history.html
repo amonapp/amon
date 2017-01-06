@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Settings - API - History{% endblock title %}
+{% block ngapp %}BaseModule{% endblock ngapp %}
+{% block content_class %}class="data-rows"{% endblock content_class %}
+{% block breadcrumb %}
+    {% include "settings/_topbar.html" %}
+{% endblock breadcrumb %}
+{% block main_content_class %}center{% endblock main_content_class %}
+{% block content %}
+
+
+<table class='settingsapikeys-table'>
+    <thead>
+        <tr>
+            <th class='name'>Request</th>
+            <th class='label'>Remote address</th>
+            <th class='last_used'>Time</th>
+        </tr>
+    </thead>
+
+    {% for r in api_history %}
+    <tr>
+        <td>{{r.request_method }} {{ r.request_path }}</td>
+        <td>{{ r.remote_address }}</td>
+        <td>{{r.time|datetime_local:request.timezone }}</td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+{% endblock %}

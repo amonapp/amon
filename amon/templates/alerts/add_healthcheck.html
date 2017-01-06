@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block ngapp %}HealthCheckAddAlertApp{% endblock ngapp %}
+{% block breadcrumb %}
+    <ul id='breadcrumb-list'>
+    <li><a href="{% url 'alerts' %}">Alerts</a></li>
+    <li class='separator'></li>
+    <li class='last'>Add Health Check Alert</li>
+    </ul>
+{% endblock %}
+{% block content_class %}class="alert-settings"{% endblock content_class %}
+{% block title %}Alerts - Add Health Check Alert{% endblock %}
+{% block content %}
+
+<form action="{% url 'add_healthcheck_alert' %}" method='post' data-ng-controller="HealthCheckAlertsCtrl">
+    <ul class='inner-heading'>
+        <li><h1>Add Health Check Alert</h1></li>
+    </ul>
+    <ul class="settings-list-form">    
+    <li>
+        <span class="label">Servers</span>
+        {{ form.server }}
+        {{ form.server.errors }}
+    </li>
+    
+    <li data-ng-show="show_tags">
+        <span class="label">Tags</span>
+         <select id="tags" name="tags" select2-dropdown data-placeholder="Select tags" multiple="">
+
+        {% for tag in tags  %}
+            <option value="{{ tag|mongo_id }}">{% if tag.group.name %}{{tag.group.name }}:{% endif %}{{ tag.name }}</option>
+        {% endfor %}
+        </select>
+    </li>
+
+    <li data-ng-show="show_commands">
+        <span class="label">Check</span>
+         <select id="command" name="command" command-dropdown data-placeholder="Select check" required="required" 
+         data-url="{% url 'api_alerts_get_health_check_params_for_command' %}">
+         <option value=""></option>
+        {% verbatim  %}
+            <option ng-repeat="m in commands" value="{{m}}">{{m}}</option>
+        {% endverbatim %}
+        </select>
+    </li>
+
+
+    <li data-ng-show="show_params">
+        <span class="label">Param</span>
+         <select id="param" name="param" select2-dropdown data-placeholder="Select param (Optional)">
+         <option value=""></option>
+        {% verbatim  %}
+            <option ng-repeat="m in params" value="{{m}}">{{m}}</option>
+        {% endverbatim %}
+        </select>
+        
+        <span class="info">Select a param, if you want to narrow down your alert.  Example:<br>
+        <strong>check-http.rb</strong> with no parameters will trigger a global alert. <br>
+        <strong>check-http.rb -u yourwebsite.com</strong> will trigger an alert only for this specific website</span>
+    </li>
+
+        
+        <li class='small-dropdown' data-ng-show="show_status">
+            <span class="label">Status is</span>
+            {{ form.status }}
+        </li>
+        <li data-ng-show="show_for">
+            <span class="label">For</span>
+            {{ form.period }}
+        </li>
+    </ul>
+    
+    
+    <ul class='inner-heading'>
+        <li><h1>Send notification to</h1></li>
+    </ul>
+    <ul class="settings-list-form">        
+    <li class='alert-recepients-dropdown'>
+        <span class="label">Notify</span>
+        <select id='notifications-select' name='notifications' multiple="" data-placeholder="Select Recipients" notifications-dropdown>
+            {% for n in notifications %}
+                <option value="{{n.provider_id}}:{{ n|mongo_id }}" data-image="{{STATIC_URL}}images/integrations/{{n.provider_id}}.png">
+                {{n.provider_id}}: {% if n.provider_id == 'email' %}{{n.email}} {% else %}{{n.name}}{%  endif %}
+                </option>
+            {% endfor %}
+        </select>
+    </li>
+
+     <li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value="Add" />
+    </li>
+    </ul>
+    </form> 
+    
+{% endblock %}
+{% block js %}
+{% if request.devmode %}
+<script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.healthcheck_alerts.add.js'></script>
+{% endif %}
+{% endblock %}

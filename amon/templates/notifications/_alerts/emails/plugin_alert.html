@@ -1,0 +1,40 @@
+{% extends "notifications/_alerts/emails/base.html" %}
+{% block content %}
+<table cellspacing="0" cellpadding="0" align="left">
+    <tbody>
+        <tr>
+            <h3>Alert details</h3>
+            <strong>Period: </strong> {{ trigger.from|day_local:timezone }} - between {{ trigger.from|time_local:timezone }} and {{ trigger.time|time_local:timezone }}
+            <br><br>
+            <strong>Server:</strong> {{ server.name }} {% if server.ip_address %}({{ server.ip_address}}) {% endif %}
+            <br><br> 
+            <strong>Plugin:</strong> {{ plugin.name }}.{{gauge.name }}.{{alert.key}}
+            {% if trigger.average_value %}
+                 - average value: {{ trigger.average_value }}
+            {% endif %}
+            <br><br>
+            <a target="_blank" href="{% base_url 'view_plugins' server_id=server|mongo_id %}?plugin={{ plugin|mongo_id }}&duration={{ alert.period }}&enddate={{ trigger.time }}">
+                View chart</a>
+            <br><br>
+        </tr>
+        </tbody>
+</table>
+<div align="left" class="article-content">
+    <multiline label="Description">
+This notification was sent for alert: <br>
+{{ server.name }}/{{ plugin.name }}.{{gauge.name }}.{{alert.key}} {{ alert.above_below }}
+{{ alert.metric_value }} {{ alert.metric_type }} for
+
+{% if alert.period > 60 %}
+     {{ alert.period|seconds_to_minutes }} minutes
+{% else %}
+    {{alert.period}} seconds
+{% endif %}
+
+<br><br>
+If you want to stop receiving these notifications, you can 
+<a target="_blank" href="{% base_url 'mute_alert' alert_id=alert|mongo_id %}">mute</a> or <a target="_blank" href="{% base_url 'edit_alert' alert_id=alert|mongo_id %}">edit</a> this alert
+    </multiline>
+</div>
+
+{% endblock content %}

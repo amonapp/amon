@@ -1,0 +1,29 @@
+<div class="datatables_block">
+<table class='healthchecks-table'>
+    <thead>
+        <tr>
+            <th class='check'><span data-asc="d" data-desc="a" class='label'>Status</span></th>
+            <th class='host'>Host</th>
+            <th>Check</th>
+            <th class='output'>Output</th>
+            <th class='last_check'><span data-asc="d" data-desc="a" class='label' >Last check</span></th>
+        </tr>
+    </thead>
+    <tbody>    
+{% for check in result %}
+<tr>
+<td data-order='{% if check.last_check.status == "critical" %}0{% else %}{% if check.last_check.status == "warning" %}1{% else %}2{% endif %}{% endif %}'
+    ><span class="health-checks--status {{check.last_check.status}}">{{check.last_check.status}}</span></td>
+    <td><a href="{% url 'server_system' server_id=check.server|mongo_id %}">{{check.server.name}}</a></td>
+    <td>{{check.command}} {{check.params|empty_if_none}}</td>
+    <td><span class='result' title="{{check.last_check.output}}">{{check.last_check.output|truncatechars:150}}</span></td>
+    <td class='last_check-column'>
+        <span time-ago class="last_check" title="{{ check.last_check.time|datetime_local:request.timezone }}">{{check.last_check.time}}</span>
+    </td>
+    
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+</div> <!-- datatables block -->

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Dashboards - {{ dashboard.name|default:"Untitled dashboard" }} {% endblock %}
+{% block breadcrumb_class %}view-dashboard{% endblock breadcrumb_class %}
+{% block header %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/libs/pickadate.css">
+{% endblock %}
+
+{% block breadcrumb %}
+{{ block.super }}
+<h3 >{{ dashboard.name|default:"Untitled dashboard" }}</h3>
+
+<a href="#" class='settings amon' data-dropdown="settings-menu" data-options="is_hover:true">d</a>
+<ul id='settings-menu' class="f-dropdown tiny settings-menu" data-dropdown-content>
+    <li><a data-icon='e' title='Edit Dashboard' 
+href="{% url 'edit_dashboard' dashboard_id=dashboard|mongo_id %}">Edit</a></li>
+    <li>
+        <a data-icon='8'  title='Reorder Dashboard Metrics' 
+    href="{% url 'reorder_dashboard' dashboard_id=dashboard|mongo_id %}">Reorder</a>
+    </li>
+</ul>
+
+<ul class='filter'>
+    <li class='daterange-element'>
+    <a data-arrow="d" data-dropdown="duration-dropdown" data-options="is_hover:true" href="">
+    {{ date_from|datetimecharts_local:request.timezone }} - <span id="dropdown_now_local">{{ date_to|datetimecharts_local:request.timezone  }}</span>
+    </a>
+    <ul id="duration-dropdown" class="f-dropdown tiny" data-dropdown-content>
+        {% for d, label in duration_form.fields.duration.choices %}
+        <li>
+            <a {% if d == duration and not enddate %}class='active'{% endif %} href="{% url 'view_dashboard' dashboard_id=dashboard|mongo_id %}?duration={{ d }}" >
+            {{ label }}</a></li>
+        {% endfor %}
+        <li><a  {% if enddate %}class='active'{% endif %} data-url="{% url 'view_dashboard' dashboard_id=dashboard|mongo_id %}?empty=0" id="custom-range" href="">Custom range</a></li>
+    </ul>
+    </li>
+</ul>
+
+<ul class="chart-sizes" data-ng-controller="RickshawSizer" data-ng-init="init({{ selected_charts|length }})" >
+    {% verbatim %}
+    <li data-ng-repeat="s in sizes">
+        <a data-ng-class="set_class(s)" href="" data-ng-click='set_size(s)'>{{s}}</a>
+    </li>
+    {% endverbatim %}
+</ul>
+
+<div id="overlay">
+    <form id='update_daterange' action="{% url 'view_dashboard' dashboard_id=dashboard|mongo_id %}" method="post">
+    <div class="timepicker">
+        <ul>
+            <li>
+                <label for="">From:</label>
+                <input type="text" class='date_from' name='date_from' value="{{ date_from|day_local:request.timezone }}"><span>@</span>
+                <input type="text" class='time_from' name='time_from' value="{% if date_from %}{{ date_from|time_local:request.timezone }}{% else %}00:00{% endif %}">
+            </li>
+            <li>
+                <label for="">To:</label>
+                <input type="text" class='date_to' name='date_to' value="{{ date_to|day_local:request.timezone }}"><span>@</span>
+                <input type="text" class='time_to' name='time_to' value="{% if date_to %}{{ date_to|time_local:request.timezone }}{% else %}00:00{% endif %}">
+            </li>
+            <li class='buttons'>
+                <button class='button' type="submit">Update</button>
+                <button id='close-timepicker' class='button delete'>Cancel</button>
+            </li>
+        </ul>
+    </div>
+</form>
+</div><!-- overlay end -->
+
+
+<div id="legend">
+    <span id="legend_timestamp"></span>
+    <ul id="legend_list"></ul>
+</div> <!-- legend end -->
+<input type="hidden" id="now_local" value="{{ now|datetimecharts_local:request.timezone }}">
+<input type="hidden" id="timezone_url" value="{% url 'localtime_to_unix' %}">
+{% endblock breadcrumb %}
+
+
+{% block content %}
+{% endblock content %}
+
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='{{ STATIC_URL }}js/libs/charts.min.js'></script>
+<script type="text/javascript" src='{{ STATIC_URL }}js/libs/rickshaw/Rickshaw.Graph.HoverDetail.js'></script>
+{% if request.devmode %}
+<script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.charts.js'></script>
+<script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.counters.js'></script>
+{% endif %}
+<script src="{{ STATIC_URL }}js/timepicker.js"></script>
+{% endblock js %}

@@ -1,0 +1,6 @@
+{% spaceless %}
+{% autoescape off %}
+{{notification.server.name }} / {{notification.alert.command}}{% if notification.alert.param|length > 0 %}{{notification.alert.param}}{% else %}{% if notification.healthcheck.params != False %}{{notification.healthcheck.params}}{% endif %}{% endif %} is in state {{notification.alert.status|upper}} for {% if notification.alert.period > 60 %}{{notification.alert.period|seconds_to_minutes }} minutes {% else %}{{notification.alert.period}} seconds{% endif %}
+Output: {{notification.health_check_result.output}}
+{% endautoescape %}
+{% endspaceless %}

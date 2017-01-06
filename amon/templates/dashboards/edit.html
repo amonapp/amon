@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block title %}Dashboards{% endblock title %}
+{% block ngapp %}DashboardApp{% endblock ngapp %}
+{% block breadcrumb %}
+<ul></ul>
+{% endblock breadcrumb %}
+{% block content_class %}class="edit__dashboard"{% endblock content_class %}
+{% block content %}
+<div class="settings_content"  data-ng-cloak data-ng-controller="DashboardMetricsCtrl" 
+    data-addurl="{% url 'ajax_dashboard_add_metric' dashboard_id=dashboard|mongo_id %}" 
+    data-geturl="{% url 'ajax_dashboard_get_all_metrics' dashboard_id=dashboard|mongo_id %}" 
+    data-removeurl="{% url 'ajax_dashboard_remove_metric' %}">
+
+<ul class="settings-list-form edit__dashboard--form" data-ng-controller="DashboardCtrl" 
+    data-updateurl="{% url 'ajax_dashboard_edit' dashboard_id=dashboard|mongo_id %}" 
+    data-name="{{ dashboard.name }}" 
+    data-shared="{{ dashboard.shared|lower }}">
+    <li>
+    {% verbatim %}
+            <span class="label">Name</span>
+            <input type="text" name="name" ng-model="name" placeholder="{{placeholder}}" ng-change="UpdateName(name)" >
+            <span class="loading spinner"></span>
+    </li>
+    
+    <li>
+        <input id="public" name="regions" type="checkbox" name="shared" ng-model="shared" ng-change="UpdateShared(shared)" />
+        <label for="public">Public</label>
+    </li>
+    
+
+    {% endverbatim %}
+    <li data-ng-show="shared">
+    <a class='edit__dashboard--public-url' href="{% base_url 'public_dashboard' account_id=request.account_id dashboard_id=dashboard|mongo_id %}">
+        {% base_url 'public_dashboard' account_id=request.account_id dashboard_id=dashboard|mongo_id %}</a></li>
+    
+    
+    <li class='right'>
+        <a class='button delete with-icon' data-icon='M' href="{% url 'delete_dashboard' dashboard_id=dashboard|mongo_id %}">Delete</a>
+    </li>
+    <li class='right'>
+        <a class='button with-icon' data-icon='8' href="{% url 'reorder_dashboard' dashboard_id=dashboard|mongo_id %}">Reorder Metrics</a>
+    </li>
+</ul>
+
+
+    
+<ul class='settings__tabs edit_dashboard--tabs' data-ng-controller="DashboardMetricTypesCtrl">
+    {% verbatim %}
+        <li><a ng-class="{active: isActive(type)}" ng-repeat="type in chart_types" ng-click="set_type(type)" href="#">{{type }}
+        <span  ng-if="type == 'Server' || type == 'App'">Metrics</span></a></li>
+    {% endverbatim %}
+</ul>
+<div data-ng-controller="DashboardServerMetricsCtrl">
+<ul class='edit__dashboard--add-metrics-form' ng-show="show_server_metrics">
+    <li >
+        <label for="">Server</label>
+            <select id="servers" name="server_id" server-dropdown data-placeholder="Select server" data-url="{% url 'ajax_dashboard_get_server_metrics'  %}">
+            <option value=""></option>
+            <option value="all">All</option>
+            {% for e in all_servers  %}
+                 <option value='{{ e|mongo_id }}'>{{ e.name }}</option>
+            {% endfor %}
+            </select>
+            <span class="loading-metrics spinner"></span>
+    </li>
+    <li  ng-show="show_tags">
+            <label for="">Tags</label>
+            <input type="text" id="tags_dropdown" value="{{ tags | empty_if_none }}" 
+            tags-dropdown  data-tags-url="{% url 'api_tags_get_tags' %}" 
+             placeholder='Tags' data-size='250'>
+    </li>
+    <li>
+        <label for="">Metric</label>
+            <span class='nodata-message' data-ng-show="nodata">Select a server to view the list with metrics</span>
+            <select id="metric_type"
+             name="server_metric_type" 
+             servermetric-dropdown data-placeholder="Select metric" 
+             data-ng-show="show" 
+             ng-options="option.label group by option.type for option in server_metrics track by option.value " 
+             ng-model="servermetric">
+            </select>
+    </li>
+    <li>
+        <button class='button add_metric' ng-click="AddMetric()">Add Metric</button>
+    </li>
+</ul>
+
+
+<ul class='edit__dashboard--add-metrics-form' ng-show="show_app_metrics">
+    <li >
+        <label for="">Metric</label>
+            <select id="app_metric_type" name="app_metric_type" select2-dropdown data-placeholder="Select metric">
+            <option value=""></option>
+            {% for e in all_metrics  %}
+                <option value='{{ e|mongo_id }}'>{{ e.name }}</option>
+            {% endfor %}
+            </select>
+    </li>
+    <li>
+        <button class='button add_metric' ng-click="AddMetric()">Add Metric</button>
+    </li>
+</ul>
+
+<ul class='edit__dashboard--add-metrics-form' ng-show="show_healthchecks">
+    <li >
+        <label for="">Health Checks</label>
+            <select id="healthcheck" name="healthcheck" select2-dropdown data-placeholder="Select Health Check">
+            <option value=""></option>
+            {% for e in all_healthchecks  %}
+                <option value='{{ e|mongo_id }}'>{{ e.command }}{{e.params|empty_if_none}}</option>
+            {% endfor %}
+            </select>
+    </li>
+    <li>
+        <button class='button add_metric' ng-click="AddMetric()">Add</button>
+    </li>
+</ul>
+</div> <!-- DashboardServerMetricsCtrl -->
+
+    {% verbatim %}
+
+    <ul class="edit__dashboard--counters-list">
+            <li data-ng-repeat="s in metrics" data-ng-if="s.type == 'counter'">
+                <a class='amon button delete' ng-click='RemoveMetric(s.id)'>M</a>
+                <span>Counter: {{s.name}}</span>
+            </li>
+        
+        </ul>
+
+    <ul class="edit__dashboard--health_checks-list">
+            <li data-ng-repeat="s in metrics" data-ng-if="s.type == 'healthcheck'">
+                <a class='amon button delete' ng-click='RemoveMetric(s.id)'>M</a>
+                <span>{{s.healthcheck.command}} {{s.healthcheck.params|empty_if_none}}</span>
+            </li>
+        
+    </ul>
+    
+    <rickshaw-chart data-ng-repeat="s in metrics"  id="{{ s.id }}" data-ng-if="s.type != 'counter' && s.type != 'healthcheck'"
+        data-url='{{ s.url }}' 
+        data-enddate="{{s.utcnow}}"
+        data-duration="1800" 
+        data-name="{{ s.name }}" 
+        data-type="line"
+        data-yaxis="{{s.unit}}"
+        >
+        <ul class='inner-heading charts'>
+        
+        <li> <a class='amon button delete' ng-click='RemoveMetric(s.id)'>M</a>
+        <h3>{{ s.name }}</h3>
+        <span class='loading' id="{{ s.id }}-loading"></span>
+        
+        
+        </li>
+        <li class="right"><span class='tag' data-ng-repeat='tag in s.tags'>{{tag.full_name}}</span></li>
+
+        
+    </ul>
+    <div class='y_axis' id="{{ s.id }}-yaxis"></div>
+    <div id="{{ s.id }}-chart" class='chart' data-id="{{s.id}}" data-yaxis=''></div>
+    <div id="{{ s.id }}-slider" class='chart-slider'></div>
+
+</rickshaw-chart>
+<div data-ng-controller="RickshawChartNoData">
+    
+
+<ul class="inner-heading charts" ng-repeat="chart in empty_charts">
+    <li >
+    <a class='amon button delete' ng-click='RemoveMetric(chart.id)'>M</a>
+    <h3>{{chart.name }}</h3></li>
+    <li class='nodata'><span>No data for the selected period</span></li>
+</ul>
+</div>
+
+<div class="edit__dashboard--nodata ng-cloak" ng-hide="metrics.length">No metrics in this Dashboard. Select a metric from the dropdown and click <strong>'Add metric'</strong> to get started.</div>
+{% endverbatim %}
+
+</div> <!-- DashboardMetricsCtrl  -->
+<div id="legend">
+    <span id="legend_timestamp"></span>
+    <ul id="legend_list"></ul>
+</div> <!-- legend end -->
+{% endblock content %}
+{% block js %}
+<script type="text/javascript" charset="utf-8" src='{{ STATIC_URL }}js/libs/charts.min.js'></script>
+<script type="text/javascript" src='{{ STATIC_URL }}js/libs/rickshaw/Rickshaw.Graph.HoverDetail.js'></script>
+
+
+{% if request.devmode %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.charts.js'></script>
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.counters.js'></script>
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.dashboard.js'></script>
+{% endif %}
+
+
+{% endblock %}

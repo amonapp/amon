@@ -1,0 +1,17 @@
+{% extends "users/emails/base.html" %}
+{% block content %}
+<p align="left" class="article-title"><singleline label="Title">You have been invited to join Amon.</singleline></p>
+<div align="left" class="article-content">
+<multiline label="Description">
+Hello,
+<br><br>
+You have been invited to join <a href="{{domain_url}}">{{domain_url}}</a>. 
+<br><br>
+    <a target="_blank" href="{% base_url 'users_confirm_invite' invitation_code=invite.invitation_code %}">Click here</a> to confirm your invitation. 
+<br><br>
+
+</multiline>
+</div>
+{% endblock content %}
+
+

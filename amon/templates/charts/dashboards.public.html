@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Amon - Dashboards - {{ dashboard.name }}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/favicon.png?v=2" />
+        
+            <link href='https://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+    
+            <link rel="stylesheet" href="{{ STATIC_URL }}css/chart.css" />
+            <link rel="stylesheet" href="{{ STATIC_URL }}css/menu.css" />
+            <link rel="stylesheet" href="{{ STATIC_URL }}css/screen.css" />
+            <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+            
+        {% block css %}
+            
+        {% endblock css %}
+    </head>
+    <body data-ng-app="{% block ngapp %}{% endblock ngapp %}" class='public__dashboard'>
+        <!-- Navigation -->
+        <div id="breadcrumb">
+            <div class="logo__wrapper">
+                <a href="{% url 'login' %}" class='logo'>
+                    <img src="{{ STATIC_URL }}images/logonotext.png" alt="Amon logo" title='Amon'>
+                 </a>
+            </div>
+
+            <h3>{{ dashboard.name }}</h3>
+    
+
+    <ul class='filter'>
+    <li class='daterange-element'>
+    <a data-arrow="d" data-dropdown="period-dropdown" data-options="is_hover:true" href="">
+    {{ date_from|datetimecharts_local:request.timezone }} - <span id="dropdown_now_local">{{ date_to|datetimecharts_local:request.timezone  }}</span>
+    </a>
+        <ul id="period-dropdown" class="f-dropdown tiny" data-dropdown-content>
+            {% for d, label in duration_form.fields.duration.choices %}
+            <li>
+                <a {% if d == duration and not enddate %}class='active'{% endif %} href="{% url 'public_dashboard' dashboard_id=dashboard|mongo_id account_id=account_id %}?duration={{ d }}" >
+                {{ label }}</a></li>
+            {% endfor %}
+        </ul>
+    </li>    
+    </ul>
+
+<ul class="chart-sizes" data-ng-controller="RickshawSizer" data-ng-init="init({{ selected_charts|length }})" >
+    {% verbatim %}
+    <li data-ng-repeat="s in sizes">
+        <a data-ng-class="set_class(s)" href="" data-ng-click='set_size(s)'>{{s}}</a>
+    </li>
+    {% endverbatim %}
+</ul>
+
+
+<div id="legend">
+    <span id="legend_timestamp"></span>
+    <ul id="legend_list"></ul>
+</div> <!-- legend end -->
+<input type="hidden" id="now_local" value="{{ now|datetimecharts_local:request.timezone }}">
+<input type="hidden" id="timezone_url" value="{% url 'localtime_to_unix' %}">
+        </div>
+        {% block content %}
+        {% endblock content %}
+        
+
+        <script src="{{ STATIC_URL }}js/libs/libs.min.js"></script>
+        <!-- Javascript -->
+
+        <script type="text/javascript" src='{{ STATIC_URL }}js/libs/charts.min.js'></script>
+        <script type="text/javascript" src='{{ STATIC_URL }}js/libs/rickshaw/Rickshaw.Graph.HoverDetail.js'></script>
+        {% if request.devmode %}
+            <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.global.js'></script>
+            <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.charts.js'></script>
+            <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.counters.js'></script>
+        {% else %}
+            <script type="text/javascript" src='{{ STATIC_URL }}js/app.min.js'></script>
+        {% endif %}
+        
+        <script>
+        $(function(){ 
+            $(document).foundation({dropdown: {is_hover:true},reveal:{animation:'fade', animation_speed:100}  }); 
+        });
+        </script>
+        {% block js %}
+        {% endblock js %}
+        <!-- Javascript end -->
+        
+    
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<div class="left">
+    <ul> 
+        <li {% if provider_id == 'amazon' %}class='active' {% endif %}>
+            <a  href="{% url 'cloudservers_edit' provider_id='amazon' %}">
+            <img src="{{ STATIC_URL }}images/integrations/ec2.png" alt="Amazon AWS">
+            <h4>Amazon EC2</h4>
+            <p>Pulls information about your Amazon EC2 instances into Amon.</p>
+            </a>
+        </li>
+
+        <li {% if provider_id == 'google' %}class='active' {% endif %}>
+            <a href="{% url 'cloudservers_edit' provider_id='google' %}">
+            <img class='linode-logo' src="{{ STATIC_URL }}images/integrations/gce.png" alt="Google Compute">
+            <h4>Google Compute</h4>
+            <p>Pulls information about your Google compute instances into Amon.</p>
+            </a>
+        </li>
+        <li {% if provider_id == 'digitalocean' %}class='active' {% endif %}>
+            <a href="{% url 'cloudservers_edit' provider_id='digitalocean' %}">
+            <img class='digitalocean-logo' src="{{ STATIC_URL }}images/integrations/digitalocean.png" alt="DigitalOcean">
+            <h4>DigitalOcean</h4>
+            <p>Pulls information about your DigitalOcean droplets into Amon.</p>
+            </a>
+        </li>
+        <li {% if provider_id == 'linode' %}class='active' {% endif %}>
+            <a href="{% url 'cloudservers_edit' provider_id='linode' %}">
+            <img class='linode-logo' src="{{ STATIC_URL }}images/integrations/linode.png" alt="Linode">
+            <h4>Linode</h4>
+            <p>Pulls information about your Linode servers into Amon.</p>
+            </a>
+        </li>
+
+        <li {% if provider_id == 'rackspace' %}class='active' {% endif %}>
+            <a href="{% url 'cloudservers_edit' provider_id='rackspace' %}">
+            <img class='rackspace-logo' src="{{ STATIC_URL }}images/integrations/rackspace.png" alt="Linode">
+            <h4>Rackspace</h4>
+            <p>Pulls information about your Rackspace servers into Amon.</p>
+            </a>
+        </li>
+
+        <li {% if provider_id == 'vultr' %}class='active' {% endif %}>
+            <a href="{% url 'cloudservers_edit' provider_id='vultr' %}">
+            <img class='vultr-logo' src="{{ STATIC_URL }}images/integrations/vultr.png" alt="Vultr">
+            <h4>Vultr</h4>
+            <p>Pulls information about your Vultr servers into Amon.</p>
+            </a>
+        </li>
+
+        
+        
+    </ul>
+</div>

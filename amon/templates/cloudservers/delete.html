@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block breadcrumb_class %}empty_alerts_header{% endblock breadcrumb_class %}
+{% block breadcrumb %}
+<h3>Cloud Servers</h3>
+{% endblock breadcrumb %}
+{% block main_content_class %}center{% endblock main_content_class %}
+{% block content %}
+
+<br><br>
+<ul class='inner-heading red'>
+    <li><h3>Delete {{ provider_id|title }} Credentials</h3></li>
+</ul>
+<div class="text-block delete-account">
+    <p>
+        Deleting these <strong>{{ provider_id|title }} / {{credentials.name}}</strong> 
+        credentials will also delete all monitoring data from Amon for the servers linked to them. 
+        <br><br>Are you really sure you want to delete these credentials?
+    </p>
+    <ul class="buttons">
+    <li><a href="{% url 'cloudservers_delete_confirmed' credentials_id=credentials_id provider_id=provider_id %}" class="delete button">Delete</a></li>
+        <li>
+               <a href="{% url 'cloudservers_edit' provider_id=provider_id credentials_id=credentials_id %}" class='button green'>Go back</a>
+            
+        </li>
+        
+    </ul>
+</div>
+{% endblock content %}
+{% block js %}
+
+{% endblock %}

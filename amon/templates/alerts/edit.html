@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block ngapp %}AlertsEditApp{% endblock ngapp %}
+{% block breadcrumb %}
+    <ul id='breadcrumb-list'>
+    <li><a href="{% url 'alerts' %}">Alerts</a></li>
+    <li class='separator'></li>
+    <li class='last'>Edit alert</li>
+    </ul>
+{% endblock %}
+{% block content_class %}class="alert-settings"{% endblock content_class %}
+{% block title %}Alerts - Edit{% endblock %}
+{% block content %}
+
+<form action="{% url 'edit_alert' alert_id=alert|mongo_id %}" method='post' data-ng-controller="AlertsCtrl" name='form'>
+    <ul class='inner-heading'>
+        <li><h1>Edit alert</h1></li>
+    </ul>
+    <ul class="settings-list-form">    
+    <li>
+        <span class="label">Servers</span>
+        {{ form.server }}
+        {{ form.server.errors }}
+    </li>
+
+    <li data-ng-show="show_tags">
+        <span class="label">Tags</span>
+         <select id="tags" name="tags" select2-dropdown data-placeholder="Select tags" multiple="">
+        
+        {% for tag in tags  %}
+            <option {% if tag|mongo_id in alert.tags%}selected{% endif %} 
+            value="{{ tag|mongo_id }}">{% if tag.group.name %}{{tag.group.name }}:{% endif %}{{ tag.name }}</option>
+        {% endfor %}
+        </select>
+    </li>
+
+    <li>
+        <span class="label">Metric</span>
+         <select id="metric" name="metric" metric-dropdown data-placeholder="Select metric"
+          data-selected="{{ selected_metric }}" data-type='{{ alert.metric }}'>
+         <option value="">{{ selected_metric }}</option>
+        </select>
+        {{ form.metric.errors }}
+    </li>
+    
+    <li class='small-dropdown' data-ng-show="show_is">
+        <span class="label">Is</span>
+        {{ form.above_below }}
+        {{ form.metric_value }}
+         <select id="metric_type" name="metric_type" data-size="90" select2-dropdown data-ng-show="show_metric_types" >
+            {% for mt in metric_types  %}
+                <option {% if alert.metric_type == mt %}selected{% endif %} value="{{ mt }}">{{ mt }}</option>
+            {% endfor %}
+        </select>
+        
+    </li>
+    <li>
+        <span class="label">For</span>
+        {{ form.period }}
+    </li>
+    </ul>
+
+        
+    </ul>
+    <ul class='inner-heading'>
+        <li><h1>Send notification to</h1></li>
+    </ul>
+    <ul class="settings-list-form">        
+    <li class='alert-recepients-dropdown'>
+        <span class="label">Notify</span>
+        <select id='notifications-select' name='notifications' multiple="" data-placeholder="Select Recipients" notifications-dropdown>
+            {% for n in notifications %}
+                <option value="{{n.formated_id}}" data-image="{{STATIC_URL}}images/integrations/{{n.provider_id}}.png" 
+                {% if n.formated_id in alert.notifications %}selected{% endif %}>
+                {{n.provider_id}}: {% if n.provider_id == 'email' %}{{n.email}} {% else %}{{n.name}}{%  endif %}
+                </option>
+            {% endfor %}
+        </select>
+    </li>
+
+
+     <li class='buttons'>
+        {% csrf_token %}
+        <input type="submit" class='button' value="Update" />
+    </li>
+    </ul>
+    </form> 
+    
+{% endblock %}
+{% block js %}
+{% if request.devmode %}
+<script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.alerts.edit.js'></script>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% if server.provider  %}
+    <li><strong>Provider:</strong> {{ server.provider|title }}</li>
+{% endif %}
+{% if server.instance_id  %}
+    <li><strong>Instance ID:</strong> {{ server.instance_id }}</li>
+{% endif %}
+{% if server.pem_key  %}
+    <li><strong>PEM Key:</strong> {{ server.pem_key }}</li>
+{% endif %}
+
+{% if server.public_ips  %}
+    <li>
+         <strong>Public IP:</strong>
+    {% for addr in server.public_ips  %}
+         {{addr}}
+    {% endfor %}
+    </li>
+
+
+{% endif %}
+
+{% if server.region  %}
+    <li><strong>Region:</strong> {{ server.region }}</li>
+{% endif %}
+{% if server.type  %}
+    <li><strong>Type:</strong> {{ server.type }}</li>
+{% endif %}
+{% if server.ip_address  %}
+    <li><strong>IP:</strong> {{ server.ip_address }}</li>
+{% endif %}
+{% if server.distro %}
+    <li> <strong>OS:</strong> {{ server.distro.name|title }} {{ server.distro.version }} </li>
+{% endif %}
+{% if server.processor  %}
+    <li><strong>Processor:</strong> {{ server.processor.modelname }}</li>
+{% endif %}
+{% if server.architecture  %}
+    <li><strong>Architecture:</strong> {{ server.architecture }}</li>
+{% endif %}
+{% if server.uptime  %}
+    <li><strong>Uptime:</strong> {{ server.uptime }}</li>
+{% endif %}
+{% if server.keep_data  %}
+    <li><strong>Keep data:</strong> {{ server.keep_data }} days</li>
+{% endif %}
+{% if server.tags|length > 0 %}
+    <ul class="servers--tag-list">
+        <li><strong>Tags:</strong>
+        {% for t in server.tags  %}
+            <li>{{t.group.name}}{% if t.group.name %}:{% endif %}{{ t.name }}</li>
+        {% endfor %}
+        </li>
+    </ul>
+
+{% endif %}

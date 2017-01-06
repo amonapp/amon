@@ -1,0 +1,4413 @@
+@import "_variables";
+@import "_amon";
+@import "libs/code_highlight";
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+    box-sizing: border-box;
+ }
+.center {
+    width: 800px;
+    margin: 0 auto;
+}
+.clearfix {
+    zoom:1;
+    &:before, &:after {
+        content: "\0020";
+        display: block;
+        height: 0;
+        overflow: hidden; 
+    }
+    &:after {
+        clear: both;
+    }
+}
+.dashed {
+    padding-bottom: 2px;
+    border-bottom: 2px dashed $font_color_gray;
+}
+
+#content__wrapper {
+    min-height: 100%;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    padding-top: 60px;
+    height: 100%;
+
+}
+.content {
+    display: table-cell;
+    vertical-align: top;
+    padding: 20px;
+    padding-top: 0px;
+    &.nopadding {
+        padding: 0px;
+        position: relative;
+    }
+    &.center {
+        width: 1100px;
+        margin: 0 auto;
+        display: block;
+    }
+}
+
+
+.topbar {
+    display: block;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    width: 100%;
+    background: white;
+
+    border-bottom: 2px solid $odd;
+    a.logo {
+        float: left;
+        padding: 10px;
+        background: $odd;
+        padding-left: 10px;
+        img {
+            width: 36px;
+        }
+    }
+
+    ul.topbar__left {
+        float: left;
+
+        text-align: left;
+        list-style-type: none;
+        > li {
+            float: left;
+            &.separator {
+                background: $odd;
+                width: 2px;
+                display: block;
+                height: 57px;
+                margin-right: 15px;
+
+            }
+            > a{
+                text-decoration: none;
+                float: left;
+
+                padding: 18px;
+                padding-bottom: 19px;
+                padding-left: 10px;
+                position: relative;
+
+                color: $font_color_dark;
+                &:hover, &.active {
+                    background: $odd;
+                }
+
+                span.arrow {
+                    @include rem (font-size, 0.9);
+                    @include rem (line-height, 1.3);
+
+                }
+
+                span.label
+                {
+                    padding-left: 35px;
+                }
+                > span.icon {
+                    @include rem (font-size, 1.5);
+                    @include rem (line-height, 1);
+                    top: 16px;
+                    position: absolute;
+                }
+                &.button {
+                    padding: 10px;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    margin-top: 8px;
+                    color: $green;
+                    &:hover {
+                        background: $green;
+                        color: white;
+                        span {
+                            color: white;
+                        }
+                    }
+
+                }
+
+            }
+            .f-dropdown {
+                li {
+                    border-bottom: 1px solid $odd;
+
+                }
+                a {
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                    position: relative;
+
+                }
+                a::before{
+                    position: absolute;
+                    right: 10px;
+                    top: 16px;
+                    &:hover {
+                        color: white;
+                    }
+
+                }
+            }
+        } // li end
+     } // ul end
+     ul.topbar__right {
+        @extend ul.topbar__left;
+        float: right;
+        margin-right: 5px;
+        a.logout{
+            padding-left: 18px;
+            &:hover {
+                background: $red;
+                color: white;
+                padding-left: 18px;
+            }
+        }
+
+    }
+}
+
+
+#content {
+    background: white;
+    padding-top: 0px;
+    min-height: 100%;
+
+    float: left;
+    width: 100%;
+
+    &.with-message {
+        padding: 20px;
+    }
+    &:after {
+      content: "";
+      display: block;
+    }
+}
+#header {
+    background: $header;
+    float: left;
+    width: 100%;
+
+
+}
+#breadcrumb {
+    float: left;
+    width: 100%;
+    padding-bottom: 0px;
+    position: relative;
+    background: white;
+    z-index: 100;
+    #server-dropdown {
+        max-height: 300px;
+        max-width: 420px;
+        overflow-y: auto;
+
+    }
+    span.server-meta {
+        margin-top: 7px;
+    }
+    ul.buttons {
+        padding-top: 25px;
+        padding-bottom: 25px;
+        float: right;
+        margin-left: 20px;
+        li{
+            float: left;
+            &.dropdown {
+                position: relative;
+            }
+
+            a { }
+        }
+        &.empty-servers {
+            li {
+                padding-left: 20px;
+            }
+        }
+        &.padding-bottom {
+            padding-bottom: 25px;
+        }
+        // used for actual a.buttons
+        &.margin-left{
+            li {
+                margin-left: 20px;
+            }
+        }
+    }
+    span.provider {
+        float: left;
+        width: 5px;
+        height: 89px;
+        display: block;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+
+        background: $breadcrumb;
+        &.amazon {
+            background: $amazon;
+        }
+    }
+    li.server-tooltip {
+        span.nodata {
+            color: $grey;
+            float: right;
+        }
+        a:hover {
+            span.nodata {
+                color: white;
+            }
+        }
+    }
+    ul.server-tooltip-dropdown
+    {
+        width: 500px;
+    }
+    ul.chart-sizes {
+        float: right;
+        margin-top: 12px;
+        li {
+            float: left;
+            margin-right: 8px;
+        }
+        a {
+            background: $odd_dark;
+
+            text-decoration: none;
+            padding: 8px;
+            padding-left: 12px;
+            padding-right: 12px;
+            @include border-radius(6px);
+            &.active, &:hover {
+                background: $orange;
+                color: white;
+            }
+        }
+    }
+    ul.tabs-dropdown, ul.filter {
+
+        @extend ul.default_dropdown;
+            #process-dropdown, #plugins-dropdown {
+                max-height: 300px;
+                max-width: 300px;
+                overflow-y: auto;
+            }
+
+
+    }
+    ul.filter {
+        float: right;
+        margin-left: 15px;
+        li {
+            width: 100%;
+            a.active {
+                color: $orange;
+                &:hover {
+                    color: white;
+                }
+            }
+        }
+    }
+    div.servers--header, div.filtered_metrics--header {
+
+        width: 100%;
+        float: left;
+
+        padding-top: 15px;
+        padding-bottom: 15px;
+        ul.filters{
+            li {
+                float: left;
+                margin-right: 10px;
+                input {
+                    height: 42px;
+                    padding: 0px;
+                    margin: 0px;
+                    padding-left: 5px;
+                    &#server_filter{
+                        height: 45px;
+                    }
+                }
+                a.button, button {
+                    
+                    float: left;
+                }
+              &.bookmark_form {
+                  border-left: 4px solid $odd;
+                  padding-left: 10px;
+                  input {
+                      height: 44px;
+                  }
+                  #id_tags, #id_type, label {
+                      display: none;
+                  }
+              }
+            }
+        }
+        ul.buttons {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            li {
+                margin-left: 20px;
+                a {
+                    float: left;
+                }
+            }
+        }
+    }
+    div.filtered_metrics--header {
+        padding-bottom: 0px;
+        padding-top: 10px;
+        h3 {
+            margin-right: 10px;
+            margin-top: 16px;
+        }
+    }
+    &.servers {
+        padding: 12px;
+        z-index: 100;
+        padding-left: 0px;
+        padding-right: 0px;
+        h3 {
+            padding: 0px;
+            padding-top: 8px;
+            width: auto;
+            margin-top: 0px;
+            float: left;
+            &:after {
+                color: $font_color_dark;
+            }
+        }
+
+
+    }
+    &.hostmap{
+        padding-left: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    &.metrics {
+        padding: 12px;
+        z-index: 100;
+        padding-left: 0px;
+        padding-right: 0px;
+        ul.buttons-list {
+            margin-top: 10px;
+            float: left;
+            a {
+
+            }
+        }
+    }
+    ul#breadcrumb-list {
+
+        > li {
+            float: left;
+            padding: 10px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            @include default_text;
+            color: $font_color_dark;
+            > ul {
+                float: left;
+                clear: none;
+                li {
+                    float: left;
+                    clear: none;
+                    padding-right: 10px;
+                }
+                li.notifications-service {
+
+                    img {
+                        float: left;
+                        margin-right: 5px;
+                        width: 16px;
+                    }
+                }
+            }
+            a {
+                color: $font_color_dark;
+            }
+
+            &.right {
+                float: right;
+            }
+            &.separator {
+                width: 2px;
+                height: 14px;
+                background: $font_color_dark;
+                padding: 0px;
+                border: 0px;
+                margin-top: 16px;
+            }
+        }
+    }
+    h3 {
+        color: $font_color_dark;
+        position: relative;
+        float: left;
+        margin-top: 26px;
+        &:after {
+            font-family: "amon";
+            position: absolute;
+            content: attr(data-arrow);
+            width: 20px;
+            height: 20px;
+            top: 6px;
+
+            text-align: center;
+            color: $heading_font_color;
+    }
+
+    }
+}
+#breadcrumb.view-dashboard  {
+    margin-bottom: 15px;
+    a.settings {
+        float: left;
+        background:#dcd9e0;
+        padding-left: 0px;
+        padding: 5px;
+        @include small-text;
+           @include border-radius(6px);
+        text-decoration: none;
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+    ul.filter {
+
+        margin-top: 11px;
+    }
+    ul.chart-sizes {
+        margin-top: 22px;
+    }
+    h3 {
+        margin-top: 20px;
+        padding-left: 10px;
+        &:after {
+            top: 22px;
+        }
+
+    }
+    a.edit_dashboard {
+        float: left;
+        margin-top: 14px;
+
+        padding: 5px;
+    }
+    a.reorder_dashboard {
+        @extend a.edit_dashboard;
+        margin-left: 10px;
+    }
+}
+a {
+    color: $breadcrumb;
+    padding-bottom: 2px;
+}
+
+span.help-tooltip {
+    color: $grey;
+    float: left;
+}
+ul.filter {
+    float: right;
+    li {
+        float: left;
+        padding-right: 20px;
+        &:last-child {
+            padding-right: 0px;
+        }
+        .select2-container .select2-choice {
+            border: 0px;
+        }
+        a.button {
+            float: right;
+
+        }
+        input.button {
+            margin-top: 18px;
+            padding: 10px;
+
+        }
+        .button:hover {
+            background: $dark_input;
+            color: white;
+            border-color: $dark_input;
+        }
+        .select2-container  {
+            float: left;
+            clear: left;
+        }
+        label {
+            float: left;
+
+            color: $heading_font_color;
+
+            margin: {
+                bottom: 5px;
+                left: 0px;
+                right: 2px;
+                };
+            }
+        &#from-element {
+            padding-right: 10px;
+        }
+        &#to-element {
+            padding-right: 10px;
+        }
+        &.date-arrow{
+            padding-right: 10px;
+            a {
+                margin-top: 25px;
+                float: left;
+                color: white;
+                text-decoration: none;
+            }
+            &.right {
+                float: right;
+                padding-right: 0px;
+            }
+        }
+    }
+}
+input[type=text], input[type=password], input[type=email], input[type=number], input[type=url] {
+    float: left;
+    width: 220px;
+    height: 40px;
+    padding: 4px;
+    padding-top: 5px;
+
+    border: $border;
+    @include border-radius(6px);
+    @include input-default;
+    background: #fefefe;
+    color: #727272;
+    @include input-placeholder($placeholder);
+    &:focus {
+
+        @include input-active;
+    }
+    &:disabled {
+        background: #F0F0F0;
+    }
+    &.hasDatepicker {
+            clear: left;
+            width: 140px;
+        }
+    }
+
+ul.inner-heading {
+    float: left;
+    width: 100%;
+    background: $odd;
+    li {
+        float: left;
+        width: 100%;
+        &.right {
+            float: right;
+            width: auto;
+        }
+        span.tag {
+            background: white;
+            border: 1px solid $odd_dark;
+            float: right;
+            margin-top: 7px;
+            margin-right: 10px;
+            padding: 4px;
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+        &.timestamp {
+            float: right;
+            span {
+                float: left;
+                font-weight: bold;
+
+                padding-top: 17px;
+
+                padding-right: 20px;
+            }
+        }
+        span.nodata-message {
+            float: right;
+            @include border-radius(6px);
+            margin-top: 10px;
+            margin-right: 20px;
+            padding: 8px;
+            background: $red;
+            color: white;
+            display: none;
+
+        }
+        span.loading {
+            float: left;
+
+        }
+        ul.charts__current {
+            float: left;
+            li {
+                float: left;
+                @include small-text;
+
+                padding-top: 12px;
+                padding-left: 20px;
+                span.color {
+                    display: block;
+                    float: left;
+                    width: 10px;
+                    margin-right: 10px;
+                    margin-top: 4px;
+                    height: 10px;
+                    @include border-radius(6px);
+                }
+            }
+        } //charts current end;
+    }
+    &.red {
+        background: $red;
+        h3 {
+            color: white;
+        }
+    }
+    &.white {
+        background: white;
+    }
+    h1 {
+        @extend h5;
+        padding: 0px;
+        padding-left: 20px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        color: $inner_heading_font_color;
+
+    }
+    div.legend {
+        float: right;
+        padding: 0px;
+        li {
+            float: left;
+            padding: 0px;
+            margin: 0px;
+        }
+        span.color {
+            display: block;
+            color: white;
+            font-weight: bold;
+            padding: 16px;
+            padding-left: 40px;
+            padding-right: 40px;
+            padding-bottom: 17px;
+
+            float: left;
+            &.one {
+                background: $blue_chart; }
+            &.two {
+                background: $green; }
+            &.three {
+                background: $purple; }
+        }
+
+
+    }
+    span.label {
+        float: left;
+        background: $red;
+        margin-top: 18px;
+        @include default_text;
+        color: white;
+        padding: 5px;
+        margin-left: 20px;
+        &.green{
+            background: $green;
+        }
+    }
+    &.with_buttons {
+        li {
+            width: auto;
+            &.right {
+                float: right;
+            }
+            // dashboards, edit
+            a.view_dashboard {
+                float: right;
+                margin-top: 20px;
+
+                margin-right: 20px;
+            }
+        }
+        h1 {
+            padding-top: 18px;
+        }
+
+    }
+    &.charts {
+        h3 {
+            float: left;
+            padding-left: 10px;
+        }
+        li {
+            width: auto;
+        }
+
+        li.charts__select {
+            float: right;
+            background: white;
+            margin-right: 20px;
+            margin-top: 9px;
+            a {
+                float: left;
+                background: $odd_dark;
+
+                padding: 6px;
+                padding-left: 10px;
+                padding-right: 10px;
+                text-decoration: none;
+                &:hover, &.active {
+                    background: $orange;
+                    color: white;
+                }
+                &:first-child {
+                    @include default_border;
+                    @include border-right-radius(0px);
+                }
+                &:last-child {
+                    @include default_border;
+                    @include border-left-radius(0px);
+                }
+            }
+        }
+    }
+    div.buttons {
+        padding: 10px;
+        padding-right: 0px;
+        @extend div.legend;
+        li{
+            margin-right: 20px;
+        }
+        a.button {
+            float: right;
+
+        }
+    }
+}
+
+.message-popup {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    max-height: 0px;
+    @include opacity(0.9);
+    background: $breadcrumb;
+    box-sizing: border-box;
+
+    color: white;
+    line-height: 1.5em;
+    z-index: 1000;
+    &.slideInUp {
+        max-height: 100px;
+    }
+    &--close {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        padding: 6px;
+        padding-left: 10px;
+        padding-right: 10px;
+        background: $red;
+        @include default-border-radius;
+        color: white;
+        text-decoration: none;
+        &:hover {
+            background: $red_dark;
+            color: white;
+        }
+    }
+    &--inner {
+        position: relative;
+        height: 100%;
+        span.icon {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            @extend h3;
+            color: white;
+            height: 100%;
+            padding: 10px;
+            padding-top: 20px;
+            padding-bottom: 0px;
+            text-align: center;
+            vertical-align: middle;
+            width: 80px;
+            background: black;
+        }
+        p {
+            padding-left: 100px;
+            padding-bottom: 20px;
+            padding-top: 25px;
+            color: white;
+            a{
+                @include default-link;
+                padding: 2px;
+                color: $yellow;
+                &:hover {
+                    border:1px solid $yellow;
+                    color: white;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    &.hidden {
+        display: none;
+    }
+
+    // In processes
+    .select2-container {
+        float: left;
+        margin-top: 10px;
+        clear: left;
+
+    }
+    span {
+        float: left;
+    }
+    strong {
+        font-weight: bold;
+    }
+} // message ends
+
+ul.settings {
+    float: left;
+    clear: left;
+    li {
+        float: left;
+        clear: left;
+    }
+}
+ul.settings-list {
+    padding: 20px;
+    padding-left: 10px;
+    @extend ul.settings;
+    li {
+
+        padding-bottom: 20px;
+        position: relative;
+        span.label, label {
+            color: $table_th;
+            width: 120px;
+            float: left;
+        }
+    }
+}
+
+
+ul.settings-list-form {
+    @extend ul.settings-list;
+    width: 510px;
+    >li {
+        clear: both;
+        span.label, label {
+            padding-top: 12px;
+
+            color: $light_black;
+            clear: right;
+        }
+
+        input.hasDatepicker {
+            clear: none;
+        }
+
+        // used in edit_custom_metrics
+        span.unit {
+
+            font-weight: bold;
+            padding-top: 10px;
+
+            padding: 11px;
+            margin-left: -11px;
+            float: left;
+        }
+        span.text {
+
+            padding-top: 15px;
+            float: left;
+        }
+        ul.errorlist {
+            float: right;
+            color: white;
+
+            @include border-radius(4px);
+            padding: 5px;
+            margin-left: 4px;
+            margin-top: 6px;
+            margin-bottom: 5px;
+            background: #bc0000;
+            li {
+                float: left;
+                padding: 0px;
+                @include default-text;
+                color: white;
+            }
+        }
+        input[type=text], input[type=password], input[type=email], input[type=number],
+            input[type=url] {
+
+            width: 360px;
+        }
+        textarea {
+            width: 360px;
+            @include default-text;
+            padding: 5px;
+            @include input-default;
+        }
+        input[type=checkbox]{
+            margin-top: 10px;
+        }
+        a.edit-recepients, a.edit-tags {
+            float: right;
+            margin-top: 10px;
+            &:hover {
+                 color: $orange;
+            }
+        }
+        a.margin-right{
+            margin-right: 15px;
+        }
+        &.checkbox_right {
+            float: right;
+            clear: both;
+            text-align: right;
+            margin-bottom: 20px;
+            margin-right: -10px;
+            input[type="checkbox"]:not(:checked)+label, input[type="checkbox"]:checked+label{
+                padding-left: 30px;
+                text-align: left;
+            }
+        }
+        &.buttons {
+            float: right;
+            input {
+                margin-left: 10px;
+            }
+            &.delete_credentials {
+                width: 480px;
+                a.delete {
+                    color: $red;
+                    float: left;
+                    margin-top: 17px;
+                }
+                input {
+                    float: right;
+                }
+            }
+
+        }
+        .select2-container .select2-choice span {
+
+        }
+        // Used in health checks
+        .title_with_help_tooltip{
+            float: left;
+
+        }
+        span.help-tooltip {
+            float: left;
+            margin-left: 10px;
+            margin-top: -5px;
+        }
+        ul.form__checkboxes--list{
+            @include clear;
+            margin-top: 10px;
+            > li {
+                width: 50%;
+                clear: none;
+                padding-bottom: 0px;
+            }
+        }
+        &.alert-recepients-dropdown {
+            .select2-search-field {
+
+            }
+            .select2-search-choice {
+
+            }
+        }
+        ul.alerts-notifications-list {
+            float: left;
+            width: 100%;
+            li {
+                float: left;
+
+                clear: none;
+            }
+        }
+
+
+
+
+    } // li end
+    h3 {
+        padding-top: 10px;
+    }
+    ul#servers-list {
+        span {
+
+            margin-left: 10px;
+        }
+    }
+    ul.no-clear {
+        width: 500px;
+        margin-top: 10px;
+        li{
+            clear:none;
+            padding-right: 10px;
+
+            span{
+                float: left;
+                padding-top: 2px;
+            }
+            input {
+                float: left;
+            }
+        }
+    }
+    // Amazon Zones list
+    ul.checkbox-list {
+
+        margin-top: 10px;
+        width: 500px;
+        padding-bottom: 0px;
+        span {
+            margin-left: 10px;
+        }
+        li {
+            float: left;
+            margin-right: 20px;
+            clear: none;
+
+            &:last-child {
+                padding-bottom: 0px;
+            }
+
+            label {
+                width: auto;
+            }
+        }
+    }
+    li#process-element {
+        span.text {
+            font-weight: bold;
+            margin-top: 12px;
+            float: left;
+        }
+    }
+    // Uptime add
+    input#url {
+        width: 260px;
+        margin-left: 10px;
+    }
+    span.info {
+        background: $blue;
+        width: 100%;
+        padding: 10px;
+        margin-top: 15px;
+        @include default_text;
+        @include default-border;
+        float: left;
+
+    }
+    span.warning {
+        background: $yellow;
+
+        @extend span.info;
+        // color: white;
+        // a {
+        //     color: white;
+        // }
+    }
+    &.uptime-alert-form {
+        width: 620px;
+        li#process-element span.text {
+            margin-top: -5px;
+            margin-left: 10px;
+        }
+    }
+    &.edit_dashboard-form {
+        width: 600px;
+        padding-bottom: 0px;
+        
+        input[type=checkbox] {
+            margin-top: 10px;
+        }
+    }
+}
+
+
+
+
+table {
+    float: left;
+    clear: left;
+    padding: 20px;
+    width: 100%;
+    thead{
+        td:first-child{
+            text-align: left;
+        }
+        th:first-child{
+            text-align: left;
+        }
+    }
+    td, th {
+        padding: 15px;
+    }
+    tr.odd {
+        background: white;
+    }
+
+}
+
+table.settings-table {
+    padding: 0px;
+    @extend table;
+    table-layout: fixed;
+    &.small-td {
+        thead td {
+            width: 100px;
+        }
+    }
+tr.details {
+    background: #fafafa;
+    td {
+     padding: 10px;
+     padding-left: 20px;
+        border-bottom: 2px solid #eee;
+    vertical-align: top;
+    }
+    ul {
+        float: left;
+
+        li {
+            float: left;
+            clear: left;
+            padding-bottom: 10px;
+            span {
+                font-weight: bold;
+            }
+            &:last-child {
+                padding-bottom: 0px;
+            }
+        }
+    }
+}
+tr.default {
+    td {
+        border-top: 2px solid #f0f0f0;
+        border-bottom: 2px solid #f0f0f0; }
+    }
+thead {
+
+    td, th {
+
+        width: 200px;
+        color: $header;
+        background: $odd;
+
+    }
+}
+tr {
+    border-bottom: 1px solid $heading;
+    &:last-child {
+        border-bottom: 0px;
+    }
+}
+tbody td {
+    min-height: 70px;
+    vertical-align: middle;
+    &:first-child{
+        padding-left: 0px;
+    }
+}
+td, th {
+
+        padding: 10px;
+
+
+        &.actions {
+            float: right;
+
+        }
+        strong {font-weight: bold; }
+        a.settings {
+            float: right;
+            background:#dcd9e0;
+            padding-left: 0px;
+            padding: 5px;
+            @include small-text;
+               @include border-radius(6px);
+            text-decoration: none;
+        }
+
+        &:last-child {
+            padding-right: 0px;
+        }
+
+    }
+
+    th:first-child {
+        padding-left: 15px;
+    }
+
+
+    span.email_recipients, span.sms_recipients, span.notifications_recipients {
+        background: $odd;
+        @include border-radius(6px);
+        color: $breadcrumb;
+        padding: 10px;
+        position: relative;
+        padding-left: 15px;
+        padding-right: 15px;
+        &:hover {
+            cursor: pointer;
+        }
+        &:before {
+            position: relative;
+            top: 2px;
+            margin-right: 10px;
+        }
+    }
+}
+
+
+// Alert metrics specifics -- START
+.occurences {
+    float: left;
+    padding: 12px;
+}
+#id_metric_value {
+    margin: {
+        left: 12px;
+        right: 12px;
+    }
+
+    width: 125px;
+}
+
+// Alert metrics specifics -- END
+span.server-meta {
+    margin-right: 10px;
+    float: left;
+    width: 24px;
+    margin-top: 8px;
+    height: 24px;
+    background: url(../images/os/nodata.png) no-repeat;
+    &.windows {
+        background: url(../images/os/windows.png) no-repeat;
+        height: 26px;
+    }
+    &.ubuntu {
+
+        background: url(../images/os/ubuntu.png) no-repeat;
+    }
+    &.cloudlinux {
+
+        background: url(../images/os/cloudlinux.png) no-repeat;
+    }
+    &.centos {
+        margin-top: 6px;
+        background: url(../images/os/centos.png) no-repeat;
+    }
+    &.fedora {
+        margin-top: 6px;
+        background: url(../images/os/fedora.png) no-repeat;
+    }
+    &.debian {
+        background: url(../images/os/debian.png) no-repeat;
+    }
+    &.amazon {
+        background: url(../images/os/aws.png) no-repeat;
+        margin-top: 6px;
+    }
+}
+#dashboard {
+    float: left;
+    width: 100%;
+
+    h5 {
+        //
+        float: left;
+        width: auto;
+        padding-top: 10px;
+        padding-bottom: 0px;
+    }
+    tr.row-no-data {
+        span.distro {
+            margin-top: 20px;
+        }
+        a.settings {
+            margin-top: 15px;
+        }
+    }
+
+    ul.detailed_usage_list, ul.distro_list {
+        li {
+            float: left;
+            clear: left;
+            span{
+                width: 100px;
+                float: left;
+            }
+        }
+    }
+
+
+    .last_check, .timeago{
+        float: right;
+
+        padding: 10px;
+    }
+    .timeago {
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 10px;
+        color: $dark_grey;
+    }
+    a.zoom {
+        color: $dark_grey;
+
+        text-decoration: none;
+        text-align: center;
+        width: 100%;
+        float: left;
+        margin-top: -11px;
+        &:hover {
+            color: $orange;
+        }
+    }
+
+    .stats {
+        float: left;
+        clear: both;
+        width: 100%;
+    }
+    .no-data {
+        float: right;
+        color: #bc0000;
+
+        margin: {
+            top: 12px;
+        };
+
+        }
+    .processes-heading {
+        margin: 0px;
+        margin-left: 20px;
+    }
+    .details-row {
+        padding-left: 0px;
+        padding-top: 0px;
+
+    }
+    .processes-wrapper,
+    .containers-wrapper {
+        display: none;
+    }
+    .ignored-processes-wrapper {
+        display: none;
+    }
+    a.ignored-processes {
+        span.amon {
+
+        }
+    }
+    table.processes-table,
+    table.containers-table {
+        &.ignored {
+            td {
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+        }
+        thead th {
+            &:first-child {
+                padding-left: 15px;
+            }
+            &.memory, &.network_in {
+                text-align: right;
+            }
+            &.cpu {
+                width: 5%;
+            }
+        }
+        thead th:hover {
+            outline: none;
+            cursor: pointer;
+        }
+        tbody td {
+
+            span.process_last_check {
+                color: $breadcrumb;
+                   margin-right: 25px;
+                   line-height: 70px;
+                float: left;
+                display: inline-block;
+            }
+        }
+        td {
+
+            padding: 10px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            &.memory, &.network_in {
+                text-align: right;
+                padding-right: 5px;
+            }
+            &.memory_limit, &.network_out{
+                padding-left: 2px;
+            }
+
+
+        }
+        th.sorting_asc, th.sorting, th.sorting_desc {
+
+            color: $header;
+
+        }
+        th.sorting_asc span.label,
+        th.sorting_desc span.label {
+            font-weight: bold;
+        }
+        th.sorting_asc span.label:after {
+            font-family: "amon";
+            position: absolute;
+            content: attr(data-asc);
+            width: 20px;
+            height: 20px;
+            font-weight: bold;
+
+
+        }
+        th.sorting_desc span.label:after {
+            font-family: "amon";
+            position: absolute;
+            content: attr(data-desc);
+            width: 20px;
+            height: 20px;
+            font-weight: bold;
+
+        }
+        tr.ignored-row {
+            td {
+                padding-top: 15px;
+                padding-bottom: 15px;
+                //
+            }
+
+        }
+
+
+
+    } // processes table
+
+    div.dashboard-ignored {
+        max-width: 600px;
+        line-height: 1.8em;
+        z-index: 20;
+    }
+    a.settings{
+        float: right;
+        text-decoration: none;
+        margin: {
+            top: 5px;
+            left: 20px;
+        }
+    }
+
+
+    div.install-wrapper {
+        display: none;
+    }
+
+    
+}
+
+div.plugins-counter {
+    float: left;
+    width: 250px;
+    background: $odd;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    @include default_border;
+    span.metric {
+        @include default_text;
+        text-align: center;
+        float: left;
+        width: 100%;
+        font-weight: bold;
+
+        padding-top: 10px;
+    }
+    span.title {
+        @include default_text;
+        text-align: center;
+        float: left;
+        width: 100%;
+        font-weight: bold;
+        background: $odd_dark;
+        @include default_border;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: $font_color_brown;
+        @include border-bottom-radius(0px);
+    }
+    span.value {
+        float: left;
+        width: 100%;
+        text-align: center;
+        margin-top: 12px;
+        margin-bottom: 12px;
+        @include default_text;
+
+    }
+}
+h3.plugins__header {
+    float: left;
+    width: auto;
+    padding-top: 20px;
+}
+table.plugins-table {
+    @extend table.settings-table;
+    margin-top: 10px;
+    width: 100%;
+    thead th {
+        width: 200px;
+        text-align: left;
+        &.millis, &.count, &.size, &.totalIndexSize, &.avgObjSize, &.per_call, &.type,
+        &.rows, &.percent {
+            width: 65px;
+        }
+        &.query_time, &.bytes, &.visitors, &.hits {
+            width: 90px;
+        }
+        &.query {
+            width: 300px;
+        }
+    }
+    td {
+        padding: 12px;
+
+    }
+
+}
+input.plugins-filter-input {
+    @include input-default;
+
+    padding: 5px;
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
+
+}
+#nav-servers a.bookmark {
+    padding-left: 20px;
+}
+div.dataTables_paginate {
+        float: right;
+        margin-top: 22px;
+        a {
+            @include default-link;
+            @include default-text;
+            cursor: pointer;
+
+            float: left;
+            margin-left: 10px;
+            padding: 10px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            &.disabled {
+                display: none;
+            }
+            &.current {
+                @include default_border;
+                background: $orange;
+                color: white;
+
+            }
+        }
+    }
+
+span.health-checks--status{
+    padding: 8px;
+    background: $odd_dark;
+    text-transform: uppercase;
+    width: 100px;
+    text-align: center;
+    &.ok {
+        background: $green;
+        color: white;
+        text-align: center;
+    }
+    &.warning {
+        background: $yellow;
+        color: $breadcrumb;
+    }
+    &.critical {
+        background: $red;
+        color: white;
+
+    }
+}
+ul.health_checks--filter{
+    float: left;
+    margin-top: 20px;
+    li {
+        float: left;
+        margin-right: 10px;
+        span.title {
+            font-weight: bold;
+            float: left;
+            margin-top: 12px;
+        }
+        a.button{
+            float: left;
+            &.sort:hover, &.sort.active {
+                background: $green;
+                color: white;
+                border: 2px solid $green;
+            }
+        }
+    }
+    span.status {
+        float: left;
+
+    }
+    span.counter{
+        @include large-text;
+        font-weight: bold;
+        margin-top: 0px;
+        margin: 0px;
+        float: left;
+        margin-left: 15px;
+        color: white;
+    }
+    a.ok, a.all {
+        @include button-color($green);
+    }
+    a.critical {
+        @include button-color($red);
+
+    }
+    a.warning{
+        @include button-color($yellow);
+
+    }
+    a.unknown {
+        @include button-color($grey);
+    }
+
+}
+div#breadcrumb{
+    &.health_checks--breadcrumb {
+        width: auto;
+    }
+}
+div.healthchecks_filter_header {
+    float: right;
+    width: auto;
+    margin-top: -50px;
+    .dataTables_filter{
+        background: none;
+        input::-webkit-input-placeholder, 
+        input::-moz-placeholder {
+              color: $odd_dark; 
+        }
+    }
+}
+table.healthchecks-table{
+    @extend table.settings-table;
+    margin-top: 0px;
+    thead th {
+        width: 200px;
+        text-align: left;
+        &.check {
+            width: 50px;
+        }
+        &.host {
+            width: 50px;
+        }
+        &.output {
+            width: 250px;
+        }
+        &.last_check{
+            text-align: right;
+            padding-right: 30px;
+        }
+    }
+    td{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-bottom: 2px solid $odd;
+
+
+    }
+    td.last_check-column {
+        text-align:right;
+        width: 150px;
+    }
+    span.health-checks--status {
+        float: left;
+    }
+    span.last_check{
+
+        text-align: right;
+        padding: 4px;
+        padding-left: 6px;
+        padding-right: 6px;
+        color: $dark_grey;
+    }
+}
+table.alerts-table {
+    @extend table.settings-table;
+    margin-bottom: 40px;
+    span.server-name {
+        float: left;
+        margin-top: 10px;
+    }
+    ul.alerts-table--tag-list{
+        float: left;
+        clear: left;
+        margin-top: 15px;
+        li {
+            float: left;
+            //clear: left;
+            padding-bottom: 10px;
+            margin-right: 8px;
+            span{
+                display: inline-block;
+                border:2px solid $odd_dark;
+                color: $font_color_brown;
+                padding: 4px;
+                padding-left: 8px;
+                padding-right: 8px;
+                @include default_border;
+            }
+        }
+    }
+
+    thead th {
+        width: 200px;
+            text-align: left;
+        &.mute {
+            width: 30px;
+        }
+        &.settings {
+            width: 120px;
+        }
+        &.last_trigger{
+            text-align: right;
+            padding-right: 30px;
+        }
+        &.alert {
+            width: 350px;
+        }
+
+        &.history {
+            width: 150px;
+        }
+    }
+    a.settings {
+        float: right;
+        padding-left: 20px;
+        text-decoration: none;
+    }
+    td.last_trigger-column {
+        text-align:right;
+        width: 150px;
+    }
+    td {
+        border-bottom: 2px solid $odd;
+        padding: 5px;
+    }
+
+
+    td.settings-column {
+        text-align: right;
+        width: 100px;
+        a.button {
+            background: $odd_dark;
+            color: $breadcrumb;
+            border: 0px;
+            padding: 10px;
+            margin-left: 15px;
+            &.edit:hover {
+                background: $orange;
+                color: white;
+            }
+            &.delete:hover{
+                background: $red;
+                color: white;
+            }
+        }
+    }
+    a.mute_status {
+        float: left;
+        width: 10px;
+        height: 15px;
+        margin-top: -4px;
+        display: block;
+
+        text-decoration: none;
+        color: $grey;
+        &.disabled {
+            color: $orange;
+
+        }
+    }
+    span.last_trigger{
+        background: $odd;
+        margin-left: 10px;
+        padding: 4px;
+        padding-left: 6px;
+        padding-right: 6px;
+        color: $dark_grey;
+    }
+} // alerts-table END
+.empty_alerts_header {
+    a.button {
+        float: right;
+        margin-left: 20px;
+        margin-top: 15px;
+
+
+    }
+}
+table.alerts-history-table {
+    @extend table.alerts-table;
+    thead{
+        th.server-row {
+            width: 50px;
+        }
+    }
+    td {
+        vertical-align: top;
+        padding: 10px;
+    }
+
+}
+#alerts-history {
+    div.command_output--wrapper {
+        display: none;
+    }
+    code{
+
+    }
+}
+table.active-servers-table {
+    @extend table.alerts-table;
+    td > * {
+        vertical-align : middle;
+    }
+    td {
+        a {
+            line-height: 2.4em;
+        }
+    }
+    span.active {
+        background: $red_dark;
+        color: white;
+        width: 50px;
+        @include default-border-radius;
+        padding: 5px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        text-align: center;
+        display: inline-block;
+        &.green {
+            background: $linode;
+        }
+    }
+}
+table.dashboard-table {
+    @extend table.alerts-table;
+    tbody td {
+        vertical-align: center;
+
+
+    }
+    span.tooltip__span {
+        @extend span.email_recipients;
+    }
+    th.name {
+        width: 10%;
+    }
+    th.metrics {
+        width: auto;
+
+    }
+    th.shared {
+        width: 25%;
+    }
+
+    div.delete-row {
+
+    }
+    ul.settings-menu {
+        width: 130px;
+    }
+    div.metrics_block {
+        float: left;
+        margin-bottom: 8px;
+        width: 100%;
+        clear: Left;
+        span.title {
+            background: $blue_chart;
+            padding: 6px;
+            color: white;
+            padding-left: 8px;
+
+            padding-right: 8px;
+            float: left;
+            margin-bottom: 2px;
+            &.purple {
+                background: $purple;
+            }
+        }
+    }
+    ul.table__list {
+            float: left;
+            width: 100%;
+            li {
+                float: left;
+                clear: left;
+                margin-bottom: 2px;
+                line-height: 1.6em;
+                span.server {
+                    background: $odd;
+                    width: 100px;
+                    margin-right: 2px;
+                    text-align: center;
+                    padding: 5px;
+                    float: left;
+                    display: inline-block;
+
+                }
+
+                span.values {
+                    @extend span.server;
+                    border-left: 0px;
+                    padding-right: 10px;
+                    padding-left: 10px;
+                    background: $heading;
+                    width: auto;
+                    color: $breadcrumb;
+                }
+
+            }
+    }
+}
+
+.edit__dashboard {
+    a.delete {
+        float: left;
+        position: relative;
+        display: inline-block;
+        @include default_link;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: 8px;
+        margin-left: 10px;
+        margin: 6px;
+
+    }
+    ul.inner-heading {
+
+        h3 {
+            padding-left: 0px;
+            padding-top: 18px;
+        }
+        li.nodata {
+            float: right;
+            margin: 10px;
+            span {
+                @include default_text;
+            }
+        }
+    }
+    ul.charts__current {
+        margin-right: 10px;
+    }
+    &--nodata {
+        @include info;
+        @include default_text;
+    }
+    ul.edit__dashboard--counters-list{
+        @include clear;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        li {
+            background: $odd;
+            width: 100%;
+            float: left;
+
+            padding: 0px;
+            @include default_border;
+            span {
+                @include default_text;
+                margin-left: 5px;
+                    margin-top: 18px;
+                float: left;
+            }
+
+        }
+    }
+    ul.edit__dashboard--health_checks-list{
+        @extend ul.edit__dashboard--counters-list;
+
+    } 
+    ul.reorder__dashboard--list{
+        @extend ul.edit__dashboard--counters-list; 
+        margin-top: 10px;
+        margin-bottom: 10px;
+        li {
+            @include border-radius(0px);
+            border-bottom: 2px solid $odd_dark;
+             
+            span.name {
+                float: left;
+                margin-top: 0px;
+                padding: 10px;
+                display: inline;
+            }
+            span.tag {
+                display: inline;
+                margin: 0px;
+                float: right;
+                background: white;
+                @include border-radius(0px);
+                padding: 10px;
+                margin-left: 3px;
+            }
+        }
+        li:hover {
+            cursor: move;
+        }
+        
+        
+    }
+    a.edit__dashboard--public-url {
+        float: left;
+        margin-top: 6px;
+        margin-left: -40px;
+        background: $odd;
+        padding: 10px;
+
+    }
+    ul.edit__dashboard--form {
+        width: 100%;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        li {
+            float: left;
+            clear: none;
+            margin-right: 15px;
+            a.delete {
+                float: none;
+                display: inline;
+            }
+            &.right {
+                float: right;
+                margin-right: 0px;
+            }
+        }
+    }
+    ul.edit__dashboard--add-metrics-form {
+        li {
+            float: left;
+            margin-right: 15px;
+            label {
+                @include default_text;
+                float: left;
+                color: $font_color_gray;
+                margin-bottom: 5px;
+
+            }
+            button.add_metric {
+                margin-top: 20px;
+            }
+            .select2-container {
+                float: left;
+                clear: left;
+            }
+            span.nodata-message {
+                background: $heading;
+                // color: white;
+                @include default_text;
+                clear: left;
+                float: left;
+                padding: 6px;
+                padding-right: 10px;
+                padding-left: 10px;
+                // @include border-radius(6px);
+            }
+        }
+    }
+
+} // edit dashboard_end
+.reorder__dashboard {
+    &--heading-link {
+        @extend h3;
+    }
+}
+.datatables_block.metrics {
+    float: left;
+    width: 40%;
+    height: 100%;
+    > ul {
+        margin-top: 15px;
+        margin-bottom: 24px;
+        li {
+            float: left;
+        }
+    }
+    ul.filters {
+        li{
+            margin-right: 15px;
+        }
+    }
+    ul.buttons {
+        margin-top: 3px;
+        float: right;
+    }
+}
+div.metrics-chart--block{
+    float: left;
+     @include calc(width, '100% - 40%');
+     &--header {
+         float: left;
+         padding: 15px;
+         width: 100%;
+         padding-bottom: 18px;
+         padding-right: 0px;
+     }
+     ul.filter {
+         @extend ul.default_dropdown;
+        float: right;
+        li {
+            width: 100%;
+            a.active {
+                color: $orange;
+                &:hover {
+                    color: white;
+                }
+            }
+        }
+    }
+}
+table.metrics-table {
+    @extend table.alerts-table;
+    width: 100%;
+    tbody tr.active {
+        background: $odd;
+    }
+    tbody td {
+        &.cell_with_gauge {
+            padding: 0px;
+        }
+        &.align_right {
+            text-align: right;
+        }
+        a.view_gauge {
+            padding: 10px;
+            width: 100%;
+            float: left;
+            &:hover {
+                // background: $odd;
+            }
+        }
+        vertical-align: center;
+        a.reset {
+            margin-left: 10px;
+        }
+        span.label {
+            width: 100%;
+            text-align: left;
+            float: left;
+        }
+        span.value {
+            width: 120px;
+            padding-top: 10px;
+            float: left;
+            font-weight: bold;
+            clear: left;
+        }
+        &.settings-column {
+            padding-right: 10px;
+        }
+
+    }
+    thead {
+        th.name {
+            width: 40%;
+        }
+        th.settings {
+            width: 80px;
+        }
+        th.last_value {
+            // width: 30%;
+            text-align: right;
+        }
+    }
+
+    tr.senddata-row, td.senddata-row {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        background: $odd;
+    }
+    td.senddata-row {
+        padding-right: 15px;
+    }
+}
+
+table.settingsapikeys-table {
+    @extend table.alerts-table;
+    th.name {
+        width: 450px;
+    }
+    th.label {
+        width: 15%;
+    }
+    th a.history {
+        margin-right: 20px;
+        float: right;
+    }
+    td {
+        padding: 25px;
+    }
+
+}
+
+div.senddata-wrapper {
+        display: none;
+    }
+
+table.senddata-table {
+    td {
+        padding: 15px;
+    }
+    background: $odd;
+    width: 100%;
+
+    min-height: 100px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    p {
+        float: left;
+        clear: left;
+    }
+    strong {
+        font-weight: bold;
+    }
+    a.close {
+        float: right;
+    }
+    pre code {
+        float: left;
+        clear: left;
+        background: white;
+        padding: 20px;
+        padding-top: 15px;
+
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+        margin-top: 15px;
+        color: $background_breadcrumb;
+        @include border-radius(6px);
+        &::selection {
+            background: $orange;
+            color: white;
+        }
+        &::-moz-selection {
+            background: $orange;
+            color: white;
+        }
+    }
+
+} // senddata table
+
+
+/// METRICS END
+$container_width: 120px;
+.datatables_block {
+    .dataTables_filter {
+        float: left;
+        width: 100%;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background: $odd;
+
+        label {
+            float: left;
+            // padding-left: 15px;
+             @include placeholder {
+                color: $odd_dark;
+              }
+        }
+        input[type=search]{
+             @include placeholder {
+                color: $odd_dark;
+              }
+        }
+        input {
+            float: left;
+
+            width: 250px;
+            padding-left: 10px;
+            border: 2px solid $odd;
+            @include default-border;
+
+            margin-left: 10px;
+            height: 35px;
+            outline: none;
+            @include placeholder {
+                color: $breadcrumb;
+            }
+            &:focus {
+                border: 2px solid $green;
+            }
+        }
+    }
+    table.server_filter + {
+        td{
+            padding-top: 0px;
+
+        }
+    }
+    table.dataTable {
+        padding: 0px;
+    }
+    table.server_filter {
+        @extend table.settings-table;
+
+    }
+    table.server_filter thead {
+
+        th {
+            overflow: hidden;
+            width: 70px;
+            background: $odd;
+            text-align: left;
+
+        }
+        th.last-check-row {
+            width: 200px;
+            text-align: right;
+            padding-right: 30px;
+        }
+        th.server-name-row {
+            width: 12%;
+            @include breakpoint(desktop-big) {
+                width: 6%;
+            }
+            
+        }
+        th.plugins-row {
+            width: 10%;
+        }
+        th.processes-row {
+            // width: 200px;
+
+            text-align: left;
+        }
+
+    }
+    table.server_filter tbody{
+        // Reset, for datatables
+        tr {
+            padding: 0px;
+            td  {
+                padding: 0px;
+            }
+        }
+        tr.server-row {
+
+            &.disabled {
+                background: $odd;
+            }
+            td {
+                // width: 50px;
+                width: auto;
+                vertical-align: top;
+                padding: 4px;
+                padding-bottom: 10px;
+
+                ul.servers--tag-list{
+                    float: left;
+                    clear: left;
+                    margin-top: 15px;
+                    li {
+                        float: left;
+                        //clear: left;
+                        padding-bottom: 10px;
+                        margin-right: 8px;
+                        span{
+                            display: inline-block;
+                            border:2px solid $odd_dark;
+                            color: $font_color_brown;
+                            padding: 4px;
+                            padding-left: 8px;
+                            padding-right: 8px;
+                            @include default_border;
+                        }
+                    }
+                }
+                &:first-child {
+                    padding-left: 0px;
+                }
+                div.delete-row p, a {
+
+                }
+                h3 {
+                    text-overflow: ellipsis;
+                }
+                &.processes-row {
+                    padding-left: 20px;
+                    text-align: left;
+                    span.processes-row--count {
+
+                        padding: 5px;
+                        padding-left: 7px;
+
+
+                        font-weight: bold;
+                    }
+                    .processes-row--container-block,
+                    .processes-row--process-block {
+
+                        float: left;
+                        clear: left;
+                        a {
+                            float: left;
+                            clear: left;
+                        }
+                    } // blocks
+                    .processes-row--container-block {
+                        margin-top: 8px;
+                    }
+                }
+                &.plugins-row {
+                    padding-top: 20px;
+                    a {
+                        background: $odd;
+                        border: 2px solid $odd_dark;
+                        @include default_border;
+                        padding: 10px;
+                        text-decoration: none;
+                        float: left;
+                        margin-left: 6px;
+                        margin-bottom: 6px;
+                        &:hover {
+                            background: white;
+                            border: 2px solid $green;
+                        }
+                        &.plugin-error {
+                            background: $red;
+                            border: 2px solid $red_dark;
+                            color: white;
+                        }
+                    }
+                }
+            }
+            a.toggle-processes-table,
+            a.toggle-containers-table {
+
+                margin-top: 10px;
+
+                text-align: center;
+                padding: 10px;
+                display: inline-block;
+                text-decoration: none;
+                padding-right: 22px;
+                @include border-radius(6px);
+                background: $heading;
+                &:after {
+                    font-family: "amon";
+                    position: absolute;
+                    content: attr(data-arrow);
+                    width: 20px;
+                    height: 20px;
+
+                }
+                &.active {
+                    background: $orange;
+                    color: white;
+                    span {
+                        background: $orange;
+                    color: white;
+                    }
+                }
+
+            }
+            span.toggle-processes-tooltip{
+                top: 2px;
+                position: relative;
+            }
+            div.container {
+                float: left;
+                clear: left;
+                width: $container_width;
+                height: 25px;
+                background: $odd_dark;
+                @include border-radius(4px);
+                margin-top: 10px;
+                margin-bottom: 10px;
+
+            }
+            .progress {
+                width: 0px;
+                display: block;
+                position: relative;
+                height: 25px;
+                background: $green;
+                @include border-radius(4px);
+                &.red {
+                    background: $red;
+                }
+            }
+            .data {
+                position: relative;
+                width: $container_width;
+                text-align: center;
+                top: -21px;
+                display: block;
+
+                font-weight: bold;
+                color: #2b3239;
+                &.red {
+                    color: white;
+
+                }
+            }
+            .label {
+                float: left;
+                clear: left;
+                white-space:nowrap;
+                display: inline;
+                color: #797979;
+                overflow: hidden;
+                max-width: 120px;
+                text-overflow: ellipsis;
+
+            }
+
+
+        } // tr server-row
+
+    } // table server_filterlter tbody
+    table.server_filter,
+    table.uptime_filter,
+    table.alerts-table,
+    table.group_alerts,
+    table.metrics_filter,
+    table.alerts-history-table  {
+        thead {
+            th.sorting_asc span.label,
+            th.sorting_desc span.label {
+                font-weight: bold;
+            }
+            th.sorting_asc span.label:after {
+                font-family: "amon";
+                position: absolute;
+                content: attr(data-asc);
+                width: 20px;
+                height: 20px;
+                font-weight: bold;
+            }
+            th.sorting_desc span.label:after {
+                font-family: "amon";
+                position: absolute;
+                content: attr(data-desc);
+                width: 20px;
+                height: 20px;
+                font-weight: bold;
+
+            }
+
+        }
+
+        tr.row-no-data td {
+            padding-bottom: 20px;
+        }
+        .button {
+            float: right;
+
+
+            &.toggle-table {
+
+                margin-top: 0px;
+            }
+
+        }
+        .delete_row{
+            float: right;
+
+        }
+        td.dataTables_empty{
+            background: $pink;
+
+            color: black;
+            padding: 20px;
+
+        }
+        tr:last-child {
+            border-bottom: 0px;
+        }
+    }
+    .server_filter_header {
+        //overflow: hidden;
+        z-index: 105;
+        display: block;
+        overflow: show;
+    }
+    table.server_filter {
+        margin-bottom: 100px;
+        > tr {
+            border-left: 3px solid $heading;
+
+        }
+        tr {
+            border-bottom: 2px solid $odd;
+        }
+
+        tr.amazon {
+            border-left: 3px solid $amazon;
+        }
+        tr.digitalocean {
+            border-left: 3px solid $digitalocean;
+        }
+        tr.rackspace {
+            border-left: 3px solid $rackspace;
+        }
+        tr.linode {
+            border-left: 3px solid $linode;
+        }
+        tr.odd {
+            background: white;
+        }
+    }
+    .server_filter_header {
+        //margin-top: -60px;
+    }
+    .server_filter_header .dataTables_filter,
+    .uptime_filter_header .dataTables_filter,
+    .group_alerts_header .dataTables_filter,
+    .metrics_filter_header .dataTables_filter
+    {
+        background: white;
+        input {
+            @include placeholder;
+        }
+        a.button {
+            float: right;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-left: 20px;
+
+            &.with-icon {
+                padding-left: 15px;
+                // padding-top: 5px;
+                &:before {
+
+                    margin-right: 8px;
+
+                }
+            }
+        }
+    }
+    .server_headings {
+        float: left;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 15px;
+        background: $heading;
+        li {
+            float: left;
+            width: 150px;
+            padding: 12px 10px;
+            padding-left: 0px;
+
+            color: $header;
+
+            &.network {
+                width: 225px;
+            }
+        }
+    }
+
+}
+
+// Settings
+.delete-row {
+    background: $pink;
+    display: none;
+    position: absolute;
+    z-index: 10;
+    strong {
+        font-weight: bold;
+    }
+    p {
+
+        float: left;
+        padding: 22px;
+
+        padding-top: 22px;
+        padding-left: 22px;
+    }
+    ul {
+        float: right;
+        margin-right: 4px;
+        margin-top: 10px;
+        li {
+            float: left;
+            margin-right: 15px;
+            a  {
+
+                float: right;
+            }
+        }
+    }
+}
+
+$container_width: 120px;
+
+// History charts
+#content.history {
+    ul.heading {
+        margin-bottom: 20px;
+        h1 {
+            padding-top: 10px;
+        }
+    }
+}
+
+
+.group_alerts {
+    h3 {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    a.settings, a.shortcuts {
+        float: right;
+        text-decoration: none;
+        margin: {
+            top: 18px;
+            left: 15px;
+        }
+    }
+    a.show_servers {
+        background: $breadcrumb;
+        @include border-radius(4px);
+
+        color: white;
+        padding: 6px;
+        margin-top: 13px;
+        margin-left: 15px;
+        float: left;
+        text-decoration: none;
+        &:hover, &.active {
+            background: $green;
+        }
+
+    }
+}
+.group_alerts_block {
+    div.servers_block {
+        display: none;
+    }
+}
+
+
+
+
+ul.plugins-list {
+    float: left;
+    padding: 20px;
+    padding-left: 0px;
+    li {
+        float: left;
+        margin: 20px;
+        img {
+            float: left;
+        }
+        a {
+            clear: left;
+            text-align: center;
+            width: 100%;
+            float: left;
+
+        }
+    }
+}
+
+div#content.server_info {
+    table {
+        margin-top: 20px;
+        width: 600px;
+        tr td:first-child {
+            width: 100px;
+        }
+    }
+}
+div.process_margin_bottom, div.system_margin_bottom {
+    margin-bottom: 40px;
+    float: left;
+    width: 100%;
+    height: 1px;
+}
+
+
+// Integrations
+div.integrations {
+    display: table;
+    div.left {
+        width: 400px;
+        display: table-cell;
+
+        ul {
+            width: 100%;
+            margin: 20px;
+            margin-left: 0px;
+            li {
+                @include clear;
+                margin-bottom: 20px;
+                border: 2px solid $heading;
+                background: $odd;
+                @include border-radius(6px);
+                a {
+                    padding: 15px;
+                    display: block;
+                    float: left;
+                    width: 100%;
+
+                }
+                &:hover, &.active {
+                    background: white;
+                    border: 2px solid $heading;
+                    @include border-radius(6px);
+                }
+                img {
+                    float: left;
+                    margin-right: 20px;
+                    &.digitalocean-logo {
+                        padding-top: 15px;
+                    }
+                    &.linode-logo {
+                        padding-top: 8px;
+                    }
+                }
+                h4 {
+
+                    float: left;
+                    margin-top: 5px;
+
+                }
+                p {
+                    float: left;
+
+                    line-height: 1.3em;
+                    width: 250px;
+                    padding-top: 10px;
+                }
+            }
+        }
+
+    }
+    div.right {
+        display: table-cell;
+        padding: 20px;
+        padding-top: 0px;
+        vertical-align: top;
+        h3 {
+            padding-top: 20px;
+            padding-left: 10px;
+        }
+        h4 {
+
+        }
+    }
+}
+ul.notifications-form {
+    @extend ul.settings-list-form;
+    li {
+        &.error {
+            width: 100%;
+            background: $pink;
+            color: $header;
+            padding: 10px;
+            @include default_text;
+        }
+    span.label, label {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input[type=text], input[type=password], input[type=url], input[type=email] {
+            width: 480px;
+        }
+    }
+    // hipchat colors
+    ul {
+        @include clear;
+        li {
+            width: auto;
+            clear: none;
+            float: left;
+            margin-right: 20px;
+        }
+    }
+}
+
+ul.long-form {
+    @extend ul.settings-list-form;
+    > li {
+        width: 100%;
+    }
+    li {
+        &.error {
+            width: 100%;
+            background: $pink;
+            color: $header;
+            padding: 10px;
+        }
+        &.last_sync {
+            width: 100%;
+            padding: 10px;
+            color: $dark_grey;
+            padding-left: 0px;
+        }
+        span.label, label {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input[type=text], input[type=password], input[type=email] {
+            width: 480px;
+        }
+        ul#id_regions {
+            label {
+                margin-bottom: 0px;
+            }
+        }
+        p {
+
+            line-height: 1.3em;
+        }
+
+        &.checkboxes-list {
+            > ul {
+                margin-top: 15px;
+                margin-left: 0px;
+                padding-left: 0px;
+                &.errorlist {
+                    margin-top: 0px;
+                    margin-left: 0px;
+                    li{
+
+                        padding: 5px;
+
+                        padding-top: 2px;
+                        padding-bottom: 2px;
+                    }
+
+                }
+                li {
+
+                    padding-left: 0px;
+                    padding-bottom: 7px;
+                    line-height: 1.3em;
+                    label {
+                         display: block;
+                        padding-left: 17px;
+                        text-indent: -17px;
+                    }
+                    label input {
+                        padding: 0;
+                        margin:0;
+                        vertical-align: bottom;
+                        position: relative;
+                        top: -2px;
+                        *overflow: hidden;
+                    }
+                }
+            }
+        }
+
+    }
+}
+div.welcome {
+    float: left;
+    width: 100%;
+    padding: 20px;
+    h4 {
+        @extend h1;
+        clear: left;
+
+    }
+    h3 {
+        @extend h3;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        @include clear;
+    }
+    > p {
+        margin-top: 20px;
+        clear: left;
+        float: left;
+        @include rem(font-size, 1.6); 
+        @include rem(line-height, 1.2); 
+        display: block;
+        width: 800px;
+    }
+    p.clear{
+        margin-top: 20px;
+        clear: left;
+        float: left;
+        @include rem(font-size, 1.6); 
+        @include rem(line-height, 1.2); 
+        display: block;
+        width: 800px;
+    }
+    strong {
+        font-weight: bold;
+    }
+    ul {
+        padding-left: 0px;
+        width: auto;
+    }
+    div.image_wrapper {
+        position: relative;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        @include clear;
+        img {
+            @include default_border;
+            border: 2px solid $odd;
+            text-align: center;
+            display: inline-block;
+
+        }
+    }
+    ul.desc {
+        margin-top: 40px;
+        float: left;
+        clear: left;
+        li {
+            @include default-text;
+            padding-bottom: 20px;
+            float: left;
+        }
+    }
+    div.center {
+        width: 800px;
+
+        margin: 0 auto;
+        margin-top: 0px;
+        p {
+            float: left;
+            clear: left;
+            @include default-text;
+        }
+        a {
+            @include default-link;
+        }
+    }
+    span.icon {
+        text-align: center;
+        width: 100%;
+        margin: 0px;
+        @include large_icons;
+        padding: 0px;
+        float: left;
+        display: inline-block;
+        margin-bottom: 30px;
+        color: $heading;
+    }
+    div.integrations {
+        float: left;
+        clear: left;
+        width: 960px;
+        ul {
+            margin-left: 0px;
+            margin-top: 20px;
+        }
+        ul li {
+            float: left;
+            clear: none;
+            width: 400px;
+            &:nth-child(3){
+                clear:left;
+            }
+            margin-right: 20px;
+        }
+    }
+
+}
+div.text-block {
+    @extend div.welcome;
+    &.delete-account {
+        float: left;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 40px;
+    }
+    ul.buttons {
+        float: left;
+        width: 600px;
+        clear: left;
+        li {
+            float: right;
+
+            margin-right: 20px;
+            a.button {
+
+            }
+        }
+    }
+}
+
+table.counters-table {
+    @extend table;
+
+
+    thead {
+
+        border-bottom: 1px solid $heading;
+        th {
+
+
+            text-align: left;
+
+        }
+    }
+    tbody, thead {
+        background: white;
+    }
+    tbody {
+        td {
+
+            text-align: left;
+        }
+    }
+}
+.dataTables_scroll {
+    float: left;
+    clear: left;
+    width: 100%;
+}
+.jspHorizontalBar {
+    height: 5px;
+}
+#footer {
+    float: left;
+    background: $breadcrumb;
+    color: white;
+    width: 100%;
+    height: 50px;
+    a {
+        color: $heading;
+    }
+    div.version {
+
+        float: left;
+        padding: 15px;
+        padding-top: 20px;
+    }
+    ul.shortcuts {
+        float: right;
+
+        li {
+            float: left;
+            padding: 15px;
+            padding-top: 20px;
+
+        }
+    }
+}
+
+
+
+table.apikeys-table {
+    @extend table.settings-table;
+    thead th {
+        background: none;
+        &.label {
+            width: 100px;
+        }
+    }
+}
+
+
+
+/* Overlay style */
+#overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(57, 57, 57, 0.6);
+
+    z-index: 10002;
+    display: none;
+    &.open {
+        display: block;
+    }
+    .close {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        overflow: hidden;
+        border: none;
+        background: url(../img/cross.png) no-repeat center center;
+        text-indent: 200%;
+        color: transparent;
+        outline: none;
+        z-index: 10001;
+    }
+    .slidedown {
+        visibility: hidden;
+        -webkit-transform: translateY(-100%);
+        transform: translateY(-100%);
+        -webkit-transition: -webkit-transform 0.4s ease-in-out, visibility 0s 0.4s;
+        transition: transform 0.4s ease-in-out, visibility 0s 0.4s;
+        &.open {
+            visibility: visible;
+            -webkit-transform: translateY(0%);
+            transform: translateY(0%);
+            -webkit-transition: -webkit-transform 0.4s ease-in-out;
+            transition: transform 0.4s ease-in-out;
+        }
+    }
+    .timepicker {
+        position: absolute;
+        float: left;
+        padding: 20px;
+        background: $header;
+        width: 100%;
+        z-index: 10001;
+        top: 60px;
+        .picker {
+            top: 70px;
+            left: 0px;
+            position: relative;
+        }
+        > ul {
+            float: left;
+
+            li {
+                float: left;
+                clear: left;
+                width: 100%;
+                padding-bottom: 30px;
+                span {
+                    float: left;
+
+                    color: white;
+                    margin-top: 10px;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                }
+                label {
+                    float: left;
+                    color: white;
+
+                    margin-bottom: 10px;
+                }
+                .date_from, .date_to {
+                    clear: left;
+                    float: left;
+                    width: 120px;
+                }
+                .time_from, .time_to {
+                    float: left;
+                    width: 80px;
+
+                }
+                &.buttons {
+                    button {
+                        margin-right: 20px;
+                    }
+                }
+            }
+        }
+    }
+} // overlay END
+.tooltip {
+    z-index: 20;
+
+    li {
+        padding: 5px;
+    }
+}
+.qtip {
+    max-width: 450px;
+    ul {
+        width: 100%;
+        li {
+            @include clear;
+            width: 100%;
+            padding-bottom: 8px;
+        }
+    }
+}
+.qtip-tooltip {
+    display: none;
+}
+ul.notifications_recipients--list {
+
+    // slack, pagerduty, etc in the tooltip with an icon
+    li.notifications-service {
+        clear: left;
+        padding-bottom: 32px;
+        img.icon {
+            float: left;
+            width: 24px;
+        }
+        span.service {
+            float: left;
+            padding-left: 10px;
+            padding-top: 2px;
+        }
+    }
+    li.title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            margin-top: 5px;
+    }
+}
+
+ul.dashboard--health_checks-list{
+    @extend .remote_checks_list--results;
+    &.public{
+        padding: 20px;
+    }
+
+    > li {
+        // ul.remote_checks_list--results{
+        //     span.last_check, span.command{
+        //         float: right;
+        //         margin-top: 10px;
+        //     }
+        // }
+
+    }
+}
+// VIEW DASHBOARD
+.dashboard--counters-list {
+    float: left;
+    width: 100%;
+    margin-bottom: 20px;
+    li {
+        float: left;
+        margin-right: 25px;
+    }
+}
+counter-block {
+    float: left;
+    width: 250px;
+    background: $odd;
+    // border: 2px solid $odd;
+    @include default-border;
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+
+    span {
+        float: left;
+        width: 100%;
+        clear: left;
+        @include default_text;
+        &.title {
+            @extend h5;
+        }
+        &.count {
+            margin-top: 20px;
+            @extend h4;
+        }
+    }
+}
+
+// VIEW DASHBOARD
+/// EDIT DASBOARDS
+
+.edit_dashboard {
+    
+    // ul.edit_dashboard--metric-types
+    &--tabs{
+        float: left;
+        margin-top: 0px;
+        clear: left;
+        li {
+            float: left;
+            padding-right: 20px;
+            a {
+
+            }
+        }
+    }
+}
+
+
+
+/// EDIT DASBOARDS
+.public__dashboard {
+    min-height: 1000px;
+    #breadcrumb {
+        .logo__wrapper {
+            float: left;
+            padding: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 15px;
+
+        }
+        h3 {
+            padding-left: 0px;
+            margin-top: 22px;
+            float: left;
+        }
+        .logo {
+            float: left;
+            img {
+                width: 42px;
+            }
+        }
+        ul.chart-sizes {
+            margin-top: 25px;
+        }
+        ul.filter {
+            margin-top: 15px;
+            margin-right: 20px;
+        }
+    }
+    .dashboard--counters-list {
+        li:first-child {
+            padding-left: 20px;
+        }
+
+        // margin-top: 10px;
+    }
+}
+
+.settings {
+    // .settings__tabs
+    &__tabs {
+        float: left;
+        width: 100%;
+        clear: left;
+        margin-bottom: 20px;
+        margin-top: 15px;
+        border-bottom: 4px solid $odd;
+            li {
+                float: left;
+
+                a {
+                    @include default-link;
+
+                      line-height: 1.5em;
+
+                    display: block;
+                    float: left;
+                    padding: 10px;
+                    text-decoration: none;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    margin-bottom: -3px;
+                    @include border-radius(0px);
+                    color: $font_color_dark;
+                    &.active {
+                        // border-top: 2px solid $orange;
+                        // border-left: 2px solid $odd;
+                        // border-right: 2px solid $odd;
+                        border-bottom: 4px solid $orange;
+
+                    }
+                    &:hover {
+                        border-bottom: 4px solid $orange;
+                    }
+
+
+                }
+            }
+
+    } // sidebar end
+    // .settings__content
+    &__content {
+        float: left;
+        clear: left;
+        width: 520px;
+        &__desc {
+            clear: left;
+            float: left;
+            @include default-text;
+            // border: 1px solid $dark_blue;
+            // @include default-border;
+            // background: $blue;
+            color: $font_color_dark;
+            padding-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+
+    }
+}
+.settings-users {
+    h4 {
+        float: Left;
+        clear: left;
+
+
+    }
+}
+table.settingsusers-table {
+    margin-top: 20px;
+    @extend table.alerts-table;
+    th.email {
+        width:200px;
+    }
+    tr {
+        td:first-child {
+            padding-left: 10px;
+        }
+    }
+    td {
+        a.button {
+            float: right;
+
+        }
+    }
+
+}
+// The dropdown menu in servers, alerts, etc
+ul.settings-menu {
+    width: 150px;
+    li {
+        float: left;
+        clear: left;
+        width: 100%;
+        a {
+            float: left;
+            width: 100%;
+            text-align: left;
+            &:before {
+                font-family: "amon";
+                position: relative;
+                content: attr(data-icon);
+                width: 20px;
+                height: 20px;
+                top: 2px;
+                font-weight: bold;
+                margin-right: 10px;
+
+            }
+        }
+    }
+}
+
+#auth {
+    div.logo {
+        padding-top: 30px;
+        padding-bottom: 30px;
+        img {
+            margin: 0 auto;
+            text-align: center;
+            display: block;
+        }
+    }
+
+    div.column {
+        width: 500px;
+        margin: 0 auto;
+    }
+    ul {
+        li {
+            float: left;
+
+        }
+    }
+    ul.message {
+        float: left;
+        clear: left;
+        background: $red;
+        margin-bottom: 20px;
+        @include border-radius(4px);
+
+        &.info {
+            background: $green;
+        }
+
+        li {
+            color: white;
+
+            line-height: 1.5em;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    }
+    #login {
+            float: left;
+            width: 100%;
+            background: $odd;
+            border: 2px solid $odd_dark;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            position: relative;
+    }
+
+    #login .login_box ul.message li {
+        margin-bottom: 0px;
+    }
+
+    ul.errorlist {
+        float: left;
+        margin-top: 5px;
+        width: 100%;
+        li {
+            @include border-radius(4px);
+            background: $red;
+            width: 100%;
+            @include default_text;
+            padding: 10px;
+            float: right;
+            color: white;
+            box-sizing: border-box;
+        }
+    }
+
+    p {
+
+        line-height: 1.5em;
+        margin-bottom: 20px;
+    }
+
+
+    #show_hide {
+        position: absolute;
+        width: 100px;
+        height: 100%;
+        top: 0px;
+        right: 0px;
+
+        background: $odd_dark;
+        color: $font_color_dark;
+        line-height: 2.8em;
+        text-decoration: none;
+        padding-left: 40px;
+        box-sizing: border-box;
+        @include border-radius(0 4px 4px 0);
+
+        &:before {
+            content: "";
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            @include border-radius(4px);
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            left: 14px;
+            text-align: center;
+        }
+
+        &.show:before {
+            content: attr(data-show);
+            color: $green;
+        }
+    }
+
+    h3 {
+        float: left;
+    }
+    .login_box {
+        width: 450px;
+        margin: 0 auto;
+
+        ul {
+            width: 100%;
+
+            li {
+                width: 100%;
+                position: relative;
+                clear: left;
+                margin-bottom: 20px;
+                h3{
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                    text-align: center;
+                    @include  clear;
+                }
+                &.info {
+                    background: $blue;
+                    border: 2px solid $blue;
+                    @include default_border;
+
+                    @include default_text;
+                    padding: 10px;
+                a {
+                    color: $orange;
+                }
+                }
+                &.label {
+                    margin-bottom: 10px;
+                }
+
+                &.last {
+                    overflow: hidden;
+                }
+                &.remember_me {
+                    width: 100%;
+
+                    float: right;
+                    a {
+                        float: right;
+                    }
+                }
+            }
+        }
+
+        label {
+
+            color: $font_color_dark;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding-left: 15px;
+            height: 45px;
+            width: 100%;
+        }
+
+        .forgot {
+            color: $font_color_dark;
+            text-decoration: underline;
+
+            line-height: 3em;
+            float: left;
+        }
+
+        input[type="submit"] {
+            float: right;
+            width: 100px;
+            padding: 10px 20px;
+
+            @include border-radius(4px);
+            border: 2px solid $green;
+            background: $green;
+            color: $font_color_white;
+
+            &:hover {
+                background: #ffffff;
+                color: $green;
+            }
+        }
+
+        form + p {
+            text-align: center;
+            margin-top: 25px;
+        }
+        form li.error {
+            background: $red;
+            @include default_text;
+            padding: 20px;
+            color: white;
+            box-sizing: border-box;
+        }
+    }
+
+
+} // auth end
+.container {
+    &--info-list {
+        width: 100%;
+        padding-bottom: 10px;
+        float: left;
+        li {
+            float: left;
+            clear: left;
+            @include default_text;
+            span {
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+ul.settings-list-form.get_file_form {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    li {
+        float: left;
+        clear: none;
+        width: 260px;
+        span.label {
+            margin-bottom: 5px;
+        }
+        &.file {
+            display: none;
+        }
+
+        clear: none;
+        input#id_path {
+            width: 250px;
+        }
+        button {
+            // margin-top: 32px;
+        }
+    }
+
+}
+#breadcrumb.breadcrumb__remote{
+    position: absolute;
+    h3 {
+        padding-left: 20px;
+    }
+    ul.buttons {
+        li {
+            margin-right: 20px;
+            a:before{
+                padding-left: 10px;
+                top: 2px;
+                padding-right: 5px;
+            }
+        }
+    }
+}
+
+
+&.sort:hover, &.sort.active {
+    background: $green;
+    color: white;
+    border: 2px solid $green;
+}
+
+
+
+
+
+#ajax-notification {
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    z-index: 10002;
+    right: 0px;
+    li {
+        float: right;
+        width: 350px;
+        background: $red;
+        padding: 10px;
+        padding-left: 25px;
+
+        @include default_text;
+        color: white;
+
+
+    }
+}
+$hostmap_container_width: 135px;
+.hostmap__group--heading {
+    float: left;
+    width: 100%;
+    background: $odd;
+    padding: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    h3 {
+        padding-bottom: 0px;
+        padding-top: 0px;
+        width: 100%;
+        text-align: center;
+    }
+    span {
+        float: right;
+        margin-right: 10px;
+        padding-top: 2px;
+        font-weight: bold;
+        // color: $font_color_brown;
+    }
+}
+ul.hostmap--sort {
+    float: left;
+    margin-right: 20px;
+    span.title {
+        @include clear;
+        margin-bottom: 5px;
+    }
+}
+.hostmap__group{
+    float: left;
+    border-bottom:3px solid $odd;
+    padding: 0px;
+    width: 100%;
+    span {
+        @include default_text;
+        float: left;
+        padding: 15px;
+        color: $font_color_dark;
+        @include opacity(0.5);
+    }
+}
+ul.hostmap__group--list {
+    float: left;
+    padding: 0px;
+    margin-top: 8px;
+    li {
+        float: left;
+        padding: 0px;
+        a {
+            @include default_text;
+            padding: 6px;
+            padding-left: 15px;
+            padding-right: 15px;
+            float: left;
+            &.active, &:hover{
+                background: $green;
+                color: white;
+                text-decoration: none;
+            }
+        }
+    }
+}
+ul.hostmap {
+    float: left;
+    width: 100%;
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    li{
+        float: left;
+        margin-right: 10px;
+        display: block;
+        width: $hostmap_container_width;
+        height: 175px;
+        margin-bottom: 20px;
+        a.server__name, h4 {
+            float: left;
+            // width: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+              overflow: hidden;
+            width: $hostmap_container_width;
+            @include default_link;
+
+            padding: 10px;
+            padding-left: 0px;
+            padding-right: 0px;
+            padding-bottom: 4px;
+            text-align: center;
+            background: white;
+            color: $font_color_dark;
+
+        }
+        span.last_check{
+            float: left;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 5px;
+            @include default_text;
+            color: $dark_grey;
+
+        }
+        &.nodata {
+
+            h4 {
+                text-decoration: none;
+                border-bottom: 0px;
+            }
+            div {
+                float: left;
+                @include default_text;
+                width: $hostmap_container_width;
+                height: $hostmap_container_width;
+                text-align: center;
+                border: 2px solid $grey;
+                padding: 10px;
+                color: $grey;
+                margin-top: 22px;
+
+            }
+        }
+        div.container {
+                float: left;
+                display: inline-block;
+                position:relative;
+                clear: left;
+                width: $hostmap_container_width;
+                height: $hostmap_container_width;
+            }
+            span.background {
+                background: $green;
+                display: inline-block;
+                width: $hostmap_container_width;
+                height: $hostmap_container_width;
+                z-index: 9;
+            }
+            span.data {
+                position: absolute;
+                @include rem (font-size, 1.4);
+                @include breakpoint(desktop){
+                    @include rem (font-size, 1.6);
+                }
+                display: inline-block;
+                  vertical-align: middle;
+                width: $hostmap_container_width;
+                height: $hostmap_container_width;
+                line-height: $hostmap_container_width;
+                margin-top: - $hostmap_container_width - 2;
+                vertical-align: middle;
+                text-align: center;
+                border: 2px solid rgba(92,204,92, 0.6);
+                z-index: 10;
+                font-weight: bold;
+                color: #2b3239;
+                
+            }
+            span.no-data {
+                @extend span.data;
+                border: 2px solid $grey;
+                opacity: 0.4;
+            }
+    }
+}
+
+// Inline JS editor
+
+.js-inline-editor{
+    float: left;
+    width: 100%;
+    background: $odd;
+    padding: 10px;
+    margin-bottom: 10px;
+    input[type=text]{
+        width: 300px;
+    }
+    .select2-container {
+        margin-left: 15px;
+    }
+    &__actions {
+        float: right;
+        button{
+            margin-left: 15px;
+        }
+    }
+}
+// Inline JS editor
+
+.table-list{
+    &--header {
+        float: left;
+        background: $odd;
+        padding: 10px;
+        width: 100%;
+    }
+    &--content {
+        width: 100%;
+        display: table;
+        margin-bottom: 40px;
+        li {
+            position: relative;
+            float: left;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            width: 100%;
+            display: table-row;
+            border-bottom: 2px solid $odd;
+            span.label {
+                @include default_text;
+                padding-top: 3px;
+                float: left;
+            }
+            span.group {
+                width: 150px;
+                @include opacity(0.5);
+            }
+        }
+        &--delete {
+            float: left;
+            width: 100%;
+        }
+        &--confifmation{
+            float: left;
+            width: auto;
+            span{
+                @include default_text;
+                font-weight: bold;
+                padding-top: 2px;
+            }
+        }
+        &--actions {
+            float: right;
+
+        }
+        input[type=text]{
+            width: 360px;
+        }
+
+        .button {
+            background: $odd_dark;
+            color: $breadcrumb;
+            border: 0px;
+            padding: 8px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-left: 15px;
+            &.delete {
+                padding: 8px;
+                padding-top: 6px;
+                padding-bottom: 6px;
+            }
+            &.edit:hover {
+                background: $orange;
+                color: white;
+            }
+            &.delete:hover{
+                background: $red;
+                color: white;
+            }
+        }
+
+    } // content end
+}
+.tags{
+    &--topmenu {
+
+        @extend .settings__tabs;
+        // width: auto;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+}
+
+ul.global__tag-list{
+    float: left;
+    clear: left;
+    margin-top: 5px;
+    li {
+        float: left;
+        //clear: left;
+        padding-bottom: 10px;
+        margin-right: 8px;
+        span{
+            display: inline-block;
+            border:2px solid $odd_dark;
+            color: $font_color_brown;
+            padding: 4px;
+            padding-left: 8px;
+            padding-right: 8px;
+            @include default_border;
+        }
+    }
+}
+table.alerts-mute-table {
+    @extend table.alerts-table;
+    span.timeago {
+        color: $font_color_brown;
+        padding-left: 40px;
+    }
+    tr {
+        td:first-child {
+            padding-left: 0px;
+        }
+    }
+    td{
+        padding: 10px;
+    }
+}
+
+.alerts-mute-form--block {
+    float: left;
+    width: 100%;
+    background: $odd;
+    padding: 10px;
+    margin-bottom: 10px;
+    input{
+        float: left;
+        clear: left;
+    }
+    .select2-container {
+        clear: left;
+        input{
+            height: 34px;
+        }
+    }
+
+    li {
+        clear: none;
+        margin-right: 10px;
+
+        float: left;
+        &:last-child{
+            float: right;
+        }
+        &.buttons {
+            margin-top: 25px;
+        }
+        span.label {
+            float: left;
+            clear: left;
+            @include default_text;
+            color: $font_color_dark;
+            padding-bottom: 5px;
+
+        }
+
+    }
+}
+ul.cloudservers__regions--list{
+    @include clear;
+    margin-top: 10px;
+    > li {
+        width: 50%;
+        clear: none;
+        padding-bottom: 0px;
+    }
+}
+
+
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+.gu-hide {
+  display: none !important;
+}
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+ul.pagination {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    @include clear;
+    li {
+        float: left;
+        margin-right: 10px;
+        margin-bottom: 30px;
+        a {
+            text-decoration: none;
+            border: 2px solid $odd;
+            padding: 10px;
+            padding-left: 15px;
+            padding-right: 15px;
+            text-align: center;
+            @include default-border;
+            &:hover, &.active {
+                background: $orange;
+                border: 2px solid $orange;
+                color: white;
+            }
+        }
+    }
+}
+div#install-agent {
+    h3 {
+        margin-bottom: 20px;
+        @include clear;
+    }
+    display: none;
+    &.welcome, &.visible {
+        display: block;
+    }
+    @include clear;
+    @include default_border;
+    background: $odd;
+    padding: 20px;
+    position: relative;
+    margin-bottom: 20px;
+    p {
+        @include default-text;
+    }
+    a.close {
+        float: right;
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        padding: 8px;
+        padding-left: 15px;
+        padding-right: 15px;
+        background: $red;
+        @include default-border-radius;
+        color: white;
+        text-decoration: none;
+        &:hover {
+            background: $red_dark;
+            color: white;
+        }
+
+    }
+    ul {
+        @include clear;
+        margin: 20px 0px 20px 0px;
+        li {
+            @include clear;
+            padding-bottom: 20px;
+            list-style-type: disc;
+            list-style-position: inside;
+            div.image_wrapper {
+                
+                img {
+                    
+                    margin: 5px;
+                    @include default-border-radius;
+                    border: 2px solid $odd_dark;
+                }
+            }
+        }
+    }
+    pre {
+        background: white;
+        border: 2px solid $odd_dark;
+        padding: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        @include default_border;
+    }
+}
+// Servers dashboard and in system charts
+ul.servers--meta-list {
+    @include clear;
+    li {
+        @include clear;
+        padding: 5px;
+    }
+}

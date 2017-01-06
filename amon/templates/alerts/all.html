@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% block content_class %}class="data-rows"{% endblock content_class %}
+{% block title %}Alerts{% endblock %}
+{% block breadcrumb_class %}empty_alerts_header{% endblock breadcrumb_class %}
+{% block content %}
+{% if total_alerts > 0 %}
+    <div class="datatables_block">
+    <table class='alerts-table'>
+    <thead>
+        <tr>
+            <th class='mute'></th>
+            <th><span data-asc="d" data-desc="a" class='label'>Server</span></th>
+            <th class='alert'><span data-asc="d" data-desc="a" class='label'>Alert</span></th>
+            <th><span>Period</span></th>
+            <th class='notify'><span data-asc="d" data-desc="a" class='label'>Notify</span></th>    
+            <th class='history-column'><span data-asc="d" data-desc="a" class='label'>Triggers</span></th>
+            <th class='last_trigger'><span data-asc="d" data-desc="a" class='label' >Last trigger</span></th>
+            <th class='settings'></th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        {% for rule in alerts  %}
+        {% set type = rule.rule_type | lower %}
+
+    
+        {% url 'global_alert_history' alert_id=rule|mongo_id as global_alert_history %}
+        {% url 'system_alert_history' alert_id=rule|mongo_id as system_alert_history %}
+
+        {% url 'edit_alert' alert_id=rule|mongo_id as edit_alert %}
+        {% url 'edit_healthcheck_alert' alert_id=rule|mongo_id as edit_healthcheck_alert %}
+    
+        
+
+        {% if type == 'global'  or type == 'custom_metric_gauge' %}
+            {% set history_url = global_alert_history %}
+            {% set edit_alert_url = edit_metrics_alert %}
+        {% endif %}
+        {% if type == 'system' or type == 'process' or type == 'plugin' or type == 'global' or type == 'uptime' or type == 'process_global' or type == 'plugin_global' %}
+            {% set history_url = system_alert_history %}
+            {% set edit_alert_url = edit_alert %}
+        {% endif %}
+
+        {% if type == 'health_check' %}
+            {% set edit_alert_url = edit_healthcheck_alert %}
+            {% set history_url = global_alert_history %}
+        {% endif %}
+
+        <tr id="row-{{ rule|mongo_id }}">
+
+        <td class='mute'>
+        <a class="mute_status amon icon-pause {% if rule.mute == True %}disabled{% else %}enabled{% endif %}" 
+            title="{% if rule.mute == True %}Disabled{% else %}Enabled{% endif %}" href="{% url 'mute_alert' alert_id=rule|mongo_id %}"></a>
+        </td>
+        <td><span class="server-name">{{ rule.server.name }}
+            {% if type == 'global' or type == 'process_global' or type == 'plugin_global' %}All{% endif %} 
+            {% if type == 'health_check' %}
+                {% if rule.server == 'all' %}All{% endif %}
+            
+            {% endif %}
+        </span>
+        {% if rules.tags|length > 0 %}
+        <ul class="alerts-table--tag-list">
+            {% for t in rule.tags  %}
+                <li><span >{{t.group.name}}{% if t.group.name %}:{% endif %}{{ t.name }}</span></li>
+            {% endfor %}
+        </ul>
+                            
+        {% endif %}
+        </td>
+
+        <td>
+        {% if type == 'plugin_global' %}
+            <strong>{{rule.plugin}}.{{rule.gauge}}.{{rule.key}}</strong>
+        {% endif %}
+        {% if type == 'plugin' %}
+                <a href="{% url 'view_plugins' server_id=rule.server|mongo_id %}?plugin={{rule.plugin_data|mongo_id}}">
+                {{rule.plugin_data.name}}.{{rule.gauge_data.name}}.{{rule.key}}</a>
+        {% endif %}
+        {% if type == 'uptime' %}
+            <strong>{{ rule.process_data.name }}</strong>
+        {% endif %}
+        {% if type == 'process' %}
+            <a href="{% url 'view_process' server_id=rule.server|mongo_id %}?process={{rule.process_data|mongo_id}}">
+            <strong>{{ rule.process_data.name }}</strong></a> /{{ rule.process_metric }}
+        {% endif %} 
+        {% if type == 'process_global' %}
+            <strong>{{rule.process}}</strong> /
+        {% endif %}
+
+        {% if type == 'custom_metric_gauge' %}
+            <a href="{% url 'view_metric' metric_id=rule.custom_metric_data|mongo_id %}">{{rule.custom_metric_data.name}}.{{rule.key}}</a>
+        {% endif %} 
+
+        {% if type == 'health_check' %}
+            {{rule.command}}{{rule.param}} is <strong>{{rule.status|upper}}</strong>
+        {% endif %}
+        
+        {{ rule.metric | add_spaces }}{% if rule.metric_options %} / {{ rule.metric_options }} {% endif %} 
+
+        {% if rule.volume %} / {{ rule.volume }} {% endif %}
+        {% if rule.interface %} / {{ rule.interface }} {% endif %}
+        {{ rule.metric_type|dehumanize }} 
+            {% if type != 'uptime' and rule.metric|lower != 'notsendingdata' and type != 'health_check' %}
+            {% if rule.above_below %}
+                {% if rule.above_below == 'above'  %}>{% else %}<{% endif %}
+            {% endif %}
+                
+            {{ rule.metric_value }}
+            {% endif %}
+                {% if rule.metric_type %}{{ rule.metric_type }}{% endif %}
+        
+        
+        </td>
+        <td data-order="{{ rule.period }}"><span class="period">{{ rule.period }}</span></td>
+        <td class='email'>
+            {% if rule.notifications|length > 2  %}
+                <span data-icon="z" class='notifications_recipients'>{{ rule.notifications|length }}</span>
+                <div class="qtip-tooltip">
+                <ul class='notifications_recipients--list'>
+                                
+                    {% if rule.notifications|length > 0 %}
+                        {% for noti in rule.notifications  %}
+                            {% if noti.provider_id %}
+                            <li class='notifications-service'>
+                                <img class='icon' src="{{STATIC_URL}}images/integrations/{{noti.provider_id}}.png" alt=""> 
+                                <span class="service">
+                                {% if noti.provider_id == 'email' %}{{noti.email}}{% else %} {{ noti.name }}{% endif %}</span>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+                
+                </div>
+
+            {% else %}
+                <ul class='notifications_recipients--list'> 
+                    {% for noti in rule.notifications  %}
+                        {% if noti.provider_id %}
+                        <li class='notifications-service'>
+                            <img class='icon' src="{{STATIC_URL}}images/integrations/{{noti.provider_id}}.png" alt=""> 
+                            <span class="service">
+                            {% if noti.provider_id == 'email' %}{{noti.email}}{% else %} {{ noti.name }}{% endif %}</span>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+                
+        </td>
+        <td>
+        {% if rule.total_triggers > 0 %}
+            <a data-url="{% url 'ajax_alert_history' alert_id=rule|mongo_id %}" 
+                href="{{ history_url }}" class="history trigger-history">{{ rule.total_triggers }}</a>
+
+            {% if rule.last_trigger.average_value  and rule.metric|lower != 'notsendingdata' %}
+                <span class="last_trigger">Last: {{rule.last_trigger.average_value}}{% if rule.metric_type %}{{ rule.metric_type }}{% endif %}</span>
+            {% endif %}
+        {% endif %}
+        </td>
+        <td data-order="{{ rule.last_trigger.time }}" class='last_trigger-column'>
+        
+        {% if rule.last_trigger %}
+            <span title="{{ rule.last_trigger.time|datetime_local:request.timezone }}" time-ago class="last_check">{{ rule.last_trigger.time }}</span>
+        {% endif %}
+        </td>
+        <td class='settings-column'>
+            
+            <a href="#" class='settings amon' data-dropdown="settings-menu-{{ rule|mongo_id }}" data-options="is_hover:true">d</a>
+            <ul id='settings-menu-{{ rule|mongo_id }}' class="f-dropdown tiny settings-menu" data-dropdown-content>
+                
+                    <li><a  href="{{edit_alert_url}}" data-icon="e">Edit</a></li>
+                <li>
+                    <a data-rowid="{{ rule|mongo_id }}" class='delete_row' data-icon="b" href="#">Delete</a>
+                </li>    
+                <li>
+                    <a data-icon="W" href="{% url 'alerts_clear_triggers' alert_id=rule|mongo_id %}">Clear triggers</a>
+                </li>
+
+                
+            </ul>
+        </td>
+    </tr>
+    <div class="delete-row" id="delete-row-{{ rule|mongo_id }}">
+        <p>
+            Are you sure you want to delete this alert ?
+        </p>
+        <ul>
+            <li>
+                <a href="{% url 'delete_alert' alert_id=rule|mongo_id %}" class="button delete">Delete</a>
+            </li>
+            <li>
+                <a data-rowid="{{ rule|mongo_id }}" href="" class="button cancel cancel_delete">Cancel</a>
+            </li>
+    </ul>
+    </div>
+    {% endfor %}
+    </tbody>
+    
+    </table>
+
+</div><!-- datatables block -->
+{% else %}
+<div class="welcome">
+        <div class="center">
+            <span class="icon" data-icon="p"></span>
+            <p>
+                With Alerts you receive email notifications when your servers don't work as expected. In Amon
+                you can set the following alert types:
+
+            </p>
+                <ul class='desc'>
+                    <li><strong>Individual process alerts</strong> - Example: Mongodb, memory > 2000MB for the last 30 minutes</li>
+                    <li><strong>System alerts</strong> - Example: CPU > 70% for the last 15 minutes</li>
+                    <li><strong>Global alerts</strong> - Example: All servers, CPU > 80% for the last 30 minutes</li>
+                    <li><strong>Metrics alerts</strong> - Example: users.failed_logins > 10 for the last 30 minutes</li>
+                </ul>
+                <p>
+                To get started click the <a href="{% url 'add_alert' %}">Add alert</a> link.
+            </p>
+        </div>
+    </div>
+{% endif %}{# total_alerts > 0 #}
+
+{% endblock content %}
+{% block js %}
+<script type="text/html" id="add_alert_dropdown">
+    <a data-icon='u' class="with-icon button" href="{% url 'add_alert' %}">Add Alert</a>
+    <a data-icon='u' class="with-icon button blue" href="{% url 'add_healthcheck_alert' %}">Add Health Check Alert</a>
+</script>
+<script type="text/javascript" charset="utf-8" src='{{ STATIC_URL }}js/libs/jquery.datatables.beta.min.js'></script>
+<script type="text/javascript" src='{{ STATIC_URL }}js/delete.row.js'></script>
+<script language="javascript" type="text/javascript">
+$(function () 
+{
+
+    $('.notifications_recipients').each(function() {
+        $(this).qtip({
+            style: { classes: 'qtip-bootstrap' },
+            position: {at: 'bottom center' },
+            content: {
+                text: $(this).next('.qtip-tooltip')
+            }
+
+        });
+
+    });
+
+
+
+    $('a.trigger-history').each(function() {
+         $(this).qtip({
+            content: {
+            text: function(event, api) {
+                $.ajax({
+                    url: $(this).data('url') // Use data-url attribute for the URL
+                })
+                .then(function(content) {
+                    // Set the tooltip content upon successful retrieval
+                    api.set('content.text', content);
+                }, function(xhr, status, error) {
+                    // Upon failure... set the tooltip content to the status and error value
+                    api.set('content.text', status + ': ' + error);
+                });
+
+                return 'Loading...'; // Set some initial text
+            }
+            },
+             style: { classes: 'qtip-bootstrap'  },
+         });
+     });
+
+    $(".alerts-table").dataTable({
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": true,
+        "bSort": true,
+        "bInfo": false,
+        "bAutoWidth": false,
+         "oLanguage": {
+            "sSearch": "",
+        },
+        "sDom": '<"uptime_filter_header"f>rt', 
+        "aaSorting": [ [6,'desc'],],
+    })
+    $('.uptime_filter_header input').attr("placeholder", "Alert filter");
+    
+    alert_dropdown_html = $('#add_alert_dropdown').html();
+    {% if total_alerts == 0 %}
+        $('#breadcrumb').append(alert_dropdown_html)
+    {% else %}
+        $('.uptime_filter_header .dataTables_filter').append(alert_dropdown_html);
+    {% endif %}
+
+     $(document).foundation();
+
+    $.each($('.period'), function( index, value ) {
+        seconds = parseInt($(this).html());
+        convert_to = 'seconds'
+        if(seconds > 30 && seconds <= 3600) {
+            convert_to = 'minutes'
+        } 
+        else if (seconds > 3600) {
+            convert_to = 'hours'
+        }
+        
+        moment_obj = moment.duration(seconds, 'seconds').as(convert_to);
+        
+        $(this).html(moment_obj+" "+convert_to)
+        
+    });
+
+
+    $.each($('.timeago'), function( index, value ) {
+        unix_timestamp = $(this).html();
+        moment_obj = moment.unix(unix_timestamp).fromNow();
+        $(this).html(moment_obj)
+        
+    });
+
+ });
+</script>
+{% endblock js %}

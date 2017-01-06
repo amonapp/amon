@@ -1,0 +1,5 @@
+{% spaceless %}
+{% autoescape off %}
+Server:{{notification.server.name }} {{ notification.alert.metric }}{% if notification.alert.metric_options %}/{{ notification.alert.metric_options }}{% endif %}{% if notification.alert.above_below == 'above' %}>{% else %}<{% endif %}{{ notification.alert.metric_value|empty_if_none }}{{ notification.alert.metric_type|empty_if_none }} for {% if notification.alert.period > 60 %}{{notification.alert.period|seconds_to_minutes }} minutes {% else %}{{notification.alert.period}} seconds{% endif %} (Current value: {%if notification.metadata%}{{notification.metadata.name|empty_if_none}}/{%endif%}{{notification.trigger.average_value}}{{ notification.alert.metric_type|empty_if_none }})
+{% endautoescape %}
+{% endspaceless %}

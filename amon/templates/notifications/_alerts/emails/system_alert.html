@@ -1,0 +1,68 @@
+{% extends "notifications/_alerts/emails/base.html" %}
+{% block content %}
+<table cellspacing="0" cellpadding="0" align="left">
+    <tbody>
+        <tr>
+            <h3>Alert details</h3>
+            <strong>Period: </strong> {{ trigger.from|day_local:timezone }} - between {{ trigger.from|time_local:timezone }} and {{ trigger.time|time_local:timezone }}
+            <br><br>
+            <strong>Server:</strong> {{ server.name }} {% if server.ip_address %}({{ server.ip_address}}) {% endif %}
+            <br><br>
+            <strong>Trigger:</strong>
+            {% if alert.metric|lower == 'disk' %} volume: 
+                {{ metadata.name }} {% endif %} 
+            {% if alert.metric|lower == 'network' %} interface: 
+                {{ metadata.name }} {% endif %} 
+            
+            {% if trigger.average_value %} average value: {{ trigger.average_value }}{{ alert.metric_type|empty_if_none }} {% endif %}.
+            <br><br>
+            <a target="_blank" href="{% base_url 'server_system' server_id=server|mongo_id %}?charts={{ alert.metric|lower }}&duration={{ alert.period }}&enddate={{ trigger.time }}">View chart</a>
+            <br><br>
+            {% if alert.metric == 'CPU' or alert.metric == 'Memory' and metadata %}
+            The problem could be one of the processes below:
+            {% endif %}
+        </tr>
+        </tbody>
+</table>
+{% if alert.metric|lower == 'cpu' or alert.metric|lower == 'memory' or alert.metric|lower == 'loadavg' and metadata %}
+<br><br>
+<table id="chart-table">
+    <thead>
+        <tr>
+            <td>Process</td>
+            <td>CPU</td>
+            <td>Memory</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for process in metadata %}
+        {% if forloop.counter < 5 %}
+            <tr>
+                <td>{{ process.name }}</td>
+                <td>{{ process.c }} %</td>
+                <td>{{ process.m }} MB</td>
+                <td><a href="{% base_url 'view_process' server_id=server|mongo_id %}?process={{ process.p }}&duration={{ alert.period }}&enddate={{ trigger.time }}">View chart</a></td>
+            </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<div align="left" class="article-content">
+    <multiline label="Description">
+  This notification was sent for alert: <br>
+  {% if alert.server == 'all' %}All servers {% else %}{{ server.name }}{% endif %}/{{ alert.metric }} {{ alert.above_below }}
+{{ alert.metric_value }} {{ alert.metric_type|metric_type_value:alert.metric|empty_if_none }} for {% if alert.period > 60 %}
+     {{ alert.period|seconds_to_minutes }} minutes
+{% else %}
+    {{alert.period}} seconds
+{% endif %}
+<br>
+If you want to stop receiving these notifications, you can 
+<a target="_blank" href="{% base_url 'mute_alert' alert_id=alert|mongo_id %}">mute</a> or <a target="_blank" href="{% base_url 'edit_alert' alert_id=alert|mongo_id %}">edit</a> this alert
+
+    </multiline>
+</div>
+{% endblock content %}

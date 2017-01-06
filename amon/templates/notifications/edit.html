@@ -1,0 +1,20 @@
+<h3>{{ provider_id|title }}</h3>
+<form action="{% url 'notifications_edit' provider_id=provider_id notification_id=notification_id %}" method='post'>
+<ul class='notifications-form'>
+    
+    {% for field in form %}
+       <li >
+       {{ field.label_tag }}
+       {{ field }}
+       {{ field.errors }}
+      </li>
+    {% endfor %}
+    <li class='buttons'>
+        {% if provider_data %}
+            <input type="submit" class='button blue' value="Test" name="test">
+        {% endif %}
+        {% csrf_token %}
+        <input type="submit" class='button' value='Save' /> 
+        </li>
+    </ul>
+</form>

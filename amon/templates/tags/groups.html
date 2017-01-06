@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block ngapp %}InlineEditor{% endblock ngapp %}
+{% block breadcrumb %}
+{% include "tags/_top_menu.html" %}
+{% endblock breadcrumb %}
+{% block main_content_class %}center{% endblock main_content_class %}
+{% block content_class %}class="data-rows"{% endblock content_class %}
+{% block title %}Tags{% endblock %}
+{% block ngcontroller %}
+data-ng-controller="TagGroupsController"
+data-deleteurl="{% url 'api_tag_groups_delete' %}"
+data-updateurl="{% url 'api_tag_groups_update' %}"
+data-createturl="{% url 'api_tag_groups_create' %}"
+data-list="{% url 'api_tag_groups_list' %}"
+{% endblock ngcontroller %}
+{% block content %}
+<div class="js-inline-editor ng-cloak" >
+<form ng-submit="createTag()">
+  <input ng-model="newgroup" placeholder="New tag group..." type="text" required="">
+  <div class="js-inline-editor__actions">
+      <button type="submit">Create group</button>
+  </div>
+ </form>
+</div>
+{% verbatim %}
+<ul class="table-list--content">
+    <li ng-repeat="(id, tag) in groups track by id">
+        <span ng-cloak ng-hide="open_dialog == '{{tag.id}}'" class="label">{{tag.name}}</span>
+
+        <div class="table-list--content--editor js-inline-editor ng-cloak" ng-show="open_editor == '{{tag.id}}'">
+        <form ng-submit="updateTag(tag)">
+          <input autofocus="autofocus" ng-model="tag.name" type="text" required="">
+
+          <div class="js-inline-editor__actions">
+              <button ng-click="closeDialog(tag.id)" class="cancel" type="button">Cancel</button>
+              <button class="" ng-click="updateTag(tag.id)" type="submit">Save</button>
+          </div>
+         </form>
+        </div>
+
+        <div class="table-list--content--delete ng-cloak" ng-show="open_delete == '{{tag.id}}'">
+            <div class="table-list--content--confifmation">
+                <span class="label-delete-confirmation">
+                      Are you sure you want to delete this tag ({{tag.name}}) ?
+                    </span>
+              </div>
+
+            <div class="table-list--content--actions">
+                 <button ng-click="closeDialog(tag.id)" class="cancel" type="button">Cancel</button>
+                <button class="button delete" ng-click="deleteTag(tag, $index)" type="button">Delete</button>
+            </div>
+
+        </div>
+
+        <div class="table-list--content--actions" ng-hide="open_dialog == '{{tag.id}}'">
+            <button class="button edit" ng-click="openEditDialog(tag.id)"  type="button">Edit</button>
+            <button class="button delete" ng-click="openDeleteDialog(tag.id)"  type="button">Delete</button>
+        </div>
+    </li>
+</ul>
+{% endverbatim %}
+</div> <!-- settings_content end -->
+{% endblock %}
+{% block js %}
+{% if request.devmode == True %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.inline_editor.js'></script>
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.tag.groups.js'></script>
+{% endif %}
+{% endblock %}

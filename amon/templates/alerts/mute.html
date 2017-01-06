@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block ngapp %}AlertsMuteApp{% endblock ngapp %}
+{% block breadcrumb %}
+    <ul id='breadcrumb-list'>
+    <li><a href="{% url 'alerts' %}">Alerts</a></li>
+    <li class='separator'></li>
+    <li class='last'>Pause Alerts</li>
+    </ul>
+{% endblock %}
+{% block ngcontroller %}
+data-ng-controller="AlertsMuteCtrl"
+{% endblock ngcontroller %}
+{% block main_content_class %}center{% endblock main_content_class %}
+{% block content_class %}class="data-rows"{% endblock content_class %}
+{% block title %}Pause Alerts{% endblock %}
+{% block content %}
+
+<div class="alerts-mute-form--block">
+<form action="{% url 'alerts_mute_servers' %}" method='post'> 
+    <ul >
+    {% for field in form  %}
+    <li {% if field.name == "tags" %}ng-cloak ng-show="show_tags" {% endif %}>
+        <span class="label">{{field.label}}</span>
+        {{ field }}
+        {{ field.errors }}
+    </li>
+    {% endfor %}
+      <li class='buttons'>    
+          {% csrf_token %}
+          <button>Pause</button>
+      </li>
+      </ul>
+ </form>
+</div>
+<table class='alerts-mute-table'>
+<thead>
+        <tr>
+            <th>Server</th>
+            <th>Expires</th>
+            <th class='settings'></th>
+        </tr>
+    </thead>
+
+    {% for m in all_muted  %}
+    <tr>
+        <td>
+        <span class="server-name">{{m.server.name}}
+        {% if  not m.server.name %}All{% endif %}
+        </span>
+        {% if m.tags|length > 0 %}
+        <ul class="alerts-table--tag-list">
+            {% for t in m.tags  %}
+                <li><span >{{t.group.name}}{% if t.group.name %}:{% endif %}{{ t.name }}</span></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        </td>
+        <td>{{m.expires_at_utc|datetime_local:request.timezone|default:"Never" }} 
+            {% if m.expires_at_utc %}
+                / <span time-ago>{{m.expires_at_utc}}</span>
+            {% endif %}</td>
+        <td class='settings-column'>
+            <a href="{% url 'alerts_unmute_server' mute_id=m|mongo_id %}" class="button delete">Unmute</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</div> <!-- settings_content end -->
+{% endblock %}
+{% block js %}
+{% if request.devmode %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.alerts.mute.js'></script>
+{% endif %}
+
+{% endblock %}

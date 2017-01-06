@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Settings - Data{% endblock title %}
+{% block ngapp %}BaseModule{% endblock ngapp %}
+{% block main_content_class %}center{% endblock main_content_class %}
+{% block breadcrumb %}
+    {% include "settings/_topbar.html" %}
+{% endblock breadcrumb %}
+{% block content %}
+<form method="post" action="{% url 'settings_data' %}">
+<div class="settings__content">
+<p class="settings__content__desc">
+    Global data retention rules. Can be changed for a specific server.
+</p>
+
+<ul class="settings-list-form">
+    {{ form.as_ul }}
+
+<li class='buttons'>
+    {% csrf_token %}
+    <input type="submit" class='button' value="Update" />
+    
+</li>
+</ul>
+
+
+
+</div><!-- profile content -->
+
+</form>
+{% endblock %}

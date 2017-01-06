@@ -1,0 +1,10 @@
+{% extends "charts/dashboards.public.html" %}
+{% block ngapp %}RickshawApp{% endblock ngapp %}
+{% block content %}
+
+    {% if health_checks|length > 0 %}
+        {% include "healthchecks/result_table_partial.html" with result=health_checks %}
+    {% endif %}
+
+    {% include "charts/rickshaw-chart.html" %}
+{% endblock %}

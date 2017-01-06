@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+
+{% block content_class %}class="integrations data-rows"{% endblock content_class %}
+{% block title %}Cloud Servers{% endblock %}
+{% block breadcrumb_class %}empty_alerts_header{% endblock breadcrumb_class %}
+{% block main_content_class %}center{% endblock main_content_class %}
+{% block breadcrumb %}
+
+<h3>Cloud Servers</h3>
+
+{% endblock breadcrumb %}
+{% block content %}
+    {% include "cloudservers/_left.html" %}
+    <div class="right">
+        
+        {% if provider_id %}
+            
+            {% if provider_data %}
+                {% include "cloudservers/edit.html" %}
+            {% else %}
+                {% include "cloudservers/add.html" %}
+            {% endif %}
+        {% endif %}
+
+
+    {% if provider_id and all_for_provider.clone.count > 0 %}
+    <table class='settings-table small-td'>
+        <thead>
+            <td>Credentials</td>
+            <td>Last Sync</td>
+            <td>Sync Status</td>
+            <td></td>
+        </thead>
+        {% for r in all_for_provider %}
+        <tr id="row-{{ r|mongo_id }}">
+            
+            <td> 
+            <a  href="{% url 'cloudservers_edit' provider_id=provider_id credentials_id=r|mongo_id %}">
+            {% if r.provider_id == 'email' %}{{r.email}} {% else %}{{r.name}}{%  endif %}</a>
+            
+            </td>
+            <td>
+                {% if r.last_sync %}
+                    <span title="{{ r.last_sync|datetime_local:request.timezone }}" time-ago>{{ r.last_sync }}</span>
+                {% endif %}
+                </td>
+            <td>
+                {% if r.last_sync %}
+                    {% if r.error %}
+                        <span title="{{r.error}}" class="remote-checks--status critical">ERROR</span>
+                    {% else %}
+                        <span class="remote-checks--status ok">OK</span>
+                    {% endif %}
+                {% endif %}
+                
+            </td>
+            <td class='settings-column'>
+                <a href="#" class='settings amon' data-dropdown="settings-menu-{{ r|mongo_id }}" data-options="is_hover:true">d</a>
+                <ul id='settings-menu-{{ r|mongo_id }}' class="f-dropdown tiny settings-menu" data-dropdown-content>
+                    <li><a  href="{% url 'cloudservers_edit' provider_id=provider_id credentials_id=r|mongo_id %}" data-icon="e">Edit</a></li>
+                    <li><a data-icon="b" href="{% url 'cloudservers_delete' provider_id=provider_id credentials_id=r|mongo_id %}">Delete</a></li>    
+                </ul>
+
+
+            </td>
+        </tr>
+        
+        {% endfor %}
+    </table>
+    {% endif %}
+        
+    </div><!-- right end -->
+{% endblock content %}
+{% block js %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/delete.row.js'></script>
+{% endblock js %}
