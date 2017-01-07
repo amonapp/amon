@@ -13,6 +13,6 @@ Amon is a modern server monitoring platform.
 Resources
 ---------
 
-* [Documentation](https://amon.cx/docs/)
+* [Documentation](https://docs.amon.cx/)
 * [Bug Tracker](https://github.com/amonapp/amon/issues)
 * [Code](https://github.com/amonapp/amon)
