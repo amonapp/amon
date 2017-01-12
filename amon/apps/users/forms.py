@@ -88,9 +88,8 @@ class InviteNewUserForm(forms.Form):
 
         password = self.cleaned_data.get('password')
         email = self.invite.get('email')
-        username = uuid.uuid4().hex[:30]
         
-        user = User.create_user(username, password, email=email)
+        user = User.objects.create_user(password=password, email=email)
         user.is_admin = False
         user.is_staff = False
         user.is_superuser = False

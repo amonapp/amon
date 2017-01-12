@@ -2,7 +2,6 @@ from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from amon.apps.servers.models import server_model
@@ -11,6 +10,7 @@ from amon.apps.api.throttle import CheckPeriodThrottle
 from amon.apps.api.permissions import ApiKeyPermission
 from amon.apps.notifications.sender import send_notifications
 from amon.apps.api.models import api_model
+
 
 class CheckIpAddressView(APIView):
 
@@ -49,7 +49,7 @@ class SystemDataView(APIView):
     def post(self, request):
 
         status = settings.API_RESULTS['not-found']
-        data = JSONParser().parse(request)
+        data = request.data
 
         host_data = data.get('host')
         machine_id = host_data.get('machineid')
@@ -89,7 +89,7 @@ class LegacySystemDataView(APIView):
     def post(self, request, server_key):
 
         status = settings.API_RESULTS['not-found']
-        data = JSONParser().parse(request)
+        data = request.data
 
         if request.server:
             api_model.save_data_to_backend(server=request.server, data=data)
@@ -107,7 +107,7 @@ class SystemInfoView(APIView):
     def post(self, request, server_key):
         status = settings.API_RESULTS['not-found']
 
-        data = JSONParser().parse(request)
+        data = request.data
         server = server_model.get_server_by_key(server_key)
 
         valid_keys = ['ip_address', 'processor', 'distro', 'uptime']

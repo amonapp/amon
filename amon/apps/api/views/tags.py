@@ -2,12 +2,12 @@ from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
 
 from amon.apps.api.permissions import ApiKeyPermission
 from amon.apps.tags.models import tags_model, tag_groups_model
 from amon.apps.api.mixins import SaveRequestHistoryMixin
 from amon.apps.api.utils import dict_from_cursor
+
 
 class TagsListView(SaveRequestHistoryMixin, APIView):
     permission_classes = (ApiKeyPermission,)
@@ -36,7 +36,7 @@ class TagsUpdateView(SaveRequestHistoryMixin, APIView):
 
 
     def post(self, request):
-        data = JSONParser().parse(request)
+        data = request.data
         name = data.get('name')
         _id = data.get('id')
         group_id = data.get('group', {}).get('id', '')
@@ -53,7 +53,7 @@ class TagsCreateView(SaveRequestHistoryMixin, APIView):
 
 
     def post(self, request):
-        data = JSONParser().parse(request)
+        data = request.data
         name = data.get('name')
         group_id = data.get('group', {}).get('id')
         tag_id = tags_model.get_or_create_by_name(name=name)
@@ -76,7 +76,7 @@ class TagsDeleteView(SaveRequestHistoryMixin, APIView):
 
 
     def post(self, request):    
-        data = JSONParser().parse(request)
+        data = request.data
         tag_id = data.get('id')
 
         tags_model.delete(tag_id)
@@ -109,7 +109,7 @@ class TagGroupsUpdateView(SaveRequestHistoryMixin, APIView):
 
 
     def post(self, request):
-        data = JSONParser().parse(request)
+        data = request.data
         name = data.get('name')
         _id = data.get('id')
         if name:
@@ -124,7 +124,7 @@ class TagGroupsCreateView(SaveRequestHistoryMixin, APIView):
 
 
     def post(self, request):
-        data = JSONParser().parse(request)
+        data = request.data
         name = data.get('name')
         _id = tag_groups_model.get_or_create_by_name(name=name)
 
@@ -140,7 +140,7 @@ class TagGroupsDeleteView(SaveRequestHistoryMixin, APIView):
 
 
     def post(self, request):    
-        data = JSONParser().parse(request)
+        data = request.data
         tag_id = data.get('id')
 
         tag_groups_model.delete(tag_id)

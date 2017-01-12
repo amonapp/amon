@@ -4,8 +4,6 @@ from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
-
 
 from amon.utils.haiku import generate_haiku_name
 from amon.apps.api.permissions import ApiKeyPermission
@@ -13,6 +11,7 @@ from amon.apps.servers.models import server_model
 from amon.apps.alerts.models import alerts_model
 from amon.apps.api.mixins import SaveRequestHistoryMixin
 from amon.apps.tags.models import tags_model
+
 
 class ServersListView(SaveRequestHistoryMixin, APIView):
     permission_classes = (ApiKeyPermission,)
@@ -102,7 +101,7 @@ class ServersCreateView(SaveRequestHistoryMixin, APIView):
         response = {}
         create_server = False
 
-        data = JSONParser().parse(request)
+        data = request.data
 
         name = data.get('name', generate_haiku_name())
         key = data.get('key', False)

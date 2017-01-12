@@ -2,19 +2,18 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
 
 from amon.apps.alerts.models import alerts_api_model
 from amon.apps.healthchecks.models import health_checks_api_model
 
-# AJAX 
+
 @login_required
 @api_view(['POST', 'GET'])
 def ajax_get_metrics(request):
     status = settings.API_RESULTS['ok']
     
     if request.method == 'POST':
-        data = JSONParser().parse(request)
+        data = request.data
         server_id = data.get('server_id')
     else:
         server_id = request.GET.get('server_id')
@@ -29,14 +28,13 @@ def ajax_get_metrics(request):
 
 
 
-# AJAX 
 @login_required
 @api_view(['POST', 'GET'])
 def ajax_get_health_check_commands(request):
         
     result = []
     if request.method == 'POST':
-        data = JSONParser().parse(request)
+        data = request.data
         server_id = data.get('server_id')
     else:
         server_id = request.GET.get('server_id')
@@ -47,7 +45,7 @@ def ajax_get_health_check_commands(request):
         cursor = health_checks_api_model.get_commands_for_server(server_id=server_id)
         for r in cursor.clone():
             params = r.get("params", False)
-            params = "" if params == False else params
+            params = "" if params is False else params
             command = "{0} {1}".format(r.get("command"), params)
             result.append(command)
 
@@ -60,7 +58,7 @@ def ajax_get_health_check_commands(request):
 @api_view(['POST', 'GET'])
 def ajax_get_health_check_get_params_for_command(request):
     if request.method == 'POST':
-        data = JSONParser().parse(request)
+        data = request.data
         command = data.get('command')
     else:
         command = request.GET.get('command')

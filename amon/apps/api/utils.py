@@ -70,8 +70,6 @@ def generate_api_key():
     new_uuid = uuid.uuid4()
     key = hmac.new(new_uuid.bytes, digestmod=sha1).hexdigest()
 
-    print(key)
-    
     return key
 
 

@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from amon.apps.dashboards.models import dashboard_model, dashboard_metrics_model
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
 
 
 from amon.apps.system.views import get_system_data_after, get_global_system_data_after
@@ -61,8 +60,8 @@ def dashboard_metric(request, metric_id=None):
 
 @login_required
 @api_view(['POST'])
-def edit_dashboard(request,dashboard_id):
-    data = JSONParser().parse(request)
+def edit_dashboard(request, dashboard_id):
+    data = request.data
 
     dashboard_model.update(data, dashboard_id)
 
@@ -76,7 +75,7 @@ def edit_dashboard(request,dashboard_id):
 @login_required
 @api_view(['POST'])
 def add_metric(request, dashboard_id):
-    data = JSONParser().parse(request)
+    data = request.data
 
     check = data.get('check')
     metric_type = data.get('metric_type')
@@ -110,7 +109,7 @@ def add_metric(request, dashboard_id):
 @login_required
 @api_view(['POST'])
 def reorder_metrics(request, dashboard_id):
-    data = JSONParser().parse(request)
+    data = request.data
 
     new_order = data.get('new_order')
     result = None
@@ -130,7 +129,7 @@ def reorder_metrics(request, dashboard_id):
 @login_required
 @api_view(['POST'])
 def remove_metric(request):
-    data = JSONParser().parse(request)
+    data = request.data
     metric_id = data.get('metric_id')
 
     response = {'Response': 'OK'}
@@ -160,7 +159,7 @@ def get_all_metrics(request, dashboard_id):
 @api_view(['POST', 'GET'])
 def get_server_metrics(request):
 
-    data = JSONParser().parse(request)
+    data = request.data
     server_id = data.get('server_id')
 
     if server_id == 'all':

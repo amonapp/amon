@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
 
 
 from amon.apps.plugins.models import plugin_model
@@ -32,7 +31,7 @@ class CollectdDataView(APIView):
 
         status = settings.API_RESULTS['not-found']
         
-        data = JSONParser().parse(request)
+        data = request.data
 
 
         if request.server:
