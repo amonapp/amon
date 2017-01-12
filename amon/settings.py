@@ -213,6 +213,7 @@ MONGO_URL = config.get('mongo_uri', 'mongodb://localhost:27017')
 HOST = config.get('host', '127.0.0.1')
 STATIC_URL = config.get('static_url', None)
 
+
 host_struct = parsehost(HOST)
 
 ALLOWED_HOSTS = [host_struct.hostname]
@@ -292,6 +293,7 @@ LOGGING = {
         },
     }
 }
+
 
 
 
