@@ -22,7 +22,7 @@ wheel==0.29.0
 xmltodict==0.10.2
 boto==2.45.0
 apache-libcloud==1.5.0
-django-storage==1.5.1
+django-storages==1.5.1
 
 pip>=9.0
 # Testing

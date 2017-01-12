@@ -55,7 +55,8 @@ class InviteForm(forms.Form):
         
 
         invitation_code_string = "{0}{1}{2}".format(self.user.id, new_invite_email , unix_utc_now())
-        data['invitation_code'] = hashlib.sha224(invitation_code_string).hexdigest()
+        encoded_invitation_code = invitation_code_string.encode()
+        data['invitation_code'] = hashlib.sha224(encoded_invitation_code).hexdigest()
 
         invite_model.create_invitation(data=data)
 
