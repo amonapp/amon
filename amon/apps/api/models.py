@@ -122,7 +122,6 @@ class ApiKeyModel(BaseModel):
 
     def add(self, data=None):
         data['created'] = unix_utc_now()
-
         self.collection.insert(data)
 
         self.collection.ensure_index([('created', self.desc)], background=True)

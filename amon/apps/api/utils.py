@@ -1,9 +1,9 @@
-import os
-import binascii
+import uuid
+import hmac
+from hashlib import sha1
 
 from amon.utils import AmonStruct
 from amon.utils.dates import unix_utc_now
-import bson
 import json
 from bson.json_util import dumps as bson_dumps
 
@@ -15,22 +15,21 @@ def throttle_status(server=None):
     last_check = server.get('last_check')
     server_check_period = server.get('check_every', 60)
 
-
     if last_check:
-        period_since_last_check = unix_utc_now()-last_check
+        period_since_last_check = unix_utc_now() - last_check
 
         # Add 15 seconds buffer, for statsd
-        period_since_last_check = period_since_last_check+15
+        period_since_last_check = period_since_last_check + 15
 
         if period_since_last_check >= server_check_period:
             result.allow = True
     else:
-        result.allow = True # Never checked
+        result.allow = True  # Never checked
     
     return result
 
 
-# Data Format 
+# Data Format
 # {u'dstypes': [u'gauge'],
 # u'plugin': u'users', u'dsnames': [u'value'],
 #  u'interval': 10.0, u'host': u'ubuntu', u'values': [7], 
@@ -39,7 +38,7 @@ def throttle_status(server=None):
 def parse_statsd_data(data=None):
     plugin_data = {}
     ignored_plugins = ['irq']
-    accepted_types = ['gauge',]
+    accepted_types = ['gauge', ]
 
     if len(data) > 0:
         for p in data:
@@ -54,7 +53,7 @@ def parse_statsd_data(data=None):
             
             accepted_type = all(t in accepted_types for t in dstypes)
                 
-            if accepted_type:    
+            if accepted_type:
                 plugin_data[name] = {}
                 for dsn, v, dstype in zip(dsnames, values, dstypes):
                     if plugin_name not in ignored_plugins:
@@ -67,7 +66,13 @@ def parse_statsd_data(data=None):
 
 
 def generate_api_key():
-    return binascii.hexlify(os.urandom(24))
+    # From tastipie https://github.com/django-tastypie/django-tastypie/blob/master/tastypie/models.py#L49
+    new_uuid = uuid.uuid4()
+    key = hmac.new(new_uuid.bytes, digestmod=sha1).hexdigest()
+
+    print(key)
+    
+    return key
 
 
 def dict_from_cursor(data=None, keys=None):

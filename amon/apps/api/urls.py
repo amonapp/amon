@@ -50,8 +50,6 @@ urlpatterns = patterns('',
     url(r'^system/v2/$', SystemDataView.as_view(), name='api_system'),
 )
 
-
-
 server_urls = patterns('',
     url(r'^v1/servers/list/$', ServersListView.as_view(), name='api_servers_list'),
     url(r'^v1/servers/create/$', ServersCreateView.as_view(), name='api_servers_create'),
