@@ -1,6 +1,5 @@
 @import "_variables";
 @import "_amon";
-@import "libs/code_highlight";
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
@@ -3406,7 +3405,6 @@ ul.notifications_recipients--list {
 }
 
 ul.dashboard--health_checks-list{
-    @extend .remote_checks_list--results;
     &.public{
         padding: 20px;
     }
@@ -3903,7 +3901,7 @@ ul.settings-list-form.get_file_form {
 }
 
 
-&.sort:hover, &.sort.active {
+.sort:hover, .sort.active {
     background: $green;
     color: white;
     border: 2px solid $green;
@@ -4002,6 +4000,7 @@ ul.hostmap {
     height: 100%;
     padding-left: 10px;
     padding-right: 10px;
+    display: block;
     li{
         float: left;
         margin-right: 10px;
@@ -4071,17 +4070,17 @@ ul.hostmap {
                 z-index: 9;
             }
             span.data {
-                position: absolute;
                 @include rem (font-size, 1.4);
                 @include breakpoint(desktop){
                     @include rem (font-size, 1.6);
                 }
+                position: relative;
                 display: inline-block;
-                  vertical-align: middle;
+                vertical-align: middle;
                 width: $hostmap_container_width;
                 height: $hostmap_container_width;
                 line-height: $hostmap_container_width;
-                margin-top: - $hostmap_container_width - 2;
+                margin-top: - $hostmap_container_width - 12;
                 vertical-align: middle;
                 text-align: center;
                 border: 2px solid rgba(92,204,92, 0.6);

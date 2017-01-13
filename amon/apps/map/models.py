@@ -5,7 +5,7 @@ from amon.apps.servers.models import server_model
 from amon.apps.system.models import system_model
 from amon.apps.devices.models import volumes_model, interfaces_model
 from amon.apps.processes.models import process_model
-from amon.apps.tags.models import tag_groups_model, tags_model
+from amon.apps.tags.models import tags_model
 
 from amon.apps.servers.utils import filter_tags
 
@@ -21,11 +21,11 @@ class MapModel(BaseModel):
         metric_map = {'used_percent': 'percent', 'inbound': 'i', 'outbound': 'o'}
 
         value_in_dict = metric_map.get(value, False)
-        if value_in_dict == False:
+        if value_in_dict is False:
             value_in_dict = value
 
         for _, d in data.items():
-            d = {} if d == None else d
+            d = {} if d is None else d
             metric_value = d.get(value_in_dict, 0)
             metric_value = float(metric_value)
 
@@ -38,7 +38,6 @@ class MapModel(BaseModel):
     def group_by(self, group_id=None, data=None):
 
         tags_for_group = tags_model.get_for_group(group_id)
-        group = tag_groups_model.get_by_id(group_id)
 
         grouped_servers = collections.OrderedDict()
         if tags_for_group.clone().count() > 0:
@@ -85,7 +84,7 @@ class MapModel(BaseModel):
         calculate_max_list = []
 
         unit_dict = {
-            'cpu': "%", 
+            'cpu': "%",
             'memory': 'MB',
             'used_percent': "%",
             'network': 'kb/s',

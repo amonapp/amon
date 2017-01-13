@@ -132,16 +132,13 @@
                         {% if system %}
                             <h5><a href="{% url 'server_system' server_id=server.server|mongo_id  %}">{{ server.server.name }}</a></h5>
                         {% endif %}
+                        <ul class="servers--tag-list">
+                            {% for t in tags  %}
+                                <li><span >{{t.group.name}}{% if t.group.name %}:{% endif %}{{ t.name }}</span></li>
+                            {% endfor %}
+                        </ul>
 
-                        {% if tags|length > 0 %}
-                            <ul class="servers--tag-list">
-
-                                {% for t in tags  %}
-                                    <li><span >{{t.group.name}}{% if t.group.name %}:{% endif %}{{ t.name }}</span></li>
-                                {% endfor %}
-                            </ul>
-
-                        {% endif %}
+                 
 
             </td><!-- end server -->
             <td data-column='cpu' {% if system.cpu.system|floatformat:2 %} data-order='{{ system.cpu.system|sum:system.cpu.user|floatformat:2 }}' {% endif %}>

@@ -2,7 +2,6 @@ from amon.apps.core.views import *
 
 from amon.apps.servers.models import server_model
 from amon.apps.map.models import map_model
-from amon.apps.servers.utils import filter_tags
 from amon.apps.tags.models import tag_groups_model
 
 
@@ -27,11 +26,10 @@ def index(request):
     if all_servers:
         for server in all_servers:
             server_tags = server.get('tags', [])
-            if len(server_tags) > 0:
-                for t in server_tags:
-                    group_id = t.get('group_id', False)
-                    if group_id != False:
-                        active_tag_groups.add(str(group_id))
+            for t in server_tags:
+                group_id = t.get('group_id', False)
+                if group_id is not False:
+                    active_tag_groups.add(str(group_id))
 
 
     return render_to_response('map/view.html', {
@@ -43,5 +41,4 @@ def index(request):
         "tag_groups": tag_groups,
         "active_tag_groups": active_tag_groups,
         # "group": group
-    },
-    context_instance=RequestContext(request))
+    }, context_instance=RequestContext(request))
