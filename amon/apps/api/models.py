@@ -49,7 +49,7 @@ class ApiModel(BaseModel):
             formated_data = plugin_model.format_telegraf_to_amon(data=telegraf_data)
 
             if len(formated_data) > 0:
-                for name, d in formated_data.iteritems():
+                for name, d in formated_data.items():
                     plugin = plugin_model.save_data(
                         server=server,
                         name=name,

@@ -206,6 +206,7 @@
                     {% set total_processes = server.processes.total_processes %}
                     {% set user_processes = server.processes.user_processes %}
 
+
                     {% for p  in processes.top_cpu %}
                     <a class='label' href="{% url 'view_process' server_id=server.server|mongo_id %}?process={{p.p}}">{{ p.n }}</a>
                     <div class="container">
