@@ -8,6 +8,7 @@ from amon.apps.devices.models import interfaces_model, volumes_model
 from amon.apps.tags.models import tags_model, tag_groups_model
 from amon.utils.dates import unix_utc_now
 
+
 class ServerModel(BaseModel):
 
     def __init__(self):
@@ -22,7 +23,8 @@ class ServerModel(BaseModel):
         return result
 
 
-    def get_or_create_by_machine_id(self,
+    def get_or_create_by_machine_id(
+            self,
             machine_id=None,
             hostname=None,
             check_every=60,
@@ -58,7 +60,7 @@ class ServerModel(BaseModel):
 
             # Cloud server synced and found
             if server is not None:
-                data = {"key":machine_id}
+                data = {"key": machine_id}
                 self.collection.update({"instance_id": instance_id}, {"$set": data}, upsert=True)
             else:
                 data["key"] = machine_id
@@ -103,7 +105,7 @@ class ServerModel(BaseModel):
         tags = server.get('tags', None)
         if tags:
             result = [tags_model.get_by_id(x) for x in tags]
-            result = filter(lambda x: x != None, result)  # Remove non existing tags
+            result = list(filter(lambda x: x is not None, result))  # Remove non existing tags
 
         return result
 

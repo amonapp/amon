@@ -36,15 +36,12 @@ class MapModel(BaseModel):
         return v
 
     def group_by(self, group_id=None, data=None):
-
         tags_for_group = tags_model.get_for_group(group_id)
-
         grouped_servers = collections.OrderedDict()
         if tags_for_group.clone().count() > 0:
             
             server_ids_in_groups = []
             for tag in tags_for_group:
-                
                 tag_name = tag.get('name')
                 grouped_servers[tag_name] = {
                     'sorted_data': [],
@@ -53,9 +50,11 @@ class MapModel(BaseModel):
                 for s in data['sorted_data']:
                     server = s.get('server')
                     server_id = str(server.get('_id'))
-                    tag_id = str(tag.get("_id"))
-                    append_server = filter_tags(server, tag_id)
-
+                    filtered_tag_id = str(tag.get("_id"))
+                    append_server = filter_tags(
+                        server=server,
+                        tags=filtered_tag_id
+                    )
                     if append_server:
                         server_ids_in_groups.append(server_id)
                         grouped_servers[tag_name]['sorted_data'].append(s)
@@ -124,9 +123,7 @@ class MapModel(BaseModel):
                 system_data = system_model.get_check_for_timestamp(s, last_check)
                 metric_dict = system_data.get(name, {})
                 v = metric_dict.get(value, 0)
-                    
-            
-
+    
             unit = unit_dict.get(name, "")
 
             # Overwrite, if you find an alternative unit

@@ -4069,10 +4069,10 @@ ul.hostmap {
                 height: $hostmap_container_width;
                 z-index: 9;
             }
-            span.data {
-                @include rem (font-size, 1.4);
+            span.data { 
+                @include rem (font-size, 1.1);
                 @include breakpoint(desktop){
-                    @include rem (font-size, 1.6);
+                    @include rem (font-size, 1.2);
                 }
                 position: relative;
                 display: inline-block;

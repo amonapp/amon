@@ -40,5 +40,4 @@ def index(request):
         "sort_by": sort_by,
         "tag_groups": tag_groups,
         "active_tag_groups": active_tag_groups,
-        # "group": group
     }, context_instance=RequestContext(request))

@@ -1,5 +1,3 @@
-import collections
-
 from amon.apps.core.views import *
 
 from amon.apps.system.models import system_model
@@ -10,9 +8,7 @@ from amon.apps.plugins.models import plugin_model
 from amon.apps.alerts.models import alerts_model
 from amon.apps.servers.forms import ServerForm
 from amon.apps.servers.utils import filter_tags
-from amon.apps.tags.models import tag_groups_model, tags_model
 from amon.apps.api.models import api_key_model
-from amon.utils.dates import unix_utc_now
 from amon.apps.bookmarks.forms import BookMarkForm
 
 
@@ -23,10 +19,10 @@ def all(request):
     servers_data = []
     form = ServerForm()
 
-    tags = request.GET.get('tags',"")
+    tags = request.GET.get('tags', "")
     bookmark_id = request.GET.get('bookmark_id')
 
-    now = unix_utc_now()
+    # now = unix_utc_now()
 
     if all_servers:
         for server in all_servers:
@@ -36,7 +32,7 @@ def all(request):
 
             key = server.get('key')
             last_check = server.get('last_check', 0)
-            seconds_since_check = now - last_check
+            # seconds_since_check = now - last_check
 
 
             server_dict = {
@@ -45,21 +41,21 @@ def all(request):
                 'last_check': last_check
             }
 
-            # Don't get data for non active servers, 48 hours as default
-            if seconds_since_check < 172800:
-                server_dict_data = {
-                    'system': system_model.get_check_for_timestamp(server, last_check),
-                    'volume_data': volumes_model.get_check_for_timestamp(server, last_check),
-                    'plugins': plugin_model.get_check_for_timestamp(server, last_check),
-                    'processes': process_model.get_check_for_timestamp(server, last_check),
-                }
+            # Don't get data for non active servers, 48 hours as default 
+            # Disable this check for now
+            # if seconds_since_check < 172800:
+            server_dict_data = {
+                'system': system_model.get_check_for_timestamp(server, last_check),
+                'volume_data': volumes_model.get_check_for_timestamp(server, last_check),
+                'plugins': plugin_model.get_check_for_timestamp(server, last_check),
+                'processes': process_model.get_check_for_timestamp(server, last_check),
+            }
+
+            server_dict.update(server_dict_data)
+            active_server = True
 
 
-                server_dict.update(server_dict_data)
-                active_server = True
-
-
-            if append_server and active_server != False:
+            if append_server and active_server is not False:
                 servers_data.append(server_dict)
 
 
@@ -77,8 +73,7 @@ def all(request):
         "bookmark_form": bookmark_form,
         "bookmark_id": bookmark_id,
         "api_key": api_key
-    },
-    context_instance=RequestContext(request))
+    }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -99,6 +94,7 @@ def delete_plugin(request, plugin_id=None, server_id=None):
         messages.add_message(request, messages.INFO, 'Plugin deleted')
 
     return redirect(reverse('edit_server', kwargs={"server_id": server_id}))
+
 
 @login_required
 def delete_server(request, server_id=None):
@@ -132,8 +128,7 @@ def edit_server(request, server_id=None):
         "server": server,
         "plugins": plugins,
         'form': form,
-    },
-    context_instance=RequestContext(request))
+    }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -153,5 +148,4 @@ def add_server(request):
 
     return render_to_response("servers/add.html", {
         'form': form,
-    },
-    context_instance=RequestContext(request))
+    }, context_instance=RequestContext(request))

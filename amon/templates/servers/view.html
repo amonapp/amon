@@ -16,7 +16,6 @@
             data-size='250'
         {% endif %}>
         </li>
-
         {% if tags|length > 0 %}
 
             <li class='bookmark_form'>
@@ -114,7 +113,7 @@
         {% set volume_data = server.volume_data %}
         {% set interface_data = server.interface_data %}
         {% set processes = server.processes %}
-
+        
         {% set plugins = server.plugins %}
 
             <tr id="row-{{ server.server|mongo_id }}" class='server-row' >

@@ -7,7 +7,7 @@ from amon.utils.dates import unix_utc_now
 class ApiKeyPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        api_key = request.GET.get('api_key')
+        api_key = request.query_params.get('api_key')
         is_valid = False
 
         params = {'key': api_key}

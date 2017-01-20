@@ -292,8 +292,8 @@ class Generator:
         self._fp.write(payload)
 
 
-
 _FMT = '[Non-text (%(type)s) part of message omitted, filename %(filename)s]'
+
 
 class DecodedGenerator(Generator):
     """Generates a text representation of a message.
@@ -350,7 +350,6 @@ class DecodedGenerator(Generator):
                     }
 
 
-
 # Helper
 _width = len(repr(sys.maxint-1))
 _fmt = '%%0%dd' % _width
