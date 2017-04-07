@@ -1,5 +1,4 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -31,9 +30,7 @@ from amon.apps.cloudservers.apicalls import sync_credentials
 @login_required
 def index(request):
 
-    return render_to_response('cloudservers/view.html', {
-    },
-    context_instance=RequestContext(request))
+    return render(request, 'cloudservers/view.html', {})
 
 
 @login_required
@@ -53,13 +50,12 @@ def add(request, provider_id=None):
     else:
         form = provider_form()
 
-    return render_to_response('cloudservers/view.html', {
+    return render(request, 'cloudservers/view.html', {
         "form": form,
         "provider_id": provider_id,
         "all_for_provider": all_for_provider,
         "add_form": True,
-    },
-    context_instance=RequestContext(request))
+    })
 
 @login_required
 def edit(request, provider_id=None, credentials_id=None):
@@ -87,14 +83,13 @@ def edit(request, provider_id=None, credentials_id=None):
     else:
         form = provider_form(provider_data=provider_data)
 
-    return render_to_response('cloudservers/view.html', {
+    return render(request, 'cloudservers/view.html', {
         "form": form,
         "provider_data": provider_data,
         "provider_id": provider_id,
         "credentials_id": credentials_id,
         "all_for_provider": all_for_provider
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 
@@ -103,13 +98,12 @@ def delete(request, credentials_id=None, provider_id=None):
     credentials = cloud_credentials_model.get_by_id(credentials_id)
 
 
-    return render_to_response("cloudservers/delete.html",
+    return render(request, "cloudservers/delete.html",
     {
         "credentials_id": credentials_id,
         "credentials": credentials,
         "provider_id": provider_id,
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 

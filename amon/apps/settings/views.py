@@ -1,5 +1,4 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
@@ -10,6 +9,7 @@ from django.conf import settings
 from amon.apps.settings.forms import SMTPForm, DataRetentionForm, ApiKeyForm, TestSMTPForm
 from amon.apps.notifications.mail.models import email_model
 from amon.apps.api.models import api_key_model, api_history_model
+
 
 @login_required
 def data(request):
@@ -26,10 +26,9 @@ def data(request):
     else:
         form = DataRetentionForm()
     
-    return render_to_response('settings/data.html', {
+    return render(request, 'settings/data.html', {
         "form": form
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -58,10 +57,9 @@ def email_test(request):
     else:
         form = TestSMTPForm()
     
-    return render_to_response('settings/email_test.html', {
+    return render(request, 'settings/email_test.html', {
         "form": form
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 
@@ -86,12 +84,11 @@ def email(request):
     else:
         form = SMTPForm()
     
-    return render_to_response('settings/email.html', {
+    return render(request, 'settings/email.html', {
         "form": form,
         "smtp_settings": settings.SMTP
 
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 
@@ -111,11 +108,10 @@ def api(request):
     else:
         form = ApiKeyForm()
     
-    return render_to_response('settings/api.html', {
+    return render(request, 'settings/api.html', {
         "form": form,
         "api_keys": api_keys
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -124,10 +120,9 @@ def api_history(request):
 
     result = api_history_model.get_all()
     
-    return render_to_response('settings/api_history.html', {
+    return render(request, 'settings/api_history.html', {
         "api_history": result
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required

@@ -1,18 +1,19 @@
-from django.conf.urls import patterns,url
+from django.conf.urls import url
 
+from amon.apps.bookmarks import views
 
-urlpatterns = patterns('amon.apps.bookmarks.views',
+urlpatterns = [
     url(
         r'^add$',
-        'add',
+        views.add,
         name='bookmarks_add'
     ), 
 
     url(
         r'^delete/(?P<bookmark_id>\w+)$',
-        'delete',
+        views.delete,
         name='bookmarks_delete'
     ), 
-)
+]
 
 

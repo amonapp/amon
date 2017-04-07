@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
@@ -95,7 +94,7 @@ def system_view(request, server_id):
     breadcrumb_url = reverse('server_system', kwargs={'server_id': server['_id']})
     breadcrumb_url = "{0}?charts={1}".format(breadcrumb_url, charts)
 
-    return render_to_response('system/view.html', {
+    return render(request, 'system/view.html', {
         "enddate": enddate,
         "duration": duration,
         "all_processes": all_processes,
@@ -110,8 +109,7 @@ def system_view(request, server_id):
         "max_date" : max_date,
         "server_id": server_id,
         "breadcrumb_url": breadcrumb_url
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 def get_global_system_data_after(timestamp=None, check=None, key=None, enddate=None, timezone='UTC', filtered_servers=None):

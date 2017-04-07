@@ -1,11 +1,13 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+
+from amon.apps.system import api
+from amon.apps.system import views
 
 
-urlpatterns = patterns('',
-
+urlpatterns = (
     # AJAX
-    url(r'^a/get_data_after/$','amon.apps.system.api.ajax_get_data_after', name='ajax_get_data_after'),
+    url(r'^a/get_data_after/$', api.ajax_get_data_after, name='ajax_get_data_after'),
 
     # Views
-    url(r'^(?P<server_id>\w+)/$','amon.apps.system.views.system_view', name='server_system'),
+    url(r'^(?P<server_id>\w+)/$', views.system_view, name='server_system'),
 )

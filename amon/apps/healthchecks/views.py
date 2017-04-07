@@ -14,7 +14,7 @@ def view(request):
 
     result = health_checks_model.sort_and_filter(sort_by=sort_by, filter_by=filter_by)
 
-    return render_to_response('healthchecks/view.html', {
+    return render(request, 'healthchecks/view.html', {
         "all_checks": result.all_checks,
         "now": now,
         "sort_by": sort_by,
@@ -22,5 +22,4 @@ def view(request):
         "sorted_result": result.sorted_result,
         "flat_list": result.flat_list,
         "count_statuses": result.count_statuses,
-    },
-    context_instance=RequestContext(request))
+    })

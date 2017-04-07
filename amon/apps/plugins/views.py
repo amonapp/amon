@@ -96,7 +96,7 @@ def view_plugins(request, server_id):
     breadcrumb_url = "{0}?plugin={1}".format(breadcrumb_url, plugin_id)
 
 
-    return render_to_response('plugins/view.html', {
+    return render(request, 'plugins/view.html', {
         "custom_metrics": custom_metrics,  # containers, slow queries, etc
         "include_template": include_template,
         "enddate": enddate,
@@ -114,8 +114,7 @@ def view_plugins(request, server_id):
         "max_date": max_date,
         "first_check_date": first_check_date,
         "breadcrumb_url": breadcrumb_url
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 # Use in Public methods, does not require login

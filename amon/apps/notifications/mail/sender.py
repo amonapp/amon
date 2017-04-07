@@ -1,18 +1,13 @@
 import logging
 
 from django.template.loader import render_to_string
-from django.core import mail
-
-from amon.apps.notifications.mail.models import email_model
-from amon.apps.notifications.mail.mailer import Message
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
 
 from amon.apps.notifications.mail.compiler import (
     compile_system_email,
-    compile_system_email,
-    compile_process_email,
     compile_process_email,
     compile_uptime_email,
-    compile_plugin_email,
     compile_plugin_email,
     compile_notsendingdata_email,
     compile_health_check_email
@@ -20,28 +15,16 @@ from amon.apps.notifications.mail.compiler import (
 
 logger = logging.getLogger(__name__)
 
+
 def _send_email(subject=None, recipients_list=None, html_content=None):
-    email_settings = email_model.get_email_settings()
+    for to in recipients_list:
 
-    if email_settings:
-        from_email = email_settings.get('sent_from')
-
-        try:
-            connection = mail.get_connection()
-        except Exception as e:
-            raise e
-
-        if from_email:
-            message_list = []
-            for to in recipients_list:
-                msg = Message(recipients=[to], 
-                        sender=from_email,
-                        html=html_content, 
-                        subject=subject
-                    )
-                message_list.append(msg)
-
-            connection.send_messages(message_list)
+        msg = EmailMultiAlternatives(subject, '',
+            settings.SMTP.get('sent_from'),
+            [to]
+        )
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
             
 
 
@@ -49,6 +32,7 @@ def send_test_email(emails=None):
     html_content = render_to_string('test.html')
     subject = "Amon Test Email"
     _send_email(subject=subject, recipients_list=emails, html_content=html_content)
+
 
 def send_notification_email(notification=None, emails=None):
     sent = False

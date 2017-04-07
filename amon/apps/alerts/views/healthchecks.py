@@ -33,13 +33,12 @@ def add_alert(request):
     else:
         form = HealthCheckAlertForm(all_servers=all_servers)
     
-    return render_to_response('alerts/add_healthcheck.html', {
+    return render(request, 'alerts/add_healthcheck.html', {
         "form": form,
         'tags': tags,
         'notifications': notifications,
         "all_servers": all_servers
-    },
-    context_instance=RequestContext(request))    
+    })    
 
 
 @login_required
@@ -80,12 +79,11 @@ def edit_alert(request, alert_id):
 
 
     
-    return render_to_response('alerts/edit_healthcheck.html', {
+    return render(request, 'alerts/edit_healthcheck.html', {
         "server": server, 
         'tags': tags,
         "alert": alert,
         "form": form,    
         "selected_command": selected_command,
         "notifications": notifications,
-    },
-    context_instance=RequestContext(request))    
+    })    

@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns('amon.apps.map.views',
-    url(r'^$', 'index', name='servers_map'),
+from amon.apps.map import views
 
+urlpatterns = (
+    url(r'^$', views.index, name='servers_map'),
 )

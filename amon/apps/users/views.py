@@ -1,7 +1,6 @@
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import Http404
@@ -44,13 +43,12 @@ def view_users(request):
     pending = invite_model.get_all()
     
     
-    return render_to_response('users/view.html', {
+    return render(request, 'users/view.html', {
         "form": form,
         "active_users": active_users,
         "pending": pending,
         "email_settings": email_settings,
-    },
-    context_instance=RequestContext(request))
+    })
 
 @user_passes_test(lambda u: u.is_superuser)
 @login_required
@@ -92,10 +90,9 @@ def confirm_invite(request, invitation_code=None):
     else:
         form = InviteNewUserForm(invite=invite)
 
-    return render_to_response('users/confirm_invite.html', {
+    return render(request, 'users/confirm_invite.html', {
         "form": form,
         "invite": invite,
         "domain_url": settings.HOST
 
-    },
-    context_instance=RequestContext(request))
+    })

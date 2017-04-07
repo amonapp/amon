@@ -65,7 +65,7 @@ def all(request):
 
     bookmark_form = BookMarkForm(initial={'tags': tags})
 
-    return render_to_response('servers/view.html', {
+    return render(request, 'servers/view.html', {
         "all_servers": all_servers,
         "servers_data": servers_data,
         "form": form,
@@ -73,7 +73,7 @@ def all(request):
         "bookmark_form": bookmark_form,
         "bookmark_id": bookmark_id,
         "api_key": api_key
-    }, context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -124,11 +124,11 @@ def edit_server(request, server_id=None):
 
             return redirect(reverse('servers'))
 
-    return render_to_response('servers/edit.html', {
+    return render(request, 'servers/edit.html', {
         "server": server,
         "plugins": plugins,
         'form': form,
-    }, context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -146,6 +146,6 @@ def add_server(request):
         form = ServerForm()
 
 
-    return render_to_response("servers/add.html", {
+    return render(request, "servers/add.html", {
         'form': form,
-    }, context_instance=RequestContext(request))
+    })

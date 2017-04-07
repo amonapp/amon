@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
@@ -15,6 +14,7 @@ from amon.utils.dates import (
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 
 @login_required
 def view_process(request, server_id):
@@ -63,7 +63,7 @@ def view_process(request, server_id):
     breadcrumb_url = reverse('view_process', kwargs={'server_id': server['_id']})
     breadcrumb_url = "{0}?process={1}".format(breadcrumb_url, process_id)
 
-    return render_to_response('processes/view.html', {
+    return render(request, 'processes/view.html', {
         "selected_charts": selected_charts,
         "enddate": enddate,
         "duration": duration,
@@ -77,8 +77,7 @@ def view_process(request, server_id):
         "server":server,
         "max_date":max_date,
         "breadcrumb_url": breadcrumb_url
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 def get_global_process_data_after(key=None, timestamp=None, check=None, enddate=None, timezone='UTC', filtered_servers=None):
@@ -93,7 +92,7 @@ def get_global_process_data_after(key=None, timestamp=None, check=None, enddate=
             timezone=timezone,
             check=check,
             filtered_servers=filtered_servers
-        )
+    )
 
     try:
         now_local = dateformatcharts_local(datetime_to_unixtime(now), tz=timezone)

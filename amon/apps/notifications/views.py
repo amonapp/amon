@@ -1,5 +1,4 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -38,9 +37,8 @@ PROVIDERS = {
 
 @login_required
 def view(request):
-    return render_to_response('notifications/view.html', {
-    },
-    context_instance=RequestContext(request))
+    return render(request, 'notifications/view.html', {
+    })
 
 
 @login_required
@@ -71,13 +69,12 @@ def add(request, provider_id=None):
     else:
         form = provider_form()
 
-    return render_to_response('notifications/view.html', {
+    return render(request, 'notifications/view.html', {
         "form": form,
         "provider_id": provider_id,
         "add_form": True,
         "all_for_provider": all_for_provider
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 
@@ -111,14 +108,13 @@ def edit(request, provider_id=None, notification_id=None):
     else:
         form = provider_form(provider_data=provider_data)
 
-    return render_to_response('notifications/view.html', {
+    return render(request, 'notifications/view.html', {
         "form": form,
         "provider_id": provider_id,
         "provider_data": provider_data,
         "all_for_provider": all_for_provider,
         "notification_id": notification_id
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 

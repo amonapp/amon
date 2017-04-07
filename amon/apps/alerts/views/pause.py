@@ -5,6 +5,7 @@ from amon.apps.alerts.models import alerts_model
 from amon.apps.alerts.forms import MuteForm
 from amon.apps.alerts.models import alert_mute_servers_model
 
+
 @login_required
 def mute(request, alert_id):
     alerts_model.mute(alert_id)    
@@ -33,11 +34,10 @@ def mute_servers(request):
         form = MuteForm()
     
 
-    return render_to_response('alerts/mute.html', {
+    return render(request, 'alerts/mute.html', {
         "form": form,
         "all_muted": all_muted
-    },
-    context_instance=RequestContext(request))
+    })
 
 @login_required
 def unmute_server(request, mute_id):

@@ -32,7 +32,7 @@ def index(request):
                     active_tag_groups.add(str(group_id))
 
 
-    return render_to_response('map/view.html', {
+    return render(request, 'map/view.html', {
         "all_sort_fields": all_sort_fields,
         "grouped_servers": grouped_servers,
         "servers_data": servers_data,
@@ -40,4 +40,4 @@ def index(request):
         "sort_by": sort_by,
         "tag_groups": tag_groups,
         "active_tag_groups": active_tag_groups,
-    }, context_instance=RequestContext(request))
+    })

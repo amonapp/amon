@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.views.generic import RedirectView
 
-urlpatterns = patterns("",
+urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='login')),
     url(r'^install/', include('amon.apps.install.urls')),
     url(r'^account/', include('amon.apps.account.urls')),
@@ -24,4 +24,4 @@ urlpatterns = patterns("",
     url(r"^tags/", include('amon.apps.tags.urls')),
     url(r"^bookmarks/", include('amon.apps.bookmarks.urls')),
     url(r"^users/", include('amon.apps.users.urls')),
-)
+]

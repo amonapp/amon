@@ -108,8 +108,7 @@ class TestProfileForms(TestCase):
 
         # Test password update
         response = self.c.post(url, {'current_password': 'qwerty', 'new_password': '123456'})
-
-        self.assertRedirects(response, reverse('view_profile'))
+        self.assertRedirects(response, reverse('view_profile'), fetch_redirect_response=False)
 
         updated_user = User.objects.get(id=self.user.id)
         assert_true(updated_user.check_password('123456'))

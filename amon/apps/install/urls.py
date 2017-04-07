@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns('',
-    url(r"^$", "amon.apps.install.views.install_agent", name='install_agent'),
-)
+from amon.apps.install import views
 
+urlpatterns = [
+    url(r"^$", views.install_agent, name='install_agent'),
+]

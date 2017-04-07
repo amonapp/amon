@@ -1,5 +1,4 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
@@ -30,10 +29,9 @@ def index(request):
                 'dashboard': d
             })
 
-    return render_to_response('dashboards/all.html', {
+    return render(request, 'dashboards/all.html', {
         "dashboards_data": dashboards_data
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -68,6 +66,7 @@ def _fill_metrics_arrays(all_metrics=None):
         'health_checks': health_checks_list
     }
 
+
 def public_dashboard(request, account_id, dashboard_id):
     enddate = request.GET.get('enddate')
     duration = request.GET.get('duration', 1800)
@@ -98,7 +97,7 @@ def public_dashboard(request, account_id, dashboard_id):
 
     metrics_array = _fill_metrics_arrays(all_metrics=all_metrics)
     
-    return render_to_response('dashboards/public.html', {
+    return render(request, 'dashboards/public.html', {
         "account_id": account_id,
         "duration": duration,
         "health_checks": metrics_array['health_checks'],
@@ -110,8 +109,7 @@ def public_dashboard(request, account_id, dashboard_id):
         "dashboard": dashboard,
         "enddate": enddate,
         "all_existing_server_ids": all_existing_server_ids
-    },
-    context_instance=RequestContext(request))
+    })
 
 @login_required
 def view_dashboard(request, dashboard_id):
@@ -142,7 +140,7 @@ def view_dashboard(request, dashboard_id):
         messages.add_message(request, messages.INFO, 'To view this dashboard add at least 1 metric')
         return redirect(reverse('edit_dashboard', kwargs={'dashboard_id': dashboard_id}))
 
-    return render_to_response('dashboards/view.html', {
+    return render(request, 'dashboards/view.html', {
         "all_dashboards": all_dashboards,
         "duration": duration,
         "selected_charts": metrics_array['charts'],
@@ -154,8 +152,7 @@ def view_dashboard(request, dashboard_id):
         "dashboard": dashboard,
         "enddate": enddate,
         "all_existing_server_ids": all_existing_server_ids
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -176,19 +173,17 @@ def edit_dashboard(request, dashboard_id):
     all_servers = server_model.get_all(account_id=request.account_id)
     all_healthchecks = health_checks_model.get_all()
 
-    return render_to_response('dashboards/edit.html', {
+    return render(request, 'dashboards/edit.html', {
         "dashboard": dashboard,
         "all_servers": all_servers,
         "all_healthchecks": all_healthchecks
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
 def reorder_dashboard(request, dashboard_id):
     dashboard = dashboard_model.get_by_id(dashboard_id)
 
-    return render_to_response('dashboards/reorder.html', {
+    return render(request, 'dashboards/reorder.html', {
         "dashboard": dashboard,
-    },
-    context_instance=RequestContext(request))
+    })

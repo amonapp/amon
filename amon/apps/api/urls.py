@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from amon.apps.api.views.core import (
     SystemDataView,
     LegacySystemDataView,
@@ -39,7 +39,7 @@ from amon.apps.api.views.cloudservers import (
     CloudServersGetServerKeyView
 )
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^test/(?P<server_key>\w+)$', TestView.as_view(), name='api_test'),
     url(r'^checkip$', CheckIpAddressView.as_view(), name='check_ip'),
     url(r'^collectd/(?P<server_key>\w+)$', CollectdDataView.as_view(), name='api_collectd'),
@@ -48,29 +48,29 @@ urlpatterns = patterns('',
     url(r'^telegraf/(?P<server_key>\w+)$', TelegrafDataView.as_view(), name='api_telegraf'),
 
     url(r'^system/v2/$', SystemDataView.as_view(), name='api_system'),
-)
+]
 
-server_urls = patterns('',
+server_urls = [
     url(r'^v1/servers/list/$', ServersListView.as_view(), name='api_servers_list'),
     url(r'^v1/servers/create/$', ServersCreateView.as_view(), name='api_servers_create'),
     url(r'^v1/servers/delete/(?P<server_id>\w+)/$', ServersDeleteView.as_view(), name='api_servers_delete'),
-)
+]
 
-alerts_urls = patterns('',
+alerts_urls = [
     url(r'^v1/alerts/list/$', AlertsListView.as_view(), name='api_alerts_list'),
     url(r'^v1/alerts/mute/all/$', AlertsMuteAllView.as_view(), name='api_alerts_mute_all'),
     url(r'^v1/alerts/unmute/all/$', AlertsUnMuteAllView.as_view(), name='api_alerts_unmute_all'),
     url(r'^v1/alerts/mute/(?P<alert_id>\w+)/$', AlertsMuteView.as_view(), name='api_alerts_mute'),
     url(r'^v1/alerts/delete/(?P<alert_id>\w+)/$', AlertsMuteView.as_view(), name='api_alerts_delete'),
-)
+]
 
 
-cloudserver_urls = patterns('',
+cloudserver_urls = [
     url(r'^v1/cloudservers/sync/(?P<provider_id>\w+)/$', CloudServersSyncView.as_view(), name='api_cloudservers_sync'),
     url(r'^v1/cloudservers/get-server-key/(?P<provider_id>\w+)/$', CloudServersGetServerKeyView.as_view(), name='api_cloudservers_get_server_key'),
-)
+]
 
-tags_urls = patterns('',
+tags_urls = [
     url(r'^v1/tags/list/$', TagsListView.as_view(), name='api_tags_list'),
     url(r'^v1/tags/create/$', TagsCreateView.as_view(), name='api_tags_create'),
     url(r'^v1/tags/update/$', TagsUpdateView.as_view(), name='api_tags_update'),
@@ -79,7 +79,7 @@ tags_urls = patterns('',
     url(r'^v1/tags/groups/create/$', TagGroupsCreateView.as_view(), name='api_tag_groups_create'),
     url(r'^v1/tags/groups/update/$', TagGroupsUpdateView.as_view(), name='api_tag_groups_update'),
     url(r'^v1/tags/groups/delete/$', TagGroupsDeleteView.as_view(), name='api_tag_groups_delete'),
-)
+]
 
 
 urlpatterns += server_urls

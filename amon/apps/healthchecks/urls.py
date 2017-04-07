@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
+from amon.apps.healthchecks import views
 
-urlpatterns = patterns('amon.apps.healthchecks.views',
-    url(r'^$', 'view', name='healthchecks_view'),
+urlpatterns = (
+    url(r'^$', views.view, name='healthchecks_view'),
 )

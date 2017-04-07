@@ -1,7 +1,9 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns('',
+from . import views
+
+urlpatterns = (
     # AJAX
-    url(r'^ajax_get_gauge_data_after/$','amon.apps.plugins.views.ajax_get_gauge_data_after', name='ajax_get_gauge_data_after'),
-    url(r'^view/(?P<server_id>\w+)$', 'amon.apps.plugins.views.view_plugins' , name='view_plugins'),
+    url(r'^ajax_get_gauge_data_after/$', views.ajax_get_gauge_data_after, name='ajax_get_gauge_data_after'),
+    url(r'^view/(?P<server_id>\w+)$', views.view_plugins , name='view_plugins'),
 )

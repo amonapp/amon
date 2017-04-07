@@ -21,7 +21,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ACCOUNT_ID = 1
 
-TIME_ZONE = None
+TIME_ZONE = 'UTC'
 
 DATE_FORMAT = "d/m/Y"
 DATETIME_FORMAT = "d/m/Y H:i"
@@ -52,11 +52,11 @@ TEMPLATES = [{
     'OPTIONS': {
         'context_processors': [
             'django.contrib.auth.context_processors.auth',
-            'django.core.context_processors.debug',
-            'django.core.context_processors.tz',
+            'django.template.context_processors.debug',
+            'django.template.context_processors.tz',
+            'django.template.context_processors.request',
+            "django.template.context_processors.static",
             'django.contrib.messages.context_processors.messages',
-            'django.core.context_processors.request',
-            "django.core.context_processors.static",
             'amon.apps.charts.context_processors.charts_global_variables',
         ],
         'builtins': [
@@ -216,7 +216,11 @@ STATIC_URL = config.get('static_url', None)
 
 host_struct = parsehost(HOST)
 
-ALLOWED_HOSTS = [host_struct.hostname]
+ALLOWED_HOSTS = [
+    host_struct.hostname,
+    "127.0.0.1",
+    "localhost"
+]
 HOST = host_struct.host
 HOSTNAME = host_struct.hostname
 

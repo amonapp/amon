@@ -32,14 +32,13 @@ def all(request):
         [alerts.append(x) for x in global_health_check_alerts]
     
 
-    return render_to_response('alerts/all.html', {
+    return render(request, 'alerts/all.html', {
         "alerts": alerts,
         "all_servers": all_servers,
         "server_metrics": settings.SERVER_METRICS,
         "common_metrics": settings.COMMON_METRICS,
         "total_alerts": len(alerts),
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -73,14 +72,13 @@ def add_alert(request):
     else:
         form = AlertForm(all_servers=all_servers)
     
-    return render_to_response('alerts/add.html', {
+    return render(request, 'alerts/add.html', {
         "common_metrics": settings.COMMON_METRICS,
         "form": form,
         'tags': tags,
         'notifications': notifications,
         "all_servers": all_servers
-    },
-    context_instance=RequestContext(request))    
+    })    
 
 
 @login_required
@@ -131,7 +129,7 @@ def edit_alert(request, alert_id):
         metric_types = ["KB/s"] if metric in ['network/inbound', 'network/outbound'] else metric_types
 
     
-    return render_to_response('alerts/edit.html', {
+    return render(request, 'alerts/edit.html', {
         "server": server, 
         'tags': tags,
         "alert": alert,
@@ -139,8 +137,7 @@ def edit_alert(request, alert_id):
         "selected_metric": selected_metric,
         "notifications": notifications,
         "metric_types": metric_types,
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -181,12 +178,11 @@ def history(request, alert_id):
 
     notifications = alerts_history_model.get_notifications_list(alert_id=alert['_id'], limit=100)
     
-    return render_to_response('alerts/history.html', {
+    return render(request, 'alerts/history.html', {
         'notifications': notifications,
         'alert': alert,
         'data': data
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -196,12 +192,11 @@ def history_health_check(request, alert_id):
 
     notifications = alerts_history_model.get_notifications_list(alert_id=alert['_id'], limit=100)
     
-    return render_to_response('alerts/history.html', {
+    return render(request, 'alerts/history.html', {
         'notifications': notifications,
         'alert': alert,
         'data': data
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -228,14 +223,13 @@ def history_system(request, alert_id):
 
     notifications = alerts_history_model.get_notifications_list(alert_id=alert['_id'], limit=100, skip=skip)
 
-    return render_to_response('alerts/history.html', {
+    return render(request, 'alerts/history.html', {
         'notifications': notifications,
         'alert': alert,
         'server': server,
         "total_pages": total_pages,
         "page": page
-    },
-    context_instance=RequestContext(request))
+    })
 
 
 @login_required
@@ -244,8 +238,7 @@ def ajax_alert_triggers(request, alert_id=None):
 
     notifications = alerts_history_model.get_notifications_list(alert_id=alert['_id'], limit=5)
 
-    return render_to_response('alerts/ajax_history.html', {
+    return render(request, 'alerts/ajax_history.html', {
         "notifications": notifications,
         "rule": alert
-    },
-    context_instance=RequestContext(request))
+    })
