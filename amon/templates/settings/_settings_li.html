@@ -3,7 +3,6 @@
 {% endif %}
 <li><a {% if 'account' in request.path %}class='active'{% endif %} href="{% url 'view_profile' %}">Profile</a></li>
 <li><a {% if 'data' in request.path %}class='active'{% endif %} href="{% url 'settings_data' %}">Data Retention</a></li>
-<li><a {% if 'smtp' in request.path %}class='active'{% endif %} href="{% url 'settings_email' %}">SMTP</a></li>
 <li><a {% if 'api' in request.path %}class='active'{% endif %} href="{% url 'settings_api' %}">API</a></li>
 <li><a {% if 'notifications' in request.path %}class='active'{% endif %} href="{% url 'notifications_all' %}">Notifications</a></li>
 <li><a href="{% url 'tags' %}">Tags</a></li>

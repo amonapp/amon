@@ -18,7 +18,6 @@ from amon.apps.alerts.alerter import (
     health_check_alerter
 )
 from amon.apps.notifications.mail.sender import send_notification_email
-from amon.apps.notifications.mail.models import email_model
 from amon.apps.plugins.models import plugin_model
 from amon.apps.healthchecks.models import health_checks_results_model
 
@@ -41,8 +40,6 @@ class TestAlertEmails(TestCase):
         self.server_id = self.server['_id']
 
 
-        email_model.insert({'sent_from': 'martin@amon.cx'})
-
         notifications_model.save(data={"email": "foo@test.com"}, provider_id="email")
 
         notifications = notifications_model.get_all_formated()
@@ -62,7 +59,6 @@ class TestAlertEmails(TestCase):
         plugin_model.collection.remove()
         plugin_model.gauge_collection.remove()
         notifications_model.collection.remove()
-        email_model.collection.remove()
     
 
     def _cleanup(self):

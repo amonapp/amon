@@ -11,7 +11,6 @@ from django.contrib.auth import get_user_model
 
 from amon.apps.users.forms import InviteForm, InviteNewUserForm
 from amon.apps.users.models import invite_model
-from amon.apps.notifications.mail.models import email_model
 from amon.apps.users.emails import send_invitation_email, send_revoked_email
 
 User = get_user_model()
@@ -20,8 +19,6 @@ User = get_user_model()
 @user_passes_test(lambda u: u.is_superuser)
 @login_required
 def view_users(request):
-
-    email_settings = email_model.get_email_settings()
 
     if request.method == 'POST':
         form = InviteForm(request.POST, user=request.user)
@@ -47,8 +44,8 @@ def view_users(request):
         "form": form,
         "active_users": active_users,
         "pending": pending,
-        "email_settings": email_settings,
     })
+
 
 @user_passes_test(lambda u: u.is_superuser)
 @login_required

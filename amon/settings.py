@@ -150,7 +150,7 @@ API_RESULTS = {
 }
 
 
-LOGIN_URL = '/account/login'
+LOGIN_URL = '/account/login/'
 
 SERVER_METRICS = {
     "": "",
@@ -163,7 +163,8 @@ SERVER_METRICS = {
 PROCESS_METRICS = {"1": "CPU", "2": "Memory", "3": "Down"}
 COMMON_METRICS = ["MB", "GB", "%"]
 
-EMAIL_BACKEND = 'amon.apps.notifications.mail.backends.AmonEmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 
 ###########################
 #
@@ -219,7 +220,8 @@ host_struct = parsehost(HOST)
 ALLOWED_HOSTS = [
     host_struct.hostname,
     "127.0.0.1",
-    "localhost"
+    "localhost",
+    "*.localhost"
 ]
 HOST = host_struct.host
 HOSTNAME = host_struct.hostname
@@ -235,7 +237,13 @@ KEEP_DATA = config.get('keep_data', None)
 
 
 # SMTP Settings - optionally store these in a config file
-SMTP = config.get('smtp', False)
+smtp = config.get('smtp', False)
+EMAIL_USE_TLS = smtp.get('use_tls', False)
+EMAIL_HOST = smtp.get('host', 'localhost')
+EMAIL_PORT = smtp.get('port', 25)
+EMAIL_HOST_USER = smtp.get('username', '')
+EMAIL_HOST_PASSWORD = smtp.get('password', '')
+DEFAULT_FROM_EMAIL = smtp.get('sent_from', EMAIL_HOST_USER)
 
 if SSL or host_struct.scheme == 'https':
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

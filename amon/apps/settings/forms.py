@@ -1,45 +1,9 @@
 from django import forms
 from django.conf import settings
 
-
-from amon.apps.notifications.mail.models import email_model
 from amon.apps.settings.models import data_retention_model
 from amon.apps.api.utils import generate_api_key
 from amon.apps.api.models import api_key_model
-from amon.apps.settings.emails import send_test_email
-
-class TestSMTPForm(forms.Form):
-    send_to = forms.EmailField(required=True, label='Send Email to',
-        widget=forms.TextInput(attrs={'placeholder': 'email@example.com'}))
-
-
-    def save(self):
-        send_test_email(to_address=self.cleaned_data['send_to'])
-
-
-class SMTPForm(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        super(SMTPForm, self).__init__(*args, **kwargs)
-
-        email_settings = email_model.get_email_settings()
-    
-    
-        if email_settings:
-            for f in self.fields:
-                self.fields[f].initial = email_settings.get(f)
-            
-
-    host = forms.CharField(required=True)
-    port = forms.IntegerField(required=True)
-    username = forms.CharField(required=False)
-    password = forms.CharField(required=False, widget=forms.PasswordInput())
-    sent_from = forms.EmailField(required=True)
-    use_tls = forms.BooleanField(widget=forms.CheckboxInput(), label='Use TLS', required=False)
-
-
-    def save(self):
-        email_model.save_email_settings(data=self.cleaned_data)
 
 
 PERIOD_CHOICES = [

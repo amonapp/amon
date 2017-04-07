@@ -19,13 +19,9 @@ logger = logging.getLogger(__name__)
 def _send_email(subject=None, recipients_list=None, html_content=None):
     for to in recipients_list:
 
-        msg = EmailMultiAlternatives(subject, '',
-            settings.SMTP.get('sent_from'),
-            [to]
-        )
+        msg = EmailMultiAlternatives(subject, '', settings.DEFAULT_FROM_EMAIL, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
-            
 
 
 def send_test_email(emails=None):
