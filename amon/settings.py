@@ -221,7 +221,8 @@ ALLOWED_HOSTS = [
     host_struct.hostname,
     "127.0.0.1",
     "localhost",
-    "*.localhost"
+    "*.localhost",
+    "*.amon.cx"
 ]
 HOST = host_struct.host
 HOSTNAME = host_struct.hostname
