@@ -11,14 +11,6 @@
 <div class="settings__content">
 
 <ul class="settings-list-form">
-{% if not email_settings %}
-<li>
-    <span class='warning'>Amon will not be able to send invite emails, because your <a href="{% url 'settings_email' %}">SMTP details</a> are not set. 
-    <br><br>
-    The form below will still generate invite URLs, which you can share manually.</span>    
-</li>
-
-{% endif %}
     {{ form.as_ul }}
 
 <li class='buttons'>
