@@ -18,8 +18,10 @@ CHECK_CHOICES = [
     (15, '15 seconds'), 
     (30, '30 seconds'), 
     (60, '1 minute'),
-    (300, '3 minutes'),
-    (1800, '5 minutes'), 
+    (180, '3 minutes'),
+    (300, '5 minutes'),
+    (900, '15 minutes'),
+    (1800, '30 minutes'),
 ]
 
 if settings.DEBUG == True:
