@@ -20,6 +20,8 @@ HEALTCHECKS_STATUS_CHOICES = (
 )
 
 PERIOD_CHOICES = [
+    (30, '30 seconds'),
+    (60, '1 minutes'),
     (180, '3 minutes'),
     (300, '5 minutes'),
     (900, '15 minutes'),
