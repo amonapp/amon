@@ -182,6 +182,14 @@ DATABASES = {
 }
 
 config_path = "/etc/opt/amon/amon.yml"
+with os.path.abspath(os.path.dirname(config_path)) as path:
+    if not os.path.isdir(path):
+        os.system('mkdir -p {}'.format(path))
+with os.path.isfile(os.path.abspath(config_path)) as config_file:
+    if not os.path.isfile(config_file):
+        os.system('cp {}/amon.yml {}'.format(
+            PROJECT_ROOT, config_file
+        ))
 
 # Overwrite for the test suite
 if TESTING:
