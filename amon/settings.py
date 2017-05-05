@@ -174,6 +174,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 LOGFILE = '/var/log/amon/amonapp.log'
 LOGFILE_REQUESTS = '/var/log/amon/amon_requests.log'
 
+with os.path.abspath(os.path.dirname(LOGFILE)) as path:
+    if not os.path.isdir(path):
+        os.system('mkdir -p {}'.format(path))
+
+with os.path.abspath(os.path.dirname(LOGFILE_REQUESTS)) as path:
+    if not os.path.isdir(path):
+        os.system('mkdir -p {}'.format(path))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
