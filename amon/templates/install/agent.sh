@@ -109,6 +109,11 @@ function install_agent() {
 
         $sudo_cmd apt-get install -y --force-yes amonagent
 
+        #Added in reply to https://github.com/amonapp/amon/issues/170
+        ARCHITECTURE=`uname -m`
+        if [ "$ARCHITECTURE" == "i686" ] ; then
+            sed -i "s/\/usr\/bin\/amonagent/\/usr\/bin\/amonagent32/" /etc/systemd/system/amonagent.service
+        fi
     else
         printf "\033[31mYour OS or distribution are not supported by this install script.
             Please follow the instructions on the Agent setup page:
