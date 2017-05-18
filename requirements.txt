@@ -16,7 +16,6 @@ pycrypto==2.6.1
 # Deployment
 gunicorn==19.6.0
 gevent==1.2.0
-wheel==0.29.0
 
 # Cloud
 xmltodict==0.10.2
