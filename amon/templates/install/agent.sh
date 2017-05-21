@@ -78,7 +78,7 @@ function add_repos(){
 
     printf "\033[92m\n* Adding Repositories ...\n\033[0m\n"
 
-    if [ $DISTRO == 'debian' ]; then
+    if [ "$DISTRO" == 'debian' ]; then
 
         $sudo_cmd sh -c "echo 'deb http://packages.amon.cx/repo amon contrib' > /etc/apt/sources.list.d/amonagent.list"
         $sudo_cmd apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv AD53961F
@@ -86,7 +86,7 @@ function add_repos(){
         # Update once
         $sudo_cmd apt-get update
 
-    elif [ $DISTRO == 'rpm' ]; then
+    elif [ "$DISTRO" == 'rpm' ]; then
         $sudo_cmd sh -c "echo -e '[amon]\nname = Amon.\nbaseurl = http://packages.amon.cx/rpm/\nenabled=1\ngpgcheck=0\npriority=1' > /etc/yum.repos.d/amon.repo"
         $sudo_cmd yum install -y epel-release
 
@@ -99,12 +99,12 @@ function add_repos(){
 function install_agent() {
 
     # Install the necessary package sources
-    if [ $DISTRO == 'rpm' ]; then
+    if [ "$DISTRO" == 'rpm' ]; then
         printf "\033[92m* Installing the Amon Agent package for RPM distros\n\033[0m\n"
 
         $sudo_cmd yum -y install amonagent
 
-    elif [ $DISTRO == 'debian' ]; then
+    elif [ "$DISTRO" == 'debian' ] && ([ "$ARCHITECTURE" == "x86_64" ] || [ "$ARCHITECTURE" == "i686" ]); then
         printf "\033[92m\n* Installing the Amon Agent package for Debian distros\n\033[0m\n"
 
         $sudo_cmd apt-get install -y --force-yes amonagent
@@ -114,6 +114,7 @@ function install_agent() {
         if [ "$ARCHITECTURE" == "i686" ] ; then
             sed -i "s/\/usr\/bin\/amonagent/\/usr\/bin\/amonagent32/" /etc/systemd/system/amonagent.service
         fi
+        
     else
         printf "\033[31mYour OS or distribution are not supported by this install script.
             Please follow the instructions on the Agent setup page:
@@ -152,7 +153,7 @@ printf "\033[32m All done.
 
    ----------------------------------
 
-   The binary for the agent is located in /usr/local/bin/amonagent or /usr/bin/amonagent
+   The binary for the agent is located in /usr/local/bin/amonagent
 
    Run:
 
