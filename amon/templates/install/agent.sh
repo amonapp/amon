@@ -152,7 +152,7 @@ printf "\033[32m All done.
 
    ----------------------------------
 
-   The binary for the agent is located in /usr/local/bin/amonagent
+   The binary for the agent is located in /usr/local/bin/amonagent or /usr/bin/amonagent
 
    Run:
 
