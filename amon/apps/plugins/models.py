@@ -590,7 +590,7 @@ class PluginModel(BaseModel):
 
             if keys:
                 result['header'] = keys
-                result['data'] = query
+                result['data'] = [element for element in query]
 
         return result
 
