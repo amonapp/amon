@@ -174,6 +174,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 LOGFILE = '/var/log/amon/amonapp.log'
 LOGFILE_REQUESTS = '/var/log/amon/amon_requests.log'
 
+log_path = os.path.abspath(os.path.dirname(LOGFILE))
+if not os.path.isdir(log_path):
+    os.system('mkdir -p {}'.format(log_path))
+
+log_request_path = os.path.abspath(os.path.dirname(LOGFILE_REQUESTS))
+if not os.path.isdir(log_request_path):
+    os.system('mkdir -p {}'.format(log_request_path))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -182,6 +190,13 @@ DATABASES = {
 }
 
 config_path = "/etc/opt/amon/amon.yml"
+config_file_path = os.path.abspath(os.path.dirname(config_path))
+if not os.path.isdir(config_file_path):
+    os.system('mkdir -p {}'.format(config_file_path))
+if not os.path.isfile(os.path.abspath(config_path)):
+    os.system('cp {}/amon.yml {}'.format(
+        PROJECT_ROOT, os.path.abspath(config_path)
+    ))
 
 # Overwrite for the test suite
 if TESTING:
