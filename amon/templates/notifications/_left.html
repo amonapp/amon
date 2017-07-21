@@ -62,6 +62,14 @@
             </a>
         </li>
 
+        <li {% if provider_id == 'telegram' %}class='active' {% endif %}>
+            <a  href="{% url 'notifications_edit' provider_id='telegram' %}">
+            <img src="{{ STATIC_URL }}images/integrations/telegram.png" alt="Slack">
+            <h4>Telegram</h4>
+            <p>Send your Amon alerts to a Telegram channel.</p>
+            </a>
+        </li>
+
         <li {% if provider_id == 'hipchat' %}class='active' {% endif %}>
             <a  href="{% url 'notifications_edit' provider_id='hipchat' %}">
             <img src="{{ STATIC_URL }}images/integrations/hipchat.png" alt="HipChat">

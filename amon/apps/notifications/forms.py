@@ -85,6 +85,24 @@ class SlackForm(BaseNotificationForm):
     name = forms.CharField(required=True)
     webhook_url = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Webhook URL'}))
 
+class TelegramForm(BaseNotificationForm):
+
+    def __init__(self, *args, **kwargs):
+        self.form_data = kwargs.pop('provider_data', None)
+
+        super(TelegramForm, self).__init__(*args, **kwargs)
+
+        try:
+            self.fields['name'].initial = self.form_data.get('name')
+            self.fields['token'].initial = self.form_data.get('token')
+            self.fields['chat_id'].initial = self.form_data.get('chat_id')
+        except:
+            pass
+
+    name = forms.CharField(required=True)
+    token = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Token'}))
+    chat_id = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Chat ID'}))
+
 class PushoverForm(BaseNotificationForm):
 
     def __init__(self, *args, **kwargs):

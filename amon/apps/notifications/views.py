@@ -10,6 +10,7 @@ from amon.apps.notifications.forms import (
     VictorOpsForm,
     OpsGenieForm,
     SlackForm,
+    TelegramForm,
     HipChatForm,
     EmailForm,
     WebHookForm
@@ -20,6 +21,7 @@ from amon.apps.notifications.pagerduty.sender import send_pagerduty_notification
 from amon.apps.notifications.victorops.sender import send_victorops_notification
 from amon.apps.notifications.opsgenie.sender import send_opsgenie_notification
 from amon.apps.notifications.slack.sender import send_slack_notification
+from amon.apps.notifications.telegram.sender import send_telegram_notification
 from amon.apps.notifications.hipchat.sender import send_hipchat_notification
 from amon.apps.notifications.webhooks.sender import _send_webhook
 from amon.apps.notifications.mail.sender import send_test_email
@@ -30,6 +32,7 @@ PROVIDERS = {
     'victorops': VictorOpsForm,
     'opsgenie': OpsGenieForm,
     'slack': SlackForm,
+    'telegram': TelegramForm,
     'hipchat': HipChatForm,
     'email': EmailForm,
     'webhook': WebHookForm
@@ -135,6 +138,8 @@ def test(request, provider_id=None, notification_id=None):
         send_opsgenie_notification(message=message, auth=auth)
     elif provider_id == 'slack':
         send_slack_notification(message=message, auth=auth)
+    elif provider_id == 'telegram':
+        send_telegram_notification(message=message, auth=auth)
     elif provider_id == 'hipchat':
         send_hipchat_notification(message=message, auth=auth)
     elif provider_id == 'webhook':
