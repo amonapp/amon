@@ -101,7 +101,6 @@ class TelegramForm(BaseNotificationForm):
             pass
 
     name = forms.CharField(required=True)
-    bot_id = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Bot ID'}))
     token = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Token'}))
     chat_id = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Chat ID'}))
 
