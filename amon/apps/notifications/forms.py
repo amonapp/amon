@@ -94,7 +94,6 @@ class TelegramForm(BaseNotificationForm):
 
         try:
             self.fields['name'].initial = self.form_data.get('name')
-            self.fields['bot_id'].initial = self.form_data.get('bot_id')
             self.fields['token'].initial = self.form_data.get('token')
             self.fields['chat_id'].initial = self.form_data.get('chat_id')
         except:
