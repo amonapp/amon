@@ -8,6 +8,7 @@ from amon.apps.notifications.victorops.sender import send_victorops_notification
 from amon.apps.notifications.pagerduty.sender import send_pagerduty_notification
 from amon.apps.notifications.opsgenie.sender import send_opsgenie_notification
 from amon.apps.notifications.slack.sender import send_slack_notification
+from amon.apps.notifications.telegram.sender import send_telegram_notification
 from amon.apps.notifications.hipchat.sender import send_hipchat_notification
 
 from amon.apps.alerts.models import alerts_history_model
@@ -43,6 +44,8 @@ def send_notifications():
                     send_victorops_notification(message=message, auth=provider_auth)
                 if provider == 'slack':
                     send_slack_notification(message=message, auth=provider_auth)
+                if provider == 'telegram':
+                    send_telegram_notification(message=message, auth=provider_auth)
                 if provider == 'hipchat':
                     send_hipchat_notification(message=message, auth=provider_auth)
                 if provider == 'webhook':
