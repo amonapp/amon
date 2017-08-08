@@ -125,8 +125,8 @@ NOSE_ARGS = [
     '--stop',
     '--exclude-dir=amon/apps/cloudservers',
     '--exclude-test=amon.apps.api.tests.cloudservers_test.TestCloudServersApi',
-    '--with-coverage',
-    '--cover-inclusive',
+    # '--with-coverage',
+    # '--cover-inclusive',
     '-x'
 ]
 

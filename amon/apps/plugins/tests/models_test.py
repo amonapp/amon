@@ -581,7 +581,7 @@ class PluginsModelTest(unittest.TestCase):
                 table_name='requests')
 
         assert set(result['header']) == set(data['headers'])
-        assert result['data'].count() == 3
+        assert len(result['data']) == 3
 
 
         # Check if it doesnt create duplicates
@@ -622,7 +622,7 @@ class PluginsModelTest(unittest.TestCase):
                 additional_ignore_keys=['unique_hash'])
 
         assert set(result['header']) == set(data['headers'])
-        assert result['data'].count() == 2
+        assert len(result['data']) == 2
 
 
         data = {'headers': ['query_time', 'rows_sent', 'rows_examined', 'lock_time', 'db', 'query', 'start_time'],
@@ -646,6 +646,6 @@ class PluginsModelTest(unittest.TestCase):
                 additional_ignore_keys=['unique_hash'])
 
         assert set(result['header']) == set(data['headers'])
-        assert result['data'].count() == 2
+        assert len(result['data']) == 2
 
         self._cleanup()
