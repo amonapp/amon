@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    # Provision Base Packages
+
+   # config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.define "ubuntu16" do |distro|
+    distro.vm.box = "ubuntu/xenial64"
+    distro.vm.provision "shell", path: "provision_deb.sh"
+    config.vm.network :forwarded_port, host: 9000, guest: 9000
+  end
+
+
+  config.vm.define "ubuntu" do |distro|
+    distro.vm.box = "ubuntu/trusty64"
+    distro.vm.provision "shell", path: "provision_deb.sh"
+  end
+
+  config.vm.define "debian8" do |distro|
+    distro.vm.box = "debian/jessie64"
+    distro.vm.provision "shell", path: "provision_deb.sh"
+  end
+
+  config.vm.define "debian7" do |distro|
+    distro.vm.box = "puphpet/debian75-x64"
+    distro.vm.provision "shell", path: "provision_deb.sh"
+  end
+
+  config.vm.define "centos", autostart: false do |distro|
+      distro.vm.box = "boxcutter/centos71"
+      distro.vm.provision "shell", path: "provision_rpm.sh"
+  end
+
+  config.vm.define "centos6", autostart: false do |distro|
+      distro.vm.box = "geerlingguy/centos6"
+  end
+  
+end
