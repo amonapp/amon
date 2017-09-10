@@ -21,3 +21,4 @@ remotefiles/
 *.sqlite
 dev_settings.py
 *.log
+*.vagrant
