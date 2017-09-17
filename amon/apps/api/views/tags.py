@@ -20,8 +20,6 @@ class TagsListView(SaveRequestHistoryMixin, APIView):
             group = tag.get('group')
             if group:
                 data['group'] = dict_from_cursor(data=group, keys=['name', '_id'])
-            else:
-                data['group'] = {}
             
             filtered_tags.append(data)
 
