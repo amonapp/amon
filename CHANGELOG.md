@@ -5,6 +5,7 @@
 
 ### Bugfixes
 
+- [#179](https://github.com/amonapp/amon/issues/179): Tags page error when creating a tag without a group
 - [#162](https://github.com/amonapp/amon/issues/162): Email sending not fully functional - replace legacy mailer with Django
 
 
