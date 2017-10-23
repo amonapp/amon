@@ -42,6 +42,8 @@ if len(distro_list) > 0 and len(distro) > 0:
 EOF
 )
 
+ARCHITECTURE=`uname -m`
+
 function on_error() {
     printf "\033[31m
 It looks like you hit an issue when trying to install the Agent.
@@ -110,7 +112,6 @@ function install_agent() {
         $sudo_cmd apt-get install -y --force-yes amonagent
 
         #Added in reply to https://github.com/amonapp/amon/issues/170
-        ARCHITECTURE=`uname -m`
         if [ "$ARCHITECTURE" == "i686" ] ; then
             sed -i "s/\/usr\/bin\/amonagent/\/usr\/bin\/amonagent32/" /etc/systemd/system/amonagent.service
         fi

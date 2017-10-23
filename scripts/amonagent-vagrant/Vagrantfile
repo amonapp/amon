@@ -10,7 +10,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "ubuntu16" do |distro|
     distro.vm.box = "ubuntu/xenial64"
-    distro.vm.provision "shell", path: "provision_deb.sh"
 
     distro.vm.provision "ansible" do |ansible|
     ansible.playbook = 'ansible/amonagent.yml'
@@ -18,7 +17,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.extra_vars = {
         https_proxy: "",
         amonagent_api_key: "uxIDpRApV3ULEnDUAwUNA6grHLBQs91iEiQsN8pIUao",
-        amonagent_amon_instance: "http://10.0.2.2:8002"
+        amonagent_amon_instance: "http://10.0.2.2:8002",
+        ansible_python_interpreter: "/usr/bin/python3"
+    }
+    end
+
+    distro.vm.provision "ansible" do |ansible|
+    ansible.playbook = 'ansible/setup_deb.yml'
+    ansible.sudo = true
+      ansible.extra_vars = {
+        ansible_python_interpreter: "/usr/bin/python3"
     }
     end
   end

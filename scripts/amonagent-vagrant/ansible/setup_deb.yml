@@ -1,0 +1,28 @@
+- hosts: all
+  tasks:
+    - name: setup packages
+      apt:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - curl
+        - build-essential 
+        - zsh 
+        - vim
+        - ruby2.3-dev
+    - name: setup sensu checks
+      gem:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - sensu-plugins-http
+        - sensu-plugins-filesystem-checks
+        - sensu-plugins-network-checks
+        - sensu-plugins-process-checks
+        - sensu-plugins-entropy-checks
+        - sensu-plugins-disk-checks
+        - sensu-plugins-dns
+    - name: setup amonagent config
+      template:
+        src: checks.conf.j2
+        dest: /etc/opt/amonagent/plugins-enabled/checks.conf
