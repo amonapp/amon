@@ -2422,9 +2422,6 @@ $container_width: 120px;
         }
         th.server-name-row {
             width: 12%;
-            @include breakpoint(desktop-big) {
-                width: 6%;
-            }
             
         }
         th.plugins-row {

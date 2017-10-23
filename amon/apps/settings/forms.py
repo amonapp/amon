@@ -14,6 +14,14 @@ PERIOD_CHOICES = [
     (3600, 'Forever'),
 ]
 
+
+CLEANUP_CHOICES = [
+    (10800, 'more than 3 hours'),
+    (21600, '6 hours'),
+    (86400, '24 hours'),
+    (259200, '72 hours'),
+]
+
 CHECK_CHOICES = [
     (15, '15 seconds'), 
     (30, '30 seconds'), 
@@ -50,6 +58,20 @@ class DataRetentionForm(forms.Form):
     def save(self):
         data_retention_model.delete_all_and_insert(self.cleaned_data)
 
+class CleanupDataForm(forms.Form):
+
+
+    def __init__(self, *args, **kwargs):
+
+        super(CleanupDataForm, self).__init__(*args, **kwargs)
+        self.fields['cleanup_before'].widget.attrs.update({'select2-dropdown': '', 'data-size': 360})
+        
+
+    cleanup_before = forms.TypedChoiceField(choices=CLEANUP_CHOICES, label='Period', coerce=int)
+
+
+    def save(self):
+        data_retention_model.delete_all_and_insert(self.cleaned_data)
 
 TRIAL_LOCATIONS = (
     ('send', 'Send'),

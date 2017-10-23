@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
-from amon.apps.settings.forms import DataRetentionForm, ApiKeyForm
+from amon.apps.settings.forms import DataRetentionForm, ApiKeyForm, CleanupDataForm
 from amon.apps.api.models import api_key_model, api_history_model
 
 
@@ -28,7 +28,24 @@ def data(request):
     })
 
 
+@login_required
+def cleanup(request):
 
+    if request.method == 'POST':
+        form = CleanupDataForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            messages.add_message(request, messages.INFO, 'Cleaning up')
+            redirect_url = reverse('settings_cleanup')
+
+            return redirect(redirect_url)
+    else:
+        form = CleanupDataForm()
+    
+    return render(request, 'settings/cleanup.html', {
+        "form": form
+    })
 
 
 @login_required

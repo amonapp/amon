@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Settings - Cleanup{% endblock title %}
+{% block ngapp %}BaseModule{% endblock ngapp %}
+{% block main_content_class %}center{% endblock main_content_class %}
+{% block breadcrumb %}
+    {% include "settings/_topbar.html" %}
+{% endblock breadcrumb %}
+{% block content %}
+<form method="post" action="{% url 'settings_data' %}">
+<div class="settings__content">
+<p class="settings__content__desc">
+    Delete Servers & Health Checks with no data for the last
+</p>
+
+<ul class="settings-list-form">
+    {{ form.as_ul }}
+
+<li class='buttons no-label'>
+    {% csrf_token %}
+    <input type="submit" class='button' value="Clean" />
+    
+</li>
+</ul>
+
+
+
+</div><!-- profile content -->
+
+</form>
+{% endblock %}

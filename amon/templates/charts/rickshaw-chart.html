@@ -16,7 +16,6 @@ data-url='{{ chart.url }}{% if chart.check %}&check={{ chart.check }}{% endif %}
     </ul>
     <div class='y_axis' id="{{ chart.id }}-yaxis"></div>
     <div id="{{ chart.id }}-chart" data-id="{{ chart.id }}" class='chart' data-yaxis='{% if chart.unit %}{{chart|yaxis}}{% else %}{{ chart.check|yaxis }}{% endif %}'></div>
-    <div id="{{ chart.id }}-slider" class='chart-slider'></div>
 </rickshaw-chart>
 {% endfor %}
 

@@ -577,13 +577,6 @@ angular.module('RickshawApp')
                             yaxis.render();
                         }
 
-                        if(!slider) {
-                            slider = new Rickshaw.Graph.RangeSlider({
-                                graph: graph,
-                                element: $(el).find('.chart-slider').get(0),
-                            });
-
-                        }
 
                         $rootScope.$apply();
 
