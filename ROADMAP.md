@@ -5,6 +5,7 @@ This roadmap is a tentative plan for the future development of Amon.
 ### Short term (1-3 months)
 
 - Critical/Warning/Resolved levels for alerts
+- Composite alerts
 - Context when defining alerts
 - Data Outputs - real time export to Cloudwatch, InfluxDB, etc.
 - Health Checks history
