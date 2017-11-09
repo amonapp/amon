@@ -1,0 +1,9 @@
+host: http://example.com
+mongo_uri: mongodb://mongodb:27017
+smtp:
+  host: smtp.mailgun.org 
+  port: 587
+  username: amon_alerts
+  password: amon_password
+  use_tls: true
+  sent_from: alerts@yourdomain.com

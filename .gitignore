@@ -22,3 +22,5 @@ remotefiles/
 dev_settings.py
 *.log
 *.vagrant
+mongodb
+caddy

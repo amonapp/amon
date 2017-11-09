@@ -1,0 +1,8 @@
+http://example.com {
+    tls self_signed
+    root /srv
+    proxy / http://amon:8000 {
+        transparent
+        except /static
+    }
+}

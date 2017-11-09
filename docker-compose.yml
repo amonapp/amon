@@ -1,0 +1,32 @@
+version: '2'
+services:
+  caddy:
+    image: abiosoft/caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./Caddyfile:/etc/Caddyfile"
+      - "./caddy:/root/.caddy"
+      - "./amon/static:/srv/static"
+    links:
+      - "amon:amon"
+    depends_on:
+        - "amon"
+  mongodb:
+    image: "mongo"
+    restart: always
+    expose:
+      - "27017"
+    volumes:
+      - "./mongodb:/data/db:rw"
+  amon:
+    build: "."
+    restart: always
+    expose:
+      - "8000"
+    links:
+      - "mongodb:mongodb"
+    depends_on:
+      - "mongodb"
