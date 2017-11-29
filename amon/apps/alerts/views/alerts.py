@@ -215,7 +215,7 @@ def history_system(request, alert_id):
     
     on_page = 100
     if total > on_page:
-        total_pages = total/on_page
+        total_pages = total//on_page
     else:
         total_pages = 1
 
