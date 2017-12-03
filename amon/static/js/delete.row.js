@@ -17,7 +17,7 @@ DeleteRowView = Backbone.View.extend({
       "click .cancel": "cancel_delete"
     },
 
-    delete_row: function(event){    
+    delete_row: function(event){
         event.preventDefault();
 
         row_id = $(event.currentTarget).data('rowid');         

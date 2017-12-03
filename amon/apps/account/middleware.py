@@ -6,9 +6,9 @@ from amon.apps.account.models import user_preferences_model
 from amon.apps.dashboards.models import dashboard_model
 from amon.apps.bookmarks.models import bookmarks_model
 from amon import VERSION
+from django.utils.deprecation import MiddlewareMixin
 
-
-class AccountMiddleware(object):
+class AccountMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
 
@@ -19,7 +19,7 @@ class AccountMiddleware(object):
 
         request.timezone = 'UTC'
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             user_preferences = user_preferences_model.get_preferences(user_id=request.user.id)
 
             user_timezone = user_preferences.get('timezone', 'UTC')

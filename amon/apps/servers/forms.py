@@ -4,7 +4,7 @@ from django.conf import settings
 from amon.apps.settings.forms import DataRetentionForm
 from amon.apps.servers.models import server_model
 from amon.apps.tags.models import tags_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 

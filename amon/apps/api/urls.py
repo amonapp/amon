@@ -9,6 +9,7 @@ from amon.apps.api.views.core import (
 from amon.apps.api.views.telegraf import TelegrafDataView
 from amon.apps.api.views.collectd import CollectdDataView
 
+
 from amon.apps.api.views.servers import (
     ServersListView,
     ServersCreateView,
@@ -38,6 +39,7 @@ from amon.apps.api.views.cloudservers import (
     CloudServersSyncView,
     CloudServersGetServerKeyView
 )
+
 
 urlpatterns = [
     url(r'^test/(?P<server_key>\w+)$', TestView.as_view(), name='api_test'),

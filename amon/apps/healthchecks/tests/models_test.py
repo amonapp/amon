@@ -30,7 +30,9 @@ class HealthChecksResultsModelTest(unittest.TestCase):
     def save_test(self):
         self._cleanup()
 
-        data = [{u'output': u'CheckDisk WARNING: / 83.35% bytes usage (29 GiB/35 GiB)\n', u'command': u'check-disk-usage.rb -w 80 -c 90', u'exit_code': 1}]
+        data = [
+            {u'output': u'CheckDisk WARNING: / 83.35% bytes usage (29 GiB/35 GiB)\n', u'command': u'check-disk-usage.rb -w 80 -c 90', u'exit_code': 1}
+        ]
 
         formated_data = health_checks_results_model.save(data=data, server=self.server)
         for d in formated_data:
@@ -145,6 +147,26 @@ class HealthChecksModelTest(unittest.TestCase):
         assert health_checks_model.collection.find().count() == 1
 
 
+    def test_delete(self):
+        self._cleanup()
+
+        server_id = server_model.collection.insert({"name": "server_check_sort_and_filter_by_host"})
+        server = server_model.get_by_id(server_id)
+        
+        command = "testmehere"
+        for i in range(0, 5):
+            health_checks_model.save(command=command, server=server)
+
+        result = health_checks_model.collection.count()
+
+        check = health_checks_model.collection.find_one()
+
+        assert result == 1
+        
+        health_checks_model.delete(check_id=check['_id'])
+
+        result = health_checks_model.collection.count()
+        assert result == 0
 
 
     def tearDown(self):

@@ -1,7 +1,7 @@
 from django.test.client import Client
 from django.test import TestCase
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 
 from amon.apps.servers.models import server_model, cloud_server_model

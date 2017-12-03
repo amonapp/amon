@@ -23,3 +23,12 @@ def view(request):
         "flat_list": result.flat_list,
         "count_statuses": result.count_statuses,
     })
+
+
+
+@login_required
+def delete(request, check_id=None):
+
+    health_checks_model.delete(check_id)
+
+    return redirect(reverse('healthchecks_view'))

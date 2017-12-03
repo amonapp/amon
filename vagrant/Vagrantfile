@@ -1,0 +1,52 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+
+  config.vm.box = "ubuntu/xenial64"
+
+  BOX_COUNT      = 2
+  MEMORY         = 256
+  CPUS           = 1
+
+  members = Array.new
+
+  (1..BOX_COUNT).each do |machine_id|
+    host_postfix = "%d" % machine_id
+    hostname     = "amonagent-#{host_postfix}"
+
+    members << hostname
+
+    config.vm.define hostname do |machine|
+      machine.vm.hostname = hostname
+      machine.vm.provider "virtualbox" do |v|
+        v.memory = MEMORY
+        v.cpus   = CPUS
+      end
+
+        machine.vm.provision "ansible" do |ansible|
+          ansible.playbook = 'ansible/amonagent.yml'
+          ansible.become = true
+          ansible.extra_vars = {
+            https_proxy: "",
+            amonagent_api_key: "uxIDpRApV3ULEnDUAwUNA6grHLBQs91iEiQsN8pIUao",
+            amonagent_amon_instance: "http://10.0.2.2:8002",
+            ansible_python_interpreter: "/usr/bin/python3"
+        }
+      end 
+
+        machine.vm.provision "ansible" do |ansible|
+          ansible.playbook = 'ansible/setup_deb.yml'
+          ansible.become = true
+          ansible.extra_vars = {
+            ansible_python_interpreter: "/usr/bin/python3"
+          }
+        end
+    end
+
+  end
+
+end

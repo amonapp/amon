@@ -1,6 +1,6 @@
 from django import forms
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 from amon.apps.servers.models import server_model

@@ -1,5 +1,5 @@
 from operator import itemgetter
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from amon.apps.core.basemodel import BaseModel
 from amon.apps.api.utils import generate_api_key

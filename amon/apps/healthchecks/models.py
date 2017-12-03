@@ -30,7 +30,6 @@ class HealthChecksResultsModel(BaseModel):
                     command=command
                 )
 
-
                 check_id = self.object_id(check_id)
 
                 exit_codes = {0: "ok", 1: "warning", 2: "critical"}
@@ -39,16 +38,19 @@ class HealthChecksResultsModel(BaseModel):
                 except:
                     status = "unknown"
 
-                output = check.get('output')
+                error = check.get('error')
+
+                output = check.get('output', "").strip()
 
                 params = {
                     'check_id': check_id,
                     'time': now,
                     'output': output,
                     'status': status,
+                    'error': error,
                     'expires_at': expires_at,
                 }
-
+                
                 health_checks_data_id = self.collection.insert(params)
                 self.collection.ensure_index([('expires_at', 1)], expireAfterSeconds=0)
                 self.collection.ensure_index([('time', self.desc)])
@@ -57,7 +59,9 @@ class HealthChecksResultsModel(BaseModel):
                 last_check = {
                     'time': now,
                     'output': output,
-                    'status': status
+                    'status': status,
+                    'error': error
+
                 }
 
                 health_checks_model.save_last_result(check_id=check_id, last_check=last_check, timestamp=now)
@@ -191,6 +195,10 @@ class HealthChecksModel(BaseModel):
         result.flat_list = flat_list
 
         return result
+
+    def delete(self, check_id=None):
+        check_id = self.object_id(check_id)
+        self.collection.remove(check_id)
 
 
 class HealthChecksAPIModel(BaseModel):

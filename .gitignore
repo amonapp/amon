@@ -22,3 +22,4 @@ remotefiles/
 dev_settings.py
 *.log
 *.vagrant
+dist/

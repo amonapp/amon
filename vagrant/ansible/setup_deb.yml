@@ -1,4 +1,6 @@
 - hosts: all
+  become: true
+  become_user: root
   tasks:
     - name: setup packages
       apt:
@@ -10,11 +12,11 @@
         - zsh 
         - vim
         - ruby2.3-dev
+        - monitoring-plugins
     - name: setup sensu checks
-      gem:
-        name: "{{item}}"
-        state: present
+      command: gem install "{{item}}" --no-ri --no-rdoc
       with_items:
+        - sensu-plugin
         - sensu-plugins-http
         - sensu-plugins-filesystem-checks
         - sensu-plugins-network-checks
@@ -26,3 +28,10 @@
       template:
         src: checks.conf.j2
         dest: /etc/opt/amonagent/plugins-enabled/checks.conf
+    - name: restart_amonagent
+      service:
+        name: amonagent
+        state: restarted
+
+
+

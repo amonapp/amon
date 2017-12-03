@@ -61,13 +61,12 @@ def flat_to_tree_dict_helper(dictionary, split_symbol='.'):
 
 
 
-def remove_dots(obj):
-    for key in obj.keys():
+def remove_dots(dictionary):
+    dict_without_underscore = {}
+    for key, value in dictionary.items():
         new_key = key.replace("_",".")
-        if new_key != key:
-            obj[new_key] = obj[key]
-            del obj[key]
-    return obj
+        dict_without_underscore[new_key] = value
+    return dict_without_underscore
 
 
 def replace_underscore_with_dot_helper(dictionary):

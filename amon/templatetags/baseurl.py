@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 from django import template
 from django.utils.encoding import smart_str

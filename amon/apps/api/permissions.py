@@ -19,7 +19,7 @@ class ApiKeyPermission(permissions.BasePermission):
             is_valid = True
             api_key_model.update({'last_used': unix_utc_now()}, result['_id'])
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             is_valid = True
 
         return is_valid

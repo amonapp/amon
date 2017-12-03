@@ -1,7 +1,7 @@
 import collections
 
 import operator
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 from amon.apps.core.basemodel import BaseModel

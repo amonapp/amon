@@ -1769,6 +1769,17 @@ table.healthchecks-table{
     td.last_check-column {
         text-align:right;
         width: 150px;
+        a.delete {
+            background: $odd_dark;
+            color: $breadcrumb;
+            border: 0px;
+            padding: 10px;
+            margin-left: 15px;
+            &:hover {
+                background: $red;
+                color: white;
+            }
+        }
     }
     span.health-checks--status {
         float: left;
@@ -1943,6 +1954,7 @@ table.active-servers-table {
         }
     }
 }
+
 table.dashboard-table {
     @extend table.alerts-table;
     tbody td {

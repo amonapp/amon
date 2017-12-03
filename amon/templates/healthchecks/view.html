@@ -4,6 +4,7 @@
 {% block title %}
 Servers - Health Checks
 {% endblock %}
+{% block content_class %}class="data-rows"{% endblock content_class %}
 {% block breadcrumb_class %}health_checks--breadcrumb{% endblock breadcrumb_class %}
 {% block breadcrumb %}
 
@@ -80,4 +81,5 @@ Servers - Health Checks
     })
     $('.healthchecks_filter_header input').attr("placeholder", "Filter Health Checks");
 </script>
+<script type="text/javascript" src='{{ STATIC_URL }}js/delete.row.js'></script>
 {% endblock %}
