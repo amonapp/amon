@@ -8,7 +8,7 @@ This roadmap is a tentative plan for the future development of Amon.
 - Option to send alerts on trigger or state change 
 - Composite alerts
 - Context when defining alerts
-- Data Outputs - real time export to Cloudwatch, InfluxDB, etc.
+- Data Outputs - real time export to Cloudwatch, InfluxDB, Graphite, etc.
 - Health Checks history
 - Health Checks TTL
 
