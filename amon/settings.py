@@ -155,16 +155,6 @@ API_RESULTS = {
 
 LOGIN_URL = '/account/login/'
 
-SERVER_METRICS = {
-    "": "",
-    "1": "CPU",
-    "2": "Memory",
-    "3": "Loadavg",
-    "5": "Disk"
-}
-
-PROCESS_METRICS = {"1": "CPU", "2": "Memory", "3": "Down"}
-COMMON_METRICS = ["MB", "GB", "%"]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
@@ -180,11 +170,11 @@ LOGFILE_REQUESTS = '/var/log/amon/amon_requests.log'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/etc/opt/amon/amon.sqlite',
+        'NAME': '/opt/amon/amon.sqlite',
     }
 }
 
-config_path = "/etc/opt/amon/amon.yml"
+config_path = "/opt/amon/amon.yml"
 
 # Overwrite for the test suite
 if TESTING:

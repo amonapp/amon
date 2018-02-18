@@ -1,5 +1,5 @@
 beautifulsoup4==4.5.1
-Django==2.0
+Django==2.0.2
 django-annoying==0.10.3
 django-kronos==1.0
 django-timezone-field==2.0
@@ -8,9 +8,10 @@ djangorestframework==3.7.3
 pyaml==16.12.2
 pymongo==3.4.0
 python-dateutil==2.6.0
-pytz==2017.2
+pytz==2018.3
 requests==2.12.4
 pycrypto==2.6.1
+psycopg2==2.7.4
 
 
 # Deployment
