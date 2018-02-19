@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from django.contrib.auth import get_user_model
 
-from amon.apps.account.models import forgotten_pass_tokens_model
+# from amon.apps.account.models import forgotten_pass_tokens_model
 from amon.apps.account.forms import LoginForm
 from amon.apps.account.forms import (
     AdminUserForm,

@@ -19,8 +19,6 @@ TRAVIS = True if os.getenv('TRAVIS') else False
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-ACCOUNT_ID = 1
-
 TIME_ZONE = 'UTC'
 
 DATE_FORMAT = "d/m/Y"
@@ -102,15 +100,18 @@ INSTALLED_APPS = (
     'kronos',
 
     'amon.templatetags',
-    'amon.apps.dashboards',
-    'amon.apps.servers',
-    'amon.apps.alerts',
-    'amon.apps.cloudservers',
-    'amon.apps.notifications',
-    'amon.apps.healthchecks',
-    'amon.apps.charts',
+    'amon.apps.metrics',
+    'amon.apps.organizations',
     'amon.apps.users',
-    'amon.apps.account',
+    # 'amon.apps.dashboards',
+    # 'amon.apps.servers',
+    # 'amon.apps.alerts',
+    # 'amon.apps.cloudservers',
+    # 'amon.apps.notifications',
+    # 'amon.apps.healthchecks',
+    # 'amon.apps.charts',
+
+    # 'amon.apps.account',
 )
 
 REST_FRAMEWORK = {
@@ -126,8 +127,6 @@ NOSE_ARGS = [
     '--with-yanc',
     '--with-timer',
     '--stop',
-    '--exclude-dir=amon/apps/cloudservers',
-    '--exclude-test=amon.apps.api.tests.cloudservers_test.TestCloudServersApi',
     # '--with-coverage',
     # '--cover-inclusive',
     '-x'
@@ -194,15 +193,15 @@ if TESTING:
     LOGFILE_REQUESTS = os.path.join(PROJECT_ROOT, 'amoapp_requests.log')
 
 
+config = {}  # Don't trigger exceptions if the config file is empty
 try:
     with open(config_path, 'r') as f:
         config = yaml.load(f)
 except yaml.YAMLError as exc:
     print(exc)
-if config is None:
-    config = {}  # Don't trigger exceptions if the config file is empty
+except Exception as exc:
+    print(exc)
 
-MONGO_URL = config.get('mongo_uri', 'mongodb://localhost:27017')
 
 HOST = config.get('host', '127.0.0.1')
 STATIC_URL = config.get('static_url', None)
@@ -214,7 +213,7 @@ ALLOWED_HOSTS = [
     host_struct.hostname,
     "127.0.0.1",
     "localhost",
-    "*.localhost",
+    "amon.localhost",
     "*.amon.cx"
 ]
 HOST = host_struct.host
@@ -231,7 +230,7 @@ KEEP_DATA = config.get('keep_data', None)
 
 
 # SMTP Settings - optionally store these in a config file
-smtp = config.get('smtp', False)
+smtp = config.get('smtp', {})
 EMAIL_USE_TLS = smtp.get('use_tls', False)
 EMAIL_HOST = smtp.get('host', 'localhost')
 EMAIL_PORT = smtp.get('port', 25)
@@ -302,9 +301,8 @@ LOGGING = {
 
 
 
-
-# Overwrite all settings with dev
 try:
-    from dev_settings import *
+    # Overwrite all settings with dev
+    from amon.local_settings import *
 except:
     pass

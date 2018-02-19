@@ -3,10 +3,10 @@ from django.contrib.auth import authenticate
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-from amon.apps.notifications.models import notifications_model
-from amon.apps.alerts.models import alerts_model
-from amon.apps.account.models import user_preferences_model, forgotten_pass_tokens_model
-from amon.apps.api.models import api_key_model
+# from amon.apps.notifications.models import notifications_model
+# from amon.apps.alerts.models import alerts_model
+# from amon.apps.account.models import user_preferences_model, forgotten_pass_tokens_model
+# from amon.apps.api.models import api_key_model
 from timezone_field import TimeZoneFormField
 from amon.apps.account.mailer import send_email_forgotten_password
 
@@ -70,9 +70,8 @@ class AdminUserForm(forms.Form):
         user.is_superuser = True
         user.save()
 
-        notifications_model.save(data={"email": email}, provider_id='email')
-        alerts_model.add_initial_data()
-        api_key_model.add_initial_data()
+        # notifications_model.save(data={"email": email}, provider_id='email')
+        # api_key_model.add_initial_data()
 
 
 
@@ -114,7 +113,7 @@ class ProfileForm(forms.Form):
     def save(self):
         data = {'timezone': str(self.cleaned_data['timezone'])}
 
-        user_preferences_model.save_preferences(user_id=self.user.id, data=data)
+        # user_preferences_model.save_preferences(user_id=self.user.id, data=data)
 
         self.user.email = self.cleaned_data['email']
         self.user.save()

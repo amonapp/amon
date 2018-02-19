@@ -1,6 +1,3 @@
-from amon.apps.core.basemodel import BaseModel
-
-
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -29,18 +26,16 @@ class AmonUserManager(BaseUserManager):
     def create_superuser(self, email, password=None):
         user = self.create_user(email, password=password)
         user.is_admin = True
-        user.is_superuser = True
-        user.is_staff = True
         user.save()
 
 
 class AmonUser(AbstractBaseUser, PermissionsMixin):
-
     email = models.EmailField(max_length=255, unique=True)
     date_joined = models.DateTimeField(('date joined'), default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    organizations = models.ManyToManyField('organizations.Organization')
 
     USERNAME_FIELD = 'email'
 
@@ -58,19 +53,3 @@ class AmonUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'User'
 
-
-class InviteModel(BaseModel):
-
-    def __init__(self):
-        super(InviteModel, self).__init__()
-        self.collection = self.mongo.get_collection('invites')
-
-
-    def create_invitation(self, data=None):
-        self.collection.insert(data)
-
-        self.collection.ensure_index([('email', self.desc)], background=True)
-
-
-
-invite_model = InviteModel()

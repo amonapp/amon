@@ -1,10 +1,9 @@
 from datetime import datetime
 from django.conf import settings
 
-from amon.utils.dates import localtime_utc_timedelta
-from amon.apps.account.models import user_preferences_model
-from amon.apps.dashboards.models import dashboard_model
-from amon.apps.bookmarks.models import bookmarks_model
+# from amon.utils.dates import localtime_utc_timedelta
+# from amon.apps.dashboards.models import dashboard_model
+# from amon.apps.bookmarks.models import bookmarks_model
 from amon import VERSION
 from django.utils.deprecation import MiddlewareMixin
 
@@ -20,17 +19,17 @@ class AccountMiddleware(MiddlewareMixin):
         request.timezone = 'UTC'
 
         if request.user.is_authenticated:
-            user_preferences = user_preferences_model.get_preferences(user_id=request.user.id)
+            # user_preferences = user_preferences_model.get_preferences(user_id=request.user.id)
 
-            user_timezone = user_preferences.get('timezone', 'UTC')
-            request.timezone = str(user_timezone)  # Pytz timezone object
-            request.timezone_offset = localtime_utc_timedelta(tz=request.timezone)
+            # user_timezone = user_preferences.get('timezone', 'UTC')
+            # request.timezone = str(user_timezone)  # Pytz timezone object
+            # request.timezone_offset = localtime_utc_timedelta(tz=request.timezone)
 
-            request.account_id = settings.ACCOUNT_ID
+            # request.account_id = settings.ACCOUNT_ID
 
-            request.dashboards = dashboard_model.get_all(account_id=request.account_id)
+            # request.dashboards = dashboard_model.get_all(account_id=request.account_id)
 
-            request.bookmarks = bookmarks_model.get_all()
+            # request.bookmarks = bookmarks_model.get_all()
 
             # Enable disable minified js and css files
             try:
