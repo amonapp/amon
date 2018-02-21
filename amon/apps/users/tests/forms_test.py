@@ -49,3 +49,50 @@ class TestInvite(TestCase):
         result = invite_model.collection.find().count()
 
         assert result == 1
+
+
+
+class TestUser(TestCase):
+
+    def test_forgotten_password_form(self):
+        self._cleanup()
+
+        url = reverse('forgotten_password')
+
+
+        response = self.c.post(url, {'email': self.email})
+
+        assert response.context['form'].errors
+
+        # Create user and reset password
+        self.user = User.objects.create_user(password='qwerty', email=self.email)
+        response = self.c.post(url, {'email': self.email})
+
+        # assert forgotten_pass_tokens_model.collection.find().count() == 1
+
+        response = self.c.post(url, {'email': self.email})
+
+        # assert forgotten_pass_tokens_model.collection.find().count() == 1
+
+    
+    def test_reset_password_form(self):
+        self._cleanup()
+        self.user = User.objects.create_user(self.email, 'qwerty')
+
+        # Generate token
+        url = reverse('forgotten_password')
+        response = self.c.post(url, {'email': self.email})
+        assert forgotten_pass_tokens_model.collection.find().count() == 1
+        token = forgotten_pass_tokens_model.collection.find_one()
+        
+
+        url = reverse("reset_password", kwargs={'token': token['token']})
+        response = self.c.post(url, {'password': 'newpass', 'repeat_password': 'newpasssssss'})
+
+        assert response.context['form'].errors
+        
+        url = reverse("reset_password", kwargs={'token': token['token']})
+        response = self.c.post(url, {'password': 'newpass', 'repeat_password': 'newpass'})
+
+        self.assertFalse(self.c.login(email=self.email, password='qwerty'))
+        self.assertTrue(self.c.login(email=self.email, password='newpass'))

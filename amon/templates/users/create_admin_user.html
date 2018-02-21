@@ -1,0 +1,58 @@
+{% extends "account/authbase.html" %}
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="message info">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="{% url 'create_admin_user' %}" method='post'>
+    <ul>
+        <li><h3>Create Admin User</h3></li>
+        {% if form.errors %}
+            <li class='error'>{{ form.non_field_errors }}</li>
+        {% endif %}
+        <li class="label"><label for="">Email</label></li>
+        <li>
+            {{ form.email }}
+        </li>
+        <li class="label"><label for="">Password</label></li>
+        <li>
+            {{ form.password }}
+            <a href="" class="amon-icon" id="show_hide" data-show="w">Show</a> 
+        </li>
+        <li class='last'>
+            {% csrf_token %}
+            <input type="submit" value="Create" class='button green' />
+        </li>
+    
+            
+        
+    </ul>
+</form>
+
+{% endblock content %}
+{% block js %}
+<script>
+$(function() {
+
+    // show password
+    $('#show_hide').click(function(e){
+        e.preventDefault();
+        if ($(this).prev().attr("type") == "password") {
+            $(this).prev().attr("type", "text");
+            $(this).addClass('show');
+        } else {
+            $(this).prev().attr("type", "password");
+            $(this).removeClass('show');
+        };
+    });
+    // show password end
+
+});
+</script>
+{% endblock js %}

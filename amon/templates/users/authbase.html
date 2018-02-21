@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>Amon - {{ request.version }} {% block title %}{% endblock title %}</title>
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}images/favicon.png" />
+        
+        <link href='https://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/screen.css" />
+    </head>
+
+    <body id="auth">
+        <!-- Navigation -->
+        <div class="logo">
+            <div class="column">
+                <!-- Home button -->
+
+                <img src="{{ STATIC_URL }}images/logo.png" alt="" />
+            </div>
+        </div><!-- Navigation end -->
+
+        <div id="login">
+            <div class="column">
+                <div class="login_box">
+                {% block content %}
+                    
+                {% endblock content %}
+                </div>
+            </div>
+        </div><!-- Login END -->
+
+        
+        <!-- Javascript end -->
+        <script src="{{ STATIC_URL }}js/libs/libs.min.js"></script>
+        {% block js %}
+        {% endblock js %}
+    </body>
+</html>

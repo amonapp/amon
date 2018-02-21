@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content_class %}class="profile"{% endblock content_class %}
+{% block ngapp %}ProfileApp{% endblock ngapp %}
+{% block breadcrumb %}
+    {% include "settings/_topbar.html" %}
+{% endblock breadcrumb %}
+{% block main_content_class %}center{% endblock main_content_class %}
+{% block content %}
+
+<div class="settings__content" data-ng-controller="ProfileCtrl">
+<p class="settings__content__desc">
+    Configure settings for this user
+</p>
+<form action="{% url 'view_profile' %}" method='post'>
+<ul class="settings-list-form">
+<li>
+    <span class="label">Email</span>
+    {{ form.email }}
+    {{ form.email.errors }}
+</li>
+<li>
+    <span class="label">Timezone</span>
+    {{ form.timezone }}
+    <span class="info">The default timezone in Amon is set to Coordinated Universal Time, UTC by default, which is in London, UK. 
+        If you want to display the data in your local timezone you will likely want to change this option.</span>
+</li>
+<li>
+</li>
+<li class='buttons'>
+    {% csrf_token %}
+    <a class='margin-right' href="{% url 'change_password' %}">Change password</a>
+    <input type="submit" class='button' value="Update profile" name='profile' />
+    
+</li>
+
+    </ul>
+</form> 
+
+
+
+</div><!-- profile content -->
+{% endblock content %}
+{% block js %}
+{% if request.devmode %}
+    <script type="text/javascript" src='{{ STATIC_URL }}js/apps/angular.profile.js'></script>
+{% endif %}
+
+{% endblock %}

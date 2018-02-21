@@ -1,7 +1,5 @@
 from django.conf.urls import url
 
-
-
 from amon.apps.account import views
 
 urlpatterns = [

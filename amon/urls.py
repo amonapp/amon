@@ -4,7 +4,7 @@ from django.views.generic import RedirectView
 urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='login')),
     # url(r'^install/', include('amon.apps.install.urls')),
-    url(r'^account/', include('amon.apps.account.urls')),
+    # url(r'^account/', include('amon.apps.account.urls')),
     url(r'^api/', include('amon.apps.api.urls')),
     
     # App

@@ -1,11 +1,13 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin
 )
 from django.utils import timezone
-
+from datetime import datetime, timedelta
+from amon.utils.generators import random_id_generator
 
 class AmonUserManager(BaseUserManager):
     def create_user(self, email=None, password=None):
@@ -53,3 +55,28 @@ class AmonUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'User'
 
+
+
+class ResetPasswordCode(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='user_password_reset_code',
+        on_delete=models.CASCADE
+    )
+    code = models.CharField(max_length=128)
+    expires_on = models.DateTimeField(auto_now=False, auto_now_add=False)
+    date_created = models.DateTimeField(('date created'), default=timezone.now)
+
+
+    @staticmethod
+    def generate_password_reset_token(user):
+        activation_code = ResetPasswordCode.objects.create(
+            user=user,
+            code=random_id_generator(size=64),
+            expires_on=datetime.utcnow() + timedelta(days=1)
+        )
+
+        return activation_code
+
+    def __str__(self):
+        return "Email: {0} / Code: {1}".format(self.user.email, self.code)
