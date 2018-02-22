@@ -1,26 +1,11 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 
-CHECK_CHOICES = (
-    ('ok', 'ok'),
-    ('warn', 'warn'),
-    ('crit', 'crit'),
-    ('unknown', 'unknown'),
-)
-
-METRIC_TYPE_CHOICES = (
-    ('metric', 'metric'),
-    ('check', 'check'),
-)
 
 class Metric(models.Model):
     name = models.CharField(max_length=128)
-    type = models.CharField(
-        max_length=10,
-        choices=METRIC_TYPE_CHOICES,
-        default='metric'
-    )
     tags = JSONField()
+    retention = models.IntegerField()
     organization = models.ForeignKey('organizations.Organization', on_delete=models.CASCADE)
 
     class Meta:
@@ -41,19 +26,20 @@ class MetricData(models.Model):
     def __unicode__(self):
         return u"Metric - {0}/{1}".format(self.metric.name)
 
-class MetricDataChecks(models.Model):
+
+class MetricDataSummary(models.Model):
     metric = models.ForeignKey('Metric', on_delete=models.CASCADE)
     timestamp = models.IntegerField()
-    value = models.CharField(
-        max_length=10,
-        choices=CHECK_CHOICES,
-        default='unknown'
-    )
-    message = models.TextField()
+    sum = models.FloatField()
+    upper = models.FloatField()
+    lower = models.FloatField()
+    mean = models.FloatField()
 
-    class Meta:
-        index_together = ["metric", "timestamp"]
+    # TODO 
+    # upper_90 = models.FloatField()
+    # lower_90 = models.FloatField()
+    # mean_90 = models.FloatField()
+    # sum_90 = models.FloatField()
 
+    count = models.FloatField()
 
-    def __unicode__(self):
-        return u"Metric - {0}/{1}".format(self.metric.name)

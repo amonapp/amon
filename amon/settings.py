@@ -99,10 +99,12 @@ INSTALLED_APPS = (
     'timezone_field',
     'kronos',
 
-    'amon.templatetags',
-    'amon.apps.metrics',
     'amon.apps.organizations',
     'amon.apps.users',
+    'amon.templatetags',
+    'amon.apps.metrics',
+    'amon.apps.checks',
+
     # 'amon.apps.dashboards',
     # 'amon.apps.servers',
     # 'amon.apps.alerts',
