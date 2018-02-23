@@ -9,7 +9,10 @@ Amon
 [![Build Status](https://travis-ci.org/amonapp/amon.svg?branch=master)](https://travis-ci.org/amonapp/amon)
 
 
-Amon is a modern server monitoring platform.
+Amon is a modern server monitoring platform. 
+
+
+:exclamation: Work on Amon 7.0 has started, check the [Roadmap](ROADMAP.md) for more details!
 
 
 
