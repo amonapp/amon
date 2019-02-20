@@ -1,5 +1,5 @@
 beautifulsoup4==4.5.1
-Django==2.0.10
+Django==2.0.13
 django-annoying==0.10.3
 django-kronos==1.0
 django-timezone-field==2.0
