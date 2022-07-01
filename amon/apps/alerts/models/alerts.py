@@ -262,7 +262,7 @@ class AlertsModel(BaseModel):
                     rule_server = rule.get('server', False)
                     server_id = self.object_id(rule_server)
                     if server_id:
-                        rule['server'] = server_model.get_by_id(rule_server)
+                        rule['server'] = server_model.get_by_id(server_id)
 
 
                 tags = rule.get('tags', False)
